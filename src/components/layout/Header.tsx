@@ -15,6 +15,11 @@ import {
 // Define menu structure for dropdown navigation
 const menuItems = [
   { 
+    name: 'Inicio', 
+    path: '/', 
+    icon: Home 
+  },
+  { 
     name: 'Nosotros', 
     icon: Users,
     submenu: [
@@ -94,7 +99,7 @@ const mobileNavItems = menuItems.map(item => ({
 const Header: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const activeLinkClass = "text-secondary-prosaludgreen font-bold border-b-2 border-secondary-prosaludgreen";
+  const activeLinkClass = "text-red-500 font-bold border-b-2 border-secondary-prosaludgreen";
   const inactiveLinkClass = "text-text-gray hover:text-primary-prosalud transition-colors";
   
   // Custom component for NavigationMenuLink
