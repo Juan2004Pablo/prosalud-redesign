@@ -18,6 +18,9 @@ export default {
 			}
 		},
 		extend: {
+      fontFamily: {
+        sans: ['Lato', 'sans-serif'],
+      },
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
@@ -25,12 +28,19 @@ export default {
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
 				primary: {
-					DEFAULT: 'hsl(var(--primary))',
-					foreground: 'hsl(var(--primary-foreground))'
+					DEFAULT: 'hsl(var(--primary))', // Main primary color
+					foreground: 'hsl(var(--primary-foreground))', // Text on primary
+          // Custom ProSalud colors
+          prosalud: '#00529B', // ProSalud Blue
+          'prosalud-light': '#E3F2FD', // Light blue for backgrounds/accents
+          'prosalud-dark': '#003A70',  // Darker ProSalud Blue
 				},
 				secondary: {
-					DEFAULT: 'hsl(var(--secondary))',
-					foreground: 'hsl(var(--secondary-foreground))'
+					DEFAULT: 'hsl(var(--secondary))', // Main secondary color
+					foreground: 'hsl(var(--secondary-foreground))', // Text on secondary
+          // Custom ProSalud colors
+          prosaludgreen: '#4CAF50', // ProSalud Green
+          'prosaludgreen-dark': '#388E3C', // Darker ProSalud Green
 				},
 				destructive: {
 					DEFAULT: 'hsl(var(--destructive))',
@@ -38,21 +48,29 @@ export default {
 				},
 				muted: {
 					DEFAULT: 'hsl(var(--muted))',
-					foreground: 'hsl(var(--muted-foreground))'
+					foreground: 'hsl(var(--muted-foreground))' // Lighter text (e.g., #6c757d)
 				},
 				accent: {
-					DEFAULT: 'hsl(var(--accent))',
-					foreground: 'hsl(var(--accent-foreground))'
+					DEFAULT: 'hsl(var(--accent))', // Main accent color
+					foreground: 'hsl(var(--accent-foreground))', // Text on accent
+          prosaludteal: '#17a2b8', // ProSalud Teal
 				},
 				popover: {
 					DEFAULT: 'hsl(var(--popover))',
 					foreground: 'hsl(var(--popover-foreground))'
 				},
 				card: {
-					DEFAULT: 'hsl(var(--card))',
-					foreground: 'hsl(var(--card-foreground))'
+					DEFAULT: 'hsl(var(--card))', // Card background (e.g., #ffffff)
+					foreground: 'hsl(var(--card-foreground))' // Text in card (e.g., #212529)
 				},
-				sidebar: {
+        // Custom text colors
+        'text-dark': '#333333',
+        'text-light': '#FFFFFF',
+        'text-gray': '#555555',
+        'prosalud-border': '#DDDDDD',
+        'background-light': '#F8F9FA', // Page background
+				// ... keep existing sidebar colors
+        sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
 					primary: 'hsl(var(--sidebar-primary))',
