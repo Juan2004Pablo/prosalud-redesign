@@ -143,7 +143,7 @@ const Header: React.FC = () => {
             <NavigationMenu>
               <NavigationMenuList className="flex space-x-2">
                 {menuItems.map((item) => (
-                  <NavigationMenuItem key={item.name}>
+                  <NavigationMenuItem key={item.name} className="relative">
                     {item.submenu ? (
                       <>
                         <NavigationMenuTrigger className="text-text-gray hover:text-primary-prosalud transition-colors text-sm font-medium">
