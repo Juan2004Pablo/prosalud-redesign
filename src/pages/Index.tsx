@@ -86,9 +86,17 @@ const Index = () => {
       {/* Quick Links Section */}
       <section id="quick-links" className="py-12 md:py-16 bg-background-light">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-semibold text-text-dark text-center mb-10 md:mb-12">
-            Accesos Rápidos a Servicios
-          </h2>
+          <div className="space-y-2 mb-12">
+                <div className="inline-block rounded-lg bg-primary px-3 py-1 text-sm text-primary-foreground">
+                  Autogestión
+                </div>
+                <h2 className="text-3xl font-bold tracking-tighter text-primary-700 sm:text-5xl">
+                  Gestiona tus trámites
+                </h2>
+                <p className="max-w-[900px] text-gray-600 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                  Accede rápidamente a los servicios que necesitas sin complicaciones.
+                </p>
+              </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
             {newServices.map((service, index) => (
               <ServiceCard
@@ -107,21 +115,11 @@ const Index = () => {
       {/* Convenios Section */}
       <section id="convenios" className="py-12 md:py-16 bg-white"> {/* Changed background to white for differentiation */}
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col items-center justify-center space-y-4 text-center mb-5">
-              <div className="space-y-2">
-                <div className="inline-block rounded-lg bg-primary px-3 py-1 text-sm text-primary-foreground">
-                  Autogestión
-                </div>
-                <h2 className="text-3xl font-bold tracking-tighter text-primary-700 sm:text-5xl">
-                  Gestiona tus trámites
-                </h2>
-                <p className="max-w-[900px] text-gray-600 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Accede rápidamente a los servicios que necesitas sin complicaciones.
-                </p>
-              </div>
-            </div>
-          
-          
+          <div className="bg-primary-prosalud text-text-light p-6 rounded-lg shadow-lg mb-10 md:mb-12 text-center">
+            <h2 className="text-3xl md:text-4xl font-semibold">
+              A lo largo de nuestra trayectoria hemos tenido convenios con diferentes entidades en Antioquia
+            </h2>
+          </div>
           <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {conveniosData.map((convenio, index) => (
               <li 
