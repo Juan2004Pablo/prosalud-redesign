@@ -86,7 +86,7 @@ const Index = () => {
       {/* Quick Links Section */}
       <section id="quick-links" className="py-12 md:py-16 bg-background-light">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="space-y-2 mb-12 text-center">
+          <div className="flex items-center space-y-2 mb-12 text-center">
             <div className="inline-block rounded-lg bg-primary px-3 py-1 text-sm text-primary-foreground">
               Autogestión
             </div>
