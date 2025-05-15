@@ -86,17 +86,17 @@ const Index = () => {
       {/* Quick Links Section */}
       <section id="quick-links" className="py-12 md:py-16 bg-background-light">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="space-y-2 mb-12">
-                <div className="inline-block rounded-lg bg-primary px-3 py-1 text-sm text-primary-foreground">
-                  Autogestión
-                </div>
-                <h2 className="text-3xl font-bold tracking-tighter text-primary-700 sm:text-5xl">
-                  Gestiona tus trámites
-                </h2>
-                <p className="max-w-[900px] text-gray-600 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Accede rápidamente a los servicios que necesitas sin complicaciones.
-                </p>
-              </div>
+          <div className="space-y-2 mb-12 text-center">
+            <div className="inline-block rounded-lg bg-primary px-3 py-1 text-sm text-primary-foreground">
+              Autogestión
+            </div>
+            <h2 className="text-3xl font-bold tracking-tighter text-primary-700 sm:text-5xl">
+              Gestiona tus trámites
+            </h2>
+            <p className="max-w-[900px] text-gray-600 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+              Accede rápidamente a los servicios que necesitas sin complicaciones.
+            </p>
+          </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
             {newServices.map((service, index) => (
               <ServiceCard
