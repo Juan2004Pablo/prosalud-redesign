@@ -1,4 +1,3 @@
-
 import React from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import ServiceCard from '@/components/shared/ServiceCard';
@@ -6,26 +5,26 @@ import { Button } from '@/components/ui/button'; // shadcn button
 import { Input } from '@/components/ui/input';   // shadcn input
 import { 
   Search, 
-  FileText, // Kept for now, but will be replaced by Certificate
-  BedDouble, // Kept for now, but will be replaced
+  FileText, 
+  BedDouble, 
   Banknote, 
   ShieldCheck, 
-  HardHat, // Kept for now, but will be replaced
-  Landmark, // Kept for now, but will be replaced
+  HardHat, 
+  Landmark, 
   Image, 
-  Coins, // Kept for now, but will be replaced
-  // New icons based on the list:
+  Coins, 
   Award as Certificate, 
   CalendarCheck,
   DollarSign,
   Hospital,
-  BriefcaseMedical, // Changed Medkit to BriefcaseMedical
+  BriefcaseMedical, 
   Users as Poll, 
   Store,
   Calendar,
   CalendarDays,
   CreditCard,
-  LogOut
+  LogOut,
+  Building2
 } from 'lucide-react';
 
 const newServices = [
@@ -36,7 +35,7 @@ const newServices = [
   { icon: Hospital, title: 'Incapacidad y licencia de maternidad', description: 'Reporta tu incapacidad o licencia de maternidad al sindicato.', linkTo: '/servicios/incapacidad-maternidad' },
   { icon: ShieldCheck, title: 'Certificado de seguridad social', description: 'Genera tu certificado de aportes a la seguridad social.', linkTo: '/servicios/certificado-seguridad-social' },
   { icon: Banknote, title: 'Actualizar cuenta bancaria', description: 'Notifica un cambio en tu cuenta para recibir pagos.', linkTo: '/servicios/actualizar-cuenta' },
-  { icon: BriefcaseMedical, title: 'Seguridad y salud en el trabajo (SST)', description: 'Accede a recursos y reportes relacionados con SST.', linkTo: '/servicios/sst' }, // Changed Medkit to BriefcaseMedical
+  { icon: BriefcaseMedical, title: 'Seguridad y salud en el trabajo (SST)', description: 'Accede a recursos y reportes relacionados con SST.', linkTo: '/servicios/sst' },
   { icon: Image, title: 'Galería de bienestar', description: 'Explora fotos y eventos organizados para tu bienestar.', linkTo: '/servicios/galeria-bienestar' },
   { icon: Poll, title: 'Encuesta de bienestar laboral', description: 'Participa en encuestas para mejorar tu entorno laboral.', linkTo: '/servicios/encuesta-bienestar' },
   { icon: Store, title: 'Servicios de Comfenalco Antioquia', description: 'Conoce los beneficios y convenios con Comfenalco.', linkTo: '/servicios/comfenalco' },
@@ -44,6 +43,16 @@ const newServices = [
   { icon: CalendarDays, title: 'Cuadro de turnos', description: 'Consulta tu calendario de turnos asignados.', linkTo: '/servicios/cuadro-turnos' },
   { icon: CreditCard, title: 'Solicitud de microcrédito', description: 'Aplica a un microcrédito con condiciones especiales para afiliados.', linkTo: '/servicios/microcredito' },
   { icon: LogOut, title: 'Solicitud de retiro sindical', description: 'Inicia el proceso para retirarte del sindicato.', linkTo: '/servicios/retiro-sindical' },
+];
+
+const conveniosData = [
+  { name: "E.S.E. HOSPITAL MARCO FIDEL SUÁREZ - BELLO" },
+  { name: "E.S.E. HOSPITAL SAN JUAN DE DIOS - RIONEGRO" },
+  { name: "PROMOTORA MÉDICA Y ODONTOLÓGICA S.A." },
+  { name: "SOCIEDAD MÉDICA RIONEGRO SOMER S.A." },
+  { name: "E.S.E. HOSPITAL VENANCIO DÍAZ DÍAZ" },
+  { name: "E.S.E. HOSPITAL LA MERCED - CIUDAD BOLÍVAR" },
+  { name: "E.S.E. HOSPITAL SANTA ELENA - FREDONIA" },
 ];
 
 const Index = () => {
@@ -63,7 +72,7 @@ const Index = () => {
               <Input 
                 type="search" 
                 placeholder="¿Qué necesitas encontrar? (ej: certificado, pago, etc.)" 
-                className="flex-grow text-base !text-text-dark" // Ensure text is dark for readability
+                className="flex-grow text-base !text-text-dark"
               />
               <Button type="submit" variant="secondary" size="lg" className="bg-secondary-prosaludgreen hover:bg-secondary-prosaludgreen-dark">
                 <Search size={20} className="mr-2 sm:mr-0 md:mr-2" />
@@ -95,6 +104,29 @@ const Index = () => {
         </div>
       </section>
       
+      {/* Convenios Section */}
+      <section id="convenios" className="py-12 md:py-16 bg-white"> {/* Changed background to white for differentiation */}
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-primary-prosalud text-text-light p-6 rounded-lg shadow-lg mb-10 md:mb-12 text-center">
+            <h2 className="text-3xl md:text-4xl font-semibold">
+              A lo largo de nuestra trayectoria hemos tenido convenios con diferentes entidades en Antioquia
+            </h2>
+          </div>
+          <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            {conveniosData.map((convenio, index) => (
+              <li 
+                key={index} 
+                className="bg-card p-6 rounded-lg shadow-md border border-prosalud-border hover:shadow-xl hover:border-primary-prosalud transition-all duration-300 flex items-center animate-fade-in"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                <Building2 className="h-10 w-10 text-primary-prosalud mr-4 shrink-0" />
+                <p className="text-md font-medium text-text-dark">{convenio.name}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
       {/* You can add more sections here, e.g., News, Events, etc. */}
 
     </MainLayout>
