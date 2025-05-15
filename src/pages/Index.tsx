@@ -1,4 +1,3 @@
-
 import React from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import ServiceCard from '@/components/shared/ServiceCard';
@@ -60,7 +59,6 @@ const Index = () => {
                 description={service.description}
                 linkTo={service.linkTo}
                 className="animate-scale-in"
-                style={{ animationDelay: `${index * 100}ms` }}
               />
             ))}
           </div>
@@ -74,4 +72,3 @@ const Index = () => {
 };
 
 export default Index;
-

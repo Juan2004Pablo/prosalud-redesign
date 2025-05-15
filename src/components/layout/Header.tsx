@@ -1,7 +1,6 @@
-
 import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { Menu, X, Search, Briefcase, Home, Users, FileText, FolderArchive, Shield } from 'lucide-react'; // Added more icons for nav
+import { Menu, X, Search, Briefcase, Home, Users, FileText, FolderArchive, Shield } from 'lucide-react';
 
 const navItems = [
   { name: 'Inicio', path: '/', icon: Home },
@@ -24,10 +23,7 @@ const Header: React.FC = () => {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center">
-            {/* Placeholder for graphical logo, using text for now */}
-            {/* <img src="/path-to-your-logo.svg" alt="ProSalud Logo" className="h-10 w-auto" /> */}
-            <span className="text-3xl font-bold text-primary-prosalud">ProSalud</span>
-            <span className="ml-2 text-xs text-text-gray uppercase tracking-wider font-semibold">Sindicato de <br/>Profesionales de la Salud</span>
+            <img src="/lovable-uploads/2bf2da56-4967-4a17-8849-9efab8759375.png" alt="ProSalud Logo" className="h-12 w-auto" />
           </Link>
 
           {/* Desktop Navigation */}
