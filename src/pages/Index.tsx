@@ -1,19 +1,49 @@
+
 import React from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import ServiceCard from '@/components/shared/ServiceCard';
 import { Button } from '@/components/ui/button'; // shadcn button
 import { Input } from '@/components/ui/input';   // shadcn input
-import { Search, FileText, BedDouble, Banknote, ShieldCheck, HardHat, Landmark, Image, Coins } from 'lucide-react';
+import { 
+  Search, 
+  FileText, // Kept for now, but will be replaced by Certificate
+  BedDouble, // Kept for now, but will be replaced
+  Banknote, 
+  ShieldCheck, 
+  HardHat, // Kept for now, but will be replaced
+  Landmark, // Kept for now, but will be replaced
+  Image, 
+  Coins, // Kept for now, but will be replaced
+  // New icons based on the list:
+  Award as Certificate, // Using Award as Certificate as 'Certificate' icon might not exist or has a different name. If Award is not suitable, will find a better match. Let's use Award as it is available.
+  CalendarCheck,
+  DollarSign,
+  Hospital,
+  Medkit,
+  Users as Poll, // Using Users for 'Encuesta' as 'Poll' might not be available or suitable.
+  Store,
+  Calendar,
+  CalendarDays,
+  CreditCard,
+  LogOut
+} from 'lucide-react';
 
-const services = [
-  { icon: FileText, title: 'Solicita tu certificado', description: 'Genera certificados de convenio sindical y otros.', linkTo: '/servicios/certificado' },
-  { icon: BedDouble, title: 'Solicita tu descanso', description: 'Gestiona tus solicitudes de periodos de descanso.', linkTo: '/servicios/descanso' },
-  { icon: Banknote, title: 'Verifica tu pago', description: 'Consulta el estado y detalles de tus pagos.', linkTo: '/servicios/pagos' },
-  { icon: ShieldCheck, title: 'Seguridad Social', description: 'Información y trámites de seguridad social.', linkTo: '/servicios/seguridad-social' },
-  { icon: HardHat, title: 'S.S.T.', description: 'Accede a recursos de Seguridad y Salud en el Trabajo.', linkTo: '/servicios/sst' },
-  { icon: Landmark, title: 'Notificar cambio de cuenta', description: 'Actualiza tu información bancaria para pagos.', linkTo: '/servicios/cuenta-bancaria' },
-  { icon: Image, title: 'Galería Bienestar', description: 'Explora momentos y actividades de bienestar.', linkTo: '/servicios/galeria-bienestar' },
-  { icon: Coins, title: 'Solicita tu Micro crédito', description: 'Información y solicitud de microcréditos.', linkTo: '/servicios/microcredito' },
+const newServices = [
+  { icon: Certificate, title: 'Certificado de convenio sindical', description: 'Descarga tu constancia de afiliación al convenio sindical.', linkTo: '/servicios/certificado-convenio' },
+  { icon: CalendarCheck, title: 'Solicitud de descanso laboral', description: 'Solicita días de descanso según tus derechos laborales.', linkTo: '/servicios/descanso-laboral' },
+  { icon: DollarSign, title: 'Compensación anual diferida', description: 'Gestiona el pago correspondiente a tu compensación anual.', linkTo: '/servicios/compensacion-anual' },
+  { icon: Search, title: 'Consulta de pagos', description: 'Verifica los pagos realizados por concepto laboral o sindical.', linkTo: '/servicios/consulta-pagos' }, // Using existing Search icon
+  { icon: Hospital, title: 'Incapacidad y licencia de maternidad', description: 'Reporta tu incapacidad o licencia de maternidad al sindicato.', linkTo: '/servicios/incapacidad-maternidad' },
+  { icon: ShieldCheck, title: 'Certificado de seguridad social', description: 'Genera tu certificado de aportes a la seguridad social.', linkTo: '/servicios/certificado-seguridad-social' },
+  { icon: Banknote, title: 'Actualizar cuenta bancaria', description: 'Notifica un cambio en tu cuenta para recibir pagos.', linkTo: '/servicios/actualizar-cuenta' },
+  { icon: Medkit, title: 'Seguridad y salud en el trabajo (SST)', description: 'Accede a recursos y reportes relacionados con SST.', linkTo: '/servicios/sst' },
+  { icon: Image, title: 'Galería de bienestar', description: 'Explora fotos y eventos organizados para tu bienestar.', linkTo: '/servicios/galeria-bienestar' },
+  { icon: Poll, title: 'Encuesta de bienestar laboral', description: 'Participa en encuestas para mejorar tu entorno laboral.', linkTo: '/servicios/encuesta-bienestar' },
+  { icon: Store, title: 'Servicios de Comfenalco Antioquia', description: 'Conoce los beneficios y convenios con Comfenalco.', linkTo: '/servicios/comfenalco' },
+  { icon: Calendar, title: 'Permisos y cambio de turnos', description: 'Solicita permisos laborales o ajustes en tus turnos.', linkTo: '/servicios/permisos-turnos' },
+  { icon: CalendarDays, title: 'Cuadro de turnos', description: 'Consulta tu calendario de turnos asignados.', linkTo: '/servicios/cuadro-turnos' },
+  { icon: CreditCard, title: 'Solicitud de microcrédito', description: 'Aplica a un microcrédito con condiciones especiales para afiliados.', linkTo: '/servicios/microcredito' },
+  { icon: LogOut, title: 'Solicitud de retiro sindical', description: 'Inicia el proceso para retirarte del sindicato.', linkTo: '/servicios/retiro-sindical' },
 ];
 
 const Index = () => {
@@ -51,7 +81,7 @@ const Index = () => {
             Accesos Rápidos a Servicios
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
-            {services.map((service, index) => (
+            {newServices.map((service, index) => (
               <ServiceCard
                 key={index}
                 icon={service.icon}
