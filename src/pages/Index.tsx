@@ -107,7 +107,7 @@ const Index = () => {
       {/* Convenios Section */}
       <section id="convenios" className="py-12 md:py-16 bg-white"> {/* Changed background to white for differentiation */}
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col items-center justify-center space-y-4 text-center mb-5">
+          <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
               <div className="space-y-2">
                 <div className="inline-block rounded-lg bg-primary px-3 py-1 text-sm text-primary-foreground">
                   Autogestión
