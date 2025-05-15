@@ -93,7 +93,7 @@ const Index = () => {
             <h2 className="text-3xl font-bold tracking-tighter text-primary-700 sm:text-5xl">
               Gestiona tus trámites
             </h2>
-            <p className="max-w-[900px] text-gray-600 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+            <p className="max-w-[900px] text-center text-gray-600 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
               Accede rápidamente a los servicios que necesitas sin complicaciones.
             </p>
           </div>
