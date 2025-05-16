@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { Menu, X, Briefcase, Home, Users, FileText, FolderArchive, Shield, ChevronDown, LucideIcon } from 'lucide-react';
@@ -140,8 +139,7 @@ const mobileNavItems = menuItems.map(item => {
 
 const Header: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [openMenu, setOpenMenu] = useState<string | undefined>(undefined);
-
+  
   const activeLinkClass = "text-primary-prosalud font-bold border-b-2 border-secondary-prosaludgreen";
   const inactiveLinkClass = "text-text-gray hover:text-primary-prosalud transition-colors";
   
@@ -197,45 +195,48 @@ const Header: React.FC = () => {
 
           {/* Desktop Navigation with dropdowns */}
           <div className="hidden md:block">
-            <NavigationMenu value={openMenu} onValueChange={setOpenMenu}>
+            {/* Remove the value and onValueChange props as they're causing the double-trigger issue */}
+            <NavigationMenu>
               <NavigationMenuList className="flex space-x-2">
                 {menuItems.map((item) => (
                   <NavigationMenuItem key={item.name} className="relative">
                     {item.submenu ? (
                       <>
-                        <NavigationMenuTrigger value={item.name} className="text-gray-600 hover:text-primary-prosalud transition-colors text-sm py-1 px-2 font-normal bg-transparent hover:bg-transparent focus:bg-transparent data-[state=open]:bg-transparent">
+                        {/* Remove value prop from NavigationMenuTrigger */}
+                        <NavigationMenuTrigger className="text-gray-600 hover:text-primary-prosalud transition-colors text-sm py-1 px-2 font-normal bg-transparent hover:bg-transparent focus:bg-transparent data-[state=open]:bg-transparent">
                           <span className="flex items-center gap-1">
                             {item.name}
                           </span>
                         </NavigationMenuTrigger>
-                        <NavigationMenuContent value={item.name}>
-                            <ul
-                              className={cn(
-                                "grid gap-3 p-4",
-                                hasSingleColumn(item.submenu)
-                                  ? "w-[300px]"
-                                  : hasMultipleSections(item.submenu)
-                                  ? "w-[400px] md:w-[500px] lg:w-[600px] lg:grid-cols-2"
-                                  : "w-[400px] md:w-[500px] lg:w-[600px] lg:grid-cols-[minmax(150px,_.75fr)_1fr]",
-                          
-                                "max-h-[75vh] overflow-y-auto"
-                              )}
-                            >
+                        {/* Remove value prop from NavigationMenuContent */}
+                        <NavigationMenuContent>
+                          <ul
+                            className={cn(
+                              "grid gap-3 p-4",
+                              hasSingleColumn(item.submenu)
+                                ? "w-[300px]"
+                                : hasMultipleSections(item.submenu)
+                                ? "w-[400px] md:w-[500px] lg:w-[600px] lg:grid-cols-2"
+                                : "w-[400px] md:w-[500px] lg:w-[600px] lg:grid-cols-[minmax(150px,_.75fr)_1fr]",
+                        
+                              "max-h-[75vh] overflow-y-auto"
+                            )}
+                          >
                             {item.submenu.map((subItem) => (
                               <li key={subItem.name} className="break-inside-avoid">
                                 {subItem.submenu ? (
                                   <div className="mb-2">
                                     <h4 className="font-medium mb-1 text-sm text-primary-prosalud px-3 py-1">{subItem.name}</h4>
                                     <ul className="grid gap-1">
-                                      {subItem.submenu.map((subSubItem) => (
+                                      {subItem.submenu.map((nestedSubItem) => (
                                         <ListItem
-                                          key={subSubItem.name}
-                                          title={subSubItem.name}
-                                          href={subSubItem.external ? subSubItem.url : subSubItem.path}
-                                          target={subSubItem.external ? "_blank" : undefined}
-                                          rel={subSubItem.external ? "noopener noreferrer" : undefined}
+                                          key={nestedSubItem.name}
+                                          title={nestedSubItem.name}
+                                          href={nestedSubItem.external ? nestedSubItem.url : nestedSubItem.path}
+                                          target={nestedSubItem.external ? "_blank" : undefined}
+                                          rel={nestedSubItem.external ? "noopener noreferrer" : undefined}
                                         >
-                                          {/* Optional: Add description for subSubItem if available */}
+                                          {/* Optional: Add description for nestedSubItem if available */}
                                         </ListItem>
                                       ))}
                                     </ul>
