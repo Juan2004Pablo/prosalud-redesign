@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -6,7 +5,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-import MainLayout from "./components/layout/MainLayout"; // Import MainLayout
+import MainLayout from "./components/layout/MainLayout";
+import QuienesSomos from "./pages/QuienesSomos"; // Import the new page
 
 const queryClient = new QueryClient();
 
@@ -30,7 +30,10 @@ const App = () => (
           <Route path="/" element={<Index />} />
           {/* Adding placeholder routes for nav items */}
           <Route path="/prosalud" element={<PlaceholderPage title="ProSalud" />} />
-          <Route path="/nosotros/quienes-somos" element={<PlaceholderPage title="¿Quiénes somos?" />} />
+          
+          {/* Updated route for ¿Quiénes somos? */}
+          <Route path="/nosotros/quienes-somos" element={<QuienesSomos />} /> 
+          
           <Route path="/nosotros/estructura-organizacional" element={<PlaceholderPage title="Estructura organizacional" />} />
           <Route path="/nosotros/estatutos" element={<PlaceholderPage title="Estatutos" />} />
           <Route path="/nosotros/rol-economico" element={<PlaceholderPage title="Rol económico" />} />
@@ -58,7 +61,6 @@ const App = () => (
           <Route path="/recursos/acceso-prosanet" element={<PlaceholderPage title="Acceso a ProSanet" />} />
           <Route path="/recursos/bienestar" element={<PlaceholderPage title="Bienestar" />} />
 
-          {/* Placeholder routes for existing nav items that might have been missed or for clarity */}
           <Route path="/convenios" element={<PlaceholderPage title="Convenios" />} />
           <Route path="/sgsst" element={<PlaceholderPage title="S.G.S.S.T." />} /> {/* This might be same as /servicios/sst */}
           <Route path="/documentos" element={<PlaceholderPage title="Documentos Públicos Generales" />} />

@@ -1,7 +1,6 @@
-
 import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { Menu, X, Search, Briefcase, Home, Users, FileText, FolderArchive, Shield, ChevronDown } from 'lucide-react';
+import { Menu, X, Briefcase, Home, Users, FileText, FolderArchive, Shield, ChevronDown, LucideIcon } from 'lucide-react';
 import { cn } from "@/lib/utils";
 import {
   NavigationMenu,
@@ -12,89 +11,125 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 
+// Define types for menu items
+interface MenuSubItem {
+  name: string;
+  path: string;
+  external?: boolean;
+  url?: string;
+  submenu?: MenuSubItem[];
+}
+
+interface BaseMenuItem {
+  name: string;
+  icon: LucideIcon; // Changed from React.ElementType to LucideIcon for specificity
+}
+
+interface TopLevelMenuItemWithSubmenu extends BaseMenuItem {
+  submenu: MenuSubItem[];
+  path?: undefined; // Explicitly no path if submenu exists for top level
+}
+
+interface TopLevelMenuItemDirectLink extends BaseMenuItem {
+  path: string;
+  submenu?: undefined; // Explicitly no submenu if direct link
+}
+
+type MenuItemType = TopLevelMenuItemWithSubmenu | TopLevelMenuItemDirectLink;
+
 // Define menu structure for dropdown navigation
-const menuItems = [
-  { 
-    name: 'Nosotros', 
+const menuItems: MenuItemType[] = [
+  {
+    name: 'Nosotros',
     icon: Users,
     submenu: [
-      { name: '¿Quienes somos?', path: '/nosotros/quienes-somos' },
-      { name: 'Estructura organizacional', path: '/nosotros/estructura' },
+      { name: '¿Quiénes somos?', path: '/nosotros/quienes-somos' },
+      { name: 'Estructura organizacional', path: '/nosotros/estructura-organizacional' },
       { name: 'Estatutos', path: '/nosotros/estatutos' },
       { name: 'Rol económico', path: '/nosotros/rol-economico' },
-      { name: 'Compensaciones y beneficios', path: '/nosotros/compensaciones' },
+      { name: 'Compensaciones y beneficios', path: '/nosotros/compensaciones-beneficios' },
       { name: 'Contrato sindical', path: '/nosotros/contrato-sindical' },
     ]
   },
-  { 
-    name: 'Salud y seguridad laboral', 
+  {
+    name: 'Salud y seguridad laboral',
     icon: Shield,
     submenu: [
-      { 
-        name: 'Campañas', 
-        path: '/salud/campanas',
+      {
+        name: 'Campañas',
         submenu: [
-          { name: 'Estilo de Vida y Trabajo Saludable', path: '/salud/campanas/estilo-vida-saludable' },
+          { name: 'Estilo de Vida y Trabajo Saludable', path: '/salud-seguridad-laboral/campanas/estilo-vida-trabajo-saludable' },
         ]
       },
     ]
   },
-  { 
-    name: 'Documentos y formatos', 
+  {
+    name: 'Documentos y formatos',
     icon: FileText,
     submenu: [
-      { 
-        name: 'Documentos públicos', 
-        path: '/documentos/publicos',
+      {
+        name: 'Documentos públicos',
         submenu: [
-          { name: 'Formatos de dotación', path: '/documentos/publicos/formatos-dotacion' },
-          { name: 'Listados de asistencia', path: '/documentos/publicos/listados-asistencia' },
-          { name: 'MIPRES', path: '/documentos/publicos/mipres' },
-          { name: 'Requerimiento y verificación de pagos', path: '/documentos/publicos/verificacion-pagos' },
-          { name: 'Retefuente: documentos Requeridos', path: '/documentos/publicos/retefuente' },
+          { name: 'Formatos de dotación', path: '/documentos-formatos/documentos-publicos/formatos-dotacion' },
+          { name: 'Listados de asistencia', path: '/documentos-formatos/documentos-publicos/listados-asistencia' },
+          { name: 'MIPRES', path: '/documentos-formatos/documentos-publicos/mipres' },
+          { name: 'Requerimiento y verificación de pagos', path: '/documentos-formatos/documentos-publicos/requerimiento-verificacion-pagos' },
+          { name: 'Retefuente: documentos Requeridos', path: '/documentos-formatos/documentos-publicos/retefuente-documentos-requeridos' },
         ]
       },
-      { 
-        name: 'Solicitudes de afiliados', 
-        path: '/documentos/solicitudes',
+      {
+        name: 'Solicitudes de afiliados',
         submenu: [
-          { name: 'Verificación de pagos', path: '/documentos/solicitudes/verificacion-pagos' },
-          { name: 'Certificado de Convenio', path: '/documentos/solicitudes/certificado-convenio' },
-          { name: 'Descanso', path: '/documentos/solicitudes/descanso' },
-          { name: 'Solicitud anual diferida', path: '/documentos/solicitudes/solicitud-anual' },
+          { name: 'Verificación de pagos', path: '/documentos-formatos/solicitudes-afiliados/verificacion-pagos' },
+          { name: 'Certificado de Convenio', path: '/documentos-formatos/solicitudes-afiliados/certificado-convenio' },
+          { name: 'Descanso', path: '/documentos-formatos/solicitudes-afiliados/descanso' },
+          { name: 'Solicitud anual diferida', path: '/documentos-formatos/solicitudes-afiliados/solicitud-anual-diferida' },
         ]
       },
     ]
   },
-  { 
-    name: 'Archivo Digital', 
+  {
+    name: 'Archivo Digital',
     icon: FolderArchive,
     submenu: [
-      { name: 'Artículos de interés', path: '/archivo/articulos' },
+      { name: 'Artículos de interés', path: '/archivo-digital/articulos-interes' },
     ]
   },
-  { 
-    name: 'Recursos', 
+  {
+    name: 'Recursos',
     icon: Briefcase,
     submenu: [
-      { name: 'Video ProSanet (YouTube)', path: '/recursos/video-prosanet', external: true, url: 'https://youtube.com' },
+      { name: 'Video ProSanet (YouTube)', path: 'https://www.youtube.com', external: true, url: 'https://www.youtube.com' },
       { name: 'Acceso a ProSanet', path: '/recursos/acceso-prosanet' },
       { name: 'Bienestar', path: '/recursos/bienestar' },
     ]
   },
 ];
 
-// Simplified nav items for mobile view - Fixed to handle items with submenu properly
-const mobileNavItems = menuItems.map(item => ({
-  name: item.name,
-  path: item.submenu && item.submenu.length > 0 ? item.submenu[0].path : '/',
-  icon: item.icon
-}));
+// Simplified nav items for mobile view - Adjusted to pick first sensible path
+const mobileNavItems = menuItems.map(item => {
+  let path = '/';
+  if (item.submenu && item.submenu.length > 0) {
+    const firstSubItem = item.submenu[0];
+    if (firstSubItem.path) {
+      path = firstSubItem.path;
+    } else if (firstSubItem.submenu && firstSubItem.submenu.length > 0 && firstSubItem.submenu[0].path) {
+      path = firstSubItem.submenu[0].path;
+    }
+  } else if (item.path) {
+    path = item.path;
+  }
+  return {
+    name: item.name,
+    path: path,
+    icon: item.icon
+  };
+});
 
 const Header: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const activeLinkClass = "text-red-500 font-bold border-b-2 border-secondary-prosaludgreen";
+  const activeLinkClass = "text-primary-prosalud font-bold border-b-2 border-secondary-prosaludgreen";
   const inactiveLinkClass = "text-text-gray hover:text-primary-prosalud transition-colors";
   
   // Custom component for NavigationMenuLink
@@ -147,7 +182,7 @@ const Header: React.FC = () => {
                           </span>
                         </NavigationMenuTrigger>
                         <NavigationMenuContent>
-                          <ul className="grid w-[400px] gap-3 p-4">
+                          <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] lg:w-[600px] lg:grid-cols-[.75fr_1fr]">
                             {item.submenu.map((subItem) => (
                               <li key={subItem.name}>
                                 {subItem.submenu ? (
@@ -155,34 +190,36 @@ const Header: React.FC = () => {
                                     <h4 className="font-medium mb-1 text-sm text-primary-prosalud">{subItem.name}</h4>
                                     <ul className="grid gap-1 pl-2">
                                       {subItem.submenu.map((subSubItem) => (
-                                        <li key={subSubItem.name}>
-                                          <Link
-                                            to={subSubItem.path}
-                                            className="text-sm text-text-gray hover:text-primary-prosalud block p-2 rounded hover:bg-gray-50"
-                                          >
-                                            {subSubItem.name}
-                                          </Link>
-                                        </li>
+                                        <ListItem
+                                          key={subSubItem.name}
+                                          title={subSubItem.name}
+                                          href={subSubItem.path}
+                                        >
+                                          {/* Optional: Add description for subSubItem if available */}
+                                        </ListItem>
                                       ))}
                                     </ul>
                                   </div>
                                 ) : (
-                                  <Link
-                                    to={subItem.path}
-                                    className="text-sm text-text-gray hover:text-primary-prosalud block p-2 rounded hover:bg-gray-50"
+                                  <ListItem
+                                    key={subItem.name}
+                                    title={subItem.name}
+                                    href={subItem.external ? subItem.url : subItem.path}
+                                    target={subItem.external ? "_blank" : undefined}
+                                    rel={subItem.external ? "noopener noreferrer" : undefined}
                                   >
-                                    {subItem.name}
-                                  </Link>
+                                     {/* Optional: Add description for subItem if available */}
+                                  </ListItem>
                                 )}
                               </li>
                             ))}
                           </ul>
                         </NavigationMenuContent>
                       </>
-                    ) : (
+                    ) : ( // This case is for top-level items that are direct links (no submenu)
                       <Link
-                        to={item.path || '/'}
-                        className={`text-sm font-medium py-2 block ${inactiveLinkClass}`}
+                        to={item.path} // item.path is guaranteed by MenuItemType if no submenu
+                        className={`text-sm font-medium py-2 px-3 block ${inactiveLinkClass} hover:bg-gray-50 rounded-md`}
                       >
                         {item.name}
                       </Link>
