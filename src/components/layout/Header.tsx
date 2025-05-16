@@ -193,11 +193,6 @@ const Header: React.FC = () => {
             </NavigationMenu>
           </div>
 
-          {/* Search button */}
-          <button aria-label="Buscar" className="hidden md:flex text-text-gray hover:text-primary-prosalud">
-            <Search size={20} />
-          </button>
-
           {/* Mobile Menu Button */}
           <div className="md:hidden">
             <button
@@ -226,10 +221,6 @@ const Header: React.FC = () => {
                 <span>{item.name}</span>
               </NavLink>
             ))}
-            <div className="flex items-center space-x-2 px-3 py-2 text-text-gray hover:text-primary-prosalud cursor-pointer">
-              <Search size={20} />
-              <span>Buscar</span>
-            </div>
           </nav>
         </div>
       )}
