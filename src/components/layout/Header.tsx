@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { Menu, X, Briefcase, Home, Users, FileText, FolderArchive, Shield, ChevronDown, LucideIcon } from 'lucide-react';
@@ -245,16 +246,16 @@ const Header: React.FC = () => {
                                       <div className="mb-2">
                                         <h4 className="font-medium mb-1 text-sm text-primary-prosalud px-3 py-1">{subItem.name}</h4>
                                         <ul className="grid gap-1">
-                                          {subItem.submenu.map((subSubItem) => (
+                                          {subItem.submenu.map((nestedSubItem) => (
                                             <ListItem
-                                              key={subSubItem.name}
-                                              title={subSubItem.name}
-                                              href={subSubItem.external ? subSubItem.url : subSubItem.path}
-                                              target={subSubItem.external ? "_blank" : undefined}
-                                              rel={subSubItem.external ? "noopener noreferrer" : undefined}
+                                              key={nestedSubItem.name}
+                                              title={nestedSubItem.name}
+                                              href={nestedSubItem.external ? nestedSubItem.url : nestedSubItem.path}
+                                              target={nestedSubItem.external ? "_blank" : undefined}
+                                              rel={nestedSubItem.external ? "noopener noreferrer" : undefined}
                                               onClick={() => setOpenMenuIndex(null)}
                                             >
-                                              {/* Optional: Add description for subSubItem if available */}
+                                              {/* Optional: Add description for nestedSubItem if available */}
                                             </ListItem>
                                           ))}
                                         </ul>
@@ -263,9 +264,9 @@ const Header: React.FC = () => {
                                       <ListItem
                                         key={subItem.name}
                                         title={subItem.name}
-                                        href={subItem.external ? subSubItem.url : subSubItem.path}
-                                        target={subSubItem.external ? "_blank" : undefined}
-                                        rel={subSubItem.external ? "noopener noreferrer" : undefined}
+                                        href={subItem.external ? subItem.url : subItem.path}
+                                        target={subItem.external ? "_blank" : undefined}
+                                        rel={subItem.external ? "noopener noreferrer" : undefined}
                                         onClick={() => setOpenMenuIndex(null)}
                                       >
                                         {/* Optional: Add description for subItem if available */}
