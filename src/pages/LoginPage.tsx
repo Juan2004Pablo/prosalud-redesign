@@ -18,7 +18,7 @@ const LoginPage: React.FC = () => {
       </div>
 
       {/* Columna Derecha: Formulario de Login */}
-      <div className="w-full md:w-2/5 flex flex-col items-center justify-center p-6 sm:p-10 lg:p-12 order-2 md:order-none"> {/* Cambiado md:w-1/2 a md:w-2/5 */}
+      <div className="w-full md:w-2/5 flex flex-col items-center justify-center p-6 sm:p-10 lg:p-12 order-2 md:order-none bg-white"> {/* Cambiado md:w-1/2 a md:w-2/5 */}
         <div className="w-full max-w-md space-y-8">
           {/* Logo */}
           <div className="flex justify-center">
