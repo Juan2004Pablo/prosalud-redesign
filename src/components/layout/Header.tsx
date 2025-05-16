@@ -13,9 +13,9 @@ const Header: React.FC = () => {
   const inactiveLinkClass = "text-text-gray hover:text-primary-prosalud transition-colors";
   
   return (
-    <header className="bg-white shadow-md sticky top-0 z-50">
+    <header className="bg-white fixed shadow-md sticky top-0 z-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex justify-between h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center">
             <img src="/lovable-uploads/2bf2da56-4967-4a17-8849-9efab8759375.png" alt="ProSalud Logo" className="h-12 w-auto" />
@@ -26,8 +26,9 @@ const Header: React.FC = () => {
             <div className="hidden md:block">
               <DesktopMenu inactiveLinkClass={inactiveLinkClass} />
             </div>
+          </div>
 
-            {/* Login Button */}
+          {/* Login Button */}
             <Link to="/login">
               <Button 
                 variant="outline" 
@@ -48,7 +49,6 @@ const Header: React.FC = () => {
                 {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
               </button>
             </div>
-          </div>
         </div>
       </div>
 
