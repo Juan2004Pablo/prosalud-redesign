@@ -74,7 +74,7 @@ const QuienesSomos: React.FC = () => {
       <section className="w-full bg-white pt-8 pb-4 md:pt-12 md:pb-6">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <img 
-            src="/lovable-uploads/1861697e-7f6c-4516-a8ac-9ef27372a070.png" 
+            src="/Prosalud_Banner.png" 
             alt="Banner ProSalud ¿Quiénes somos?" 
             className="w-full h-auto object-contain rounded-xl shadow-lg" 
           />
