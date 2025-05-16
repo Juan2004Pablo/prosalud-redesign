@@ -59,24 +59,24 @@ const Index = () => {
   return (
     <MainLayout>
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-primary-prosalud to-primary-prosalud-dark text-text-light py-16 md:py-24">
+      <section className="bg-gradient-to-br from-primary-prosalud via-primary-prosalud-dark to-slate-900 text-text-light py-20 md:py-32 lg:py-40">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 animate-fade-in">
-            Bienvenido al Portal de Autogestión ProSalud
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 animate-fade-in">
+            ProSalud: Empoderando Tu Bienestar Laboral
           </h1>
-          <p className="text-lg md:text-xl mb-8 max-w-2xl mx-auto animate-fade-in animation-delay-200">
-            Tu espacio para gestionar servicios, trámites y beneficios de forma rápida y sencilla.
+          <p className="text-lg md:text-xl lg:text-2xl mb-10 max-w-3xl mx-auto animate-fade-in animation-delay-200">
+            Tu portal de autogestión para acceder a servicios, trámites y beneficios de manera ágil y segura. Simplificamos tu día a día.
           </p>
           <div className="max-w-xl mx-auto animate-fade-in animation-delay-400">
-            <form className="flex gap-2">
+            <form className="flex flex-col sm:flex-row gap-3">
               <Input 
                 type="search" 
-                placeholder="¿Qué necesitas encontrar? (ej: certificado, pago, etc.)" 
-                className="flex-grow text-base !text-text-dark"
+                placeholder="Busca servicios, certificados, trámites..." 
+                className="flex-grow text-base !text-text-dark py-3 px-4" // Adjusted padding for consistency
               />
-              <Button type="submit" variant="secondary" size="lg" className="bg-secondary-prosaludgreen hover:bg-secondary-prosaludgreen-dark">
-                <Search size={20} className="mr-2 sm:mr-0 md:mr-2" />
-                <span className="hidden sm:inline">Buscar</span>
+              <Button type="submit" variant="secondary" size="lg" className="bg-secondary-prosaludgreen hover:bg-secondary-prosaludgreen-dark py-3 px-6"> {/* Adjusted padding for consistency */}
+                <Search size={20} className="mr-2" />
+                <span>Buscar</span>
               </Button>
             </form>
           </div>
