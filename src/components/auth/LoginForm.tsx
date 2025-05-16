@@ -110,7 +110,7 @@ const LoginForm: React.FC = () => {
         </form>
       </Form>
       <p className="mt-8 text-xs text-muted-foreground text-center">
-        Al iniciar sesión, aceptas nuestra{" "}
+        Al continuar acepto la{" "}
         <Link to="/privacidad" className="underline hover:text-primary-prosalud">
           Política de Privacidad
         </Link>{" "}
