@@ -140,6 +140,7 @@ const mobileNavItems = menuItems.map(item => {
 
 const Header: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [openMenu, setOpenMenu] = useState<string | undefined>(undefined);
 
   const activeLinkClass = "text-primary-prosalud font-bold border-b-2 border-secondary-prosaludgreen";
   const inactiveLinkClass = "text-text-gray hover:text-primary-prosalud transition-colors";
@@ -196,18 +197,18 @@ const Header: React.FC = () => {
 
           {/* Desktop Navigation with dropdowns */}
           <div className="hidden md:block">
-            <NavigationMenu>
+            <NavigationMenu value={openMenu} onValueChange={setOpenMenu}>
               <NavigationMenuList className="flex space-x-2">
                 {menuItems.map((item) => (
                   <NavigationMenuItem key={item.name} className="relative">
                     {item.submenu ? (
                       <>
-                        <NavigationMenuTrigger className="text-gray-600 hover:text-primary-prosalud transition-colors text-sm py-1 px-2 font-normal bg-transparent hover:bg-transparent focus:bg-transparent data-[state=open]:bg-transparent">
+                        <NavigationMenuTrigger value={item.name} className="text-gray-600 hover:text-primary-prosalud transition-colors text-sm py-1 px-2 font-normal bg-transparent hover:bg-transparent focus:bg-transparent data-[state=open]:bg-transparent">
                           <span className="flex items-center gap-1">
                             {item.name}
                           </span>
                         </NavigationMenuTrigger>
-                        <NavigationMenuContent>
+                        <NavigationMenuContent value={item.name}>
                             <ul
                               className={cn(
                                 "grid gap-3 p-4",

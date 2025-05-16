@@ -4,7 +4,7 @@ import { cva } from "class-variance-authority";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-// NavigationMenu Root
+// NavigationMenu Root (controlled to persist open state)
 export const NavigationMenu = React.forwardRef<
   React.ElementRef<typeof NavigationMenuPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Root>
@@ -50,9 +50,10 @@ const navigationMenuTriggerStyle = cva(
 export const NavigationMenuTrigger = React.forwardRef<
   React.ElementRef<typeof NavigationMenuPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Trigger>
->(({ className, children, ...props }, ref) => (
+>(({ className, children, value, ...props }, ref) => (
   <NavigationMenuPrimitive.Trigger
     ref={ref}
+    value={value}
     className={cn(navigationMenuTriggerStyle(), "group", className)}
     {...props}
   >
@@ -65,7 +66,7 @@ export const NavigationMenuTrigger = React.forwardRef<
 ));
 NavigationMenuTrigger.displayName = NavigationMenuPrimitive.Trigger.displayName;
 
-// Dropdown content positioned as popover
+// Dropdown content positioned as popover with white background
 export const NavigationMenuContent = React.forwardRef<
   React.ElementRef<typeof NavigationMenuPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Content>
@@ -73,11 +74,13 @@ export const NavigationMenuContent = React.forwardRef<
   <NavigationMenuPrimitive.Content
     ref={ref}
     className={cn(
-      // Posicionar debajo del trigger y centrar
+      // Popover position
       "absolute top-full left-1/2 -translate-x-1/2",
-      // Limitar ancho y ocultar overflow horizontal
+      // Background, border, rounded
+      "bg-white border rounded-md shadow-lg",
+      // Limit width and prevent horizontal overflow
       "max-w-[calc(100vw-2rem)] overflow-x-hidden",
-      // Animaciones radix
+      // Standard radix animations
       "data-[motion^=from-]:animate-in data-[motion^=to-]:animate-out \
        data-[motion^=from-]:fade-in data-[motion^=to-]:fade-out \
        data-[motion=from-end]:slide-in-from-right-52 data-[motion=from-start]:slide-in-from-left-52 \
@@ -92,7 +95,7 @@ NavigationMenuContent.displayName = NavigationMenuPrimitive.Content.displayName;
 // Simple link wrapper
 export const NavigationMenuLink = NavigationMenuPrimitive.Link;
 
-// Optional indicator (triángulo)
+// Optional indicator (triangle)
 export const NavigationMenuIndicator = React.forwardRef<
   React.ElementRef<typeof NavigationMenuPrimitive.Indicator>,
   React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Indicator>
