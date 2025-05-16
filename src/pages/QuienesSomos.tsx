@@ -56,7 +56,7 @@ const QuienesSomos: React.FC = () => {
       </section>
 
       {/* Descripción de ProSalud Section */}
-      <section id="descripcion-prosalud" className="py-16 md:py-24 bg-background-light">
+      <section id="descripcion-prosalud" className="py-16 md:py-24 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16 animate-fade-in">
             <h2 className="text-4xl md:text-5xl font-bold text-primary-prosalud mb-4 tracking-tight">
@@ -66,14 +66,14 @@ const QuienesSomos: React.FC = () => {
               Una mirada profunda a nuestra identidad y compromiso.
             </p>
           </div>
-          <Card className="max-w-4xl mx-auto shadow-xl hover:shadow-2xl transition-all duration-300 rounded-xl overflow-hidden group transform hover:-translate-y-1 animate-slide-in-right bg-soft-gray border-secondary-purple-dark/20">
-            <CardHeader className="bg-gradient-to-r from-primary-purple to-secondary-purple-dark text-white p-6 rounded-t-xl">
+          <Card className="max-w-4xl mx-auto shadow-xl hover:shadow-2xl transition-all duration-300 rounded-xl overflow-hidden group transform hover:-translate-y-1 animate-slide-in-right">
+            <CardHeader className="bg-gradient-to-r from-accent-prosaludteal to-primary-prosalud text-white p-6 rounded-t-xl">
               <CardTitle className="flex items-center text-3xl font-semibold">
                 <Info size={32} className="mr-4 opacity-80 group-hover:opacity-100 transition-opacity" />
                 Descripción General
               </CardTitle>
             </CardHeader>
-            <CardContent className="pt-8 p-6 text-text-dark">
+            <CardContent className="pt-8 p-6 text-text-gray">
               <p className="text-lg leading-relaxed">
                 El Sindicato de Profesionales de la Salud ProSalud, es un Sindicato de gremio que funciona de conformidad con la Constitución Nacional, está orientado al bienestar de los afiliados de manera autogestionaria y autónoma, permitiendo el logro de los objetivos establecidos y la atención de procesos y subprocesos con capital humano capacitado en beneficio de todos los usuarios en las diferentes empresas receptoras del Servicio.
               </p>

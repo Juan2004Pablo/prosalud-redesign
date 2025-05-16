@@ -34,8 +34,6 @@ export default {
           prosalud: '#00529B', // ProSalud Blue
           'prosalud-light': '#E3F2FD', // Light blue for backgrounds/accents
           'prosalud-dark': '#003A70',  // Darker ProSalud Blue
-          // New purple colors
-          'purple': '#9b87f5', // Primary Purple
 				},
 				secondary: {
 					DEFAULT: 'hsl(var(--secondary))', // Main secondary color
@@ -43,8 +41,6 @@ export default {
           // Custom ProSalud colors
           prosaludgreen: '#4CAF50', // ProSalud Green
           'prosaludgreen-dark': '#388E3C', // Darker ProSalud Green
-          // New purple colors
-          'purple-dark': '#7E69AB', // Secondary Purple
 				},
 				destructive: {
 					DEFAULT: 'hsl(var(--destructive))',
@@ -73,10 +69,8 @@ export default {
         'text-gray': '#555555',
         'prosalud-border': '#DDDDDD',
         'background-light': '#F8F9FA', // Page background
-        // New soft purple colors
-        'soft-purple': '#E5DEFF',
-        'soft-gray': '#F1F0FB',
-				sidebar: {
+				// ... keep existing sidebar colors
+        sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
 					primary: 'hsl(var(--sidebar-primary))',
