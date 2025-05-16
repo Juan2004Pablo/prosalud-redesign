@@ -172,10 +172,15 @@ const Header: React.FC = () => {
   
   // Function to determine if a menu has only a single column of items
   const hasSingleColumn = (submenu: MenuSubItem[]): boolean => {
-    // Check if there's only one submenu item with direct links or
-    // if all items are direct links without nested submenus
-    if (submenu.length === 1 && submenu[0].submenu) return false;
-    return !submenu.some(item => item.submenu);
+    // If all items are direct links (no nested submenus)
+    if (submenu.every(item => !item.submenu)) {
+      return true;
+    }
+    // If there's only one item, and that item is a header for other links (e.g., "Campañas")
+    if (submenu.length === 1 && submenu[0].submenu) {
+      return true;
+    }
+    return false;
   };
 
   // Function to determine if a menu has multiple sections that should be displayed in separate columns
@@ -195,29 +200,26 @@ const Header: React.FC = () => {
 
           {/* Desktop Navigation with dropdowns */}
           <div className="hidden md:block">
-            {/* Remove the value and onValueChange props as they're causing the double-trigger issue */}
             <NavigationMenu>
               <NavigationMenuList className="flex space-x-2">
                 {menuItems.map((item) => (
                   <NavigationMenuItem key={item.name} className="relative">
                     {item.submenu ? (
                       <>
-                        {/* Remove value prop from NavigationMenuTrigger */}
                         <NavigationMenuTrigger className="text-gray-600 hover:text-primary-prosalud transition-colors text-sm py-1 px-2 font-normal bg-transparent hover:bg-transparent focus:bg-transparent data-[state=open]:bg-transparent">
                           <span className="flex items-center gap-1">
                             {item.name}
                           </span>
                         </NavigationMenuTrigger>
-                        {/* Remove value prop from NavigationMenuContent */}
                         <NavigationMenuContent>
                           <ul
                             className={cn(
                               "grid gap-3 p-4",
                               hasSingleColumn(item.submenu)
-                                ? "w-[300px]"
+                                ? "w-[300px]" // Single column layout
                                 : hasMultipleSections(item.submenu)
-                                ? "w-[400px] md:w-[500px] lg:w-[600px] lg:grid-cols-2"
-                                : "w-[400px] md:w-[500px] lg:w-[600px] lg:grid-cols-[minmax(150px,_.75fr)_1fr]",
+                                ? "w-[400px] md:w-[500px] lg:w-[600px] lg:grid-cols-2" // Multiple sections in columns
+                                : "w-[400px] md:w-[500px] lg:w-[600px] lg:grid-cols-[minmax(150px,_.75fr)_1fr]", // Mixed layout
                         
                               "max-h-[75vh] overflow-y-auto"
                             )}
