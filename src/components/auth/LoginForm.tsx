@@ -96,7 +96,7 @@ const LoginForm: React.FC = () => {
               </FormItem>
             )}
           />
-          <div className="text-right">
+          <div className="text-left"> {/* Changed from text-right to text-left */}
             <Link
               to="/recuperar-contrasena" // Placeholder link
               className="text-sm text-primary-prosalud hover:underline"
