@@ -47,7 +47,7 @@ const QuienesSomos: React.FC = () => {
   const statsData = [
     {
       icon: Award,
-      mainText: "+5 años",
+      mainText: "+8 años",
       subText: "de experiencia",
       iconColor: "text-primary-prosalud",
       textColor: "text-primary-prosalud",
