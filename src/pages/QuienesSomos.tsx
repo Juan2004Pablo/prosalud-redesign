@@ -1,3 +1,4 @@
+
 import React from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -34,6 +35,15 @@ const principiosData = [
 ];
 
 const QuienesSomos: React.FC = () => {
+
+  const handleScrollToSection = (event: React.MouseEvent<HTMLAnchorElement>, sectionId: string) => {
+    event.preventDefault();
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <MainLayout>
       {/* Encabezado Hero Section */}
@@ -49,7 +59,12 @@ const QuienesSomos: React.FC = () => {
           <p className="text-xl md:text-2xl max-w-3xl mx-auto animate-fade-in animation-delay-200 font-light">
             Conoce la esencia de ProSalud, el Sindicato de Profesionales de la Salud.
           </p>
-          <a href="#mision-vision" className="mt-10 inline-block animate-fade-in animation-delay-400">
+          <a 
+            href="#descripcion-prosalud" 
+            onClick={(e) => handleScrollToSection(e, 'descripcion-prosalud')}
+            className="mt-10 inline-block animate-fade-in animation-delay-400"
+            aria-label="Ir a Descripción de ProSalud"
+          >
             <ArrowDownCircle size={40} className="text-secondary-prosaludgreen hover:text-white transition-colors hover:scale-110" />
           </a>
         </div>
