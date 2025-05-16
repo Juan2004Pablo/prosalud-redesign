@@ -207,7 +207,7 @@ const Header: React.FC = () => {
 
           {/* Desktop Navigation with dropdowns */}
           <div className="hidden md:block">
-            <NavigationMenu open={openMenuIndex !== null} onOpenChange={() => {/* Only allow manual closing */}}>
+            <NavigationMenu onOpenChange={() => setOpenMenuIndex(null)} > {/* Removed 'open' prop */}
               <NavigationMenuList className="flex space-x-2">
                 {menuItems.map((item, index) => (
                   <NavigationMenuItem key={item.name} className="relative">
@@ -228,15 +228,15 @@ const Header: React.FC = () => {
                         {openMenuIndex === index && (
                           <NavigationMenuContent 
                             forceMount
-                            className="absolute left-0 transform -translate-x-1/2 translate-x-1/4"
+                            className="absolute left-0" // Adjusted positioning for dropdown
                           >
                             <ul className={cn(
-                              "grid gap-3 p-4",
+                              "grid gap-3 p-4 bg-white shadow-lg rounded-md border", // Added bg, shadow, border for visibility
                               hasSingleColumn(item.submenu)
-                                ? "w-[300px]" // Single column width for direct links
+                                ? "w-[300px]" 
                                 : hasMultipleSections(item.submenu)
-                                  ? "w-[400px] md:w-[500px] lg:w-[600px] lg:grid-cols-2" // Equal columns for multiple sections
-                                  : "w-[400px] md:w-[500px] lg:w-[600px] lg:grid-cols-[minmax(150px,_.75fr)_1fr]" // Asymmetric for one section with nested items
+                                  ? "w-[400px] md:w-[500px] lg:w-[600px] lg:grid-cols-2" 
+                                  : "w-[400px] md:w-[500px] lg:w-[600px] lg:grid-cols-[minmax(150px,_.75fr)_1fr]"
                             )}>
                               {item.submenu.map((subItem) => (
                                 <li key={subItem.name} className="break-inside-avoid">
@@ -244,7 +244,7 @@ const Header: React.FC = () => {
                                     <div className="mb-2">
                                       <h4 className="font-medium mb-1 text-sm text-primary-prosalud px-3 py-1">{subItem.name}</h4>
                                       <ul className="grid gap-1">
-                                        {subItem.submenu.map((subSubItem) => (
+                                        {subItem.submenu.map((subSubItem) => ( // subSubItem is correctly scoped here
                                           <ListItem
                                             key={subSubItem.name}
                                             title={subSubItem.name}
@@ -258,13 +258,13 @@ const Header: React.FC = () => {
                                         ))}
                                       </ul>
                                     </div>
-                                  ) : (
+                                  ) : ( // This is for subItem that is a direct link
                                     <ListItem
                                       key={subItem.name}
                                       title={subItem.name}
-                                      href={subItem.external ? subSubItem.url : subSubItem.path}
-                                      target={subSubItem.external ? "_blank" : undefined}
-                                      rel={subSubItem.external ? "noopener noreferrer" : undefined}
+                                      href={subItem.external ? subItem.url : subItem.path} {/* Corrected: subItem instead of subSubItem */}
+                                      target={subItem.external ? "_blank" : undefined} {/* Corrected: subItem instead of subSubItem */}
+                                      rel={subItem.external ? "noopener noreferrer" : undefined} {/* Corrected: subItem instead of subSubItem */}
                                       onClick={() => setOpenMenuIndex(null)}
                                     >
                                       {/* Optional: Add description for subItem if available */}
@@ -326,7 +326,7 @@ const Header: React.FC = () => {
       {/* Close menu when clicking outside */}
       {openMenuIndex !== null && (
         <div 
-          className="fixed inset-0 z-40 bg-transparent"
+          className="fixed inset-0 z-30" // Lowered z-index to be below the menu content (z-50 for header, NavigationMenuContent is child of z-10 NavigationMenu)
           onClick={() => setOpenMenuIndex(null)}
         ></div>
       )}
