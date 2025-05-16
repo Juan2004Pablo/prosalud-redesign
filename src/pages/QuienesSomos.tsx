@@ -1,9 +1,11 @@
-
 import React from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BadgeCheck, Handshake, Shield, Users, Scale, HandHelping, Briefcase, Ban, Library, Megaphone, ClipboardCheck, HeartHandshake, Target, Eye, Flag, ArrowDownCircle, ChevronDown } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { 
+  BadgeCheck, Handshake, Shield, Users, Scale, HandHelping, Briefcase, Ban, Library, Megaphone, ClipboardCheck, HeartHandshake, Target, Eye, Flag, ArrowDownCircle,
+  Info, Building2, UserCircle, Users2, ShieldCheck, ClipboardList, BriefcaseBusiness, Cog, UserCog, Network, Workflow, UserSquare, FileText, Calculator, UsersRound, Laptop, ShieldQuestion
+} from 'lucide-react';
 
 const valoresData = [
   {
@@ -50,6 +52,33 @@ const QuienesSomos: React.FC = () => {
           <a href="#mision-vision" className="mt-10 inline-block animate-fade-in animation-delay-400">
             <ArrowDownCircle size={40} className="text-secondary-prosaludgreen hover:text-white transition-colors hover:scale-110" />
           </a>
+        </div>
+      </section>
+
+      {/* Descripción de ProSalud Section */}
+      <section id="descripcion-prosalud" className="py-16 md:py-24 bg-white">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16 animate-fade-in">
+            <h2 className="text-4xl md:text-5xl font-bold text-primary-prosalud mb-4 tracking-tight">
+              Descubre ProSalud
+            </h2>
+            <p className="text-xl text-text-gray max-w-3xl mx-auto font-light">
+              Una mirada profunda a nuestra identidad y compromiso.
+            </p>
+          </div>
+          <Card className="max-w-4xl mx-auto shadow-xl hover:shadow-2xl transition-all duration-300 rounded-xl overflow-hidden group transform hover:-translate-y-1 animate-slide-in-right">
+            <CardHeader className="bg-gradient-to-r from-accent-prosaludteal to-primary-prosalud text-white p-6 rounded-t-xl">
+              <CardTitle className="flex items-center text-3xl font-semibold">
+                <Info size={32} className="mr-4 opacity-80 group-hover:opacity-100 transition-opacity" />
+                Descripción General
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="pt-8 p-6 text-text-gray">
+              <p className="text-lg leading-relaxed">
+                El Sindicato de Profesionales de la Salud ProSalud, es un Sindicato de gremio que funciona de conformidad con la Constitución Nacional, está orientado al bienestar de los afiliados de manera autogestionaria y autónoma, permitiendo el logro de los objetivos establecidos y la atención de procesos y subprocesos con capital humano capacitado en beneficio de todos los usuarios en las diferentes empresas receptoras del Servicio.
+              </p>
+            </CardContent>
+          </Card>
         </div>
       </section>
 
@@ -149,6 +178,91 @@ const QuienesSomos: React.FC = () => {
               </AccordionItem>
             ))}
           </Accordion>
+        </div>
+      </section>
+
+      {/* Estructura Organizacional Section */}
+      <section id="estructura-organizacional" className="py-16 md:py-24 bg-slate-50">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16 animate-fade-in">
+            <h2 className="text-4xl md:text-5xl font-bold text-primary-prosalud mb-4 tracking-tight">
+              Nuestra Estructura Organizacional
+            </h2>
+            <p className="text-xl text-text-gray max-w-3xl mx-auto font-light">
+              Así nos organizamos para servirte mejor.
+            </p>
+          </div>
+
+          <div className="max-w-5xl mx-auto">
+            {/* Afiliados Participes - Central Element */}
+            <div className="mb-12 animate-scale-in animation-delay-200">
+              <Card className="bg-primary-prosalud text-white shadow-xl rounded-xl text-center p-6 transform hover:scale-105 transition-transform duration-300">
+                <CardHeader className="p-0 mb-3">
+                  <Users2 size={40} className="mx-auto mb-2" />
+                  <CardTitle className="text-2xl font-semibold">Afiliados Partícipes</CardTitle>
+                </CardHeader>
+                <CardDescription className="text-primary-prosalud-light text-sm">El corazón de ProSalud, participando activamente en la vida sindical.</CardDescription>
+              </Card>
+            </div>
+
+            {/* Órganos de Dirección y Control */}
+            <div className="mb-12 animate-fade-in animation-delay-400">
+              <h3 className="text-2xl md:text-3xl font-semibold text-secondary-prosaludgreen mb-8 text-center flex items-center justify-center">
+                <Network size={30} className="mr-3" /> Órganos de Dirección y Control
+              </h3>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {[
+                  { title: "Presidente", icon: UserCog, description: "Liderazgo y representación general." },
+                  { title: "Vicepresidente", icon: UserSquare, description: "Apoyo en liderazgo y funciones delegadas." },
+                  { title: "Vocales", icon: UsersRound, description: "Representación y voz de los afiliados." },
+                  { title: "Tesorero", icon: Calculator, description: "Gestión financiera y de recursos." },
+                  { title: "Fiscal", icon: ShieldQuestion, description: "Vigilancia y control normativo." },
+                ].map((item, index) => (
+                  <Card key={index} className="shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-lg p-6 text-center transform hover:-translate-y-1 animate-scale-in" style={{ animationDelay: `${index * 100 + 400}ms` }}>
+                    <item.icon size={36} className="mx-auto mb-3 text-primary-prosalud" />
+                    <CardTitle className="text-xl font-medium text-text-dark mb-1">{item.title}</CardTitle>
+                    <CardDescription className="text-sm text-text-gray">{item.description}</CardDescription>
+                  </Card>
+                ))}
+              </div>
+            </div>
+
+            {/* Nivel Administrativo */}
+            <div className="mb-12 animate-fade-in animation-delay-600">
+              <h3 className="text-2xl md:text-3xl font-semibold text-secondary-prosaludgreen mb-8 text-center flex items-center justify-center">
+                <ClipboardList size={30} className="mr-3" /> Nivel Administrativo
+              </h3>
+              <div className="flex justify-center">
+                <Card className="w-full max-w-md shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-lg p-6 text-center transform hover:-translate-y-1 animate-scale-in" style={{ animationDelay: `600ms` }}>
+                  <UserCog size={36} className="mx-auto mb-3 text-primary-prosalud" /> {/* Assuming similar icon for subdirector */}
+                  <CardTitle className="text-xl font-medium text-text-dark mb-1">Subdirección Administrativa</CardTitle>
+                  <CardDescription className="text-sm text-text-gray">Coordinación y gestión de operaciones administrativas.</CardDescription>
+                </Card>
+              </div>
+            </div>
+
+            {/* Áreas Operativas */}
+            <div className="animate-fade-in animation-delay-800">
+              <h3 className="text-2xl md:text-3xl font-semibold text-secondary-prosaludgreen mb-8 text-center flex items-center justify-center">
+                <Workflow size={30} className="mr-3" /> Áreas Operativas
+              </h3>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {[
+                  { title: "S. Gerencia", icon: BriefcaseBusiness, description: "Soporte a la gerencia y procesos estratégicos." },
+                  { title: "Nómina", icon: FileText, description: "Gestión de pagos y compensaciones." },
+                  { title: "Sistemas", icon: Laptop, description: "Infraestructura tecnológica y soporte." },
+                  { title: "Recursos Humanos", icon: Users, description: "Gestión del talento humano y bienestar." },
+                  { title: "S.S.T.", icon: Shield, subTitle: "(Salud y Seguridad en el Trabajo)", description: "Promoción de un entorno laboral seguro y saludable." },
+                ].map((item, index) => (
+                  <Card key={index} className="shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-lg p-6 text-center transform hover:-translate-y-1 animate-scale-in" style={{ animationDelay: `${index * 100 + 800}ms` }}>
+                    <item.icon size={36} className="mx-auto mb-3 text-primary-prosalud" />
+                    <CardTitle className="text-xl font-medium text-text-dark mb-1">{item.title} {item.subTitle && <span className="block text-xs text-muted-foreground">{item.subTitle}</span>}</CardTitle>
+                    <CardDescription className="text-sm text-text-gray">{item.description}</CardDescription>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </section>
     </MainLayout>
