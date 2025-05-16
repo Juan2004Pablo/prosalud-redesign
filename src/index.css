@@ -4,7 +4,7 @@
 @tailwind utilities;
 
 html, body {
-  overflow-x: hidden;
+  /* overflow-x: hidden; <-- Vamos a remover esta línea */
 }
 
 @layer base {
@@ -92,3 +92,4 @@ html, body {
     @apply bg-background-light text-text-dark font-sans antialiased;
   }
 }
+
