@@ -1,35 +1,77 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Facebook, Twitter, Instagram, Linkedin } from 'lucide-react'; // Placeholder icons
 
 const Footer: React.FC = () => {
+  const logoUrl = "/lovable-uploads/2bf2da56-4967-4a17-8849-9efab8759375.png"; // Path to your logo
+
   return (
-    <footer className="bg-primary-prosalud-dark text-text-light py-8">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-6">
-          <div>
-            <h3 className="text-lg font-semibold mb-2">ProSalud</h3>
-            <p className="text-sm text-gray-300">Sindicato de Profesionales de la Salud.</p>
-            {/* Add address or other info if needed */}
+    <footer className="bg-slate-900 text-slate-300 py-12">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-10">
+          {/* Column 1: Logo and About */}
+          <div className="space-y-4">
+            <Link to="/" className="inline-block">
+              <img src={logoUrl} alt="ProSalud Logo" className="h-14 w-auto" />
+            </Link>
+            <p className="text-sm text-slate-400">
+              Sindicato de Profesionales de la Salud comprometidos con tu bienestar y derechos laborales.
+            </p>
           </div>
+
+          {/* Column 2: Enlaces Útiles */}
           <div>
-            <h3 className="text-lg font-semibold mb-2">Enlaces Útiles</h3>
-            <ul className="space-y-1">
+            <h3 className="text-md font-semibold text-white mb-4 uppercase tracking-wider">Enlaces Útiles</h3>
+            <ul className="space-y-2">
               <li><Link to="/faq" className="text-sm hover:text-secondary-prosaludgreen transition-colors">Preguntas Frecuentes</Link></li>
               <li><Link to="/contacto" className="text-sm hover:text-secondary-prosaludgreen transition-colors">Contacto</Link></li>
               <li><Link to="/terminos" className="text-sm hover:text-secondary-prosaludgreen transition-colors">Términos y Condiciones</Link></li>
               <li><Link to="/privacidad" className="text-sm hover:text-secondary-prosaludgreen transition-colors">Política de Privacidad</Link></li>
+              <li><Link to="/nosotros/quienes-somos" className="text-sm hover:text-secondary-prosaludgreen transition-colors">¿Quiénes somos?</Link></li>
             </ul>
           </div>
+
+          {/* Column 3: Servicios Destacados (Example) */}
           <div>
-            <h3 className="text-lg font-semibold mb-2">Síguenos</h3>
-            {/* Placeholder for social media icons/links */}
-            <p className="text-sm text-gray-300">Próximamente</p>
+            <h3 className="text-md font-semibold text-white mb-4 uppercase tracking-wider">Servicios Clave</h3>
+            <ul className="space-y-2">
+              <li><Link to="/servicios/certificado-convenio" className="text-sm hover:text-secondary-prosaludgreen transition-colors">Certificado de Convenio</Link></li>
+              <li><Link to="/servicios/consulta-pagos" className="text-sm hover:text-secondary-prosaludgreen transition-colors">Consulta de Pagos</Link></li>
+              <li><Link to="/servicios/sst" className="text-sm hover:text-secondary-prosaludgreen transition-colors">Seguridad y Salud</Link></li>
+            </ul>
+          </div>
+          
+          {/* Column 4: Síguenos */}
+          <div>
+            <h3 className="text-md font-semibold text-white mb-4 uppercase tracking-wider">Síguenos</h3>
+            <div className="flex space-x-4">
+              <a href="#" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-secondary-prosaludgreen transition-colors" aria-label="Facebook">
+                <Facebook size={22} />
+              </a>
+              <a href="#" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-secondary-prosaludgreen transition-colors" aria-label="Twitter">
+                <Twitter size={22} />
+              </a>
+              <a href="#" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-secondary-prosaludgreen transition-colors" aria-label="Instagram">
+                <Instagram size={22} />
+              </a>
+              <a href="#" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-secondary-prosaludgreen transition-colors" aria-label="LinkedIn">
+                <Linkedin size={22} />
+              </a>
+            </div>
+            <p className="text-xs text-slate-500 mt-4">
+              Mantente al día con nuestras novedades y actividades.
+            </p>
           </div>
         </div>
-        <div className="border-t border-gray-700 pt-6">
-          <p className="text-sm text-gray-400">
+
+        {/* Bottom Bar */}
+        <div className="border-t border-slate-700 pt-8 text-center">
+          <p className="text-sm text-slate-500">
             &copy; {new Date().getFullYear()} ProSalud. Todos los derechos reservados.
+          </p>
+          <p className="text-xs text-slate-600 mt-1">
+            Diseñado y desarrollado con el apoyo de tecnología IA.
           </p>
         </div>
       </div>
@@ -38,3 +80,4 @@ const Footer: React.FC = () => {
 };
 
 export default Footer;
+
