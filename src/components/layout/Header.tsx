@@ -44,7 +44,7 @@ const menuItems: MenuItemType[] = [
     icon: Users,
     submenu: [
       { name: '¿Quiénes somos?', path: '/nosotros/quienes-somos' },
-      { name: 'Estructura organizacional', path: '/nosotros/estructura-organizacional' },
+      // { name: 'Estructura organizacional', path: '/nosotros/estructura-organizacional' },
       { name: 'Estatutos', path: '/nosotros/estatutos' },
       { name: 'Rol económico', path: '/nosotros/rol-economico' },
       { name: 'Compensaciones y beneficios', path: '/nosotros/compensaciones-beneficios' },
