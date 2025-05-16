@@ -49,31 +49,31 @@ const newServices = [
 const conveniosData = [
   { 
     name: "E.S.E. HOSPITAL MARCO FIDEL SUÁREZ - BELLO",
-    imageUrl: "https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&w=200&h=200"
+    imageUrl: "/lovable-uploads/hospital-marco-fidel-suarez.jpg"
   },
   { 
     name: "E.S.E. HOSPITAL SAN JUAN DE DIOS - RIONEGRO",
-    imageUrl: "https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=200&h=200"
+    imageUrl: "/lovable-uploads/hospital-san-juan-de-dios-rionegro.jpg"
   },
   { 
     name: "PROMOTORA MÉDICA Y ODONTOLÓGICA S.A.",
-    imageUrl: "https://images.unsplash.com/photo-1524230572899-a752b3835840?auto=format&fit=crop&w=200&h=200"
+    imageUrl: "/lovable-uploads/promotora-medica-odontologica.jpg"
   },
   { 
     name: "SOCIEDAD MÉDICA RIONEGRO SOMER S.A.",
-    imageUrl: "https://images.unsplash.com/photo-1538108149393-fbbd81895907?auto=format&fit=crop&w=200&h=200"
+    imageUrl: "/lovable-uploads/somer-sa.jpg"
   },
   { 
     name: "E.S.E. HOSPITAL VENANCIO DÍAZ DÍAZ",
-    imageUrl: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=200&h=200"
+    imageUrl: "/lovable-uploads/hospital-venancio-diaz.webp"
   },
   { 
     name: "E.S.E. HOSPITAL LA MERCED - CIUDAD BOLÍVAR",
-    imageUrl: "https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=200&h=200"
+    imageUrl: "/lovable-uploads/hospital-la-merced-ciudad-bolivar.jpeg"
   },
   { 
     name: "E.S.E. HOSPITAL SANTA ELENA - FREDONIA",
-    imageUrl: "https://images.unsplash.com/photo-1586773860418-d37222d8bc3f?auto=format&fit=crop&w=200&h=200"
+    imageUrl: "/lovable-uploads/hospital-santa-elena-fredonia.jpg"
   },
 ];
 
