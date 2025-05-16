@@ -146,14 +146,14 @@ const Header: React.FC = () => {
   
   const ListItem = React.forwardRef<
     React.ElementRef<"a">,
-    React.ComponentPropsWithoutRef<"a"> & { title: string } // Ensure title is part of props
-  >(({ className, title, children, href, ...props }, ref) => { // Ensure href is destructured
+    React.ComponentPropsWithoutRef<"a"> & { title: string }
+  >(({ className, title, children, href, ...props }, ref) => {
     return (
       <li>
         <NavigationMenuLink asChild>
           <a
             ref={ref}
-            href={href} // Pass href to the anchor tag
+            href={href}
             className={cn(
               "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
               className
@@ -177,6 +177,12 @@ const Header: React.FC = () => {
     // if all items are direct links without nested submenus
     if (submenu.length === 1 && submenu[0].submenu) return false;
     return !submenu.some(item => item.submenu);
+  };
+
+  // Function to determine if a menu has multiple sections that should be displayed in separate columns
+  const hasMultipleSections = (submenu: MenuSubItem[]): boolean => {
+    // If there are multiple submenu items with their own submenus, we should display them in separate columns
+    return submenu.filter(item => item.submenu).length > 1;
   };
   
   return (
@@ -205,8 +211,10 @@ const Header: React.FC = () => {
                           <ul className={cn(
                             "grid gap-3 p-4",
                             hasSingleColumn(item.submenu)
-                              ? "w-[300px]" // Single column width
-                              : "w-[400px] md:w-[500px] lg:w-[600px] lg:grid-cols-[minmax(150px,_.75fr)_1fr]" // Two column layout
+                              ? "w-[300px]" // Single column width for direct links
+                              : hasMultipleSections(item.submenu)
+                                ? "w-[400px] md:w-[500px] lg:w-[600px] lg:grid-cols-2" // Equal columns for multiple sections
+                                : "w-[400px] md:w-[500px] lg:w-[600px] lg:grid-cols-[minmax(150px,_.75fr)_1fr]" // Asymmetric for one section with nested items
                           )}>
                             {item.submenu.map((subItem) => (
                               <li key={subItem.name} className="break-inside-avoid">
@@ -245,7 +253,7 @@ const Header: React.FC = () => {
                       </>
                     ) : ( 
                       <Link
-                        to={item.path!} // Path must exist if no submenu for TopLevelMenuItemDirectLink
+                        to={item.path!}
                         className={`text-sm font-medium py-2 px-3 block ${inactiveLinkClass} hover:bg-gray-50 rounded-md`}
                       >
                         {item.name}
