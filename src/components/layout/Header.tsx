@@ -145,7 +145,7 @@ const Header: React.FC = () => {
                             <ChevronDown className="h-3 w-3" />
                           </span>
                         </NavigationMenuTrigger>
-                        <NavigationMenuContent>
+                        <NavigationMenuContent className="bg-white">
                           <ul className="grid w-[400px] gap-3 p-4">
                             {item.submenu.map((subItem) => (
                               <li key={subItem.name}>
