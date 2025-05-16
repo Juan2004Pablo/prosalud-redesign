@@ -43,7 +43,7 @@ const LoginForm: React.FC = () => {
   };
 
   return (
-    <div className="w-full"> {/* Se eliminó bg-card p-6 sm:p-8 rounded-xl shadow-xl */}
+    <div className="w-full bg-white"> {/* Se eliminó bg-card p-6 sm:p-8 rounded-xl shadow-xl */}
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold text-primary-prosalud">Inicia sesión</h1>
         <p className="text-muted-foreground mt-2">
