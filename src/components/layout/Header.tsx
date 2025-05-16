@@ -15,11 +15,6 @@ import {
 // Define menu structure for dropdown navigation
 const menuItems = [
   { 
-    name: 'Inicio', 
-    path: '/', 
-    icon: Home 
-  },
-  { 
     name: 'Nosotros', 
     icon: Users,
     submenu: [
