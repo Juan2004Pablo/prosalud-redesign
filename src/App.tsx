@@ -6,7 +6,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import MainLayout from "./components/layout/MainLayout";
-import QuienesSomos from "./pages/QuienesSomos"; // Import the new page
+import QuienesSomos from "./pages/QuienesSomos";
+import LoginPage from "./pages/LoginPage";
 
 const queryClient = new QueryClient();
 
@@ -28,6 +29,8 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/login" element={<LoginPage />} />
+          
           {/* Adding placeholder routes for nav items */}
           <Route path="/prosalud" element={<PlaceholderPage title="ProSalud" />} />
           

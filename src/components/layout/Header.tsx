@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import DesktopMenu from './DesktopMenu';
 import MobileMenu from './MobileMenu';
-// Removed imports for menu items, types, and other icons now handled elsewhere
+import { Button } from '@/components/ui/button'; // Import Button
 
 const Header: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -21,20 +21,33 @@ const Header: React.FC = () => {
             <img src="/lovable-uploads/2bf2da56-4967-4a17-8849-9efab8759375.png" alt="ProSalud Logo" className="h-12 w-auto" />
           </Link>
 
-          {/* Desktop Navigation with dropdowns */}
-          <div className="hidden md:block">
-            <DesktopMenu inactiveLinkClass={inactiveLinkClass} />
-          </div>
+          <div className="flex items-center space-x-3 sm:space-x-4">
+            {/* Desktop Navigation with dropdowns */}
+            <div className="hidden md:block">
+              <DesktopMenu inactiveLinkClass={inactiveLinkClass} />
+            </div>
 
-          {/* Mobile Menu Button */}
-          <div className="md:hidden">
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="text-text-dark hover:text-primary-prosalud focus:outline-none"
-              aria-label="Abrir menú"
-            >
-              {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
-            </button>
+            {/* Login Button */}
+            <Link to="/login">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="border-primary-prosalud text-primary-prosalud hover:bg-primary-prosalud-light hover:text-primary-prosalud focus:ring-primary-prosalud"
+              >
+                Login
+              </Button>
+            </Link>
+
+            {/* Mobile Menu Button */}
+            <div className="md:hidden">
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="text-text-dark hover:text-primary-prosalud focus:outline-none p-2 -mr-2" // Added padding for easier click and negative margin to align
+                aria-label={isMobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
+              >
+                {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -52,4 +65,3 @@ const Header: React.FC = () => {
 };
 
 export default Header;
-
