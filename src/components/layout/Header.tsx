@@ -141,7 +141,7 @@ const Header: React.FC = () => {
                   <NavigationMenuItem key={item.name} className="relative">
                     {item.submenu ? (
                       <>
-                        <NavigationMenuTrigger className="text-text-gray hover:text-primary-prosalud transition-colors text-sm font-medium">
+                        <NavigationMenuTrigger className="text-gray-600 hover:text-primary-prosalud transition-colors text-sm py-1 px-2 font-normal bg-transparent hover:bg-transparent">
                           <span className="flex items-center gap-1">
                             {item.name}
                           </span>
