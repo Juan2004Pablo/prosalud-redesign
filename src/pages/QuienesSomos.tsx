@@ -1,3 +1,4 @@
+
 import React from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -133,13 +134,14 @@ const QuienesSomos: React.FC = () => {
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 <AccordionTrigger className="text-left hover:no-underline py-5 px-6 text-lg font-medium text-text-dark hover:text-primary-prosalud group w-full">
-                  <div className="flex items-center justify-between w-full">
-                    <div className="flex items-center">
-                      <principio.icon size={26} className="mr-4 text-secondary-prosaludgreen shrink-0 transition-transform duration-300 group-hover:scale-110" />
-                      {principio.title}
-                    </div>
-                    <ChevronDown className="h-5 w-5 shrink-0 text-muted-foreground transition-transform duration-200 group-data-[state=open]:rotate-180" />
+                  {/* The div structure ensures the text and icon are on the left, and the default chevron (from AccordionTrigger component) is on the right */}
+                  <div className="flex items-center">
+                    <principio.icon size={26} className="mr-4 text-secondary-prosaludgreen shrink-0 transition-transform duration-300 group-hover:scale-110" />
+                    {principio.title}
                   </div>
+                  {/* The explicit ChevronDown icon that was causing duplication has been removed from here.
+                      The AccordionTrigger component itself provides the necessary ChevronDown icon.
+                  */}
                 </AccordionTrigger>
                 <AccordionContent className="text-text-gray pt-0 p-6 text-base leading-relaxed bg-slate-50 rounded-b-lg">
                   {principio.content}
