@@ -109,7 +109,7 @@ const LoginForm: React.FC = () => {
           </Button>
         </form>
       </Form>
-      <p className="mt-8 text-xs text-muted-foreground text-center">
+      {/*<p className="mt-8 text-xs text-muted-foreground text-center">
         Al continuar acepto la{" "}
         <Link to="/privacidad" className="underline hover:text-primary-prosalud">
           Política de Privacidad
@@ -119,7 +119,7 @@ const LoginForm: React.FC = () => {
           Términos de Servicio
         </Link>
         .
-      </p>
+      </p>*/}
     </div>
   );
 };
