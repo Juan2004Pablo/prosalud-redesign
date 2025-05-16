@@ -3,16 +3,25 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Avatar } from '@/components/ui/avatar';
 
 interface ServiceCardProps {
-  icon: React.ElementType;
+  icon?: React.ElementType;
+  imageUrl?: string;
   title: string;
   description?: string;
   linkTo: string;
   className?: string;
 }
 
-const ServiceCard: React.FC<ServiceCardProps> = ({ icon: Icon, title, description, linkTo, className }) => {
+const ServiceCard: React.FC<ServiceCardProps> = ({ 
+  icon: Icon, 
+  imageUrl, 
+  title, 
+  description, 
+  linkTo, 
+  className 
+}) => {
   return (
     <Link 
       to={linkTo} 
@@ -23,7 +32,17 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ icon: Icon, title, descriptio
     >
       <div className="flex flex-col h-full">
         <div className="mb-4 flex justify-center md:justify-start">
-          <Icon className="h-12 w-12 text-primary-prosalud group-hover:text-secondary-prosaludgreen transition-colors" />
+          {imageUrl ? (
+            <Avatar className="h-12 w-12 overflow-hidden">
+              <img 
+                src={imageUrl} 
+                alt={title} 
+                className="h-full w-full object-cover"
+              />
+            </Avatar>
+          ) : Icon && (
+            <Icon className="h-12 w-12 text-primary-prosalud group-hover:text-secondary-prosaludgreen transition-colors" />
+          )}
         </div>
         <h3 className="text-xl font-semibold text-text-dark mb-2 group-hover:text-primary-prosalud transition-colors">{title}</h3>
         {description && <p className="text-sm text-text-gray mb-4 flex-grow">{description}</p>}

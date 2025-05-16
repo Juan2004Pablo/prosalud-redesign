@@ -1,3 +1,4 @@
+
 import React from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import ServiceCard from '@/components/shared/ServiceCard';
@@ -46,13 +47,34 @@ const newServices = [
 ];
 
 const conveniosData = [
-  { name: "E.S.E. HOSPITAL MARCO FIDEL SUÁREZ - BELLO" },
-  { name: "E.S.E. HOSPITAL SAN JUAN DE DIOS - RIONEGRO" },
-  { name: "PROMOTORA MÉDICA Y ODONTOLÓGICA S.A." },
-  { name: "SOCIEDAD MÉDICA RIONEGRO SOMER S.A." },
-  { name: "E.S.E. HOSPITAL VENANCIO DÍAZ DÍAZ" },
-  { name: "E.S.E. HOSPITAL LA MERCED - CIUDAD BOLÍVAR" },
-  { name: "E.S.E. HOSPITAL SANTA ELENA - FREDONIA" },
+  { 
+    name: "E.S.E. HOSPITAL MARCO FIDEL SUÁREZ - BELLO",
+    imageUrl: "https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&w=200&h=200"
+  },
+  { 
+    name: "E.S.E. HOSPITAL SAN JUAN DE DIOS - RIONEGRO",
+    imageUrl: "https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=200&h=200"
+  },
+  { 
+    name: "PROMOTORA MÉDICA Y ODONTOLÓGICA S.A.",
+    imageUrl: "https://images.unsplash.com/photo-1524230572899-a752b3835840?auto=format&fit=crop&w=200&h=200"
+  },
+  { 
+    name: "SOCIEDAD MÉDICA RIONEGRO SOMER S.A.",
+    imageUrl: "https://images.unsplash.com/photo-1538108149393-fbbd81895907?auto=format&fit=crop&w=200&h=200"
+  },
+  { 
+    name: "E.S.E. HOSPITAL VENANCIO DÍAZ DÍAZ",
+    imageUrl: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=200&h=200"
+  },
+  { 
+    name: "E.S.E. HOSPITAL LA MERCED - CIUDAD BOLÍVAR",
+    imageUrl: "https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=200&h=200"
+  },
+  { 
+    name: "E.S.E. HOSPITAL SANTA ELENA - FREDONIA",
+    imageUrl: "https://images.unsplash.com/photo-1586773860418-d37222d8bc3f?auto=format&fit=crop&w=200&h=200"
+  },
 ];
 
 const Index = () => {
@@ -113,7 +135,7 @@ const Index = () => {
       </section>
       
       {/* Convenios Section */}
-      <section id="convenios" className="py-12 md:py-16 bg-white"> {/* Changed background to white for differentiation */}
+      <section id="convenios" className="py-12 md:py-16 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-primary-prosalud text-text-light p-6 rounded-lg shadow-lg mb-10 md:mb-12 text-center">
             <h2 className="text-3xl md:text-4xl font-semibold">
@@ -127,7 +149,13 @@ const Index = () => {
                 className="bg-card p-6 rounded-lg shadow-md border border-prosalud-border hover:shadow-xl hover:border-primary-prosalud transition-all duration-300 flex items-center animate-fade-in"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
-                <Building2 className="h-10 w-10 text-primary-prosalud mr-4 shrink-0" />
+                <div className="h-10 w-10 rounded-full overflow-hidden mr-4 shrink-0">
+                  <img 
+                    src={convenio.imageUrl} 
+                    alt={convenio.name} 
+                    className="h-full w-full object-cover"
+                  />
+                </div>
                 <p className="text-md font-medium text-text-dark">{convenio.name}</p>
               </li>
             ))}
