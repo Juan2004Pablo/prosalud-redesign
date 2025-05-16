@@ -84,7 +84,7 @@ const Index = () => {
       <section className="bg-gradient-to-br from-primary-prosalud via-primary-prosalud-dark to-slate-900 text-text-light py-20 md:py-32 lg:py-40">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 animate-fade-in">
-            ProSalud: Empoderando Tu Bienestar Laboral
+            ProSalud: El sindicato que cuida de ti, como tú cuidas de los demás
           </h1>
           <p className="text-lg md:text-xl lg:text-2xl mb-10 max-w-3xl mx-auto animate-fade-in animation-delay-200">
             Tu portal de autogestión para acceder a servicios, trámites y beneficios de manera ágil y segura. Simplificamos tu día a día.
