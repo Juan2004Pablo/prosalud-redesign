@@ -16,18 +16,18 @@ const Header: React.FC = () => {
     <header className="bg-white shadow-md sticky top-0 z-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          {/* Logo */}
-          <Link to="/" className="flex items-center">
+          {/* Logo (Left) */}
+          <Link to="/" className="flex items-center flex-shrink-0">
             <img src="/lovable-uploads/2bf2da56-4967-4a17-8849-9efab8759375.png" alt="ProSalud Logo" className="h-12 w-auto" />
           </Link>
 
-          <div className="flex items-center space-x-3 sm:space-x-4">
-            {/* Desktop Navigation with dropdowns */}
-            <div className="hidden md:block">
-              <DesktopMenu inactiveLinkClass={inactiveLinkClass} />
-            </div>
+          {/* Desktop Navigation (Center) */}
+          <div className="hidden md:flex flex-grow justify-center">
+            <DesktopMenu inactiveLinkClass={inactiveLinkClass} />
+          </div>
 
-            {/* Login Button */}
+          {/* Login Button & Mobile Menu Toggle (Right) */}
+          <div className="flex items-center space-x-3 sm:space-x-4 flex-shrink-0">
             <Link to="/login">
               <Button 
                 variant="outline" 
@@ -42,7 +42,7 @@ const Header: React.FC = () => {
             <div className="md:hidden">
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="text-text-dark hover:text-primary-prosalud focus:outline-none p-2 -mr-2" // Added padding for easier click and negative margin to align
+                className="text-text-dark hover:text-primary-prosalud focus:outline-none p-2 -mr-2"
                 aria-label={isMobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
               >
                 {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
