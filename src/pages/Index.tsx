@@ -69,7 +69,7 @@ const conveniosData = [
   },
   { 
     name: "E.S.E. HOSPITAL LA MERCED - CIUDAD BOLÍVAR",
-    imageUrl: "/hospital-la-merced-ciudad-bolivar.jpeg"
+    imageUrl: "/la-merced-ciudad-bolivar.jpeg"
   },
   { 
     name: "E.S.E. HOSPITAL SANTA ELENA - FREDONIA",
