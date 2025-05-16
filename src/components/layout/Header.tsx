@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { Menu, X, Briefcase, Home, Users, FileText, FolderArchive, Shield, ChevronDown, LucideIcon } from 'lucide-react';
@@ -140,6 +139,7 @@ const mobileNavItems = menuItems.map(item => {
 
 const Header: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [openMenuIndex, setOpenMenuIndex] = useState<number | null>(null);
 
   const activeLinkClass = "text-primary-prosalud font-bold border-b-2 border-secondary-prosaludgreen";
   const inactiveLinkClass = "text-text-gray hover:text-primary-prosalud transition-colors";
@@ -184,6 +184,17 @@ const Header: React.FC = () => {
     // If there are multiple submenu items with their own submenus, we should display them in separate columns
     return submenu.filter(item => item.submenu).length > 1;
   };
+
+  // Function to handle menu item click
+  const handleMenuItemClick = (index: number) => {
+    if (openMenuIndex === index) {
+      // If the same menu item is clicked again, close it
+      setOpenMenuIndex(null);
+    } else {
+      // Otherwise open the clicked menu item
+      setOpenMenuIndex(index);
+    }
+  };
   
   return (
     <header className="bg-white shadow-md sticky top-0 z-50">
@@ -196,65 +207,80 @@ const Header: React.FC = () => {
 
           {/* Desktop Navigation with dropdowns */}
           <div className="hidden md:block">
-            <NavigationMenu>
+            <NavigationMenu open={openMenuIndex !== null} onOpenChange={() => {/* Only allow manual closing */}}>
               <NavigationMenuList className="flex space-x-2">
-                {menuItems.map((item) => (
+                {menuItems.map((item, index) => (
                   <NavigationMenuItem key={item.name} className="relative">
                     {item.submenu ? (
                       <>
-                        <NavigationMenuTrigger className="text-gray-600 hover:text-primary-prosalud transition-colors text-sm py-1 px-2 font-normal bg-transparent hover:bg-transparent focus:bg-transparent data-[state=open]:bg-transparent">
+                        <NavigationMenuTrigger 
+                          className="text-gray-600 hover:text-primary-prosalud transition-colors text-sm py-1 px-2 font-normal bg-transparent hover:bg-transparent focus:bg-transparent data-[state=open]:bg-transparent"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handleMenuItemClick(index);
+                          }}
+                          data-state={openMenuIndex === index ? "open" : "closed"}
+                        >
                           <span className="flex items-center gap-1">
                             {item.name}
                           </span>
                         </NavigationMenuTrigger>
-                        <NavigationMenuContent>
-                          <ul className={cn(
-                            "grid gap-3 p-4",
-                            hasSingleColumn(item.submenu)
-                              ? "w-[300px]" // Single column width for direct links
-                              : hasMultipleSections(item.submenu)
-                                ? "w-[400px] md:w-[500px] lg:w-[600px] lg:grid-cols-2" // Equal columns for multiple sections
-                                : "w-[400px] md:w-[500px] lg:w-[600px] lg:grid-cols-[minmax(150px,_.75fr)_1fr]" // Asymmetric for one section with nested items
-                          )}>
-                            {item.submenu.map((subItem) => (
-                              <li key={subItem.name} className="break-inside-avoid">
-                                {subItem.submenu ? (
-                                  <div className="mb-2">
-                                    <h4 className="font-medium mb-1 text-sm text-primary-prosalud px-3 py-1">{subItem.name}</h4>
-                                    <ul className="grid gap-1">
-                                      {subItem.submenu.map((subSubItem) => (
-                                        <ListItem
-                                          key={subSubItem.name}
-                                          title={subSubItem.name}
-                                          href={subSubItem.external ? subSubItem.url : subSubItem.path}
-                                          target={subSubItem.external ? "_blank" : undefined}
-                                          rel={subSubItem.external ? "noopener noreferrer" : undefined}
-                                        >
-                                          {/* Optional: Add description for subSubItem if available */}
-                                        </ListItem>
-                                      ))}
-                                    </ul>
-                                  </div>
-                                ) : (
-                                  <ListItem
-                                    key={subItem.name}
-                                    title={subItem.name}
-                                    href={subItem.external ? subItem.url : subItem.path}
-                                    target={subItem.external ? "_blank" : undefined}
-                                    rel={subItem.external ? "noopener noreferrer" : undefined}
-                                  >
-                                     {/* Optional: Add description for subItem if available */}
-                                  </ListItem>
-                                )}
-                              </li>
-                            ))}
-                          </ul>
-                        </NavigationMenuContent>
+                        {openMenuIndex === index && (
+                          <NavigationMenuContent 
+                            forceMount
+                            className="absolute left-0 transform -translate-x-1/2 translate-x-1/4"
+                          >
+                            <ul className={cn(
+                              "grid gap-3 p-4",
+                              hasSingleColumn(item.submenu)
+                                ? "w-[300px]" // Single column width for direct links
+                                : hasMultipleSections(item.submenu)
+                                  ? "w-[400px] md:w-[500px] lg:w-[600px] lg:grid-cols-2" // Equal columns for multiple sections
+                                  : "w-[400px] md:w-[500px] lg:w-[600px] lg:grid-cols-[minmax(150px,_.75fr)_1fr]" // Asymmetric for one section with nested items
+                            )}>
+                              {item.submenu.map((subItem) => (
+                                <li key={subItem.name} className="break-inside-avoid">
+                                  {subItem.submenu ? (
+                                    <div className="mb-2">
+                                      <h4 className="font-medium mb-1 text-sm text-primary-prosalud px-3 py-1">{subItem.name}</h4>
+                                      <ul className="grid gap-1">
+                                        {subItem.submenu.map((subSubItem) => (
+                                          <ListItem
+                                            key={subSubItem.name}
+                                            title={subSubItem.name}
+                                            href={subSubItem.external ? subSubItem.url : subSubItem.path}
+                                            target={subSubItem.external ? "_blank" : undefined}
+                                            rel={subSubItem.external ? "noopener noreferrer" : undefined}
+                                            onClick={() => setOpenMenuIndex(null)}
+                                          >
+                                            {/* Optional: Add description for subSubItem if available */}
+                                          </ListItem>
+                                        ))}
+                                      </ul>
+                                    </div>
+                                  ) : (
+                                    <ListItem
+                                      key={subItem.name}
+                                      title={subItem.name}
+                                      href={subItem.external ? subSubItem.url : subSubItem.path}
+                                      target={subSubItem.external ? "_blank" : undefined}
+                                      rel={subSubItem.external ? "noopener noreferrer" : undefined}
+                                      onClick={() => setOpenMenuIndex(null)}
+                                    >
+                                      {/* Optional: Add description for subItem if available */}
+                                    </ListItem>
+                                  )}
+                                </li>
+                              ))}
+                            </ul>
+                          </NavigationMenuContent>
+                        )}
                       </>
                     ) : ( 
                       <Link
                         to={item.path!}
                         className={`text-sm font-medium py-2 px-3 block ${inactiveLinkClass} hover:bg-gray-50 rounded-md`}
+                        onClick={() => setOpenMenuIndex(null)}
                       >
                         {item.name}
                       </Link>
@@ -295,6 +321,14 @@ const Header: React.FC = () => {
             ))}
           </nav>
         </div>
+      )}
+
+      {/* Close menu when clicking outside */}
+      {openMenuIndex !== null && (
+        <div 
+          className="fixed inset-0 z-40 bg-transparent"
+          onClick={() => setOpenMenuIndex(null)}
+        ></div>
       )}
     </header>
   );
