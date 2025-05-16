@@ -84,10 +84,10 @@ const menuItems = [
   },
 ];
 
-// Simplified nav items for mobile view
+// Simplified nav items for mobile view - Fixed to handle items with submenu properly
 const mobileNavItems = menuItems.map(item => ({
   name: item.name,
-  path: item.submenu ? item.submenu[0].path : item.path,
+  path: item.submenu && item.submenu.length > 0 ? item.submenu[0].path : '/',
   icon: item.icon
 }));
 
@@ -181,7 +181,7 @@ const Header: React.FC = () => {
                       </>
                     ) : (
                       <Link
-                        to={item.path}
+                        to={item.path || '/'}
                         className={`text-sm font-medium py-2 block ${inactiveLinkClass}`}
                       >
                         {item.name}
