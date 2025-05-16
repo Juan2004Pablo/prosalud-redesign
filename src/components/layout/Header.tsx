@@ -40,6 +40,11 @@ type MenuItemType = TopLevelMenuItemWithSubmenu | TopLevelMenuItemDirectLink;
 // Define menu structure for dropdown navigation
 const menuItems: MenuItemType[] = [
   {
+    name: 'Inicio',
+    icon: Home,
+    path: '/'
+  },
+  {
     name: 'Nosotros',
     icon: Users,
     submenu: [
