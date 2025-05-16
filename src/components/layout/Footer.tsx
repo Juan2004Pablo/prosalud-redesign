@@ -70,9 +70,6 @@ const Footer: React.FC = () => {
           <p className="text-sm text-slate-500">
             &copy; {new Date().getFullYear()} ProSalud. Todos los derechos reservados.
           </p>
-          <p className="text-xs text-slate-600 mt-1">
-            Diseñado y desarrollado con el apoyo de tecnología IA.
-          </p>
         </div>
       </div>
     </footer>
