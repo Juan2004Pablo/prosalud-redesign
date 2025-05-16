@@ -67,11 +67,9 @@ const menuItems = [
     ]
   },
   { 
-    name: 'Archivo Digital', 
+    name: 'Artículos de interés', 
     icon: FolderArchive,
-    submenu: [
-      { name: 'Artículos de interés', path: '/archivo/articulos' },
-    ]
+    path: '/archivo/articulos'
   },
   { 
     name: 'Recursos', 
@@ -87,14 +85,14 @@ const menuItems = [
 // Simplified nav items for mobile view
 const mobileNavItems = menuItems.map(item => ({
   name: item.name,
-  path: item.submenu ? item.submenu[0].path : item.path,
+  path: item.submenu ? item.submenu[0].path : item.path || '/',
   icon: item.icon
 }));
 
 const Header: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const activeLinkClass = "text-red-500 font-bold border-b-2 border-secondary-prosaludgreen";
+  const activeLinkClass = "text-red-500 font-bold";
   const inactiveLinkClass = "text-text-gray hover:text-primary-prosalud transition-colors";
   
   // Custom component for NavigationMenuLink
@@ -136,14 +134,15 @@ const Header: React.FC = () => {
           {/* Desktop Navigation with dropdowns */}
           <div className="hidden md:block">
             <NavigationMenu>
-              <NavigationMenuList className="flex space-x-2">
+              <NavigationMenuList className="flex space-x-6">
                 {menuItems.map((item) => (
                   <NavigationMenuItem key={item.name} className="relative">
                     {item.submenu ? (
                       <>
-                        <NavigationMenuTrigger className="text-text-gray hover:text-primary-prosalud transition-colors text-sm font-medium">
+                        <NavigationMenuTrigger className="text-gray-600 hover:text-primary-prosalud transition-colors text-sm py-1 px-2 font-normal bg-transparent hover:bg-transparent">
                           <span className="flex items-center gap-1">
                             {item.name}
+                            <ChevronDown className="h-3 w-3" />
                           </span>
                         </NavigationMenuTrigger>
                         <NavigationMenuContent>
@@ -181,8 +180,8 @@ const Header: React.FC = () => {
                       </>
                     ) : (
                       <Link
-                        to={item.path}
-                        className={`text-sm font-medium py-2 block ${inactiveLinkClass}`}
+                        to={item.path || '/'}
+                        className="text-gray-600 hover:text-primary-prosalud transition-colors text-sm py-1 px-2 font-normal"
                       >
                         {item.name}
                       </Link>
