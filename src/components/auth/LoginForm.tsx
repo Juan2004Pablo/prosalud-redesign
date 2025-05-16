@@ -43,7 +43,7 @@ const LoginForm: React.FC = () => {
   };
 
   return (
-    <div className="bg-card p-6 sm:p-8 rounded-xl shadow-xl w-full">
+    <div className="w-full"> {/* Se eliminó bg-card p-6 sm:p-8 rounded-xl shadow-xl */}
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold text-primary-prosalud">Inicia sesión</h1>
         <p className="text-muted-foreground mt-2">
@@ -96,9 +96,9 @@ const LoginForm: React.FC = () => {
               </FormItem>
             )}
           />
-          <div className="text-left"> {/* Changed from text-right to text-left */}
+          <div className="text-left">
             <Link
-              to="/recuperar-contrasena" // Placeholder link
+              to="/recuperar-contrasena"
               className="text-sm text-primary-prosalud hover:underline"
             >
               ¿Olvidaste tu contraseña?
