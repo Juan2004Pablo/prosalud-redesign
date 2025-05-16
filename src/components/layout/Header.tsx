@@ -207,7 +207,7 @@ const Header: React.FC = () => {
 
           {/* Desktop Navigation with dropdowns */}
           <div className="hidden md:block">
-            <NavigationMenu onOpenChange={() => setOpenMenuIndex(null)} >
+            <NavigationMenu>
               <NavigationMenuList className="flex space-x-2">
                 {menuItems.map((item, index) => (
                   <NavigationMenuItem key={item.name} className="relative">
@@ -226,54 +226,56 @@ const Header: React.FC = () => {
                           </span>
                         </NavigationMenuTrigger>
                         {openMenuIndex === index && (
-                          <NavigationMenuContent 
-                            forceMount
-                            className="absolute left-0" 
-                          >
-                            <ul className={cn(
-                              "grid gap-3 p-4 bg-white shadow-lg rounded-md border",
-                              hasSingleColumn(item.submenu)
-                                ? "w-[300px]" 
-                                : hasMultipleSections(item.submenu)
-                                  ? "w-[400px] md:w-[500px] lg:w-[600px] lg:grid-cols-2" 
-                                  : "w-[400px] md:w-[500px] lg:w-[600px] lg:grid-cols-[minmax(150px,.75fr)_1fr]"
-                            )}>
-                              {item.submenu.map((subItem) => (
-                                <li key={subItem.name} className="break-inside-avoid">
-                                  {subItem.submenu ? (
-                                    <div className="mb-2">
-                                      <h4 className="font-medium mb-1 text-sm text-primary-prosalud px-3 py-1">{subItem.name}</h4>
-                                      <ul className="grid gap-1">
-                                        {subItem.submenu.map((subSubItem) => (
-                                          <ListItem
-                                            key={subSubItem.name}
-                                            title={subSubItem.name}
-                                            href={subSubItem.external ? subSubItem.url : subSubItem.path}
-                                            target={subSubItem.external ? "_blank" : undefined}
-                                            rel={subSubItem.external ? "noopener noreferrer" : undefined}
-                                            onClick={() => setOpenMenuIndex(null)}
-                                          >
-                                            {/* Optional: Add description for subSubItem if available */}
-                                          </ListItem>
-                                        ))}
-                                      </ul>
-                                    </div>
-                                  ) : (
-                                    <ListItem
-                                      key={subItem.name}
-                                      title={subItem.name}
-                                      href={subItem.external ? subItem.url : subItem.path}
-                                      target={subItem.external ? "_blank" : undefined}
-                                      rel={subItem.external ? "noopener noreferrer" : undefined}
-                                      onClick={() => setOpenMenuIndex(null)}
-                                    >
-                                      {/* Optional: Add description for subItem if available */}
-                                    </ListItem>
-                                  )}
-                                </li>
-                              ))}
-                            </ul>
-                          </NavigationMenuContent>
+                          <div className="absolute left-0 top-full mt-1 z-50">
+                            <NavigationMenuContent 
+                              forceMount
+                              className="relative"
+                            >
+                              <ul className={cn(
+                                "grid gap-3 p-4 bg-white shadow-lg rounded-md border max-h-[80vh] overflow-y-auto",
+                                hasSingleColumn(item.submenu)
+                                  ? "w-[300px]" 
+                                  : hasMultipleSections(item.submenu)
+                                    ? "w-[400px] md:w-[500px] lg:w-[600px] lg:grid-cols-2" 
+                                    : "w-[400px] md:w-[500px] lg:w-[600px] lg:grid-cols-[minmax(150px,.75fr)_1fr]"
+                              )}>
+                                {item.submenu.map((subItem) => (
+                                  <li key={subItem.name} className="break-inside-avoid">
+                                    {subItem.submenu ? (
+                                      <div className="mb-2">
+                                        <h4 className="font-medium mb-1 text-sm text-primary-prosalud px-3 py-1">{subItem.name}</h4>
+                                        <ul className="grid gap-1">
+                                          {subItem.submenu.map((subSubItem) => (
+                                            <ListItem
+                                              key={subSubItem.name}
+                                              title={subSubItem.name}
+                                              href={subSubItem.external ? subSubItem.url : subSubItem.path}
+                                              target={subSubItem.external ? "_blank" : undefined}
+                                              rel={subSubItem.external ? "noopener noreferrer" : undefined}
+                                              onClick={() => setOpenMenuIndex(null)}
+                                            >
+                                              {/* Optional: Add description for subSubItem if available */}
+                                            </ListItem>
+                                          ))}
+                                        </ul>
+                                      </div>
+                                    ) : (
+                                      <ListItem
+                                        key={subItem.name}
+                                        title={subItem.name}
+                                        href={subItem.external ? subSubItem.url : subSubItem.path}
+                                        target={subSubItem.external ? "_blank" : undefined}
+                                        rel={subSubItem.external ? "noopener noreferrer" : undefined}
+                                        onClick={() => setOpenMenuIndex(null)}
+                                      >
+                                        {/* Optional: Add description for subItem if available */}
+                                      </ListItem>
+                                    )}
+                                  </li>
+                                ))}
+                              </ul>
+                            </NavigationMenuContent>
+                          </div>
                         )}
                       </>
                     ) : ( 
