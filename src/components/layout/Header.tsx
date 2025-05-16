@@ -1,6 +1,7 @@
+
 import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { Menu, X, Briefcase, Home, Users, FileText, FolderArchive, Shield, LucideIcon } from 'lucide-react';
+import { Menu, X, Briefcase, Home, Users, FileText, FolderArchive, Shield, ChevronDown, LucideIcon } from 'lucide-react';
 import { cn } from "@/lib/utils";
 import {
   NavigationMenu,
@@ -49,7 +50,10 @@ const menuItems: MenuItemType[] = [
     icon: Users,
     submenu: [
       { name: '¿Quiénes somos?', path: '/nosotros/quienes-somos' },
+      // { name: 'Estructura organizacional', path: '/nosotros/estructura-organizacional' },
       { name: 'Estatutos y beneficios sindicales', path: '/nosotros/estatutos' },
+      // { name: 'Rol económico', path: '/nosotros/rol-economico' },
+      // { name: 'Compensaciones y beneficios', path: '/nosotros/compensaciones-beneficios' },
       { name: 'Contrato sindical', path: '/nosotros/contrato-sindical' },
     ]
   },
@@ -58,7 +62,7 @@ const menuItems: MenuItemType[] = [
     icon: Shield,
     submenu: [
       {
-        name: 'Campañas',
+        name: 'Campañas', // This MenuSubItem acts as a header, path is not needed
         submenu: [
           { name: 'Estilo de Vida y Trabajo Saludable', path: '/salud-seguridad-laboral/campanas/estilo-vida-trabajo-saludable' },
         ]
@@ -70,7 +74,7 @@ const menuItems: MenuItemType[] = [
     icon: FileText,
     submenu: [
       {
-        name: 'Documentos públicos',
+        name: 'Documentos públicos', // This MenuSubItem acts as a header
         submenu: [
           { name: 'Formatos de dotación', path: '/documentos-formatos/documentos-publicos/formatos-dotacion' },
           { name: 'Listados de asistencia', path: '/documentos-formatos/documentos-publicos/listados-asistencia' },
@@ -80,7 +84,7 @@ const menuItems: MenuItemType[] = [
         ]
       },
       {
-        name: 'Solicitudes de afiliados',
+        name: 'Solicitudes de afiliados', // This MenuSubItem acts as a header
         submenu: [
           { name: 'Verificación de pagos', path: '/documentos-formatos/solicitudes-afiliados/verificacion-pagos' },
           { name: 'Certificado de Convenio', path: '/documentos-formatos/solicitudes-afiliados/certificado-convenio' },
@@ -101,7 +105,7 @@ const menuItems: MenuItemType[] = [
     name: 'Recursos',
     icon: Briefcase,
     submenu: [
-      { name: 'Video ProSanet (YouTube)', external: true, url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' }, // Example link
+      { name: 'Video ProSanet (YouTube)', path: 'https://www.youtube.com', external: true, url: 'https://www.youtube.com' },
       { name: 'Acceso a ProSanet', path: '/recursos/acceso-prosanet' },
       { name: 'Bienestar', path: '/recursos/bienestar' },
     ]
@@ -116,10 +120,13 @@ const mobileNavItems = menuItems.map(item => {
     if (firstSubItem.path) {
       path = firstSubItem.path;
     } else if (firstSubItem.submenu && firstSubItem.submenu.length > 0) {
+      // Drill down to the first actual link if the first sub-item is also a group
       const firstNestedSubItem = firstSubItem.submenu[0];
       if (firstNestedSubItem.path) {
         path = firstNestedSubItem.path;
       }
+      // If even deeper nesting exists and no path is found, it will default to '/'
+      // This logic assumes paths are primarily on the second level of submenu or deeper.
     }
   } else if (item.path) {
     path = item.path;
@@ -140,15 +147,13 @@ const Header: React.FC = () => {
   const ListItem = React.forwardRef<
     React.ElementRef<"a">,
     React.ComponentPropsWithoutRef<"a"> & { title: string }
-  >(({ className, title, children, href, target, rel, ...props }, ref) => {
+  >(({ className, title, children, href, ...props }, ref) => {
     return (
       <li>
         <NavigationMenuLink asChild>
           <a
             ref={ref}
             href={href}
-            target={target}
-            rel={rel}
             className={cn(
               "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
               className
@@ -179,7 +184,7 @@ const Header: React.FC = () => {
     // If there are multiple submenu items with their own submenus, we should display them in separate columns
     return submenu.filter(item => item.submenu).length > 1;
   };
-
+  
   return (
     <header className="bg-white shadow-md sticky top-0 z-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -191,27 +196,25 @@ const Header: React.FC = () => {
 
           {/* Desktop Navigation with dropdowns */}
           <div className="hidden md:block">
-            <NavigationMenu> 
+            <NavigationMenu>
               <NavigationMenuList className="flex space-x-2">
                 {menuItems.map((item) => (
-                  <NavigationMenuItem key={item.name}>
+                  <NavigationMenuItem key={item.name} className="relative">
                     {item.submenu ? (
                       <>
-                        <NavigationMenuTrigger 
-                          className="text-gray-600 hover:text-primary-prosalud transition-colors text-sm py-1 px-2 font-normal bg-transparent hover:bg-transparent focus:bg-transparent data-[state=open]:bg-transparent"
-                        >
+                        <NavigationMenuTrigger className="text-gray-600 hover:text-primary-prosalud transition-colors text-sm py-1 px-2 font-normal bg-transparent hover:bg-transparent focus:bg-transparent data-[state=open]:bg-transparent">
                           <span className="flex items-center gap-1">
                             {item.name}
                           </span>
                         </NavigationMenuTrigger>
                         <NavigationMenuContent>
                           <ul className={cn(
-                            "grid gap-3 p-4 bg-white shadow-lg rounded-md border max-h-[calc(100vh-10rem)] overflow-y-auto", // 10rem is an arbitrary value, adjust if header height changes
+                            "grid gap-3 p-4",
                             hasSingleColumn(item.submenu)
-                              ? "w-[300px]" 
+                              ? "w-[300px]" // Single column width for direct links
                               : hasMultipleSections(item.submenu)
-                                ? "w-[400px] md:w-[500px] lg:w-[600px] lg:grid-cols-2" 
-                                : "w-[400px] md:w-[500px] lg:w-[600px] lg:grid-cols-[minmax(150px,.75fr)_1fr]"
+                                ? "w-[400px] md:w-[500px] lg:w-[600px] lg:grid-cols-2" // Equal columns for multiple sections
+                                : "w-[400px] md:w-[500px] lg:w-[600px] lg:grid-cols-[minmax(150px,_.75fr)_1fr]" // Asymmetric for one section with nested items
                           )}>
                             {item.submenu.map((subItem) => (
                               <li key={subItem.name} className="break-inside-avoid">
@@ -219,14 +222,16 @@ const Header: React.FC = () => {
                                   <div className="mb-2">
                                     <h4 className="font-medium mb-1 text-sm text-primary-prosalud px-3 py-1">{subItem.name}</h4>
                                     <ul className="grid gap-1">
-                                      {subItem.submenu.map((nestedSubItem) => (
+                                      {subItem.submenu.map((subSubItem) => (
                                         <ListItem
-                                          key={nestedSubItem.name}
-                                          title={nestedSubItem.name}
-                                          href={nestedSubItem.external ? nestedSubItem.url : nestedSubItem.path}
-                                          target={nestedSubItem.external ? "_blank" : undefined}
-                                          rel={nestedSubItem.external ? "noopener noreferrer" : undefined}
-                                        />
+                                          key={subSubItem.name}
+                                          title={subSubItem.name}
+                                          href={subSubItem.external ? subSubItem.url : subSubItem.path}
+                                          target={subSubItem.external ? "_blank" : undefined}
+                                          rel={subSubItem.external ? "noopener noreferrer" : undefined}
+                                        >
+                                          {/* Optional: Add description for subSubItem if available */}
+                                        </ListItem>
                                       ))}
                                     </ul>
                                   </div>
@@ -237,7 +242,9 @@ const Header: React.FC = () => {
                                     href={subItem.external ? subItem.url : subItem.path}
                                     target={subItem.external ? "_blank" : undefined}
                                     rel={subItem.external ? "noopener noreferrer" : undefined}
-                                  />
+                                  >
+                                     {/* Optional: Add description for subItem if available */}
+                                  </ListItem>
                                 )}
                               </li>
                             ))}
