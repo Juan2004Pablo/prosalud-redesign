@@ -70,6 +70,17 @@ const QuienesSomos: React.FC = () => {
 
   return (
     <MainLayout>
+      {/* Nuevo Banner Section */}
+      <section className="w-full bg-white pt-8 pb-4 md:pt-12 md:pb-6">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <img 
+            src="/lovable-uploads/1861697e-7f6c-4516-a8ac-9ef27372a070.png" 
+            alt="Banner ProSalud ¿Quiénes somos?" 
+            className="w-full h-auto object-contain rounded-xl shadow-lg" 
+          />
+        </div>
+      </section>
+
       {/* Encabezado Hero Section */}
       <section className="relative bg-gradient-to-br from-primary-prosalud via-primary-prosalud-dark to-slate-900 text-text-light py-24 md:py-32 overflow-hidden">
         <div className="absolute inset-0 opacity-10">
