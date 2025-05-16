@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { Menu, X, Briefcase, Home, Users, FileText, FolderArchive, Shield, ChevronDown, LucideIcon } from 'lucide-react';
@@ -170,6 +171,14 @@ const Header: React.FC = () => {
   });
   ListItem.displayName = "ListItem";
   
+  // Function to determine if a menu has only a single column of items
+  const hasSingleColumn = (submenu: MenuSubItem[]): boolean => {
+    // Check if there's only one submenu item with direct links or
+    // if all items are direct links without nested submenus
+    if (submenu.length === 1 && submenu[0].submenu) return false;
+    return !submenu.some(item => item.submenu);
+  };
+  
   return (
     <header className="bg-white shadow-md sticky top-0 z-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -193,7 +202,12 @@ const Header: React.FC = () => {
                           </span>
                         </NavigationMenuTrigger>
                         <NavigationMenuContent>
-                          <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] lg:w-[600px] lg:grid-cols-[minmax(150px,_.75fr)_1fr]">
+                          <ul className={cn(
+                            "grid gap-3 p-4",
+                            hasSingleColumn(item.submenu)
+                              ? "w-[300px]" // Single column width
+                              : "w-[400px] md:w-[500px] lg:w-[600px] lg:grid-cols-[minmax(150px,_.75fr)_1fr]" // Two column layout
+                          )}>
                             {item.submenu.map((subItem) => (
                               <li key={subItem.name} className="break-inside-avoid">
                                 {subItem.submenu ? (
