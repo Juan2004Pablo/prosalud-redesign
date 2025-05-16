@@ -208,14 +208,18 @@ const Header: React.FC = () => {
                           </span>
                         </NavigationMenuTrigger>
                         <NavigationMenuContent>
-                          <ul className={cn(
-                            "grid gap-3 p-4",
-                            hasSingleColumn(item.submenu)
-                              ? "w-[300px]" // Single column width for direct links
-                              : hasMultipleSections(item.submenu)
-                                ? "w-[400px] md:w-[500px] lg:w-[600px] lg:grid-cols-2" // Equal columns for multiple sections
-                                : "w-[400px] md:w-[500px] lg:w-[600px] lg:grid-cols-[minmax(150px,_.75fr)_1fr]" // Asymmetric for one section with nested items
-                          )}>
+                            <ul
+                              className={cn(
+                                "grid gap-3 p-4",
+                                hasSingleColumn(item.submenu)
+                                  ? "w-[300px]"
+                                  : hasMultipleSections(item.submenu)
+                                  ? "w-[400px] md:w-[500px] lg:w-[600px] lg:grid-cols-2"
+                                  : "w-[400px] md:w-[500px] lg:w-[600px] lg:grid-cols-[minmax(150px,_.75fr)_1fr]",
+                          
+                                "max-h-[75vh] overflow-y-auto"
+                              )}
+                            >
                             {item.submenu.map((subItem) => (
                               <li key={subItem.name} className="break-inside-avoid">
                                 {subItem.submenu ? (
