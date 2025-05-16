@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 const LoginPage: React.FC = () => {
   return (
-    <div className="flex flex-col md:flex-row min-h-screen bg-white">
+    <div className="flex flex-col md:flex-row min-h-screen bg-background-light">
       {/* Columna Izquierda: Ilustración */}
       <div className="w-full md:w-3/5 bg-primary-prosalud-light flex items-center justify-center p-6 sm:p-8 lg:p-12 order-1 md:order-none"> {/* Cambiado md:w-1/2 a md:w-3/5 */}
         <div className="max-w-md lg:max-w-lg xl:max-w-xl w-full">
