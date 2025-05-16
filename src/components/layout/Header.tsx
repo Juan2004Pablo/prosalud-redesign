@@ -14,7 +14,7 @@ import {
 // Define types for menu items
 interface MenuSubItem {
   name: string;
-  path: string;
+  path?: string; // Path is optional, especially if it's a header for another submenu
   external?: boolean;
   url?: string;
   submenu?: MenuSubItem[];
@@ -22,17 +22,17 @@ interface MenuSubItem {
 
 interface BaseMenuItem {
   name: string;
-  icon: LucideIcon; // Changed from React.ElementType to LucideIcon for specificity
+  icon: LucideIcon;
 }
 
 interface TopLevelMenuItemWithSubmenu extends BaseMenuItem {
   submenu: MenuSubItem[];
-  path?: undefined; // Explicitly no path if submenu exists for top level
+  path?: undefined; 
 }
 
 interface TopLevelMenuItemDirectLink extends BaseMenuItem {
   path: string;
-  submenu?: undefined; // Explicitly no submenu if direct link
+  submenu?: undefined; 
 }
 
 type MenuItemType = TopLevelMenuItemWithSubmenu | TopLevelMenuItemDirectLink;
@@ -56,7 +56,7 @@ const menuItems: MenuItemType[] = [
     icon: Shield,
     submenu: [
       {
-        name: 'Campañas',
+        name: 'Campañas', // This MenuSubItem acts as a header, path is not needed
         submenu: [
           { name: 'Estilo de Vida y Trabajo Saludable', path: '/salud-seguridad-laboral/campanas/estilo-vida-trabajo-saludable' },
         ]
@@ -68,7 +68,7 @@ const menuItems: MenuItemType[] = [
     icon: FileText,
     submenu: [
       {
-        name: 'Documentos públicos',
+        name: 'Documentos públicos', // This MenuSubItem acts as a header
         submenu: [
           { name: 'Formatos de dotación', path: '/documentos-formatos/documentos-publicos/formatos-dotacion' },
           { name: 'Listados de asistencia', path: '/documentos-formatos/documentos-publicos/listados-asistencia' },
@@ -78,7 +78,7 @@ const menuItems: MenuItemType[] = [
         ]
       },
       {
-        name: 'Solicitudes de afiliados',
+        name: 'Solicitudes de afiliados', // This MenuSubItem acts as a header
         submenu: [
           { name: 'Verificación de pagos', path: '/documentos-formatos/solicitudes-afiliados/verificacion-pagos' },
           { name: 'Certificado de Convenio', path: '/documentos-formatos/solicitudes-afiliados/certificado-convenio' },
@@ -108,13 +108,19 @@ const menuItems: MenuItemType[] = [
 
 // Simplified nav items for mobile view - Adjusted to pick first sensible path
 const mobileNavItems = menuItems.map(item => {
-  let path = '/';
+  let path = '/'; // Default path
   if (item.submenu && item.submenu.length > 0) {
     const firstSubItem = item.submenu[0];
     if (firstSubItem.path) {
       path = firstSubItem.path;
-    } else if (firstSubItem.submenu && firstSubItem.submenu.length > 0 && firstSubItem.submenu[0].path) {
-      path = firstSubItem.submenu[0].path;
+    } else if (firstSubItem.submenu && firstSubItem.submenu.length > 0) {
+      // Drill down to the first actual link if the first sub-item is also a group
+      const firstNestedSubItem = firstSubItem.submenu[0];
+      if (firstNestedSubItem.path) {
+        path = firstNestedSubItem.path;
+      }
+      // If even deeper nesting exists and no path is found, it will default to '/'
+      // This logic assumes paths are primarily on the second level of submenu or deeper.
     }
   } else if (item.path) {
     path = item.path;
@@ -132,16 +138,16 @@ const Header: React.FC = () => {
   const activeLinkClass = "text-primary-prosalud font-bold border-b-2 border-secondary-prosaludgreen";
   const inactiveLinkClass = "text-text-gray hover:text-primary-prosalud transition-colors";
   
-  // Custom component for NavigationMenuLink
   const ListItem = React.forwardRef<
     React.ElementRef<"a">,
-    React.ComponentPropsWithoutRef<"a">
-  >(({ className, title, children, ...props }, ref) => {
+    React.ComponentPropsWithoutRef<"a"> & { title: string } // Ensure title is part of props
+  >(({ className, title, children, href, ...props }, ref) => { // Ensure href is destructured
     return (
       <li>
         <NavigationMenuLink asChild>
           <a
             ref={ref}
+            href={href} // Pass href to the anchor tag
             className={cn(
               "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
               className
@@ -176,24 +182,26 @@ const Header: React.FC = () => {
                   <NavigationMenuItem key={item.name} className="relative">
                     {item.submenu ? (
                       <>
-                        <NavigationMenuTrigger className="text-gray-600 hover:text-primary-prosalud transition-colors text-sm py-1 px-2 font-normal bg-transparent hover:bg-transparent">
+                        <NavigationMenuTrigger className="text-gray-600 hover:text-primary-prosalud transition-colors text-sm py-1 px-2 font-normal bg-transparent hover:bg-transparent focus:bg-transparent data-[state=open]:bg-transparent">
                           <span className="flex items-center gap-1">
                             {item.name}
                           </span>
                         </NavigationMenuTrigger>
                         <NavigationMenuContent>
-                          <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] lg:w-[600px] lg:grid-cols-[.75fr_1fr]">
+                          <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] lg:w-[600px] lg:grid-cols-[minmax(150px,_.75fr)_1fr]">
                             {item.submenu.map((subItem) => (
-                              <li key={subItem.name}>
+                              <li key={subItem.name} className="break-inside-avoid">
                                 {subItem.submenu ? (
                                   <div className="mb-2">
-                                    <h4 className="font-medium mb-1 text-sm text-primary-prosalud">{subItem.name}</h4>
-                                    <ul className="grid gap-1 pl-2">
+                                    <h4 className="font-medium mb-1 text-sm text-primary-prosalud px-3 py-1">{subItem.name}</h4>
+                                    <ul className="grid gap-1">
                                       {subItem.submenu.map((subSubItem) => (
                                         <ListItem
                                           key={subSubItem.name}
                                           title={subSubItem.name}
-                                          href={subSubItem.path}
+                                          href={subSubItem.external ? subSubItem.url : subSubItem.path}
+                                          target={subSubItem.external ? "_blank" : undefined}
+                                          rel={subSubItem.external ? "noopener noreferrer" : undefined}
                                         >
                                           {/* Optional: Add description for subSubItem if available */}
                                         </ListItem>
@@ -216,9 +224,9 @@ const Header: React.FC = () => {
                           </ul>
                         </NavigationMenuContent>
                       </>
-                    ) : ( // This case is for top-level items that are direct links (no submenu)
+                    ) : ( 
                       <Link
-                        to={item.path} // item.path is guaranteed by MenuItemType if no submenu
+                        to={item.path!} // Path must exist if no submenu for TopLevelMenuItemDirectLink
                         className={`text-sm font-medium py-2 px-3 block ${inactiveLinkClass} hover:bg-gray-50 rounded-md`}
                       >
                         {item.name}
