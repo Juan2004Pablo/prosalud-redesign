@@ -8,24 +8,24 @@ interface HeroSectionProps {
 
 const HeroSection: React.FC<HeroSectionProps> = ({ handleScrollToSection }) => {
   return (
-    <section className="relative bg-gradient-to-br from-primary-prosalud via-primary-prosalud-dark to-slate-900 text-text-light py-24 md:py-32 overflow-hidden">
+    <section className="relative bg-gradient-to-br from-primary-prosalud via-primary-prosalud-dark to-slate-900 text-text-light py-16 sm:py-20 md:py-24 lg:py-32 overflow-hidden">
       <div className="absolute inset-0 opacity-10">
-        {/* <img src="/path-to-abstract-bg.svg" alt="" className="w-full h-full object-cover" /> */}
+        {/* Background texture */}
       </div>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-        <h1 className="text-5xl md:text-6xl font-bold mb-6 animate-fade-in tracking-tight">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 sm:mb-6 animate-fade-in tracking-tight">
           ¿Quiénes somos?
         </h1>
-        <p className="text-xl md:text-2xl max-w-3xl mx-auto animate-fade-in animation-delay-200 font-light">
+        <p className="text-lg sm:text-xl md:text-2xl max-w-3xl mx-auto animate-fade-in animation-delay-200 font-light px-2">
           Conoce la esencia de ProSalud, el Sindicato de Profesionales de la Salud.
         </p>
         <a
           href="#descripcion-prosalud"
           onClick={(e) => handleScrollToSection(e, 'descripcion-prosalud')}
-          className="mt-10 inline-block animate-fade-in animation-delay-400"
+          className="mt-8 sm:mt-10 inline-block animate-fade-in animation-delay-400"
           aria-label="Ir a Descripción de ProSalud"
         >
-          <ArrowDownCircle size={40} className="text-secondary-prosaludgreen hover:text-white transition-colors hover:scale-110" />
+          <ArrowDownCircle size={36} className="text-secondary-prosaludgreen hover:text-white transition-colors hover:scale-110" />
         </a>
       </div>
     </section>
