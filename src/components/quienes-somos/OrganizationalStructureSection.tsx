@@ -42,7 +42,7 @@ const OrganizationalStructureSection: React.FC = () => {
                 { title: "Tesorero", icon: Calculator, description: "Gestión financiera y de recursos." },
                 { title: "Fiscal", icon: ShieldQuestion, description: "Vigilancia y control normativo." },
               ].map((item, index) => (
-                <Card key={index} className="shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-lg p-6 text-center transform hover:-translate-y-1 animate-scale-in" style={{ animationDelay: `${index * 100 + 400}ms` }}>
+                <Card key={index} className="shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-lg p-6 text-center animate-scale-in" style={{ animationDelay: `${index * 100 + 400}ms` }}>
                   <item.icon size={36} className="mx-auto mb-3 text-primary-prosalud" />
                   <CardTitle className="text-xl font-medium text-text-dark mb-1">{item.title}</CardTitle>
                   <CardDescription className="text-sm text-text-gray">{item.description}</CardDescription>
@@ -56,7 +56,7 @@ const OrganizationalStructureSection: React.FC = () => {
               <ClipboardList size={30} className="mr-3" /> Nivel Administrativo
             </h3>
             <div className="flex justify-center">
-              <Card className="w-full max-w-md shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-lg p-6 text-center transform hover:-translate-y-1 animate-scale-in" style={{ animationDelay: `600ms` }}>
+              <Card className="w-full max-w-md shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-lg p-6 text-center animate-scale-in" style={{ animationDelay: `600ms` }}>
                 <UserCog size={36} className="mx-auto mb-3 text-primary-prosalud" />
                 <CardTitle className="text-xl font-medium text-text-dark mb-1">Subdirección Administrativa</CardTitle>
                 <CardDescription className="text-sm text-text-gray">Coordinación y gestión de operaciones administrativas.</CardDescription>
@@ -76,7 +76,7 @@ const OrganizationalStructureSection: React.FC = () => {
                 { title: "Recursos Humanos", icon: Users, description: "Gestión del talento humano y bienestar." },
                 { title: "S.S.T.", icon: Shield, subTitle: "(Salud y Seguridad en el Trabajo)", description: "Promoción de un entorno laboral seguro y saludable." },
               ].map((item, index) => (
-                <Card key={index} className="shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-lg p-6 text-center transform hover:-translate-y-1 animate-scale-in" style={{ animationDelay: `${index * 100 + 800}ms` }}>
+                <Card key={index} className="shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-lg p-6 text-center animate-scale-in" style={{ animationDelay: `${index * 100 + 800}ms` }}>
                   <item.icon size={36} className="mx-auto mb-3 text-primary-prosalud" />
                   <CardTitle className="text-xl font-medium text-text-dark mb-1">{item.title} {item.subTitle && <span className="block text-xs text-muted-foreground">{item.subTitle}</span>}</CardTitle>
                   <CardDescription className="text-sm text-text-gray">{item.description}</CardDescription>
