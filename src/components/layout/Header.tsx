@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { Menu, X, Search, Briefcase, Home, Users, FileText, FolderArchive, Shield, ChevronDown } from 'lucide-react';
@@ -87,7 +86,7 @@ const menuItems = [
 // Simplified nav items for mobile view
 const mobileNavItems = menuItems.map(item => ({
   name: item.name,
-  path: item.submenu ? item.submenu[0].path : item.path,
+  path: item.submenu && item.submenu.length > 0 ? item.submenu[0].path : '/',
   icon: item.icon
 }));
 
@@ -141,13 +140,13 @@ const Header: React.FC = () => {
                   <NavigationMenuItem key={item.name} className="relative">
                     {item.submenu ? (
                       <>
-                        <NavigationMenuTrigger className="text-gray-600 hover:text-primary-prosalud transition-colors text-sm py-1 px-2 font-normal bg-transparent hover:bg-transparent">
+                        <NavigationMenuTrigger className="text-gray-600 hover:text-black transition-colors text-sm py-1 px-2 font-normal bg-transparent hover:bg-transparent">
                           <span className="flex items-center gap-1">
                             {item.name}
                           </span>
                         </NavigationMenuTrigger>
                         <NavigationMenuContent>
-                          <ul className="grid w-[400px] gap-3 p-4">
+                          <ul className="grid w-[400px] gap-3 p-4 bg-white border border-gray-200 rounded-md shadow-md">
                             {item.submenu.map((subItem) => (
                               <li key={subItem.name}>
                                 {subItem.submenu ? (
@@ -158,7 +157,7 @@ const Header: React.FC = () => {
                                         <li key={subSubItem.name}>
                                           <Link
                                             to={subSubItem.path}
-                                            className="text-sm text-text-gray hover:text-primary-prosalud block p-2 rounded hover:bg-gray-50"
+                                            className="text-sm text-text-gray hover:text-black block p-2 rounded hover:bg-gray-50"
                                           >
                                             {subSubItem.name}
                                           </Link>
@@ -169,7 +168,7 @@ const Header: React.FC = () => {
                                 ) : (
                                   <Link
                                     to={subItem.path}
-                                    className="text-sm text-text-gray hover:text-primary-prosalud block p-2 rounded hover:bg-gray-50"
+                                    className="text-sm text-text-gray hover:text-black block p-2 rounded hover:bg-gray-50"
                                   >
                                     {subItem.name}
                                   </Link>
@@ -181,7 +180,7 @@ const Header: React.FC = () => {
                       </>
                     ) : (
                       <Link
-                        to={item.path}
+                        to={item.path || '/'}
                         className={`text-sm font-medium py-2 block ${inactiveLinkClass}`}
                       >
                         {item.name}
