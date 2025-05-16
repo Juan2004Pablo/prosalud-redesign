@@ -1,20 +1,25 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Facebook, Twitter, Instagram, Linkedin } from 'lucide-react'; // Placeholder icons
 
 const Footer: React.FC = () => {
   const logoUrl = "/lovable-uploads/2bf2da56-4967-4a17-8849-9efab8759375.png"; // Path to your logo
+  const minsaludLogoUrl = "/lovable-uploads/ae428eb9-0bc1-40b2-93b5-0a4126a7ba23.png"; // Path to Minsalud logo
 
   return (
     <footer className="bg-slate-900 text-slate-300 py-12">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-10">
-          {/* Column 1: Logo and About */}
+          {/* Column 1: Logos and About */}
           <div className="space-y-4">
-            <Link to="/" className="inline-block">
-              <img src={logoUrl} alt="ProSalud Logo" className="h-14 w-auto" />
-            </Link>
+            <div className="flex items-center space-x-4"> {/* Container for both logos */}
+              <Link to="https://www.minsalud.gov.co" target="_blank" rel="noopener noreferrer" className="inline-block">
+                <img src={minsaludLogoUrl} alt="Minsalud Logo" className="h-14 w-auto" />
+              </Link>
+              <Link to="/" className="inline-block">
+                <img src={logoUrl} alt="ProSalud Logo" className="h-14 w-auto" />
+              </Link>
+            </div>
             <p className="text-sm text-slate-400">
               Sindicato de Profesionales de la Salud comprometidos con tu bienestar y derechos laborales.
             </p>
@@ -77,4 +82,3 @@ const Footer: React.FC = () => {
 };
 
 export default Footer;
-
