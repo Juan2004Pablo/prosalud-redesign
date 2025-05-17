@@ -2,7 +2,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { menuItems } from './menuConfig';
-import { Plus, Minus } from 'lucide-react'; // ChevronDown import removed, Plus and Minus added
+import { Plus, Minus } from 'lucide-react';
 import {
   Accordion,
   AccordionContent,
@@ -20,7 +20,8 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ onClose, activeLinkClass, inact
   return (
     <div className="md:hidden absolute top-20 left-0 right-0 bg-white shadow-lg z-40 max-h-[80vh] overflow-y-auto">
       <nav className="flex flex-col px-4 py-3">
-        <Accordion type="multiple" className="w-full">
+        {/* Changed type to "single" for the main accordion */}
+        <Accordion type="single" collapsible className="w-full">
           {menuItems.map((item) => {
             if (item.submenu) {
               return (
@@ -38,11 +39,12 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ onClose, activeLinkClass, inact
                           return (
                             <Accordion type="multiple" key={subItem.name} className="w-full border-0">
                               <AccordionItem value={subItem.name} className="border-0">
-                                <AccordionTrigger 
+                                <AccordionTrigger
                                   className={`category-accordion-trigger py-2 px-2 hover:bg-primary-prosalud-light hover:text-primary-prosalud text-sm`}
                                 >
                                   <div className="flex justify-between w-full items-center">
-                                    <span className="font-medium">{subItem.name}</span>
+                                    {/* Changed font-medium to font-semibold for category title */}
+                                    <span className="font-semibold">{subItem.name}</span>
                                     <span className="plus-minus-icon">
                                       <Plus size={16} className="plus-icon" />
                                       <Minus size={16} className="minus-icon" />
@@ -56,7 +58,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ onClose, activeLinkClass, inact
                                         key={nestedItem.name}
                                         to={nestedItem.path || "#"}
                                         onClick={onClose}
-                                        className={({ isActive }) => 
+                                        className={({ isActive }) =>
                                           `${isActive ? activeLinkClass : inactiveLinkClass} block px-2 py-2 rounded-md text-sm`
                                         }
                                       >
@@ -75,7 +77,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ onClose, activeLinkClass, inact
                               key={subItem.name}
                               to={subItem.path || "#"}
                               onClick={onClose}
-                              className={({ isActive }) => 
+                              className={({ isActive }) =>
                                 `${isActive ? activeLinkClass : inactiveLinkClass} block px-2 py-2 rounded-md text-sm`
                               }
                             >
@@ -110,4 +112,3 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ onClose, activeLinkClass, inact
 };
 
 export default MobileMenu;
-

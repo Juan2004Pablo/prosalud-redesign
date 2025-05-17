@@ -51,10 +51,9 @@ html, body {
   }
 
   .dark {
-    /* Define dark mode variables if needed in the future */
+    /* ... keep existing code (dark mode variables) */
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
-    /* ... (rest of dark mode variables from original) */
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
     --popover: 222.2 84% 4.9%;
@@ -100,17 +99,19 @@ html, body {
     /* The ::before pseudo-element will use existing padding, no extra padding needed here unless design dictates */
   }
 
-  /* Blue line style for category triggers */
+  /* Blue line style for category triggers - REMOVED */
+  /*
   .category-accordion-trigger::before {
     content: '';
     position: absolute;
-    left: 0px; /* Aligned to the left edge of the trigger's padding box */
+    left: 0px; 
     top: 15%; 
     bottom: 15%;
     width: 3px; 
-    background-color: hsl(var(--primary)); /* ProSalud Blue */
+    background-color: hsl(var(--primary)); 
     border-radius: 1.5px;
   }
+  */
 
   /* Hide default chevron icon from shadcn/ui AccordionTrigger for these specific category triggers */
   .category-accordion-trigger > .lucide.lucide-chevron-down {
@@ -132,4 +133,3 @@ html, body {
     display: inline-block;
   }
 }
-
