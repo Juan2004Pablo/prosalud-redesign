@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 const LoginPage: React.FC = () => {
   return (
-    <div className="flex flex-col md:flex-row min-h-screen bg-background-light">
+    <div className="flex flex-col md:flex-row min-h-screen md:h-screen md:overflow-hidden bg-background-light">
       {/* Columna Izquierda: Ilustración - Oculta en móvil, visible en md y superior */}
       <div className="hidden md:flex md:w-3/5 relative overflow-hidden group"> {/* Contenedor de la imagen */}
         <img
@@ -39,4 +39,3 @@ const LoginPage: React.FC = () => {
 };
 
 export default LoginPage;
-
