@@ -42,16 +42,50 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ onClose, activeLinkClass, inact
                   </AccordionTrigger>
                   <AccordionContent>
                     <div className="ml-7 space-y-1 py-2">
-                      {item.submenu?.map((subItem) => (
-                        <NavLink
-                          key={subItem.name}
-                          to={subItem.path || "#"} // subItem.path might be undefined for nested headers
-                          onClick={onClose}
-                          className={({ isActive }) => `${isActive ? activeLinkClass : inactiveLinkClass} block px-2 py-2 rounded-md text-sm`}
-                        >
-                          {subItem.name}
-                        </NavLink>
-                      ))}
+                      {item.submenu?.map((subItem) => {
+                        // Check if this subItem has its own submenu (it's a category header)
+                        if (subItem.submenu) {
+                          return (
+                            <Accordion type="multiple" key={subItem.name} className="w-full border-0">
+                              <AccordionItem value={subItem.name} className="border-0">
+                                <AccordionTrigger className="py-2 px-2 hover:bg-primary-prosalud-light hover:text-primary-prosalud text-sm">
+                                  <span className="font-medium">{subItem.name}</span>
+                                </AccordionTrigger>
+                                <AccordionContent>
+                                  <div className="ml-4 space-y-1 py-1">
+                                    {subItem.submenu.map((nestedItem) => (
+                                      <NavLink
+                                        key={nestedItem.name}
+                                        to={nestedItem.path || "#"}
+                                        onClick={onClose}
+                                        className={({ isActive }) => 
+                                          `${isActive ? activeLinkClass : inactiveLinkClass} block px-2 py-2 rounded-md text-sm`
+                                        }
+                                      >
+                                        {nestedItem.name}
+                                      </NavLink>
+                                    ))}
+                                  </div>
+                                </AccordionContent>
+                              </AccordionItem>
+                            </Accordion>
+                          );
+                        } else {
+                          // Regular direct link subItem
+                          return (
+                            <NavLink
+                              key={subItem.name}
+                              to={subItem.path || "#"} // subItem.path might be undefined for nested headers
+                              onClick={onClose}
+                              className={({ isActive }) => 
+                                `${isActive ? activeLinkClass : inactiveLinkClass} block px-2 py-2 rounded-md text-sm`
+                              }
+                            >
+                              {subItem.name}
+                            </NavLink>
+                          );
+                        }
+                      })}
                     </div>
                   </AccordionContent>
                 </AccordionItem>
@@ -78,4 +112,3 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ onClose, activeLinkClass, inact
 };
 
 export default MobileMenu;
-
