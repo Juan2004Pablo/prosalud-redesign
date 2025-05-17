@@ -93,3 +93,43 @@ html, body {
   }
 }
 
+/* Custom styles for category accordion triggers */
+@layer components {
+  .category-accordion-trigger {
+    position: relative;
+    /* The ::before pseudo-element will use existing padding, no extra padding needed here unless design dictates */
+  }
+
+  /* Blue line style for category triggers */
+  .category-accordion-trigger::before {
+    content: '';
+    position: absolute;
+    left: 0px; /* Aligned to the left edge of the trigger's padding box */
+    top: 15%; 
+    bottom: 15%;
+    width: 3px; 
+    background-color: hsl(var(--primary)); /* ProSalud Blue */
+    border-radius: 1.5px;
+  }
+
+  /* Hide default chevron icon from shadcn/ui AccordionTrigger for these specific category triggers */
+  .category-accordion-trigger > .lucide.lucide-chevron-down {
+    display: none !important;
+  }
+
+  /* Manage visibility of Plus/Minus icons based on data-state */
+  .category-accordion-trigger .plus-minus-icon .minus-icon {
+    display: none;
+  }
+  .category-accordion-trigger .plus-minus-icon .plus-icon {
+    display: inline-block;
+  }
+
+  .category-accordion-trigger[data-state="open"] .plus-minus-icon .plus-icon {
+    display: none;
+  }
+  .category-accordion-trigger[data-state="open"] .plus-minus-icon .minus-icon {
+    display: inline-block;
+  }
+}
+

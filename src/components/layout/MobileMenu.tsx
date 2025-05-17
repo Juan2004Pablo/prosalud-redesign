@@ -1,8 +1,8 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { menuItems } from './menuConfig'; // Changed from mobileNavItems to menuItems
-import { ChevronDown } from 'lucide-react';
+import { menuItems } from './menuConfig';
+import { Plus, Minus } from 'lucide-react'; // ChevronDown import removed, Plus and Minus added
 import {
   Accordion,
   AccordionContent,
@@ -29,8 +29,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ onClose, activeLinkClass, inact
         </div>
 
         <Accordion type="multiple" className="w-full">
-          {menuItems.map((item) => { // Changed from mobileNavItems to menuItems
-            // If the item has submenu items from menuConfig
+          {menuItems.map((item) => {
             if (item.submenu) {
               return (
                 <AccordionItem key={item.name} value={item.name} className="border-b">
@@ -43,13 +42,20 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ onClose, activeLinkClass, inact
                   <AccordionContent>
                     <div className="ml-7 space-y-1 py-2">
                       {item.submenu?.map((subItem) => {
-                        // Check if this subItem has its own submenu (it's a category header)
-                        if (subItem.submenu) {
+                        if (subItem.submenu) { // This is a category header
                           return (
                             <Accordion type="multiple" key={subItem.name} className="w-full border-0">
                               <AccordionItem value={subItem.name} className="border-0">
-                                <AccordionTrigger className="py-2 px-2 hover:bg-primary-prosalud-light hover:text-primary-prosalud text-sm">
-                                  <span className="font-medium">{subItem.name}</span>
+                                <AccordionTrigger 
+                                  className={`category-accordion-trigger py-2 px-2 hover:bg-primary-prosalud-light hover:text-primary-prosalud text-sm`}
+                                >
+                                  <div className="flex justify-between w-full items-center">
+                                    <span className="font-medium">{subItem.name}</span>
+                                    <span className="plus-minus-icon">
+                                      <Plus size={16} className="plus-icon" />
+                                      <Minus size={16} className="minus-icon" />
+                                    </span>
+                                  </div>
                                 </AccordionTrigger>
                                 <AccordionContent>
                                   <div className="ml-4 space-y-1 py-1">
@@ -75,7 +81,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ onClose, activeLinkClass, inact
                           return (
                             <NavLink
                               key={subItem.name}
-                              to={subItem.path || "#"} // subItem.path might be undefined for nested headers
+                              to={subItem.path || "#"}
                               onClick={onClose}
                               className={({ isActive }) => 
                                 `${isActive ? activeLinkClass : inactiveLinkClass} block px-2 py-2 rounded-md text-sm`
@@ -91,11 +97,11 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ onClose, activeLinkClass, inact
                 </AccordionItem>
               );
             } else {
-              // For direct links without submenu (item.path will exist here based on MenuItemType)
+              // For direct links without submenu
               return (
                 <NavLink
                   key={item.name}
-                  to={item.path} // item.path is guaranteed by TopLevelMenuItemDirectLink type
+                  to={item.path}
                   onClick={onClose}
                   className={({ isActive }) => `${isActive ? activeLinkClass : inactiveLinkClass} flex items-center space-x-2 px-2 py-3 rounded-md text-base font-medium border-b`}
                 >
@@ -112,3 +118,4 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ onClose, activeLinkClass, inact
 };
 
 export default MobileMenu;
+
