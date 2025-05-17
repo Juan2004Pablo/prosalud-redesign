@@ -7,14 +7,13 @@ const LoginPage: React.FC = () => {
   return (
     <div className="flex flex-col md:flex-row min-h-screen bg-background-light">
       {/* Columna Izquierda: Ilustración - Oculta en móvil, visible en md y superior */}
-      <div className="hidden md:flex md:w-3/5 bg-primary-prosalud-light items-center justify-center p-6 sm:p-8 lg:p-12"> {/* Cambiado para ocultar en móvil */}
-        <div className="max-w-md lg:max-w-lg xl:max-w-xl w-full">
-          <img
-            src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=1200&auto=format&fit=crop"
-            alt="Personal de salud"
-            className="w-full h-auto object-contain rounded-lg shadow-md"
-          />
-        </div>
+      <div className="hidden md:flex md:w-3/5 relative overflow-hidden group"> {/* Contenedor de la imagen */}
+        <img
+          src="/lovable-uploads/138161d3-ff19-4e89-a637-ef145b62113b.png"
+          alt="Ilustración de servicios de salud con estetoscopio y símbolos médicos"
+          className="w-full h-full object-cover animate-fade-in transition-transform duration-500 ease-in-out group-hover:scale-105"
+        />
+        <div className="absolute inset-0 bg-primary-prosalud/20 mix-blend-multiply pointer-events-none"></div> {/* Superposición de estilo */}
       </div>
 
       {/* Columna Derecha: Formulario de Login - Ajustada para móvil */}
@@ -40,3 +39,4 @@ const LoginPage: React.FC = () => {
 };
 
 export default LoginPage;
+
