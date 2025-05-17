@@ -20,14 +20,6 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ onClose, activeLinkClass, inact
   return (
     <div className="md:hidden absolute top-20 left-0 right-0 bg-white shadow-lg z-40 max-h-[80vh] overflow-y-auto">
       <nav className="flex flex-col px-4 py-3">
-        <div className="flex justify-center mb-4">
-          <img 
-            src="/lovable-uploads/2bf2da56-4967-4a17-8849-9efab8759375.png" 
-            alt="ProSalud Logo" 
-            className="h-12" 
-          />
-        </div>
-
         <Accordion type="multiple" className="w-full">
           {menuItems.map((item) => {
             if (item.submenu) {
