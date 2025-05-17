@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { mobileNavItems } from './menuConfig';
+import { menuItems } from './menuConfig'; // Changed from mobileNavItems to menuItems
 import { ChevronDown } from 'lucide-react';
 import {
   Accordion,
@@ -29,7 +29,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ onClose, activeLinkClass, inact
         </div>
 
         <Accordion type="multiple" className="w-full">
-          {mobileNavItems.map((item) => {
+          {menuItems.map((item) => { // Changed from mobileNavItems to menuItems
             // If the item has submenu items from menuConfig
             if (item.submenu) {
               return (
@@ -45,7 +45,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ onClose, activeLinkClass, inact
                       {item.submenu?.map((subItem) => (
                         <NavLink
                           key={subItem.name}
-                          to={subItem.path || "#"}
+                          to={subItem.path || "#"} // subItem.path might be undefined for nested headers
                           onClick={onClose}
                           className={({ isActive }) => `${isActive ? activeLinkClass : inactiveLinkClass} block px-2 py-2 rounded-md text-sm`}
                         >
@@ -57,11 +57,11 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ onClose, activeLinkClass, inact
                 </AccordionItem>
               );
             } else {
-              // For direct links without submenu
+              // For direct links without submenu (item.path will exist here based on MenuItemType)
               return (
                 <NavLink
                   key={item.name}
-                  to={item.path}
+                  to={item.path} // item.path is guaranteed by TopLevelMenuItemDirectLink type
                   onClick={onClose}
                   className={({ isActive }) => `${isActive ? activeLinkClass : inactiveLinkClass} flex items-center space-x-2 px-2 py-3 rounded-md text-base font-medium border-b`}
                 >
@@ -78,3 +78,4 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ onClose, activeLinkClass, inact
 };
 
 export default MobileMenu;
+
