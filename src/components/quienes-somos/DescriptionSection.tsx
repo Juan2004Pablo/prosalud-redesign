@@ -5,21 +5,21 @@ import { Award, Briefcase, Users } from 'lucide-react';
 const statsData = [
   {
     icon: Award,
-    mainText: "+8 años",
+    mainText: "+10 años",
     subText: "de experiencia",
     iconColor: "text-primary-prosalud",
     textColor: "text-primary-prosalud",
   },
   {
     icon: Briefcase,
-    mainText: "10 convenios",
+    mainText: "7 convenios",
     subText: "en Antioquia",
     iconColor: "text-secondary-prosaludgreen",
     textColor: "text-secondary-prosaludgreen",
   },
   {
     icon: Users,
-    mainText: "Aprox 600",
+    mainText: "Aprox 1500",
     subText: "afiliados",
     iconColor: "text-accent-prosaludteal",
     textColor: "text-accent-prosaludteal",
