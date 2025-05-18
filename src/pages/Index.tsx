@@ -124,9 +124,9 @@ const Index = () => {
               <div className="grid grid-cols-2 gap-4 p-4 bg-slate-800/30 rounded-xl shadow-xl">
                 {[
                   "/images/collage/image_collage_1.jpg",
+                  "/images/collage/image_collage_4.png",
                   "/images/collage/image_collage_2.jpg",
-                  "/images/collage/image_collage_3.jpg",
-                  "/images/collage/image_collage_4.png"
+                  "/images/collage/image_collage_3.jpg"
                 ].map((src, index) => (
                   <img
                     key={index}
