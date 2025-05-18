@@ -83,7 +83,7 @@ const Index = () => {
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-primary-prosalud via-primary-prosalud-dark to-slate-900 text-text-light py-20 md:py-24 lg:py-32">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="grid md:grid-cols-2  items-center">
             {/* Left Column: Textual Content & Buttons */}
             <div className="md:text-left text-center">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 animate-fade-in">
