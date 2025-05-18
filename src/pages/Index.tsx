@@ -87,7 +87,9 @@ const Index = () => {
             {/* Left Column: Textual Content & Buttons */}
             <div className="md:text-left text-center">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 animate-fade-in">
-                ProSalud: El sindicato que cuida de ti, como tú cuidas de los demás
+                <span className="text-secondary-prosaludgreen">ProSalud:</span>
+                <br />
+                El sindicato que cuida de ti, como tú cuidas de los demás
               </h1>
               <p className="text-lg md:text-xl lg:text-2xl mb-10 animate-fade-in animation-delay-100">
                 Tu portal de autogestión para acceder a servicios, trámites y beneficios de manera ágil y segura. Simplificamos tu día a día.
