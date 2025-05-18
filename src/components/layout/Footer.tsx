@@ -75,6 +75,9 @@ const Footer: React.FC = () => {
           <p className="text-sm text-slate-500">
             &copy; {new Date().getFullYear()} ProSalud. Todos los derechos reservados.
           </p>
+          <p className="text-xs text-slate-500 mt-2">
+            Algunas imágenes diseñadas por <a href="http://www.freepik.es/" target="_blank" rel="noopener noreferrer" className="underline hover:text-slate-300">Freepik</a>.
+          </p>
         </div>
       </div>
     </footer>
