@@ -86,10 +86,14 @@ const Index = () => {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             {/* Left Column: Textual Content & Buttons */}
             <div className="md:text-left text-center">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 animate-fade-in">
-                <span className="text-secondary-prosaludgreen">ProSalud:</span>
-                <br />
-                El sindicato que cuida de ti, como tú cuidas de los demás
+              <h1 className="font-bold mb-6 animate-fade-in">
+                <span className="block text-5xl md:text-6xl lg:text-7xl leading-tight">
+                  <span className="text-prosalud-pro">Pro</span><span className="text-prosalud-salud">Salud:</span>
+                </span>
+                <span className="block text-4xl md:text-5xl lg:text-6xl mt-1 md:mt-2 leading-snug">
+                  El sindicato que cuida de ti,<br />
+                  como tú cuidas de los demás
+                </span>
               </h1>
               <p className="text-lg md:text-xl lg:text-2xl mb-10 animate-fade-in animation-delay-100">
                 Tu portal de autogestión para acceder a servicios, trámites y beneficios de manera ágil y segura. Simplificamos tu día a día.
