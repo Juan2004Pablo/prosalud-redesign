@@ -34,7 +34,7 @@ const Header: React.FC = () => {
                 size="sm" 
                 className="border-primary-prosalud text-primary-prosalud hover:bg-primary-prosalud-light hover:text-primary-prosalud focus:ring-primary-prosalud"
               >
-                Login
+                Acceder
               </Button>
             </Link>
 
