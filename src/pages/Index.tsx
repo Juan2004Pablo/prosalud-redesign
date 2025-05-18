@@ -123,10 +123,10 @@ const Index = () => {
             <div className="animate-fade-in animation-delay-300 hidden md:block">
               <div className="grid grid-cols-2 gap-4 p-4 bg-slate-800/30 rounded-xl shadow-xl">
                 {[
-                  "/images/collage-bienestar.jpg", // Example local path
-                  "/images/collage-salud.jpg",    // Example local path
-                  "/images/collage-comunidad.jpg",// Example local path
-                  "/images/collage-apoyo.jpg"     // Example local path
+                  "/images/collage/image_collage_1.jpg",
+                  "/images/collage/image_collage_2.jpg",
+                  "/images/collage/image_collage_3.jpg",
+                  "/images/collage/image_collage_4.jpg"
                 ].map((src, index) => (
                   <img
                     key={index}
