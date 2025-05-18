@@ -88,7 +88,7 @@ const Index = () => {
             <div className="md:text-left text-center">
               <h1 className="font-bold mb-6 animate-fade-in">
                 <span className="block text-5xl md:text-6xl lg:text-7xl leading-tight">
-                  <span className="text-prosalud-pro">Pro</span><span className="text-prosalud-salud">Salud:</span>
+                  <span className="text-prosalud-pro">Pro</span><span className="text-prosalud-salud">Salud</span>
                 </span>
                 <span className="block text-4xl md:text-5xl lg:text-6xl mt-1 md:mt-2 leading-snug">
                   El sindicato que cuida de ti,<br />
