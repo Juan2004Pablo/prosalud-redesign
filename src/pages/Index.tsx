@@ -91,7 +91,8 @@ const Index = () => {
                   <span className="text-prosalud-pro">Pro</span><span className="text-prosalud-salud">Salud</span>
                 </span>
                 <span className="block text-4xl md:text-5xl lg:text-6xl mt-1 md:mt-2 leading-snug">
-                  El sindicato que cuida de ti,<br />
+                  
+                  Cuidamos de ti,<br />
                   como tú cuidas de los demás
                 </span>
               </h1>
