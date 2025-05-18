@@ -81,7 +81,7 @@ const Index = () => {
   return (
     <MainLayout>
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-primary-prosalud via-primary-prosalud-dark to-slate-900 text-text-light py-20 md:py-24 lg:py-32">
+      <section className="bg-gradient-to-br from-primary-prosalud via-primary-prosalud-dark to-slate-900 text-text-light py-16 md:py-20 lg:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             {/* Left Column: Textual Content & Buttons */}
@@ -122,10 +122,10 @@ const Index = () => {
             <div className="animate-fade-in animation-delay-300 hidden md:block">
               <div className="grid grid-cols-2 gap-4 p-4 bg-slate-800/30 rounded-xl shadow-xl">
                 {[
-                  "https://via.placeholder.com/250/8BC34A/FFFFFF?text=Bienestar", // Greenish
-                  "https://via.placeholder.com/250/00BCD4/FFFFFF?text=Salud",    // Cyan
-                  "https://via.placeholder.com/250/FF9800/FFFFFF?text=Comunidad",// Orange
-                  "https://via.placeholder.com/250/673AB7/FFFFFF?text=Apoyo"     // Purple
+                  "/images/collage-bienestar.jpg", // Example local path
+                  "/images/collage-salud.jpg",    // Example local path
+                  "/images/collage-comunidad.jpg",// Example local path
+                  "/images/collage-apoyo.jpg"     // Example local path
                 ].map((src, index) => (
                   <img
                     key={index}
