@@ -1,11 +1,10 @@
-
 import React from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import ServiceCard from '@/components/shared/ServiceCard';
 import { Button } from '@/components/ui/button'; // shadcn button
-import { Input } from '@/components/ui/input';   // shadcn input
+import { Input } from '@/components/ui/input';   // shadcn input, kept for potential other uses
 import { 
-  Search, 
+  Search, // Kept for potential other uses, removed from hero
   FileText, 
   BedDouble, 
   Banknote, 
@@ -25,7 +24,8 @@ import {
   CalendarDays,
   CreditCard,
   LogOut,
-  Building2
+  Building2,
+  ArrowRight // Added for the new button
 } from 'lucide-react';
 
 const newServices = [
@@ -81,26 +81,55 @@ const Index = () => {
   return (
     <MainLayout>
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-primary-prosalud via-primary-prosalud-dark to-slate-900 text-text-light py-20 md:py-32 lg:py-40">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 animate-fade-in">
-            ProSalud: El sindicato que cuida de ti, como tú cuidas de los demás
-          </h1>
-          <p className="text-lg md:text-xl lg:text-2xl mb-10 max-w-3xl mx-auto animate-fade-in animation-delay-200">
-            Tu portal de autogestión para acceder a servicios, trámites y beneficios de manera ágil y segura. Simplificamos tu día a día.
-          </p>
-          <div className="max-w-xl mx-auto animate-fade-in animation-delay-400">
-            <form className="flex flex-col sm:flex-row gap-3">
-              <Input 
-                type="search" 
-                placeholder="Busca servicios, certificados, trámites..." 
-                className="flex-grow text-base !text-text-dark py-3 px-4" // Adjusted padding for consistency
-              />
-              <Button type="submit" variant="secondary" size="lg" className="bg-secondary-prosaludgreen hover:bg-secondary-prosaludgreen-dark py-3 px-6"> {/* Adjusted padding for consistency */}
-                <Search size={20} className="mr-2" />
-                <span>Buscar</span>
-              </Button>
-            </form>
+      <section className="bg-gradient-to-br from-primary-prosalud via-primary-prosalud-dark to-slate-900 text-text-light py-20 md:py-24 lg:py-32">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            {/* Left Column: Textual Content & Buttons */}
+            <div className="md:text-left text-center">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 animate-fade-in">
+                ProSalud: El sindicato que cuida de ti, como tú cuidas de los demás
+              </h1>
+              <p className="text-lg md:text-xl lg:text-2xl mb-10 animate-fade-in animation-delay-100">
+                Tu portal de autogestión para acceder a servicios, trámites y beneficios de manera ágil y segura. Simplificamos tu día a día.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 md:justify-start justify-center animate-fade-in animation-delay-200">
+                <Button 
+                  size="lg" 
+                  className="bg-secondary-prosaludgreen hover:bg-secondary-prosaludgreen-dark text-text-light px-8 py-3"
+                  onClick={() => { /* Add navigation or action */ }}
+                >
+                  <span>Nuestros Servicios</span>
+                  <ArrowRight size={20} className="ml-2" />
+                </Button>
+                <Button 
+                  variant="outline" 
+                  size="lg" 
+                  className="text-text-light border-text-light/70 hover:bg-text-light hover:text-primary-prosalud px-8 py-3"
+                  onClick={() => { /* Add navigation or action */ }}
+                >
+                  Conócenos Más
+                </Button>
+              </div>
+            </div>
+
+            {/* Right Column: Image Collage */}
+            <div className="animate-fade-in animation-delay-300 hidden md:block">
+              <div className="grid grid-cols-2 gap-4 p-4 bg-slate-800/30 rounded-xl shadow-xl">
+                {[
+                  "https://via.placeholder.com/250/8BC34A/FFFFFF?text=Bienestar", // Greenish
+                  "https://via.placeholder.com/250/00BCD4/FFFFFF?text=Salud",    // Cyan
+                  "https://via.placeholder.com/250/FF9800/FFFFFF?text=Comunidad",// Orange
+                  "https://via.placeholder.com/250/673AB7/FFFFFF?text=Apoyo"     // Purple
+                ].map((src, index) => (
+                  <img
+                    key={index}
+                    src={src}
+                    alt={`Collage image ${index + 1}`}
+                    className="rounded-lg aspect-square object-cover border-2 border-slate-700 hover:scale-105 transition-transform duration-300"
+                  />
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -162,9 +191,6 @@ const Index = () => {
           </ul>
         </div>
       </section>
-
-      {/* You can add more sections here, e.g., News, Events, etc. */}
-
     </MainLayout>
   );
 };
