@@ -36,7 +36,7 @@ const HeroSection: React.FC = () => {
                 className="bg-secondary-prosaludgreen hover:bg-secondary-prosaludgreen-dark text-text-light px-8 py-3"
                 onClick={handleScrollToQuickLinks}
               >
-                <span>Nuestros Servicios</span>
+                <span>Gestionar trámites</span>
                 <ArrowRight size={20} className="ml-2" />
               </Button>
               <Link to="/nosotros/quienes-somos">
