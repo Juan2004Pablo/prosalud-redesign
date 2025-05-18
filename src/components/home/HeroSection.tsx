@@ -43,7 +43,7 @@ const HeroSection: React.FC = () => {
                 <Button
                   variant="outline"
                   size="lg"
-                  className="text-primary-prosalud border-text-light/70 hover:bg-text-light px-8 py-3 hover:underline w-full sm:w-auto"
+                  className="text-primary-prosalud border-text-light/70 hover:bg-text-light px-8 py-3 hover:text-primary-prosalud hover:underline w-full sm:w-auto"
                 >
                   Conócenos Más
                 </Button>
