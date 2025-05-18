@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import ServiceCard from '@/components/shared/ServiceCard';
-import { Button } from '@/components/ui/button'; // shadcn button
-import { Input } from '@/components/ui/input';   // shadcn input, kept for potential other uses
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { 
-  Search, // Kept for potential other uses, removed from hero
+  Search, 
   FileText, 
   BedDouble, 
   Banknote, 
@@ -25,7 +25,7 @@ import {
   CreditCard,
   LogOut,
   Building2,
-  ArrowRight // Added for the new button
+  ArrowRight
 } from 'lucide-react';
 
 const newServices = [
@@ -78,10 +78,22 @@ const conveniosData = [
 ];
 
 const Index = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const filteredServices = useMemo(() => {
+    if (!searchTerm) {
+      return newServices;
+    }
+    return newServices.filter(service => 
+      service.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (service.description && service.description.toLowerCase().includes(searchTerm.toLowerCase()))
+    );
+  }, [searchTerm]);
+
   return (
     <MainLayout>
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-primary-prosalud via-primary-prosalud-dark to-slate-900 text-text-light py-16 md:py-20 lg:py-24">
+      <section className="bg-gradient-to-br from-primary-prosalud via-primary-prosalud-dark to-slate-900 text-text-light py-12 md:py-16 lg:py-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             {/* Left Column: Textual Content & Buttons */}
@@ -144,7 +156,7 @@ const Index = () => {
       {/* Quick Links Section */}
       <section id="quick-links" className="py-12 md:py-16 bg-background-light">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="space-y-2 mb-12 text-center">
+          <div className="space-y-2 mb-10 text-center">
             <div className="inline-block rounded-lg bg-primary px-3 py-1 text-sm text-primary-foreground">
               Autogestión
             </div>
@@ -155,18 +167,38 @@ const Index = () => {
               Accede rápidamente a los servicios que necesitas sin complicaciones.
             </p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
-            {newServices.map((service, index) => (
-              <ServiceCard
-                key={index}
-                icon={service.icon}
-                title={service.title}
-                description={service.description}
-                linkTo={service.linkTo}
-                className="animate-scale-in"
-              />
-            ))}
+
+          {/* Search Input */}
+          <div className="mb-8 max-w-xl mx-auto">
+            <Input 
+              type="text"
+              placeholder="Buscar trámite por nombre o descripción..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full text-base md:text-sm"
+            />
           </div>
+
+          {filteredServices.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
+              {filteredServices.map((service, index) => (
+                <ServiceCard
+                  key={index}
+                  icon={service.icon}
+                  title={service.title}
+                  description={service.description}
+                  linkTo={service.linkTo}
+                  className="animate-scale-in"
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-10">
+              <Search size={48} className="mx-auto text-muted-foreground mb-4" />
+              <p className="text-xl text-muted-foreground">No se encontraron trámites.</p>
+              <p className="text-sm text-muted-foreground">Intenta con otras palabras clave.</p>
+            </div>
+          )}
         </div>
       </section>
       
