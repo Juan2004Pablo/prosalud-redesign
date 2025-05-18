@@ -126,7 +126,7 @@ const Index = () => {
                   "/images/collage/image_collage_1.jpg",
                   "/images/collage/image_collage_2.jpg",
                   "/images/collage/image_collage_3.jpg",
-                  "/images/collage/image_collage_4.jpg"
+                  "/images/collage/image_collage_4.png"
                 ].map((src, index) => (
                   <img
                     key={index}
