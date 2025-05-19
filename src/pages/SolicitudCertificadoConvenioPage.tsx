@@ -8,6 +8,8 @@ import MainLayout from '@/components/layout/MainLayout';
 import { toast } from 'sonner';
 import { Send, CheckCircle2, AlertCircle } from 'lucide-react';
 import { MAX_FILE_SIZE, ALLOWED_FILE_TYPES_GENERAL, ALLOWED_FILE_TYPES_PDF } from '@/components/solicitud-certificado/utils';
+import { Link } from 'react-router-dom'; // Import Link for BreadcrumbLink
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 
 import DatosPersonalesSection from '@/components/solicitud-certificado/DatosPersonalesSection';
 import InformacionCertificadoSection from '@/components/solicitud-certificado/InformacionCertificadoSection';
@@ -170,6 +172,20 @@ const SolicitudCertificadoConvenioPage: React.FC = () => {
 
   return (
     <MainLayout>
+      <Breadcrumb className="mb-6">
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <Link to="/">Inicio</Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>Solicitud Certificado Convenio</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+      
       <div className="container mx-auto py-8 px-4 md:px-6 lg:px-8">
         <SolicitudHeader />
         <InformacionImportanteAlert />
