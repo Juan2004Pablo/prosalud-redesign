@@ -62,20 +62,24 @@ const ServiceList: React.FC<ServiceListProps> = ({ searchTerm }) => {
       {filteredServices.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
           {filteredServices.map((service, index) => (
-            <ServiceCard
+            <div 
               key={index}
-              icon={service.icon}
-              title={service.title}
-              description={service.description}
-              linkTo={service.linkTo}
-              className="animate-scale-in"
-            />
+              className="animate-fade-in"
+              style={{ animationDelay: `${index * 50}ms` }}
+            >
+              <ServiceCard
+                icon={service.icon}
+                title={service.title}
+                description={service.description}
+                linkTo={service.linkTo}
+              />
+            </div>
           ))}
         </div>
       ) : (
-        <div className="text-center py-10">
-          <Search size={48} className="mx-auto text-muted-foreground mb-4" />
-          <p className="text-xl text-muted-foreground">No se encontraron trámites.</p>
+        <div className="text-center py-12 animate-fade-in">
+          <Search size={48} className="mx-auto text-muted-foreground mb-4" aria-hidden="true" />
+          <p className="text-xl text-muted-foreground mb-2">No se encontraron trámites.</p>
           <p className="text-sm text-muted-foreground">Intenta con otras palabras clave.</p>
         </div>
       )}
