@@ -76,7 +76,7 @@ export const menuItems: MenuItemType[] = [
         name: 'Solicitudes de afiliados', // This MenuSubItem acts as a header
         submenu: [
           { name: 'Verificación de pagos', path: '/documentos-formatos/solicitudes-afiliados/verificacion-pagos' },
-          { name: 'Certificado de Convenio', path: '/documentos-formatos/solicitudes-afiliados/certificado-convenio' },
+          { name: 'Certificado de Convenio', path: '/servicios/certificado-convenio' }, // Updated path
           { name: 'Descanso', path: '/documentos-formatos/solicitudes-afiliados/descanso' },
           { name: 'Solicitud anual diferida', path: '/documentos-formatos/solicitudes-afiliados/solicitud-anual-diferida' },
         ]
