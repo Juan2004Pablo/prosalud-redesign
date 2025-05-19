@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -10,6 +11,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import MainLayout from '@/components/layout/MainLayout';
 import { toast } from 'sonner';
 import { Info, AlertTriangle, Send } from 'lucide-react';
+import { Toggle } from '@/components/ui/toggle'; // Importar Toggle
 
 // Import new components
 import DatosPersonalesSection from '@/components/solicitud-certificado/DatosPersonalesSection';
@@ -185,7 +187,14 @@ const SolicitudCertificadoConvenioPage: React.FC = () => {
                 render={({ field }) => (
                   <FormItem className="flex flex-row items-center space-x-3 space-y-0">
                     <FormControl>
-                      <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                      <Toggle 
+                        pressed={field.value} 
+                        onPressedChange={field.onChange}
+                        aria-label="Confirmar recepción de correo"
+                        className="data-[state=on]:bg-secondary-prosaludgreen"
+                      >
+                        <span className="sr-only">Toggle confirmación</span>
+                      </Toggle>
                     </FormControl>
                     <FormLabel className="font-normal text-sm">
                       Deseo recibir confirmación de envío de mi solicitud al correo electrónico.
