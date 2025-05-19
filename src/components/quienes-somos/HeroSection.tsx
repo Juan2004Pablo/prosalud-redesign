@@ -1,33 +1,14 @@
 
-import React, { useRef } from 'react';
+import React from 'react';
 import { ArrowDownCircle } from 'lucide-react';
-import useIntersectionObserver from '@/hooks/useIntersectionObserver';
-import { Skeleton } from '@/components/ui/skeleton';
 
 interface HeroSectionProps {
   handleScrollToSection: (event: React.MouseEvent<HTMLAnchorElement>, sectionId: string) => void;
 }
 
 const HeroSection: React.FC<HeroSectionProps> = ({ handleScrollToSection }) => {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const isIntersecting = useIntersectionObserver(sectionRef, { threshold: 0.1, freezeOnceVisible: true });
-
-  const renderSkeleton = () => (
-    <section className="relative bg-gradient-to-br from-primary-prosalud via-primary-prosalud-dark to-slate-900 text-text-light py-16 sm:py-20 md:py-24 lg:py-32 overflow-hidden">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-        <Skeleton className="h-12 sm:h-14 md:h-16 w-3/4 mx-auto mb-4 sm:mb-6" />
-        <Skeleton className="h-6 sm:h-7 md:h-8 w-1/2 mx-auto mb-8 sm:mb-10" />
-        <Skeleton className="h-9 w-9 mx-auto rounded-full" />
-      </div>
-    </section>
-  );
-
-  if (!isIntersecting) {
-    return renderSkeleton();
-  }
-
   return (
-    <section ref={sectionRef} className="relative bg-gradient-to-br from-primary-prosalud via-primary-prosalud-dark to-slate-900 text-text-light py-16 sm:py-20 md:py-24 lg:py-32 overflow-hidden">
+    <section className="relative bg-gradient-to-br from-primary-prosalud via-primary-prosalud-dark to-slate-900 text-text-light py-16 sm:py-20 md:py-24 lg:py-32 overflow-hidden">
       <div className="absolute inset-0 opacity-10">
         {/* Background texture */}
       </div>

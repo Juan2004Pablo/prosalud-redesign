@@ -1,7 +1,6 @@
-import React, { useRef } from 'react';
+
+import React from 'react';
 import { BadgeCheck, Handshake } from 'lucide-react';
-import useIntersectionObserver from '@/hooks/useIntersectionObserver';
-import { Skeleton } from '@/components/ui/skeleton';
 
 const valoresData = [
   {
@@ -17,41 +16,10 @@ const valoresData = [
 ];
 
 const ValuesSection: React.FC = () => {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const isIntersecting = useIntersectionObserver(sectionRef, { threshold: 0.1, freezeOnceVisible: true });
-
-  const renderSkeletonCard = () => (
-    <div className="bg-card p-6 sm:p-8 rounded-xl shadow-lg border border-prosalud-border flex flex-col items-center text-center">
-      <Skeleton className="h-16 w-16 rounded-full mb-4 sm:mb-6" />
-      <Skeleton className="h-7 w-32 mb-2 sm:mb-3" />
-      <Skeleton className="h-5 w-full mb-1" />
-      <Skeleton className="h-5 w-4/5" />
-    </div>
-  );
-
-  const renderSkeleton = () => (
+  return (
     <section className="py-12 sm:py-16 md:py-24 bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-10 sm:mb-16">
-          <Skeleton className="h-10 w-3/4 mx-auto mb-3 sm:mb-4" />
-          <Skeleton className="h-6 w-1/2 mx-auto" />
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-10">
-          {renderSkeletonCard()}
-          {renderSkeletonCard()}
-        </div>
-      </div>
-    </section>
-  );
-  
-  if (!isIntersecting) {
-    return renderSkeleton();
-  }
-
-  return (
-    <section ref={sectionRef} className="py-12 sm:py-16 md:py-24 bg-white">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-10 sm:mb-16 animate-fade-in">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary-prosalud mb-3 sm:mb-4 tracking-tight">Nuestros Valores</h2>
           <p className="text-lg sm:text-xl text-text-gray max-w-2xl mx-auto font-light px-2">
             Los pilares que guían cada una de nuestras acciones y decisiones.
