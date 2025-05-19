@@ -1,14 +1,74 @@
 
-import React from 'react';
+import React, { useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import {
   Users2, Network, UserCog, UserSquare, UsersRound, Calculator, ShieldQuestion,
   ClipboardList, Workflow, BriefcaseBusiness, FileText, Laptop, Users, Shield
 } from 'lucide-react';
+import useIntersectionObserver from '@/hooks/useIntersectionObserver';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const OrganizationalStructureSection: React.FC = () => {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const isIntersecting = useIntersectionObserver(sectionRef, { threshold: 0.05, freezeOnceVisible: true }); // Lower threshold for large section
+
+  const renderSkeletonCard = (key: number, wide: boolean = false) => (
+    <div key={key} className={`shadow-lg rounded-lg p-6 text-center ${wide ? 'max-w-md w-full' : ''}`}>
+      <Skeleton className="h-9 w-9 mx-auto mb-3 rounded-full" />
+      <Skeleton className="h-6 w-3/4 mx-auto mb-1" />
+      <Skeleton className="h-4 w-full mx-auto" />
+      {wide && <Skeleton className="h-4 w-1/2 mx-auto mt-1" />}
+    </div>
+  );
+
+  const renderSkeleton = () => (
+    <section className="py-16 md:py-24 bg-slate-50">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-16">
+          <Skeleton className="h-12 w-3/4 mx-auto mb-4" />
+          <Skeleton className="h-7 w-1/2 mx-auto" />
+        </div>
+
+        <div className="max-w-5xl mx-auto">
+          <div className="mb-12">
+             <div className="bg-primary-prosalud text-white shadow-xl rounded-xl text-center p-6">
+                <Skeleton className="h-10 w-10 mx-auto mb-2 rounded-full bg-primary-prosalud-light opacity-50" />
+                <Skeleton className="h-7 w-1/2 mx-auto bg-primary-prosalud-light opacity-50" />
+                <Skeleton className="h-4 w-3/4 mx-auto mt-2 bg-primary-prosalud-light opacity-50" />
+             </div>
+          </div>
+
+          <div className="mb-12">
+            <Skeleton className="h-8 w-1/2 mx-auto mb-8" />
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[...Array(5)].map((_, i) => renderSkeletonCard(i))}
+            </div>
+          </div>
+
+          <div className="mb-12">
+            <Skeleton className="h-8 w-1/2 mx-auto mb-8" />
+            <div className="flex justify-center">
+              {renderSkeletonCard(0, true)}
+            </div>
+          </div>
+
+          <div>
+            <Skeleton className="h-8 w-1/2 mx-auto mb-8" />
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[...Array(5)].map((_, i) => renderSkeletonCard(i))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+
+  if (!isIntersecting) {
+    return renderSkeleton();
+  }
+
   return (
-    <section id="estructura-organizacional" className="py-16 md:py-24 bg-slate-50">
+    <section ref={sectionRef} id="estructura-organizacional" className="py-16 md:py-24 bg-slate-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16 animate-fade-in">
           <h2 className="text-4xl md:text-5xl font-bold text-primary-prosalud mb-4 tracking-tight">

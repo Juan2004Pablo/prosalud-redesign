@@ -1,6 +1,7 @@
-
-import React from 'react';
+import React, { useRef } from 'react';
 import { Award, Briefcase, Users } from 'lucide-react';
+import useIntersectionObserver from '@/hooks/useIntersectionObserver';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const statsData = [
   {
@@ -27,8 +28,40 @@ const statsData = [
 ];
 
 const DescriptionSection: React.FC = () => {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const isIntersecting = useIntersectionObserver(sectionRef, { threshold: 0.1, freezeOnceVisible: true });
+
+  const renderSkeleton = () => (
+    <section className="py-12 sm:py-16 md:py-24 bg-white">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-10 sm:mb-12 md:mb-16">
+          <Skeleton className="h-10 w-3/4 mx-auto mb-3 sm:mb-4" />
+          <Skeleton className="h-6 w-1/2 mx-auto" />
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 mb-10 sm:mb-12 md:mb-16 text-center">
+          {[...Array(3)].map((_, index) => (
+            <div key={index} className="flex flex-col items-center p-4 sm:p-6">
+              <Skeleton className="h-12 w-12 rounded-full mb-3 sm:mb-4" />
+              <Skeleton className="h-8 w-24 mb-1 sm:mb-2" />
+              <Skeleton className="h-6 w-32" />
+            </div>
+          ))}
+        </div>
+        <div className="max-w-3xl mx-auto text-center">
+          <Skeleton className="h-5 w-full mb-2" />
+          <Skeleton className="h-5 w-full mb-2" />
+          <Skeleton className="h-5 w-4/5 mx-auto" />
+        </div>
+      </div>
+    </section>
+  );
+
+  if (!isIntersecting) {
+    return renderSkeleton();
+  }
+
   return (
-    <section id="descripcion-prosalud" className="py-12 sm:py-16 md:py-24 bg-white">
+    <section ref={sectionRef} id="descripcion-prosalud" className="py-12 sm:py-16 md:py-24 bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-10 sm:mb-12 md:mb-16 animate-fade-in">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary-prosalud mb-3 sm:mb-4 tracking-tight">

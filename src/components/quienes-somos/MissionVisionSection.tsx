@@ -1,11 +1,42 @@
 
-import React from 'react';
+import React, { useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Flag, Eye } from 'lucide-react';
+import useIntersectionObserver from '@/hooks/useIntersectionObserver';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const MissionVisionSection: React.FC = () => {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const isIntersecting = useIntersectionObserver(sectionRef, { threshold: 0.1, freezeOnceVisible: true });
+
+  const renderSkeletonCard = () => (
+    <div className="h-full shadow-xl rounded-xl overflow-hidden">
+      <Skeleton className="h-20 sm:h-24 w-full rounded-t-xl" />
+      <div className="p-4 sm:p-6">
+        <Skeleton className="h-5 w-full mb-2" />
+        <Skeleton className="h-5 w-full mb-2" />
+        <Skeleton className="h-5 w-3/4" />
+      </div>
+    </div>
+  );
+  
+  const renderSkeleton = () => (
+    <section className="py-12 sm:py-16 md:py-24 bg-background-light">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 lg:gap-12 items-stretch">
+          {renderSkeletonCard()}
+          {renderSkeletonCard()}
+        </div>
+      </div>
+    </section>
+  );
+
+  if (!isIntersecting) {
+    return renderSkeleton();
+  }
+
   return (
-    <section id="mision-vision" className="py-12 sm:py-16 md:py-24 bg-background-light">
+    <section ref={sectionRef} id="mision-vision" className="py-12 sm:py-16 md:py-24 bg-background-light">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 lg:gap-12 items-stretch">
           <div className="animate-slide-in-right">

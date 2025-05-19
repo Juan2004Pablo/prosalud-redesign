@@ -1,9 +1,10 @@
-
-import React from 'react';
+import React, { useRef } from 'react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import {
   Shield, Users, Scale, HandHelping, Briefcase, Ban, Library, Megaphone, ClipboardCheck, HeartHandshake
 } from 'lucide-react';
+import useIntersectionObserver from '@/hooks/useIntersectionObserver';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const principiosData = [
   { icon: Shield, title: "Defensa de Intereses", content: "Mantener una permanente actitud de defensa de los intereses de sus Afiliados, respetando y haciendo respetar las leyes vigentes, haciéndolas compatibles con el interés general." },
@@ -19,10 +20,37 @@ const principiosData = [
 ];
 
 const PrinciplesSection: React.FC = () => {
-  return (
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const isIntersecting = useIntersectionObserver(sectionRef, { threshold: 0.1, freezeOnceVisible: true });
+
+  const renderSkeletonAccordionItem = (key: number) => (
+    <div key={key} className="border border-prosalud-border bg-white rounded-lg shadow-md p-5 px-6">
+      <Skeleton className="h-6 w-3/4" />
+    </div>
+  );
+
+  const renderSkeleton = () => (
     <section className="py-16 md:py-24 bg-gradient-to-b from-background-light to-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
+          <Skeleton className="h-12 w-3/4 mx-auto mb-4" />
+          <Skeleton className="h-7 w-1/2 mx-auto" />
+        </div>
+        <div className="w-full max-w-4xl mx-auto space-y-3">
+          {[...Array(5)].map((_, index) => renderSkeletonAccordionItem(index))}
+        </div>
+      </div>
+    </section>
+  );
+
+  if (!isIntersecting) {
+    return renderSkeleton();
+  }
+
+  return (
+    <section ref={sectionRef} className="py-16 md:py-24 bg-gradient-to-b from-background-light to-white">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-16 animate-fade-in">
           <h2 className="text-4xl md:text-5xl font-bold text-primary-prosalud mb-4 tracking-tight">Nuestros Principios</h2>
           <p className="text-xl text-text-gray max-w-2xl mx-auto font-light">
             Compromisos fundamentales que rigen nuestra labor sindical.
