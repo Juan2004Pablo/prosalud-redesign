@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Control, FieldValues } from 'react-hook-form';
+import { Control, FieldValues, FieldPath } from 'react-hook-form'; // Added FieldPath
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -25,7 +25,7 @@ const DatosPersonalesSection = <TFieldValues extends FieldValues>({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <FormField
           control={control}
-          name="tipoIdentificacion"
+          name={"tipoIdentificacion" as FieldPath<TFieldValues>}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Tipo de identificación *</FormLabel>
@@ -47,7 +47,7 @@ const DatosPersonalesSection = <TFieldValues extends FieldValues>({
         />
         <FormField
           control={control}
-          name="numeroIdentificacion"
+          name={"numeroIdentificacion" as FieldPath<TFieldValues>}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Número de identificación *</FormLabel>
@@ -60,7 +60,7 @@ const DatosPersonalesSection = <TFieldValues extends FieldValues>({
         />
         <FormField
           control={control}
-          name="nombres"
+          name={"nombres" as FieldPath<TFieldValues>}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Nombres *</FormLabel>
@@ -73,7 +73,7 @@ const DatosPersonalesSection = <TFieldValues extends FieldValues>({
         />
         <FormField
           control={control}
-          name="apellidos"
+          name={"apellidos" as FieldPath<TFieldValues>}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Apellidos *</FormLabel>
@@ -86,7 +86,7 @@ const DatosPersonalesSection = <TFieldValues extends FieldValues>({
         />
         <FormField
           control={control}
-          name="correoElectronico"
+          name={"correoElectronico" as FieldPath<TFieldValues>}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Correo electrónico *</FormLabel>
@@ -99,7 +99,7 @@ const DatosPersonalesSection = <TFieldValues extends FieldValues>({
         />
         <FormField
           control={control}
-          name="numeroCelular"
+          name={"numeroCelular" as FieldPath<TFieldValues>}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Número de celular *</FormLabel>
