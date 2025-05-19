@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -192,6 +193,7 @@ const SolicitudCertificadoConvenioPage: React.FC = () => {
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
+      </div> {/* This was the missing closing tag */}
       
       <div className="container mx-auto py-8 px-4 md:px-6 lg:px-8">
         <SolicitudHeader />
