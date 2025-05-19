@@ -6,9 +6,9 @@ import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import MainLayout from '@/components/layout/MainLayout';
 import { toast } from 'sonner';
-import { Send, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Send, CheckCircle2, AlertCircle, Home, FileText } from 'lucide-react';
 import { MAX_FILE_SIZE, ALLOWED_FILE_TYPES_GENERAL, ALLOWED_FILE_TYPES_PDF } from '@/components/solicitud-certificado/utils';
-import { Link } from 'react-router-dom'; // Import Link for BreadcrumbLink
+import { Link } from 'react-router-dom';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 
 import DatosPersonalesSection from '@/components/solicitud-certificado/DatosPersonalesSection';
@@ -172,19 +172,26 @@ const SolicitudCertificadoConvenioPage: React.FC = () => {
 
   return (
     <MainLayout>
-      <Breadcrumb className="mb-6">
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link to="/">Inicio</Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>Solicitud Certificado Convenio</BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+      <div className="container mx-auto pt-6 pb-2 px-4 md:px-6 lg:px-8">
+        <Breadcrumb>
+          <BreadcrumbList className="flex items-center space-x-2 text-sm">
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link to="/" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
+                  <Home className="h-4 w-4" />
+                  Inicio
+                </Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage className="flex items-center gap-1 font-medium text-foreground">
+                <FileText className="h-4 w-4" />
+                Solicitud Certificado Convenio
+              </BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
       
       <div className="container mx-auto py-8 px-4 md:px-6 lg:px-8">
         <SolicitudHeader />
