@@ -3,18 +3,19 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Button } from '@/components/ui/button';
-import { Switch } from '@/components/ui/switch';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Form } from '@/components/ui/form';
 import MainLayout from '@/components/layout/MainLayout';
 import { toast } from 'sonner';
-import { Info, Send } from 'lucide-react';
+import { Send } from 'lucide-react';
 import { MAX_FILE_SIZE, ALLOWED_FILE_TYPES_GENERAL, ALLOWED_FILE_TYPES_PDF } from '@/components/solicitud-certificado/utils';
 
-// Restore missing imports
 import DatosPersonalesSection from '@/components/solicitud-certificado/DatosPersonalesSection';
 import InformacionCertificadoSection from '@/components/solicitud-certificado/InformacionCertificadoSection';
 import ArchivoAdicionalSection from '@/components/solicitud-certificado/ArchivoAdicionalSection';
+import SolicitudHeader from '@/components/solicitud-certificado/SolicitudHeader';
+import InformacionImportanteAlert from '@/components/solicitud-certificado/InformacionImportanteAlert';
+import ConfirmacionCorreoSection from '@/components/solicitud-certificado/ConfirmacionCorreoSection';
+import AutorizacionDatosSection from '@/components/solicitud-certificado/AutorizacionDatosSection';
 
 const RECAPTCHA_SITE_KEY = "6LclSkArAAAAABXa8SIwimuDgPd8tjQbNzoBSlOZ";
 
@@ -161,57 +162,17 @@ const SolicitudCertificadoConvenioPage: React.FC = () => {
   return (
     <MainLayout>
       <div className="container mx-auto py-8 px-4 md:px-6 lg:px-8">
-        <header className="mb-8 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold text-primary-prosalud tracking-tight">
-            Solicitud de Certificado de Convenio Sindical
-          </h1>
-        </header>
-
-        <Alert variant="default" className="mb-8 bg-blue-50 border-blue-200 text-blue-800">
-          <Info className="h-5 w-5 text-blue-600" />
-          <AlertTitle className="font-semibold text-blue-700">Información Importante</AlertTitle>
-          <AlertDescription>
-            El certificado de convenio convencional se enviará al correo del afiliado en un plazo de cinco (5) días hábiles, salvo los casos que requieran validación adicional por parte de la Entidad. Estos estarán sujetos a dicha verificación para poder ser emitidos.
-          </AlertDescription>
-        </Alert>
+        <SolicitudHeader />
+        <InformacionImportanteAlert />
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <DatosPersonalesSection control={form.control} idTypes={idTypes} />
             <InformacionCertificadoSection control={form.control} watch={form.watch} />
             <ArchivoAdicionalSection control={form.control} />
-
-            <section className="p-6 border rounded-lg shadow-sm bg-white">
-              <FormField
-                control={form.control}
-                name="confirmacionCorreo"
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-center space-x-3 space-y-0">
-                    <FormControl>
-                      <Switch
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                        aria-label="Confirmar recepción de correo"
-                        className="data-[state=checked]:bg-secondary-prosaludgreen" 
-                      />
-                    </FormControl>
-                    <FormLabel className="font-normal text-sm">
-                      Deseo recibir confirmación de envío de mi solicitud al correo electrónico.
-                    </FormLabel>
-                  </FormItem>
-                )}
-              />
-            </section>
-
-            <div className="py-4 px-6 border rounded-lg shadow-sm bg-white">
-                <h3 className="text-md font-semibold text-gray-700 mb-1">
-                    Autorización de Tratamiento de Datos Personales
-                </h3>
-                <p className="text-xs text-muted-foreground">
-                    Al hacer clic en "Enviar Solicitud", usted autoriza de forma previa, expresa e informada el tratamiento de sus datos personales conforme al artículo 17, literal b de la Ley 1581 de 2012 y nuestra política de tratamiento de datos.
-                </p>
-            </div>
-
+            <ConfirmacionCorreoSection control={form.control} />
+            <AutorizacionDatosSection />
+            
             {/* Campo ReCAPTCHA Comentado Temporalmente */}
             {/*
             <FormField
