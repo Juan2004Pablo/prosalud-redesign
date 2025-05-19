@@ -19,67 +19,65 @@ const principiosData = [
   { icon: HeartHandshake, title: "Vocación de Servicio", content: "Demostrar en todos sus actos la vocación de servicio que impulsa su tarea en representación de los trabajadores." }
 ];
 
-const PrinciplesContent: React.FC = () => (
-  <section className="py-16 md:py-24 bg-gradient-to-b from-background-light to-white">
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="text-center mb-16 animate-fade-in">
-        <h2 className="text-4xl md:text-5xl font-bold text-primary-prosalud mb-4 tracking-tight">Nuestros Principios</h2>
-        <p className="text-xl text-text-gray max-w-2xl mx-auto font-light">
-          Compromisos fundamentales que rigen nuestra labor sindical.
-        </p>
-      </div>
-      <Accordion type="single" collapsible className="w-full max-w-4xl mx-auto space-y-3">
-        {principiosData.map((principio, index) => (
-          <AccordionItem
-            value={`item-${index}`}
-            key={index}
-            className="border border-prosalud-border bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 animate-fade-in"
-            style={{ animationDelay: `${index * 100}ms` }}
-          >
-            <AccordionTrigger className="text-left hover:no-underline py-5 px-6 text-lg font-medium text-text-dark hover:text-primary-prosalud group w-full">
-              <div className="flex items-center">
-                <principio.icon size={26} className="mr-4 text-secondary-prosaludgreen shrink-0 transition-transform duration-300 group-hover:scale-110" />
-                {principio.title}
-              </div>
-            </AccordionTrigger>
-            <AccordionContent className="text-text-gray pt-0 p-6 text-base leading-relaxed bg-slate-50 rounded-b-lg">
-              {principio.content}
-            </AccordionContent>
-          </AccordionItem>
-        ))}
-      </Accordion>
-    </div>
-  </section>
-);
-
-const PrinciplesSkeletonItem: React.FC<{ itemKey: number }> = ({ itemKey }) => (
-  <div key={itemKey} className="border border-prosalud-border bg-white rounded-lg shadow-md p-5 px-6">
-    <Skeleton className="h-6 w-3/4" />
-  </div>
-);
-
-const PrinciplesSkeleton: React.FC = () => (
-  <section className="py-16 md:py-24 bg-gradient-to-b from-background-light to-white">
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="text-center mb-16">
-        <Skeleton className="h-12 w-3/4 mx-auto mb-4" />
-        <Skeleton className="h-7 w-1/2 mx-auto" />
-      </div>
-      <div className="w-full max-w-4xl mx-auto space-y-3">
-        {[...Array(5)].map((_, index) => <PrinciplesSkeletonItem key={index} itemKey={index} />)}
-      </div>
-    </div>
-  </section>
-);
-
 const PrinciplesSection: React.FC = () => {
-  const observerRef = useRef<HTMLDivElement>(null);
-  const isVisible = useIntersectionObserver(observerRef, { threshold: 0.1, freezeOnceVisible: true });
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const isIntersecting = useIntersectionObserver(sectionRef, { threshold: 0.1, freezeOnceVisible: true });
+
+  const renderSkeletonAccordionItem = (key: number) => (
+    <div key={key} className="border border-prosalud-border bg-white rounded-lg shadow-md p-5 px-6">
+      <Skeleton className="h-6 w-3/4" />
+    </div>
+  );
+
+  const renderSkeleton = () => (
+    <section className="py-16 md:py-24 bg-gradient-to-b from-background-light to-white">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-16">
+          <Skeleton className="h-12 w-3/4 mx-auto mb-4" />
+          <Skeleton className="h-7 w-1/2 mx-auto" />
+        </div>
+        <div className="w-full max-w-4xl mx-auto space-y-3">
+          {[...Array(5)].map((_, index) => renderSkeletonAccordionItem(index))}
+        </div>
+      </div>
+    </section>
+  );
+
+  if (!isIntersecting) {
+    return renderSkeleton();
+  }
 
   return (
-    <div ref={observerRef} className="min-h-[1px]">
-      {isVisible ? <PrinciplesContent /> : <PrinciplesSkeleton />}
-    </div>
+    <section ref={sectionRef} className="py-16 md:py-24 bg-gradient-to-b from-background-light to-white">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-16 animate-fade-in">
+          <h2 className="text-4xl md:text-5xl font-bold text-primary-prosalud mb-4 tracking-tight">Nuestros Principios</h2>
+          <p className="text-xl text-text-gray max-w-2xl mx-auto font-light">
+            Compromisos fundamentales que rigen nuestra labor sindical.
+          </p>
+        </div>
+        <Accordion type="single" collapsible className="w-full max-w-4xl mx-auto space-y-3">
+          {principiosData.map((principio, index) => (
+            <AccordionItem
+              value={`item-${index}`}
+              key={index}
+              className="border border-prosalud-border bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 animate-fade-in"
+              style={{ animationDelay: `${index * 100}ms` }}
+            >
+              <AccordionTrigger className="text-left hover:no-underline py-5 px-6 text-lg font-medium text-text-dark hover:text-primary-prosalud group w-full">
+                <div className="flex items-center">
+                  <principio.icon size={26} className="mr-4 text-secondary-prosaludgreen shrink-0 transition-transform duration-300 group-hover:scale-110" />
+                  {principio.title}
+                </div>
+              </AccordionTrigger>
+              <AccordionContent className="text-text-gray pt-0 p-6 text-base leading-relaxed bg-slate-50 rounded-b-lg">
+                {principio.content}
+              </AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
+      </div>
+    </section>
   );
 };
 

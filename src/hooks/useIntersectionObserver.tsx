@@ -18,22 +18,17 @@ function useIntersectionObserver(
 
   useEffect(() => {
     const node = elementRef?.current;
-    
-    if (!node) {
-      // If the target element isn't available yet, do nothing.
-      // isIntersecting will remain false until the node is available and intersects.
-      return;
-    }
+    if (!node) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsIntersecting(true);
-          if (freezeOnceVisible) {
+          if (freezeOnceVisible && node) {
             observer.unobserve(node);
           }
         } else {
-          // Only set to false if not freezing once visible.
+          // Only set to false if not freezing once visible
           if (!freezeOnceVisible) {
             setIsIntersecting(false);
           }
@@ -45,10 +40,11 @@ function useIntersectionObserver(
     observer.observe(node);
 
     return () => {
-      // Cleanup: unobserve the node when the component unmounts or dependencies change.
-      observer.unobserve(node);
+      if (node) {
+        observer.unobserve(node);
+      }
     };
-  }, [elementRef, threshold, root, rootMargin, freezeOnceVisible]); // Dependencies for the effect
+  }, [elementRef, threshold, root, rootMargin, freezeOnceVisible]);
 
   return isIntersecting;
 }
