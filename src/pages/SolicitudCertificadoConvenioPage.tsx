@@ -13,6 +13,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import MainLayout from '@/components/layout/MainLayout';
 import { toast } from 'sonner';
 import { Info, FileText, UploadCloud, AlertTriangle, Send, FileCheck, FileX } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 const MAX_FILE_SIZE = 4 * 1024 * 1024; // 4MB
 const ALLOWED_FILE_TYPES_GENERAL = ['application/pdf', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'image/jpeg', 'image/png', 'image/gif', 'image/webp'];
@@ -40,31 +41,34 @@ const formSchema = z.object({
   }).default({}),
 
   dirigidoAQuien: z.string().optional(),
-  actividadesPdf: z.any().optional().refine(files => {
-    if (!files || files.length === 0) return true;
-    const file = files[0];
-    return file.size <= MAX_FILE_SIZE;
-  }, `El archivo no debe exceder los ${MAX_FILE_SIZE / (1024*1024)}MB.`).refine(files => {
-    if (!files || files.length === 0) return true;
-    const file = files[0];
-    return ALLOWED_FILE_TYPES_PDF.includes(file.type);
-  }, 'Solo se permiten archivos PDF.'),
+  actividadesPdf: z.any().optional()
+    .refine(files => { // Validación de archivo vacío movida aquí si es necesario o manejada por superRefine
+        if (!files || files.length === 0) return true; // Si es opcional y no hay archivo, es válido
+        const file = files[0];
+        return file.size <= MAX_FILE_SIZE;
+    }, `El archivo no debe exceder los ${MAX_FILE_SIZE / (1024*1024)}MB.`)
+    .refine(files => {
+        if (!files || files.length === 0) return true;
+        const file = files[0];
+        return ALLOWED_FILE_TYPES_PDF.includes(file.type);
+    }, 'Solo se permiten archivos PDF.'),
   
   tipoVehiculo: z.string().optional(),
   placaVehiculo: z.string().optional(),
   otrosDescripcion: z.string().optional(),
 
-  adjuntarArchivoAdicional: z.any().optional().refine(files => {
-    if (!files || files.length === 0) return true;
-    const file = files[0];
-    return file.size <= MAX_FILE_SIZE;
-  }, `El archivo no debe exceder los ${MAX_FILE_SIZE / (1024*1024)}MB.`).refine(files => {
-    if (!files || files.length === 0) return true;
-    const file = files[0];
-    return ALLOWED_FILE_TYPES_GENERAL.includes(file.type);
-  }, 'Tipo de archivo no permitido. Use PDF, Excel o imágenes.'),
+  adjuntarArchivoAdicional: z.any().optional()
+    .refine(files => {
+        if (!files || files.length === 0) return true;
+        const file = files[0];
+        return file.size <= MAX_FILE_SIZE;
+    }, `El archivo no debe exceder los ${MAX_FILE_SIZE / (1024*1024)}MB.`)
+    .refine(files => {
+        if (!files || files.length === 0) return true;
+        const file = files[0];
+        return ALLOWED_FILE_TYPES_GENERAL.includes(file.type);
+    }, 'Tipo de archivo no permitido. Use PDF, Excel o imágenes.'),
   
-  confirmacionCorreo: z.boolean().default(false),
 }).superRefine((data, ctx) => {
   if (data.infoCertificado.dirigidoAEntidad && !data.dirigidoAQuien?.trim()) {
     ctx.addIssue({
@@ -138,7 +142,6 @@ const SolicitudCertificadoConvenioPage: React.FC = () => {
       placaVehiculo: '',
       otrosDescripcion: '',
       adjuntarArchivoAdicional: undefined,
-      confirmacionCorreo: false,
     },
   });
 
@@ -146,8 +149,6 @@ const SolicitudCertificadoConvenioPage: React.FC = () => {
 
   const onSubmit = (data: FormValues) => {
     console.log('Form data:', data);
-    // Aquí iría la lógica para enviar los datos al backend
-    // Por ahora, solo mostramos un toast de éxito
     toast.success('Solicitud enviada con éxito', {
       description: 'Recibirá el certificado en su correo en los próximos días hábiles.',
     });
@@ -346,11 +347,18 @@ const SolicitudCertificadoConvenioPage: React.FC = () => {
                           <Input
                             type="file"
                             accept=".pdf"
-                            key={field.value ? field.value[0]?.name : 'no-file-actividades'} // Key for visual reset
-                            onChange={(e) => field.onChange(e.target.files && e.target.files.length > 0 ? e.target.files : undefined)}
+                            ref={field.ref}
+                            onChange={(e) => {
+                              const files = e.target.files;
+                              field.onChange(files && files.length > 0 ? files : undefined);
+                              if (e.target) e.target.value = ''; // Reset input value
+                            }}
                             onBlur={field.onBlur}
                             name={field.name}
-                            className="cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-primary-prosalud file:text-white hover:file:bg-primary-prosalud-dark"
+                            className={cn(
+                              "cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-primary-prosalud file:text-white hover:file:bg-primary-prosalud-dark",
+                              (field.value && field.value[0]) && "sr-only" // Hide if file selected
+                            )}
                           />
                         </FormControl>
                         {field.value && field.value[0] && (
@@ -443,11 +451,18 @@ const SolicitudCertificadoConvenioPage: React.FC = () => {
                       <Input 
                         type="file" 
                         accept=".pdf,.xls,.xlsx,.jpg,.jpeg,.png,.gif,.webp"
-                        key={field.value ? field.value[0]?.name : 'no-file-adicional'} // Key for visual reset
-                        onChange={(e) => field.onChange(e.target.files && e.target.files.length > 0 ? e.target.files : undefined)}
+                        ref={field.ref}
+                        onChange={(e) => {
+                          const files = e.target.files;
+                          field.onChange(files && files.length > 0 ? files : undefined);
+                          if (e.target) e.target.value = ''; // Reset input value
+                        }}
                         onBlur={field.onBlur}
                         name={field.name}
-                        className="cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-primary-prosalud file:text-white hover:file:bg-primary-prosalud-dark"
+                        className={cn(
+                          "cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-primary-prosalud file:text-white hover:file:bg-primary-prosalud-dark",
+                          (field.value && field.value[0]) && "sr-only" // Hide if file selected
+                        )}
                       />
                     </FormControl>
                     {field.value && field.value[0] && (
@@ -477,23 +492,6 @@ const SolicitudCertificadoConvenioPage: React.FC = () => {
               />
             </section>
 
-            <section className="p-6 border rounded-lg shadow-sm bg-white">
-              <FormField
-                control={form.control}
-                name="confirmacionCorreo"
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-center space-x-3 space-y-0">
-                    <FormControl>
-                      <Checkbox checked={field.value} onCheckedChange={field.onChange} />
-                    </FormControl>
-                    <FormLabel className="font-normal text-sm">
-                      Deseo recibir confirmación de envío de mi solicitud al correo electrónico.
-                    </FormLabel>
-                  </FormItem>
-                )}
-              />
-            </section>
-
             <Alert variant="default" className="mt-8 bg-slate-50 border-slate-200 text-slate-700">
                 <AlertTriangle className="h-5 w-5 text-slate-500" />
                 <AlertTitle className="font-semibold text-slate-600">Tenga Presente</AlertTitle>
@@ -507,7 +505,7 @@ const SolicitudCertificadoConvenioPage: React.FC = () => {
                     Autorización de Tratamiento de Datos Personales
                 </h3>
                 <p className="text-xs text-muted-foreground">
-                    Al hacer clic en "Enviar Solicitud", usted autoriza de forma previa, expresa e informada el tratamiento de sus datos personales conforme al artículo 17, literal b de la Ley 1581 de 2012 y nuestra política de tratamiento de datos.
+                    Al hacer clic en "Enviar Solicitud", usted autoriza de forma previa, expresa e informada el tratamiento de sus datos personales conforme al artículo 17, literal b de la Ley 1581 de 2012 y nuestra política de tratamiento de datos. El envío de esta solicitud implica la aceptación de recibir comunicaciones relacionadas con este trámite al correo electrónico registrado.
                 </p>
             </div>
             
