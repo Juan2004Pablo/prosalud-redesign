@@ -39,10 +39,14 @@ const FileUploadField = <TFieldValues extends FieldValues>({
             <Input
               type="file"
               accept={accept}
-              key={field.value?.[0]?.name || `no-file-${name}`}
+              // Modificamos la key para que solo cambie si hay o no un archivo,
+              // no por el nombre específico del archivo.
+              // Esto permite que el input nativo conserve la visualización del nombre del archivo.
+              key={field.value?.[0] ? `file-present-${field.name}` : `no-file-${field.name}`}
               onChange={(e) => field.onChange(e.target.files && e.target.files.length > 0 ? e.target.files : undefined)}
               onBlur={field.onBlur}
-              name={field.name}
+              name={field.name} // El 'name' del input HTML es importante para react-hook-form y la accesibilidad
+              ref={field.ref} // Aseguramos que la ref de react-hook-form se pase al input
               className={`cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-primary-prosalud file:text-white hover:file:bg-primary-prosalud-dark ${inputClassName || ''}`}
             />
           </FormControl>
@@ -60,7 +64,7 @@ const FileUploadField = <TFieldValues extends FieldValues>({
                 variant="ghost"
                 size="sm"
                 className="text-red-600 hover:text-red-700 hover:bg-red-50 px-2 shrink-0"
-                onClick={() => field.onChange(undefined)}
+                onClick={() => field.onChange(undefined)} // Esto limpia el valor en react-hook-form
               >
                 <FileX className="h-4 w-4" />
               </Button>
