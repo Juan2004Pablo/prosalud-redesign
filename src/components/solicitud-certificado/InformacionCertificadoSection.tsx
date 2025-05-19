@@ -69,27 +69,12 @@ const InformacionCertificadoSection = <TFieldValues extends FieldValues>({
                 <FormLabel className="font-normal">Dirigido al Fondo de Pensiones para corrección de historia</FormLabel>
             </FormItem>
         )}/>
-         <FormField control={control} name={"infoCertificado.adicionarActividades" as any} render={({ field }) => (
+        <FormField control={control} name={"infoCertificado.dirigidoBancolombia" as any} render={({ field }) => (
             <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                 <FormControl><Checkbox checked={field.value} onCheckedChange={field.onChange} /></FormControl>
-                 <div className="leading-none">
-                    <FormLabel className="font-normal">Adicionar actividades</FormLabel>
-                    <FormDescription className="text-xs">
-                        Requiere validación. Adjuntar archivo en formato PDF con las actividades realizadas. Esta solicitud está sujeta a aprobación por parte de la Entidad.
-                    </FormDescription>
-                </div>
+                <FormLabel className="font-normal">Dirigido a Bancolombia para apertura de cuenta bajo convenio con ProSalud</FormLabel>
             </FormItem>
         )}/>
-        {watchInfoCertificado?.adicionarActividades && (
-          <FileUploadField
-            control={control}
-            name={"actividadesPdf" as any}
-            label="Adjuntar PDF con actividades"
-            accept=".pdf"
-            isRequired={true}
-            className="ml-7"
-          />
-        )}
         <FormField control={control} name={"infoCertificado.dirigidoTransitoPicoPlaca" as any} render={({ field }) => (
              <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                 <FormControl><Checkbox checked={field.value} onCheckedChange={field.onChange} /></FormControl>
@@ -117,12 +102,27 @@ const InformacionCertificadoSection = <TFieldValues extends FieldValues>({
                 )}/>
             </div>
         )}
-        <FormField control={control} name={"infoCertificado.dirigidoBancolombia" as any} render={({ field }) => (
+        <FormField control={control} name={"infoCertificado.adicionarActividades" as any} render={({ field }) => (
             <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                 <FormControl><Checkbox checked={field.value} onCheckedChange={field.onChange} /></FormControl>
-                <FormLabel className="font-normal">Dirigido a Bancolombia para apertura de cuenta bajo convenio con ProSalud</FormLabel>
+                 <div className="leading-none">
+                    <FormLabel className="font-normal">Adicionar actividades</FormLabel>
+                    <FormDescription className="text-xs">
+                        Requiere validación. Adjuntar archivo en formato PDF con las actividades realizadas. Esta solicitud está sujeta a aprobación por parte de la Entidad.
+                    </FormDescription>
+                </div>
             </FormItem>
         )}/>
+        {watchInfoCertificado?.adicionarActividades && (
+          <FileUploadField
+            control={control}
+            name={"actividadesPdf" as any}
+            label="Adjuntar PDF con actividades"
+            accept=".pdf"
+            isRequired={true}
+            className="ml-7"
+          />
+        )}
         <FormField control={control} name={"infoCertificado.otros" as any} render={({ field }) => (
             <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                 <FormControl><Checkbox checked={field.value} onCheckedChange={field.onChange} /></FormControl>
