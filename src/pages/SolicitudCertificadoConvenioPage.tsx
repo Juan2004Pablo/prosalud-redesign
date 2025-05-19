@@ -9,7 +9,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import MainLayout from '@/components/layout/MainLayout';
 import { toast } from 'sonner';
-import { Info, AlertTriangle, Send } from 'lucide-react';
+import { Info, Send } from 'lucide-react';
 import { MAX_FILE_SIZE, ALLOWED_FILE_TYPES_GENERAL, ALLOWED_FILE_TYPES_PDF } from '@/components/solicitud-certificado/utils';
 
 // Restore missing imports
@@ -139,7 +139,14 @@ const SolicitudCertificadoConvenioPage: React.FC = () => {
   const onSubmit = (data: FormValues) => {
     console.log('Form data with reCAPTCHA:', data);
     toast.success('Solicitud enviada con éxito', {
-      description: 'Recibirá el certificado en su correo en los próximos días hábiles.',
+      description: (
+        <>
+          Recibirá el certificado en su correo en los próximos días hábiles.
+          <br />
+          <strong className="mt-2 block font-semibold">Tenga presente:</strong> Solamente en caso de presentarse alguna inconsistencia nos comunicaremos con usted.
+        </>
+      ),
+      duration: 8000, // Aumentar la duración para que sea más legible
     });
     form.reset();
   };
@@ -196,14 +203,6 @@ const SolicitudCertificadoConvenioPage: React.FC = () => {
                 )}
               />
             </section>
-
-            <Alert variant="default" className="mt-8 bg-slate-50 border-slate-200 text-slate-700">
-                <AlertTriangle className="h-5 w-5 text-slate-500" />
-                <AlertTitle className="font-semibold text-slate-600">Tenga Presente</AlertTitle>
-                <AlertDescription>
-                    Solamente en caso de presentarse alguna inconsistencia nos comunicaremos con usted.
-                </AlertDescription>
-            </Alert>
 
             <div className="py-4 px-6 border rounded-lg shadow-sm bg-white">
                 <h3 className="text-md font-semibold text-gray-700 mb-1">
