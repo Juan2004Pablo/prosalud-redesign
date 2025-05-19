@@ -22,10 +22,10 @@ const ChatbotFab: React.FC = () => {
         <TooltipTrigger asChild>
           <Button
             onClick={handleChatOpen}
-            className="fixed bottom-6 right-6 w-16 h-16 bg-prosalud-salud hover:bg-prosalud-salud/90 rounded-full shadow-xl animate-pulse z-50 flex items-center justify-center"
+            className="fixed bottom-6 right-6 w-14 h-14 bg-prosalud-salud hover:bg-prosalud-salud/90 rounded-full shadow-xl z-50 flex items-center justify-center"
             aria-label="Abrir chat"
           >
-            <MessageCircle className="text-white h-8 w-8" />
+            <MessageCircle className="text-white h-7 w-7" /> {/* Icono un poco más grande, ajustado al nuevo tamaño del botón */}
           </Button>
         </TooltipTrigger>
         <TooltipContent side="left" className="bg-gray-800 text-white border-gray-700">
