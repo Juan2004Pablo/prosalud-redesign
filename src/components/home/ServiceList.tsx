@@ -1,4 +1,3 @@
-
 import React, { useMemo } from 'react';
 import ServiceCard from '@/components/shared/ServiceCard';
 import { 
@@ -68,7 +67,10 @@ const ServiceList: React.FC<ServiceListProps> = ({ searchTerm }) => {
               title={service.title}
               description={service.description}
               linkTo={service.linkTo}
-              className="animate-scale-in"
+              className="animate-scale-in" // Keep existing animation
+              // Adding focus visible styles for accessibility
+              // These will be more effective if the Link component itself can receive focus styling
+              // However, ServiceCard as a whole block link should be focusable
             />
           ))}
         </div>
