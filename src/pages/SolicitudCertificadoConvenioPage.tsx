@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -9,7 +8,7 @@ import MainLayout from '@/components/layout/MainLayout';
 import { toast } from 'sonner';
 import { Send, CheckCircle2, AlertCircle, Home, FileText } from 'lucide-react';
 import { MAX_FILE_SIZE, ALLOWED_FILE_TYPES_GENERAL, ALLOWED_FILE_TYPES_PDF } from '@/components/solicitud-certificado/utils';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 
 import DatosPersonalesSection from '@/components/solicitud-certificado/DatosPersonalesSection';
@@ -107,6 +106,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 const SolicitudCertificadoConvenioPage: React.FC = () => {
+  const navigate = useNavigate();
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -151,8 +151,16 @@ const SolicitudCertificadoConvenioPage: React.FC = () => {
       ),
       duration: 8000,
       icon: <CheckCircle2 className="h-5 w-5 text-emerald-600" />,
+      onAutoClose: () => {
+        form.reset();
+        navigate('/');
+      },
+      onDismiss: () => {
+        if (form.formState.isSubmitSuccessful) { 
+            navigate('/');
+        }
+      }
     });
-    form.reset();
   };
   
   const handleError = () => {
@@ -193,7 +201,7 @@ const SolicitudCertificadoConvenioPage: React.FC = () => {
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-      </div> {/* This was the missing closing tag */}
+      </div>
       
       <div className="container mx-auto py-8 px-4 md:px-6 lg:px-8">
         <SolicitudHeader />
