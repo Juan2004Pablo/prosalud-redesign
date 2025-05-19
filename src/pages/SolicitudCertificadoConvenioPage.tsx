@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -110,7 +111,7 @@ const SolicitudCertificadoConvenioPage: React.FC = () => {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      tipoIdentificacion: '',
+      tipoIdentificacion: 'CC', // Default value set to "CC"
       numeroIdentificacion: '',
       nombres: '',
       apellidos: '',
@@ -253,3 +254,4 @@ const SolicitudCertificadoConvenioPage: React.FC = () => {
 };
 
 export default SolicitudCertificadoConvenioPage;
+
