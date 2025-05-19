@@ -96,7 +96,7 @@ const ConveniosSection: React.FC = () => {
                       <p className="text-md font-medium text-text-dark">{convenio.name}</p>
                     </button>
                   </HoverCardTrigger>
-                  <HoverCardContent className="w-80 p-4">
+                  <HoverCardContent className="w-80 p-4 z-50 bg-card">
                     <div className="space-y-2">
                       <h4 className="text-lg font-semibold">{convenio.name}</h4>
                       <p className="text-sm text-muted-foreground">{convenio.description}</p>
