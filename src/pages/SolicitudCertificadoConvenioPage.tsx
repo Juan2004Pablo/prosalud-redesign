@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -40,12 +40,30 @@ const formSchema = z.object({
   }).default({}),
 
   dirigidoAQuien: z.string().optional(),
-  actividadesPdf: z.any().optional(), // FileList or undefined
+  actividadesPdf: z.any().optional().refine(files => { // Handle FileList or undefined
+    if (!files || files.length === 0) return true; // Optional, so valid if no file
+    const file = files[0];
+    return file.size <= MAX_FILE_SIZE;
+  }, `El archivo no debe exceder los ${MAX_FILE_SIZE / (1024*1024)}MB.`).refine(files => {
+    if (!files || files.length === 0) return true;
+    const file = files[0];
+    return ALLOWED_FILE_TYPES_PDF.includes(file.type);
+  }, 'Solo se permiten archivos PDF.'),
+  
   tipoVehiculo: z.string().optional(),
   placaVehiculo: z.string().optional(),
   otrosDescripcion: z.string().optional(),
 
-  adjuntarArchivoAdicional: z.any().optional(), // FileList or undefined
+  adjuntarArchivoAdicional: z.any().optional().refine(files => { // Handle FileList or undefined
+    if (!files || files.length === 0) return true; // Optional, so valid if no file
+    const file = files[0];
+    return file.size <= MAX_FILE_SIZE;
+  }, `El archivo no debe exceder los ${MAX_FILE_SIZE / (1024*1024)}MB.`).refine(files => {
+    if (!files || files.length === 0) return true;
+    const file = files[0];
+    return ALLOWED_FILE_TYPES_GENERAL.includes(file.type);
+  }, 'Tipo de archivo no permitido. Use PDF, Excel o imágenes.'),
+  
   confirmacionCorreo: z.boolean().default(false),
   aceptaTratamientoDatos: z.boolean().refine(val => val === true, {
     message: "Debe aceptar el tratamiento de datos personales para continuar."
@@ -65,23 +83,8 @@ const formSchema = z.object({
             path: ['actividadesPdf'],
             message: 'Debe adjuntar un archivo PDF con las actividades si selecciona esta opción.',
         });
-    } else {
-        const file = data.actividadesPdf[0];
-        if (file.size > MAX_FILE_SIZE) {
-            ctx.addIssue({
-                code: z.ZodIssueCode.custom,
-                path: ['actividadesPdf'],
-                message: `El archivo no debe exceder los ${MAX_FILE_SIZE / (1024*1024)}MB.`,
-            });
-        }
-        if (!ALLOWED_FILE_TYPES_PDF.includes(file.type)) {
-            ctx.addIssue({
-                code: z.ZodIssueCode.custom,
-                path: ['actividadesPdf'],
-                message: 'Solo se permiten archivos PDF.',
-            });
-        }
-    }
+    } 
+    // File specific validations (size, type) are now part of the field's refine
   }
   if (data.infoCertificado.dirigidoTransitoPicoPlaca) {
     if (!data.tipoVehiculo?.trim()) {
@@ -98,23 +101,7 @@ const formSchema = z.object({
       message: 'Este campo es requerido si selecciona "Otros".',
     });
   }
-  if (data.adjuntarArchivoAdicional && data.adjuntarArchivoAdicional.length > 0) {
-    const file = data.adjuntarArchivoAdicional[0];
-    if (file.size > MAX_FILE_SIZE) {
-        ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            path: ['adjuntarArchivoAdicional'],
-            message: `El archivo no debe exceder los ${MAX_FILE_SIZE / (1024*1024)}MB.`,
-        });
-    }
-    if (!ALLOWED_FILE_TYPES_GENERAL.includes(file.type)) {
-        ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            path: ['adjuntarArchivoAdicional'],
-            message: 'Tipo de archivo no permitido. Use PDF, Excel o imágenes.',
-        });
-    }
-  }
+  // File specific validations (size, type) for adjuntarArchivoAdicional are now part of the field's refine
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -142,11 +129,11 @@ const SolicitudCertificadoConvenioPage: React.FC = () => {
         otros: false,
       },
       dirigidoAQuien: '',
-      actividadesPdf: undefined,
+      actividadesPdf: undefined, // Mantener como undefined
       tipoVehiculo: '',
       placaVehiculo: '',
       otrosDescripcion: '',
-      adjuntarArchivoAdicional: undefined,
+      adjuntarArchivoAdicional: undefined, // Mantener como undefined
       confirmacionCorreo: false,
       aceptaTratamientoDatos: false,
     },
@@ -346,7 +333,10 @@ const SolicitudCertificadoConvenioPage: React.FC = () => {
                     </FormItem>
                 )}/>
                 {watchInfoCertificado.adicionarActividades && (
-                    <FormField control={form.control} name="actividadesPdf" render={({ field: { onChange, ...props } }) => (
+                    <FormField 
+                      control={form.control} 
+                      name="actividadesPdf" 
+                      render={({ field: { onChange, onBlur, name, ref } }) => (
                         <FormItem className="ml-7">
                             <FormLabel>Adjuntar PDF con actividades *</FormLabel>
                             <FormControl>
@@ -354,7 +344,9 @@ const SolicitudCertificadoConvenioPage: React.FC = () => {
                                   type="file" 
                                   accept=".pdf"
                                   onChange={(e) => onChange(e.target.files)} 
-                                  {...props}
+                                  onBlur={onBlur}
+                                  name={name}
+                                  ref={ref}
                                   className="cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-primary-prosalud file:text-white hover:file:bg-primary-prosalud-dark"
                                 />
                             </FormControl>
@@ -420,15 +412,17 @@ const SolicitudCertificadoConvenioPage: React.FC = () => {
               <FormField
                 control={form.control}
                 name="adjuntarArchivoAdicional"
-                render={({ field: { onChange, ...props } }) => (
+                render={({ field: { onChange, onBlur, name, ref } }) => (
                   <FormItem>
                     <FormLabel>Seleccione un archivo (PDF, Excel o imagen, máx. 4MB)</FormLabel>
                     <FormControl>
                       <Input 
                         type="file" 
                         accept=".pdf,.xls,.xlsx,.jpg,.jpeg,.png,.gif,.webp"
-                        onChange={(e) => onChange(e.target.files)} 
-                        {...props}
+                        onChange={(e) => onChange(e.target.files)}
+                        onBlur={onBlur}
+                        name={name}
+                        ref={ref}
                         className="cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-primary-prosalud file:text-white hover:file:bg-primary-prosalud-dark"
                       />
                     </FormControl>
