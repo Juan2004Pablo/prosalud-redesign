@@ -1,22 +1,15 @@
-
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import ReCAPTCHA from 'react-google-recaptcha'; // Importar ReCAPTCHA
+import ReCAPTCHA from 'react-google-recaptcha';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
+import { Switch } from '@/components/ui/switch';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'; // Agregado FormMessage
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import MainLayout from '@/components/layout/MainLayout';
 import { toast } from 'sonner';
 import { Info, AlertTriangle, Send } from 'lucide-react';
-import { Toggle } from '@/components/ui/toggle'; // Importar Toggle
-
-// Import new components
-import DatosPersonalesSection from '@/components/solicitud-certificado/DatosPersonalesSection';
-import InformacionCertificadoSection from '@/components/solicitud-certificado/InformacionCertificadoSection';
-import ArchivoAdicionalSection from '@/components/solicitud-certificado/ArchivoAdicionalSection';
 import { MAX_FILE_SIZE, ALLOWED_FILE_TYPES_GENERAL, ALLOWED_FILE_TYPES_PDF } from '@/components/solicitud-certificado/utils';
 
 const RECAPTCHA_SITE_KEY = "6LclSkArAAAAABXa8SIwimuDgPd8tjQbNzoBSlOZ";
@@ -68,7 +61,7 @@ const formSchema = z.object({
   }, 'Tipo de archivo no permitido. Use PDF, Excel o imágenes.'),
   
   confirmacionCorreo: z.boolean().default(false),
-  recaptchaToken: z.string().min(1, "Por favor, completa el reCAPTCHA."), // Nuevo campo para reCAPTCHA
+  recaptchaToken: z.string().min(1, "Por favor, completa el reCAPTCHA."),
 }).superRefine((data, ctx) => {
   if (data.infoCertificado.dirigidoAEntidad && !data.dirigidoAQuien?.trim()) {
     ctx.addIssue({
@@ -134,19 +127,16 @@ const SolicitudCertificadoConvenioPage: React.FC = () => {
       otrosDescripcion: '',
       adjuntarArchivoAdicional: undefined,
       confirmacionCorreo: false,
-      recaptchaToken: '', // Valor inicial para recaptchaToken
+      recaptchaToken: '', 
     },
   });
 
   const onSubmit = (data: FormValues) => {
     console.log('Form data with reCAPTCHA:', data);
-    // Aquí iría la lógica para enviar data.recaptchaToken al backend para verificación
     toast.success('Solicitud enviada con éxito', {
       description: 'Recibirá el certificado en su correo en los próximos días hábiles.',
     });
     form.reset();
-    // Podríamos necesitar resetear el ReCAPTCHA manualmente si usamos una referencia
-    // pero react-hook-form al hacer reset debería limpiar el valor del token también.
   };
   
   const idTypes = [
@@ -187,14 +177,12 @@ const SolicitudCertificadoConvenioPage: React.FC = () => {
                 render={({ field }) => (
                   <FormItem className="flex flex-row items-center space-x-3 space-y-0">
                     <FormControl>
-                      <Toggle 
-                        pressed={field.value} 
-                        onPressedChange={field.onChange}
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
                         aria-label="Confirmar recepción de correo"
-                        className="data-[state=on]:bg-secondary-prosaludgreen"
-                      >
-                        <span className="sr-only">Toggle confirmación</span>
-                      </Toggle>
+                        className="data-[state=checked]:bg-secondary-prosaludgreen" 
+                      />
                     </FormControl>
                     <FormLabel className="font-normal text-sm">
                       Deseo recibir confirmación de envío de mi solicitud al correo electrónico.
