@@ -43,15 +43,14 @@ const HeroSection: React.FC = () => {
                 Tu portal de autogestión para acceder a servicios, trámites y beneficios de manera ágil y segura. Simplificamos tu día a día.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 md:justify-start justify-center animate-fade-in animation-delay-200">
-                <Button
-                  size="lg"
-                  className="bg-secondary-prosaludgreen hover:bg-secondary-prosaludgreen-dark text-text-light px-8 py-3 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-secondary-prosaludgreen"
-                  onClick={handleScrollToQuickLinks}
-                  aria-label="Ir a la sección de gestionar trámites"
-                >
-                  <span>Gestionar trámites</span>
-                  <ArrowRight size={20} className="ml-2" />
-                </Button>
+                <Button 
+                size="lg" 
+                className="bg-secondary-prosaludgreen hover:bg-secondary-prosaludgreen/90 text-white text-base shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 px-8 py-6"
+                onClick={handleScrollToQuickLinks}
+              >
+                Trámites Rápidos
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
                 <Link to="/nosotros/quienes-somos" aria-label="Conocer más sobre ProSalud">
                   <Button
                     variant="outline"
