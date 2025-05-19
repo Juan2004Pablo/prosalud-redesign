@@ -12,7 +12,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import MainLayout from '@/components/layout/MainLayout';
 import { toast } from 'sonner';
-import { Info, FileText, UploadCloud, AlertTriangle, send as Send } from 'lucide-react';
+import { Info, FileText, UploadCloud, AlertTriangle, Send } from 'lucide-react';
 
 const MAX_FILE_SIZE = 4 * 1024 * 1024; // 4MB
 const ALLOWED_FILE_TYPES_GENERAL = ['application/pdf', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'image/jpeg', 'image/png', 'image/gif', 'image/webp'];
