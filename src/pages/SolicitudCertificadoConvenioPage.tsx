@@ -12,7 +12,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import MainLayout from '@/components/layout/MainLayout';
 import { toast } from 'sonner';
-import { Info, FileText, UploadCloud, AlertTriangle, Send } from 'lucide-react';
+import { Info, FileText, UploadCloud, AlertTriangle, Send, FileCheck, FileX } from 'lucide-react';
 
 const MAX_FILE_SIZE = 4 * 1024 * 1024; // 4MB
 const ALLOWED_FILE_TYPES_GENERAL = ['application/pdf', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'image/jpeg', 'image/png', 'image/gif', 'image/webp'];
@@ -40,8 +40,8 @@ const formSchema = z.object({
   }).default({}),
 
   dirigidoAQuien: z.string().optional(),
-  actividadesPdf: z.any().optional().refine(files => { // Handle FileList or undefined
-    if (!files || files.length === 0) return true; // Optional, so valid if no file
+  actividadesPdf: z.any().optional().refine(files => {
+    if (!files || files.length === 0) return true;
     const file = files[0];
     return file.size <= MAX_FILE_SIZE;
   }, `El archivo no debe exceder los ${MAX_FILE_SIZE / (1024*1024)}MB.`).refine(files => {
@@ -54,8 +54,8 @@ const formSchema = z.object({
   placaVehiculo: z.string().optional(),
   otrosDescripcion: z.string().optional(),
 
-  adjuntarArchivoAdicional: z.any().optional().refine(files => { // Handle FileList or undefined
-    if (!files || files.length === 0) return true; // Optional, so valid if no file
+  adjuntarArchivoAdicional: z.any().optional().refine(files => {
+    if (!files || files.length === 0) return true;
     const file = files[0];
     return file.size <= MAX_FILE_SIZE;
   }, `El archivo no debe exceder los ${MAX_FILE_SIZE / (1024*1024)}MB.`).refine(files => {
@@ -65,9 +65,6 @@ const formSchema = z.object({
   }, 'Tipo de archivo no permitido. Use PDF, Excel o imágenes.'),
   
   confirmacionCorreo: z.boolean().default(false),
-  aceptaTratamientoDatos: z.boolean().refine(val => val === true, {
-    message: "Debe aceptar el tratamiento de datos personales para continuar."
-  }),
 }).superRefine((data, ctx) => {
   if (data.infoCertificado.dirigidoAEntidad && !data.dirigidoAQuien?.trim()) {
     ctx.addIssue({
@@ -84,7 +81,6 @@ const formSchema = z.object({
             message: 'Debe adjuntar un archivo PDF con las actividades si selecciona esta opción.',
         });
     } 
-    // File specific validations (size, type) are now part of the field's refine
   }
   if (data.infoCertificado.dirigidoTransitoPicoPlaca) {
     if (!data.tipoVehiculo?.trim()) {
@@ -101,10 +97,18 @@ const formSchema = z.object({
       message: 'Este campo es requerido si selecciona "Otros".',
     });
   }
-  // File specific validations (size, type) for adjuntarArchivoAdicional are now part of the field's refine
 });
 
 type FormValues = z.infer<typeof formSchema>;
+
+const formatFileSize = (bytes: number, decimals = 2) => {
+  if (bytes === 0) return '0 Bytes';
+  const k = 1024;
+  const dm = decimals < 0 ? 0 : decimals;
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+};
 
 const SolicitudCertificadoConvenioPage: React.FC = () => {
   const form = useForm<FormValues>({
@@ -129,13 +133,12 @@ const SolicitudCertificadoConvenioPage: React.FC = () => {
         otros: false,
       },
       dirigidoAQuien: '',
-      actividadesPdf: undefined, // Mantener como undefined
+      actividadesPdf: undefined,
       tipoVehiculo: '',
       placaVehiculo: '',
       otrosDescripcion: '',
-      adjuntarArchivoAdicional: undefined, // Mantener como undefined
+      adjuntarArchivoAdicional: undefined,
       confirmacionCorreo: false,
-      aceptaTratamientoDatos: false,
     },
   });
 
@@ -333,26 +336,47 @@ const SolicitudCertificadoConvenioPage: React.FC = () => {
                     </FormItem>
                 )}/>
                 {watchInfoCertificado.adicionarActividades && (
-                    <FormField 
-                      control={form.control} 
-                      name="actividadesPdf" 
-                      render={({ field: { onChange, onBlur, name, ref } }) => (
-                        <FormItem className="ml-7">
-                            <FormLabel>Adjuntar PDF con actividades *</FormLabel>
-                            <FormControl>
-                                <Input 
-                                  type="file" 
-                                  accept=".pdf"
-                                  onChange={(e) => onChange(e.target.files)} 
-                                  onBlur={onBlur}
-                                  name={name}
-                                  ref={ref}
-                                  className="cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-primary-prosalud file:text-white hover:file:bg-primary-prosalud-dark"
-                                />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}/>
+                  <FormField
+                    control={form.control}
+                    name="actividadesPdf"
+                    render={({ field }) => (
+                      <FormItem className="ml-7">
+                        <FormLabel>Adjuntar PDF con actividades *</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="file"
+                            accept=".pdf"
+                            key={field.value ? field.value[0]?.name : 'no-file-actividades'} // Key for visual reset
+                            onChange={(e) => field.onChange(e.target.files && e.target.files.length > 0 ? e.target.files : undefined)}
+                            onBlur={field.onBlur}
+                            name={field.name}
+                            className="cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-primary-prosalud file:text-white hover:file:bg-primary-prosalud-dark"
+                          />
+                        </FormControl>
+                        {field.value && field.value[0] && (
+                          <div className="mt-2 p-3 border rounded-md bg-slate-50 flex items-center justify-between text-sm">
+                            <div className="flex items-center gap-2">
+                              <FileCheck className="h-5 w-5 text-green-600 shrink-0" />
+                              <div className="truncate">
+                                <p className="font-medium text-slate-700 truncate">{field.value[0].name}</p>
+                                <p className="text-xs text-slate-500">{formatFileSize(field.value[0].size)}</p>
+                              </div>
+                            </div>
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              className="text-red-600 hover:text-red-700 hover:bg-red-50 px-2"
+                              onClick={() => field.onChange(undefined)}
+                            >
+                              <FileX className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        )}
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 )}
                 <FormField control={form.control} name="infoCertificado.dirigidoTransitoPicoPlaca" render={({ field }) => (
                      <FormItem className="flex flex-row items-start space-x-3 space-y-0">
@@ -412,21 +436,41 @@ const SolicitudCertificadoConvenioPage: React.FC = () => {
               <FormField
                 control={form.control}
                 name="adjuntarArchivoAdicional"
-                render={({ field: { onChange, onBlur, name, ref } }) => (
+                render={({ field }) => (
                   <FormItem>
                     <FormLabel>Seleccione un archivo (PDF, Excel o imagen, máx. 4MB)</FormLabel>
                     <FormControl>
                       <Input 
                         type="file" 
                         accept=".pdf,.xls,.xlsx,.jpg,.jpeg,.png,.gif,.webp"
-                        onChange={(e) => onChange(e.target.files)}
-                        onBlur={onBlur}
-                        name={name}
-                        ref={ref}
+                        key={field.value ? field.value[0]?.name : 'no-file-adicional'} // Key for visual reset
+                        onChange={(e) => field.onChange(e.target.files && e.target.files.length > 0 ? e.target.files : undefined)}
+                        onBlur={field.onBlur}
+                        name={field.name}
                         className="cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-primary-prosalud file:text-white hover:file:bg-primary-prosalud-dark"
                       />
                     </FormControl>
-                    <FormDescription>Si necesita adjuntar algún documento adicional, puede hacerlo aquí.</FormDescription>
+                    {field.value && field.value[0] && (
+                      <div className="mt-2 p-3 border rounded-md bg-slate-50 flex items-center justify-between text-sm">
+                        <div className="flex items-center gap-2">
+                          <FileCheck className="h-5 w-5 text-green-600 shrink-0" />
+                          <div className="truncate">
+                            <p className="font-medium text-slate-700 truncate">{field.value[0].name}</p>
+                            <p className="text-xs text-slate-500">{formatFileSize(field.value[0].size)}</p>
+                          </div>
+                        </div>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          className="text-red-600 hover:text-red-700 hover:bg-red-50 px-2"
+                          onClick={() => field.onChange(undefined)}
+                        >
+                          <FileX className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    )}
+                    <FormDescription className="mt-2">Si necesita adjuntar algún documento adicional, puede hacerlo aquí.</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -458,26 +502,14 @@ const SolicitudCertificadoConvenioPage: React.FC = () => {
                 </AlertDescription>
             </Alert>
 
-            <FormField
-              control={form.control}
-              name="aceptaTratamientoDatos"
-              render={({ field }) => (
-                <FormItem className="items-top flex space-x-3 py-4">
-                  <FormControl>
-                    <Checkbox checked={field.value} onCheckedChange={field.onChange} />
-                  </FormControl>
-                  <div className="grid gap-1.5 leading-none">
-                    <FormLabel className="font-normal text-sm">
-                      Autorización de Tratamiento de Datos Personales *
-                    </FormLabel>
-                    <FormDescription className="text-xs text-muted-foreground">
-                      Conforme al artículo 17, literal b de la Ley 1581 de 2012, al continuar autorizo de forma previa, expresa e informada el tratamiento de mis datos personales.
-                    </FormDescription>
-                    <FormMessage />
-                  </div>
-                </FormItem>
-              )}
-            />
+            <div className="py-4 px-6 border rounded-lg shadow-sm bg-white">
+                <h3 className="text-md font-semibold text-gray-700 mb-1">
+                    Autorización de Tratamiento de Datos Personales
+                </h3>
+                <p className="text-xs text-muted-foreground">
+                    Al hacer clic en "Enviar Solicitud", usted autoriza de forma previa, expresa e informada el tratamiento de sus datos personales conforme al artículo 17, literal b de la Ley 1581 de 2012 y nuestra política de tratamiento de datos.
+                </p>
+            </div>
             
             <div className="flex justify-center mt-10">
               <Button type="submit" size="lg" className="w-full md:w-auto bg-secondary-prosaludgreen hover:bg-secondary-prosaludgreen/90 text-white flex items-center gap-2">
