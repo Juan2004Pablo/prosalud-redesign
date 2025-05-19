@@ -1,12 +1,12 @@
-
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
+import ReCAPTCHA from 'react-google-recaptcha'; // Importar ReCAPTCHA
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'; // Agregado FormMessage
 import MainLayout from '@/components/layout/MainLayout';
 import { toast } from 'sonner';
 import { Info, AlertTriangle, Send } from 'lucide-react';
@@ -17,6 +17,7 @@ import InformacionCertificadoSection from '@/components/solicitud-certificado/In
 import ArchivoAdicionalSection from '@/components/solicitud-certificado/ArchivoAdicionalSection';
 import { MAX_FILE_SIZE, ALLOWED_FILE_TYPES_GENERAL, ALLOWED_FILE_TYPES_PDF } from '@/components/solicitud-certificado/utils';
 
+const RECAPTCHA_SITE_KEY = "6LclSkArAAAAABXa8SIwimuDgPd8tjQbNzoBSlOZ";
 
 const formSchema = z.object({
   tipoIdentificacion: z.string().min(1, "Este campo es requerido."),
@@ -65,6 +66,7 @@ const formSchema = z.object({
   }, 'Tipo de archivo no permitido. Use PDF, Excel o imágenes.'),
   
   confirmacionCorreo: z.boolean().default(false),
+  recaptchaToken: z.string().min(1, "Por favor, completa el reCAPTCHA."), // Nuevo campo para reCAPTCHA
 }).superRefine((data, ctx) => {
   if (data.infoCertificado.dirigidoAEntidad && !data.dirigidoAQuien?.trim()) {
     ctx.addIssue({
@@ -130,15 +132,19 @@ const SolicitudCertificadoConvenioPage: React.FC = () => {
       otrosDescripcion: '',
       adjuntarArchivoAdicional: undefined,
       confirmacionCorreo: false,
+      recaptchaToken: '', // Valor inicial para recaptchaToken
     },
   });
 
   const onSubmit = (data: FormValues) => {
-    console.log('Form data:', data);
+    console.log('Form data with reCAPTCHA:', data);
+    // Aquí iría la lógica para enviar data.recaptchaToken al backend para verificación
     toast.success('Solicitud enviada con éxito', {
       description: 'Recibirá el certificado en su correo en los próximos días hábiles.',
     });
     form.reset();
+    // Podríamos necesitar resetear el ReCAPTCHA manualmente si usamos una referencia
+    // pero react-hook-form al hacer reset debería limpiar el valor del token también.
   };
   
   const idTypes = [
@@ -205,6 +211,28 @@ const SolicitudCertificadoConvenioPage: React.FC = () => {
                     Al hacer clic en "Enviar Solicitud", usted autoriza de forma previa, expresa e informada el tratamiento de sus datos personales conforme al artículo 17, literal b de la Ley 1581 de 2012 y nuestra política de tratamiento de datos.
                 </p>
             </div>
+
+            {/* Campo ReCAPTCHA */}
+            <FormField
+              control={form.control}
+              name="recaptchaToken"
+              render={({ field }) => (
+                <FormItem className="flex flex-col items-center"> {/* Centrar el reCAPTCHA */}
+                  <FormControl>
+                    <ReCAPTCHA
+                      sitekey={RECAPTCHA_SITE_KEY}
+                      onChange={(token) => field.onChange(token)}
+                      onExpired={() => field.onChange('')} // Limpiar token si expira
+                      onErrored={() => {
+                        field.onChange(''); // Limpiar token si hay error
+                        toast.error("Error con reCAPTCHA. Inténtalo de nuevo.");
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage /> {/* Mostrar mensaje de error para reCAPTCHA */}
+                </FormItem>
+              )}
+            />
             
             <div className="flex justify-center mt-10">
               <Button type="submit" size="lg" className="w-full md:w-auto bg-secondary-prosaludgreen hover:bg-secondary-prosaludgreen/90 text-white flex items-center gap-2">
