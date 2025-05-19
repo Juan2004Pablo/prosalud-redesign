@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -8,6 +9,7 @@ import NotFound from "./pages/NotFound";
 import MainLayout from "./components/layout/MainLayout";
 import QuienesSomos from "./pages/QuienesSomos";
 import LoginPage from "./pages/LoginPage";
+import SolicitudCertificadoConvenioPage from "./pages/SolicitudCertificadoConvenioPage"; // Importar la nueva página
 
 const queryClient = new QueryClient();
 
@@ -74,7 +76,8 @@ const App = () => (
           <Route path="/privacidad" element={<PlaceholderPage title="Política de Privacidad" />} />
 
           {/* New Service Routes */}
-          <Route path="/servicios/certificado-convenio" element={<PlaceholderPage title="Certificado de Convenio Sindical" />} />
+          {/* Updated route for Certificado de Convenio Sindical */}
+          <Route path="/servicios/certificado-convenio" element={<SolicitudCertificadoConvenioPage />} />
           <Route path="/servicios/descanso-laboral" element={<PlaceholderPage title="Solicitud de Descanso Laboral" />} />
           <Route path="/servicios/compensacion-anual" element={<PlaceholderPage title="Compensación Anual Diferida" />} />
           <Route path="/servicios/consulta-pagos" element={<PlaceholderPage title="Consulta de Pagos" />} />
