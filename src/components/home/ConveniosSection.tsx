@@ -1,3 +1,4 @@
+
 import React, { useRef } from 'react';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -51,7 +52,7 @@ const ConveniosSection: React.FC = () => {
               {conveniosData.map((convenio, index) => (
                 <li 
                   key={index} 
-                  className="bg-card p-6 rounded-lg shadow-md border border-prosalud-border hover:shadow-xl hover:border-primary-prosalud transition-all duration-300 flex items-center animate-fade-in focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-primary-prosalud"
+                  className="bg-card p-6 rounded-lg shadow-md border border-prosalud-border hover:shadow-xl hover:border-primary-prosalud transform transition-all duration-300 flex items-center animate-fade-in focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-primary-prosalud hover:scale-[1.02]"
                   style={{ animationDelay: `${index * 100}ms` }}
                   tabIndex={0} // Make li focusable if it acts like a link/card
                 >
@@ -91,3 +92,4 @@ const ConveniosSection: React.FC = () => {
 };
 
 export default ConveniosSection;
+
