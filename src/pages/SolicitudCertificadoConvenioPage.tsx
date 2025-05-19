@@ -12,6 +12,11 @@ import { toast } from 'sonner';
 import { Info, AlertTriangle, Send } from 'lucide-react';
 import { MAX_FILE_SIZE, ALLOWED_FILE_TYPES_GENERAL, ALLOWED_FILE_TYPES_PDF } from '@/components/solicitud-certificado/utils';
 
+// Restore missing imports
+import DatosPersonalesSection from '@/components/solicitud-certificado/DatosPersonalesSection';
+import InformacionCertificadoSection from '@/components/solicitud-certificado/InformacionCertificadoSection';
+import ArchivoAdicionalSection from '@/components/solicitud-certificado/ArchivoAdicionalSection';
+
 const RECAPTCHA_SITE_KEY = "6LclSkArAAAAABXa8SIwimuDgPd8tjQbNzoBSlOZ";
 
 const formSchema = z.object({
