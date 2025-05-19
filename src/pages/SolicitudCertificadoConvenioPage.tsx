@@ -2,7 +2,6 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import ReCAPTCHA from 'react-google-recaptcha';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -66,7 +65,7 @@ const formSchema = z.object({
   }, 'Tipo de archivo no permitido. Use PDF, Excel o imágenes.'),
   
   confirmacionCorreo: z.boolean().default(false),
-  recaptchaToken: z.string().min(1, "Por favor, completa el reCAPTCHA."),
+  // recaptchaToken: z.string().min(1, "Por favor, completa el reCAPTCHA."),
 }).superRefine((data, ctx) => {
   if (data.infoCertificado.dirigidoAEntidad && !data.dirigidoAQuien?.trim()) {
     ctx.addIssue({
@@ -132,12 +131,12 @@ const SolicitudCertificadoConvenioPage: React.FC = () => {
       otrosDescripcion: '',
       adjuntarArchivoAdicional: undefined,
       confirmacionCorreo: false,
-      recaptchaToken: '', 
+      // recaptchaToken: '', 
     },
   });
 
   const onSubmit = (data: FormValues) => {
-    console.log('Form data with reCAPTCHA:', data);
+    console.log('Form data (reCAPTCHA temporalmente desactivado):', data);
     toast.success('Solicitud enviada con éxito', {
       description: (
         <>
@@ -146,7 +145,7 @@ const SolicitudCertificadoConvenioPage: React.FC = () => {
           <strong className="mt-2 block font-semibold">Tenga presente:</strong> Solamente en caso de presentarse alguna inconsistencia nos comunicaremos con usted.
         </>
       ),
-      duration: 8000, // Aumentar la duración para que sea más legible
+      duration: 8000, 
     });
     form.reset();
   };
@@ -213,27 +212,29 @@ const SolicitudCertificadoConvenioPage: React.FC = () => {
                 </p>
             </div>
 
-            {/* Campo ReCAPTCHA */}
+            {/* Campo ReCAPTCHA Comentado Temporalmente */}
+            {/*
             <FormField
               control={form.control}
               name="recaptchaToken"
               render={({ field }) => (
-                <FormItem className="flex flex-col items-center"> {/* Centrar el reCAPTCHA */}
+                <FormItem className="flex flex-col items-center">
                   <FormControl>
                     <ReCAPTCHA
                       sitekey={RECAPTCHA_SITE_KEY}
                       onChange={(token) => field.onChange(token)}
-                      onExpired={() => field.onChange('')} // Limpiar token si expira
+                      onExpired={() => field.onChange('')}
                       onErrored={() => {
-                        field.onChange(''); // Limpiar token si hay error
+                        field.onChange(''); 
                         toast.error("Error con reCAPTCHA. Inténtalo de nuevo.");
                       }}
                     />
                   </FormControl>
-                  <FormMessage /> {/* Mostrar mensaje de error para reCAPTCHA */}
+                  <FormMessage />
                 </FormItem>
               )}
             />
+            */}
             
             <div className="flex justify-center mt-10">
               <Button type="submit" size="lg" className="w-full md:w-auto bg-secondary-prosaludgreen hover:bg-secondary-prosaludgreen/90 text-white flex items-center gap-2">
