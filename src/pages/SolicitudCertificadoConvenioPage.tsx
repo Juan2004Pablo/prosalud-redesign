@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import MainLayout from '@/components/layout/MainLayout';
 import { toast } from 'sonner';
-import { Send } from 'lucide-react';
+import { Send, CheckCircle2, AlertCircle } from 'lucide-react';
 import { MAX_FILE_SIZE, ALLOWED_FILE_TYPES_GENERAL, ALLOWED_FILE_TYPES_PDF } from '@/components/solicitud-certificado/utils';
 
 import DatosPersonalesSection from '@/components/solicitud-certificado/DatosPersonalesSection';
@@ -146,9 +146,18 @@ const SolicitudCertificadoConvenioPage: React.FC = () => {
           <strong className="mt-2 block font-semibold">Tenga presente:</strong> Solamente en caso de presentarse alguna inconsistencia nos comunicaremos con usted.
         </>
       ),
-      duration: 8000, 
+      duration: 8000,
+      icon: <CheckCircle2 className="h-5 w-5 text-emerald-600" />,
     });
     form.reset();
+  };
+  
+  const handleError = () => {
+    toast.error('Error al enviar el formulario', {
+      description: 'Por favor verifique los datos ingresados e intente nuevamente.',
+      duration: 5000,
+      icon: <AlertCircle className="h-5 w-5 text-red-600" />,
+    });
   };
   
   const idTypes = [
@@ -166,7 +175,7 @@ const SolicitudCertificadoConvenioPage: React.FC = () => {
         <InformacionImportanteAlert />
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form onSubmit={form.handleSubmit(onSubmit, handleError)} className="space-y-8">
             <DatosPersonalesSection control={form.control} idTypes={idTypes} />
             <InformacionCertificadoSection control={form.control} watch={form.watch} />
             <ArchivoAdicionalSection control={form.control} />
