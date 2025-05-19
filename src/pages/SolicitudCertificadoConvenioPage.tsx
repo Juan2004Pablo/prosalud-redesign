@@ -1,22 +1,22 @@
+
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
 import MainLayout from '@/components/layout/MainLayout';
 import { toast } from 'sonner';
-import { Info, FileText, UploadCloud, AlertTriangle, Send, FileCheck, FileX } from 'lucide-react';
+import { Info, AlertTriangle, Send } from 'lucide-react';
 
-const MAX_FILE_SIZE = 4 * 1024 * 1024; // 4MB
-const ALLOWED_FILE_TYPES_GENERAL = ['application/pdf', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-const ALLOWED_FILE_TYPES_PDF = ['application/pdf'];
+// Import new components
+import DatosPersonalesSection from '@/components/solicitud-certificado/DatosPersonalesSection';
+import InformacionCertificadoSection from '@/components/solicitud-certificado/InformacionCertificadoSection';
+import ArchivoAdicionalSection from '@/components/solicitud-certificado/ArchivoAdicionalSection';
+import { MAX_FILE_SIZE, ALLOWED_FILE_TYPES_GENERAL, ALLOWED_FILE_TYPES_PDF } from '@/components/solicitud-certificado/utils';
+
 
 const formSchema = z.object({
   tipoIdentificacion: z.string().min(1, "Este campo es requerido."),
@@ -101,15 +101,6 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-const formatFileSize = (bytes: number, decimals = 2) => {
-  if (bytes === 0) return '0 Bytes';
-  const k = 1024;
-  const dm = decimals < 0 ? 0 : decimals;
-  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
-};
-
 const SolicitudCertificadoConvenioPage: React.FC = () => {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -142,16 +133,12 @@ const SolicitudCertificadoConvenioPage: React.FC = () => {
     },
   });
 
-  const watchInfoCertificado = form.watch('infoCertificado');
-
   const onSubmit = (data: FormValues) => {
     console.log('Form data:', data);
-    // Aquí iría la lógica para enviar los datos al backend
-    // Por ahora, solo mostramos un toast de éxito
     toast.success('Solicitud enviada con éxito', {
       description: 'Recibirá el certificado en su correo en los próximos días hábiles.',
     });
-    form.reset(); // Opcional: resetear el formulario después del envío
+    form.reset();
   };
   
   const idTypes = [
@@ -181,301 +168,9 @@ const SolicitudCertificadoConvenioPage: React.FC = () => {
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <section className="p-6 border rounded-lg shadow-sm bg-white">
-              <h2 className="text-xl font-semibold mb-6 text-primary-prosalud-dark">Datos Personales del Solicitante</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <FormField
-                  control={form.control}
-                  name="tipoIdentificacion"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Tipo de identificación *</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Seleccione..." />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {idTypes.map(type => (
-                            <SelectItem key={type.value} value={type.value}>{type.label}</SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="numeroIdentificacion"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Número de identificación *</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Ej: 1234567890" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="nombres"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Nombres *</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Sus nombres completos" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="apellidos"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Apellidos *</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Sus apellidos completos" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="correoElectronico"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Correo electrónico *</FormLabel>
-                      <FormControl>
-                        <Input type="email" placeholder="ejemplo@correo.com" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="numeroCelular"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Número de celular *</FormLabel>
-                      <FormControl>
-                        <Input type="tel" placeholder="Ej: 3001234567" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            </section>
-
-            <section className="p-6 border rounded-lg shadow-sm bg-white">
-              <h2 className="text-xl font-semibold mb-2 text-primary-prosalud-dark">Información Requerida en el Certificado</h2>
-              <p className="text-sm text-muted-foreground mb-6">Lea cuidadosamente y seleccione únicamente la información que necesita incluir en su certificado.</p>
-              
-              <div className="space-y-4">
-                <FormField control={form.control} name="infoCertificado.fechaIngresoRetiro" render={({ field }) => (
-                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                        <FormControl><Checkbox checked={field.value} onCheckedChange={field.onChange} /></FormControl>
-                        <FormLabel className="font-normal">Fecha de ingreso y retiro</FormLabel>
-                    </FormItem>
-                )}/>
-                <FormField control={form.control} name="infoCertificado.valorCompensaciones" render={({ field }) => (
-                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                        <FormControl><Checkbox checked={field.value} onCheckedChange={field.onChange} /></FormControl>
-                        <FormLabel className="font-normal">Valor de compensaciones</FormLabel>
-                    </FormItem>
-                )}/>
-                <FormField control={form.control} name="infoCertificado.dirigidoAEntidad" render={({ field }) => (
-                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                        <FormControl><Checkbox checked={field.value} onCheckedChange={field.onChange} /></FormControl>
-                        <FormLabel className="font-normal">Dirigido a una entidad en particular</FormLabel>
-                    </FormItem>
-                )}/>
-                {watchInfoCertificado.dirigidoAEntidad && (
-                    <FormField control={form.control} name="dirigidoAQuien" render={({ field }) => (
-                        <FormItem className="ml-7">
-                            <FormLabel>Indique a quién va dirigido *</FormLabel>
-                            <FormControl><Input placeholder="Nombre de la entidad" {...field} /></FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}/>
-                )}
-                <FormField control={form.control} name="infoCertificado.paraSubsidioDesempleo" render={({ field }) => (
-                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                        <FormControl><Checkbox checked={field.value} onCheckedChange={field.onChange} /></FormControl>
-                        <FormLabel className="font-normal">Para subsidio de desempleo</FormLabel>
-                    </FormItem>
-                )}/>
-                <FormField control={form.control} name="infoCertificado.paraSubsidioVivienda" render={({ field }) => (
-                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                        <FormControl><Checkbox checked={field.value} onCheckedChange={field.onChange} /></FormControl>
-                        <FormLabel className="font-normal">Para subsidio de vivienda</FormLabel>
-                    </FormItem>
-                )}/>
-                <FormField control={form.control} name="infoCertificado.dirigidoFondoPensiones" render={({ field }) => (
-                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                        <FormControl><Checkbox checked={field.value} onCheckedChange={field.onChange} /></FormControl>
-                        <FormLabel className="font-normal">Dirigido al Fondo de Pensiones para corrección de historia</FormLabel>
-                    </FormItem>
-                )}/>
-                 <FormField control={form.control} name="infoCertificado.adicionarActividades" render={({ field }) => (
-                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                        <FormControl><Checkbox checked={field.value} onCheckedChange={field.onChange} /></FormControl>
-                         <div className="leading-none">
-                            <FormLabel className="font-normal">Adicionar actividades</FormLabel>
-                            <FormDescription className="text-xs">
-                                Requiere validación. Adjuntar archivo en formato PDF con las actividades realizadas. Esta solicitud está sujeta a aprobación por parte de la Entidad.
-                            </FormDescription>
-                        </div>
-                    </FormItem>
-                )}/>
-                {watchInfoCertificado.adicionarActividades && (
-                  <FormField
-                    control={form.control}
-                    name="actividadesPdf"
-                    render={({ field }) => (
-                      <FormItem className="ml-7">
-                        <FormLabel>Adjuntar PDF con actividades *</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="file"
-                            accept=".pdf"
-                            key={field.value ? field.value[0]?.name : 'no-file-actividades'} // Key for visual reset
-                            onChange={(e) => field.onChange(e.target.files && e.target.files.length > 0 ? e.target.files : undefined)}
-                            onBlur={field.onBlur}
-                            name={field.name}
-                            className="cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-primary-prosalud file:text-white hover:file:bg-primary-prosalud-dark"
-                          />
-                        </FormControl>
-                        {field.value && field.value[0] && (
-                          <div className="mt-2 p-3 border rounded-md bg-slate-50 flex items-center justify-between text-sm">
-                            <div className="flex items-center gap-2">
-                              <FileCheck className="h-5 w-5 text-green-600 shrink-0" />
-                              <div className="truncate">
-                                <p className="font-medium text-slate-700 truncate">{field.value[0].name}</p>
-                                <p className="text-xs text-slate-500">{formatFileSize(field.value[0].size)}</p>
-                              </div>
-                            </div>
-                            <Button
-                              type="button"
-                              variant="ghost"
-                              size="sm"
-                              className="text-red-600 hover:text-red-700 hover:bg-red-50 px-2"
-                              onClick={() => field.onChange(undefined)}
-                            >
-                              <FileX className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        )}
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                )}
-                <FormField control={form.control} name="infoCertificado.dirigidoTransitoPicoPlaca" render={({ field }) => (
-                     <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                        <FormControl><Checkbox checked={field.value} onCheckedChange={field.onChange} /></FormControl>
-                         <div className="leading-none">
-                            <FormLabel className="font-normal">Dirigido a Secretaría de Tránsito y Movilidad para trámites de Exención de Pico y Placa</FormLabel>
-                            <FormDescription className="text-xs">Debe indicar tipo de vehículo y placa.</FormDescription>
-                        </div>
-                    </FormItem>
-                )}/>
-                {watchInfoCertificado.dirigidoTransitoPicoPlaca && (
-                    <div className="ml-7 space-y-4">
-                        <FormField control={form.control} name="tipoVehiculo" render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Tipo de vehículo *</FormLabel>
-                                <FormControl><Input placeholder="Ej: Automóvil, Motocicleta" {...field} /></FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}/>
-                        <FormField control={form.control} name="placaVehiculo" render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Placa del vehículo *</FormLabel>
-                                <FormControl><Input placeholder="Ej: ABC123" {...field} /></FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}/>
-                    </div>
-                )}
-                <FormField control={form.control} name="infoCertificado.dirigidoBancolombia" render={({ field }) => (
-                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                        <FormControl><Checkbox checked={field.value} onCheckedChange={field.onChange} /></FormControl>
-                        <FormLabel className="font-normal">Dirigido a Bancolombia para apertura de cuenta bajo convenio con ProSalud</FormLabel>
-                    </FormItem>
-                )}/>
-                <FormField control={form.control} name="infoCertificado.otros" render={({ field }) => (
-                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                        <FormControl><Checkbox checked={field.value} onCheckedChange={field.onChange} /></FormControl>
-                        <FormLabel className="font-normal">Otros</FormLabel>
-                    </FormItem>
-                )}/>
-                {watchInfoCertificado.otros && (
-                    <FormField control={form.control} name="otrosDescripcion" render={({ field }) => (
-                        <FormItem className="ml-7">
-                            <FormLabel>Describa su necesidad *</FormLabel>
-                            <FormControl><Textarea placeholder="Especifique aquí su solicitud..." {...field} /></FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}/>
-                )}
-              </div>
-            </section>
-            
-            <section className="p-6 border rounded-lg shadow-sm bg-white">
-              <h2 className="text-xl font-semibold mb-4 text-primary-prosalud-dark flex items-center">
-                <UploadCloud className="mr-2 h-6 w-6" /> Adjuntar Archivo Adicional (Opcional)
-              </h2>
-              <FormField
-                control={form.control}
-                name="adjuntarArchivoAdicional"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Seleccione un archivo (PDF, Excel o imagen, máx. 4MB)</FormLabel>
-                    <FormControl>
-                      <Input 
-                        type="file" 
-                        accept=".pdf,.xls,.xlsx,.jpg,.jpeg,.png,.gif,.webp"
-                        key={field.value ? field.value[0]?.name : 'no-file-adicional'} // Key for visual reset
-                        onChange={(e) => field.onChange(e.target.files && e.target.files.length > 0 ? e.target.files : undefined)}
-                        onBlur={field.onBlur}
-                        name={field.name}
-                        className="cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-primary-prosalud file:text-white hover:file:bg-primary-prosalud-dark"
-                      />
-                    </FormControl>
-                    {field.value && field.value[0] && (
-                      <div className="mt-2 p-3 border rounded-md bg-slate-50 flex items-center justify-between text-sm">
-                        <div className="flex items-center gap-2">
-                          <FileCheck className="h-5 w-5 text-green-600 shrink-0" />
-                          <div className="truncate">
-                            <p className="font-medium text-slate-700 truncate">{field.value[0].name}</p>
-                            <p className="text-xs text-slate-500">{formatFileSize(field.value[0].size)}</p>
-                          </div>
-                        </div>
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="sm"
-                          className="text-red-600 hover:text-red-700 hover:bg-red-50 px-2"
-                          onClick={() => field.onChange(undefined)}
-                        >
-                          <FileX className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    )}
-                    <FormDescription className="mt-2">Si necesita adjuntar algún documento adicional, puede hacerlo aquí.</FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </section>
+            <DatosPersonalesSection control={form.control} idTypes={idTypes} />
+            <InformacionCertificadoSection control={form.control} watch={form.watch} />
+            <ArchivoAdicionalSection control={form.control} />
 
             <section className="p-6 border rounded-lg shadow-sm bg-white">
               <FormField

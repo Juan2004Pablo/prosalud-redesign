@@ -1,0 +1,14 @@
+
+export const formatFileSize = (bytes: number, decimals = 2) => {
+  if (bytes === 0) return '0 Bytes';
+  const k = 1024;
+  const dm = decimals < 0 ? 0 : decimals;
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+};
+
+export const MAX_FILE_SIZE = 4 * 1024 * 1024; // 4MB
+export const ALLOWED_FILE_TYPES_GENERAL = ['application/pdf', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+export const ALLOWED_FILE_TYPES_PDF = ['application/pdf'];
+
