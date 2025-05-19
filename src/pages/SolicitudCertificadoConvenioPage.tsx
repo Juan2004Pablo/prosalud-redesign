@@ -177,7 +177,7 @@ const SolicitudCertificadoConvenioPage: React.FC = () => {
     { value: "CE", label: "Cédula de Extranjería (CE)" },
     { value: "TI", label: "Tarjeta de Identidad (TI)" },
     { value: "PP", label: "Pasaporte (PP)" },
-    { value: "RC", label: "Registro Civil (RC)" },
+    { value: "PT", label: "Permiso por protección temporal (PT)" },
   ];
 
   return (
