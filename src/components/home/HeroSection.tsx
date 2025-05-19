@@ -39,7 +39,7 @@ const HeroSection: React.FC = () => {
                   como tú cuidas de los demás
                 </span>
               </h1>
-              <p className="text-lg md:text-xl lg:text-2xl mb-12 animate-fade-in animation-delay-100">
+              <p className="text-lg md:text-xl text-primary-prosalud-light/90 mb-10 max-w-2xl mx-auto md:mx-0">
                 Tu portal de autogestión para acceder a servicios, trámites y beneficios de manera ágil y segura. Simplificamos tu día a día.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 md:justify-start justify-center animate-fade-in animation-delay-200">
