@@ -26,7 +26,8 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
     <Link 
       to={linkTo} 
       className={cn(
-        "flex flex-col h-full bg-card p-6 rounded-lg shadow-md border border-prosalud-border transition-all duration-300 hover:shadow-xl hover:border-primary-prosalud card-hover focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2",
+        "flex flex-col h-full bg-card p-6 rounded-lg shadow-md border border-prosalud-border transition-all duration-300 hover:shadow-xl hover:border-primary-prosalud focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2",
+        // Se elimina la clase 'card-hover' para usar los estilos de hover más específicos definidos aquí.
         className
       )}
       aria-label={`Acceder al servicio: ${title}`}
@@ -61,3 +62,4 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
 };
 
 export default ServiceCard;
+
