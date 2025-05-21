@@ -46,12 +46,31 @@ const EstatutosBeneficiosPage: React.FC = () => {
 
         <Separator className="my-10 bg-primary-prosalud-light" />
 
+        <section className="mb-12 animate-fade-in animation-delay-600">
+           <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <CardHeader>
+              <div className="flex items-center mb-2">
+                <BadgeDollarSign className="h-8 w-8 mr-3 text-primary-prosalud" />
+                <CardTitle className="text-3xl font-semibold text-primary-prosalud">Compensaciones, Auxilios y Beneficios</CardTitle>
+              </div>
+               <CardDescription className="text-md text-gray-500">
+                Información sobre las retribuciones y ayudas disponibles para los afiliados.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-700 leading-relaxed">
+                El Sindicato, de acuerdo con la asamblea, el reglamento o contrato sindical, establecerá la frecuencia de las compensaciones, de los auxilios y beneficios. Te invitamos a consultar los documentos oficiales para más detalles.
+              </p>
+            </CardContent>
+          </Card>
+        </section>
+
         <section className="mb-12 space-y-8">
           <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300 animate-scale-in">
             <CardHeader>
               <div className="flex items-center mb-2">
                 <BookOpen className="h-8 w-8 mr-3 text-primary-prosalud" />
-                <CardTitle className="text-3xl font-semibold text-primary-prosalud">Capítulo IV</CardTitle>
+                <CardTitle className="text-3xl font-semibold text-primary-prosalud">Estatutos - Capítulo IV</CardTitle>
               </div>
               <CardDescription className="text-md text-gray-500">
                 Obligaciones, Derechos y Deberes de los Afiliados Partícipes.
@@ -112,24 +131,7 @@ const EstatutosBeneficiosPage: React.FC = () => {
 
         <Separator className="my-10" />
 
-        <section className="mb-12 animate-fade-in animation-delay-600">
-           <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
-            <CardHeader>
-              <div className="flex items-center mb-2">
-                <BadgeDollarSign className="h-8 w-8 mr-3 text-primary-prosalud" />
-                <CardTitle className="text-3xl font-semibold text-primary-prosalud">Compensaciones, Auxilios y Beneficios</CardTitle>
-              </div>
-               <CardDescription className="text-md text-gray-500">
-                Información sobre las retribuciones y ayudas disponibles para los afiliados.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-700 leading-relaxed">
-                El Sindicato, de acuerdo con la asamblea, el reglamento o contrato sindical, establecerá la frecuencia de las compensaciones, de los auxilios y beneficios. Te invitamos a consultar los documentos oficiales para más detalles.
-              </p>
-            </CardContent>
-          </Card>
-        </section>
+        
       </div>
     </MainLayout>
   );
