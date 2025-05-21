@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -10,7 +9,8 @@ import MainLayout from "./components/layout/MainLayout";
 import QuienesSomos from "./pages/QuienesSomos";
 import LoginPage from "./pages/LoginPage";
 import SolicitudCertificadoConvenioPage from "./pages/SolicitudCertificadoConvenioPage";
-import EstatutosBeneficiosPage from "./pages/EstatutosBeneficiosPage"; // Importar la nueva página
+import EstatutosBeneficiosPage from "./pages/EstatutosBeneficiosPage";
+import ContratoSindicalPage from "./pages/ContratoSindicalPage";
 
 const queryClient = new QueryClient();
 
@@ -45,7 +45,8 @@ const App = () => (
           <Route path="/nosotros/estatutos" element={<EstatutosBeneficiosPage />} />
           <Route path="/nosotros/rol-economico" element={<PlaceholderPage title="Rol económico" />} />
           <Route path="/nosotros/compensaciones-beneficios" element={<PlaceholderPage title="Compensaciones y beneficios" />} />
-          <Route path="/nosotros/contrato-sindical" element={<PlaceholderPage title="Contrato sindical" />} />
+          {/* Actualizar la ruta para Contrato sindical */}
+          <Route path="/nosotros/contrato-sindical" element={<ContratoSindicalPage />} />
           
           <Route path="/salud-seguridad-laboral/campanas" element={<PlaceholderPage title="Campañas de Salud y Seguridad Laboral" />} />
           <Route path="/salud-seguridad-laboral/campanas/estilo-vida-trabajo-saludable" element={<PlaceholderPage title="Estilo de Vida y Trabajo Saludable" />} />
