@@ -1,9 +1,17 @@
-
 import React from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Users, FileText, Gavel, Briefcase, Info, BadgeCheck, AlertTriangle } from 'lucide-react';
+import { Users, FileText, Gavel, Briefcase, Info, AlertTriangle } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
+import { Link } from 'react-router-dom';
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 interface ContentSectionProps {
   icon: React.ElementType;
@@ -77,6 +85,20 @@ const ContratoSindicalPage: React.FC = () => {
   return (
     <MainLayout>
       <div className="container mx-auto py-10 px-4 sm:px-6 lg:px-8">
+        <Breadcrumb className="mb-8">
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link to="/nosotros/quienes-somos">Nosotros</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>Contrato Sindical</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+
         <header className="mb-12 text-center animate-fade-in">
           <div className="inline-flex items-center justify-center bg-primary-prosalud text-white p-3 rounded-full mb-4 shadow-lg">
             <Briefcase size={40} />
@@ -112,7 +134,7 @@ const ContratoSindicalPage: React.FC = () => {
               description={section.description}
               details={section.details}
               iconColor={section.iconColor}
-              bgColor={section.bgColor}
+              // bgColor={section.bgColor} // This prop was not in the original section data, so ensure it's handled or removed if not used
             />
           ))}
         </div>

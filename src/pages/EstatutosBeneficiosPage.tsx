@@ -1,9 +1,17 @@
-
 import React from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Separator } from '@/components/ui/separator';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { BookOpen, Users, ShieldCheck, ClipboardCheck, Gavel, BadgeDollarSign, Info } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 const EstatutosBeneficiosPage: React.FC = () => {
   const capituloIVItems = [
@@ -35,6 +43,20 @@ const EstatutosBeneficiosPage: React.FC = () => {
   return (
     <MainLayout>
       <div className="container mx-auto py-10 px-4 sm:px-6 lg:px-8">
+        <Breadcrumb className="mb-8">
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link to="/nosotros/quienes-somos">Nosotros</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>Estatutos y Beneficios Sindicales</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+
         <header className="mb-12 text-center animate-fade-in">
           <h1 className="text-4xl sm:text-5xl font-bold text-primary-prosalud mb-3">
             Estatutos y Beneficios Sindicales
@@ -130,12 +152,9 @@ const EstatutosBeneficiosPage: React.FC = () => {
         </div>
 
         <Separator className="my-10" />
-
-        
       </div>
     </MainLayout>
   );
 };
 
 export default EstatutosBeneficiosPage;
-
