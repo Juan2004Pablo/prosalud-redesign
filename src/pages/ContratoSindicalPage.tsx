@@ -41,6 +41,13 @@ const ContratoSindicalPage: React.FC = () => {
       iconColor: "text-secondary-prosaludgreen",
     },
     {
+      icon: FileText,
+      title: "Definición de Contrato Sindical",
+      description: "El concepto fundamental según la legislación.",
+      details: "Se entiende por contrato sindical el que celebren uno o varios Sindicatos de trabajadores con uno o varios empleadores para la prestación de servicios o la ejecución de una obra por medio de sus afiliados.",
+      iconColor: "text-accent-prosaludteal",
+    },
+    {
       icon: AlertTriangle,
       title: "Diferencias Clave: Contrato Sindical vs. Contrato Laboral",
       description: "Comprende la distinción fundamental en la relación y la ausencia de subordinación.",
@@ -51,7 +58,6 @@ const ContratoSindicalPage: React.FC = () => {
           <p className="font-semibold text-primary-prosalud">Entre el afiliado partícipe y la organización sindical no existe una relación laboral y en consecuencia NO HAY CONTRATO DE TRABAJO.</p>
         </div>
       ),
-      bgColor: "bg-blue-50",
       iconColor: "text-blue-600"
     },
     {
@@ -65,13 +71,6 @@ const ContratoSindicalPage: React.FC = () => {
           <p className="font-medium">Por lo tanto, se concluye que la naturaleza jurídica del contrato sindical es de estirpe laboral en la modalidad colectiva.</p>
         </div>
       ),
-    },
-    {
-      icon: FileText,
-      title: "Definición de Contrato Sindical",
-      description: "El concepto fundamental según la legislación.",
-      details: "Se entiende por contrato sindical el que celebren uno o varios Sindicatos de trabajadores con uno o varios empleadores para la prestación de servicios o la ejecución de una obra por medio de sus afiliados.",
-      iconColor: "text-accent-prosaludteal",
     }
   ];
 
@@ -92,6 +91,18 @@ const ContratoSindicalPage: React.FC = () => {
 
         <Separator className="my-12 bg-primary-prosalud-light" />
 
+        <div className="my-12 p-6 bg-yellow-50 border-l-4 border-yellow-500 rounded-md shadow-md animate-fade-in animation-delay-400">
+          <div className="flex items-start">
+            <Info className="h-6 w-6 mr-3 text-yellow-600 flex-shrink-0 mt-1" />
+            <div>
+              <h3 className="text-lg font-semibold text-yellow-700 mb-1">Punto Clave</h3>
+              <p className="text-gray-700">
+                La relación bajo un contrato sindical es de colaboración y autogestión, diferenciándose significativamente de una relación laboral tradicional. Es fundamental comprender esta distinción para entender los derechos y responsabilidades de los afiliados partícipes.
+              </p>
+            </div>
+          </div>
+        </div>
+
         <div className="grid md:grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
           {sections.map((section, index) => (
             <ContentSection
@@ -105,19 +116,6 @@ const ContratoSindicalPage: React.FC = () => {
             />
           ))}
         </div>
-        
-        <div className="my-12 p-6 bg-yellow-50 border-l-4 border-yellow-500 rounded-md shadow-md animate-fade-in animation-delay-400">
-          <div className="flex items-start">
-            <Info className="h-6 w-6 mr-3 text-yellow-600 flex-shrink-0 mt-1" />
-            <div>
-              <h3 className="text-lg font-semibold text-yellow-700 mb-1">Punto Clave</h3>
-              <p className="text-gray-700">
-                La relación bajo un contrato sindical es de colaboración y autogestión, diferenciándose significativamente de una relación laboral tradicional. Es fundamental comprender esta distinción para entender los derechos y responsabilidades de los afiliados partícipes.
-              </p>
-            </div>
-          </div>
-        </div>
-
       </div>
     </MainLayout>
   );
