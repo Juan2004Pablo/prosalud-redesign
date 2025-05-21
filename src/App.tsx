@@ -9,7 +9,8 @@ import NotFound from "./pages/NotFound";
 import MainLayout from "./components/layout/MainLayout";
 import QuienesSomos from "./pages/QuienesSomos";
 import LoginPage from "./pages/LoginPage";
-import SolicitudCertificadoConvenioPage from "./pages/SolicitudCertificadoConvenioPage"; // Importar la nueva página
+import SolicitudCertificadoConvenioPage from "./pages/SolicitudCertificadoConvenioPage";
+import EstatutosBeneficiosPage from "./pages/EstatutosBeneficiosPage"; // Importar la nueva página
 
 const queryClient = new QueryClient();
 
@@ -40,7 +41,8 @@ const App = () => (
           <Route path="/nosotros/quienes-somos" element={<QuienesSomos />} /> 
           
           <Route path="/nosotros/estructura-organizacional" element={<PlaceholderPage title="Estructura organizacional" />} />
-          <Route path="/nosotros/estatutos" element={<PlaceholderPage title="Estatutos" />} />
+          {/* Actualizar la ruta para Estatutos y beneficios sindicales */}
+          <Route path="/nosotros/estatutos" element={<EstatutosBeneficiosPage />} />
           <Route path="/nosotros/rol-economico" element={<PlaceholderPage title="Rol económico" />} />
           <Route path="/nosotros/compensaciones-beneficios" element={<PlaceholderPage title="Compensaciones y beneficios" />} />
           <Route path="/nosotros/contrato-sindical" element={<PlaceholderPage title="Contrato sindical" />} />
