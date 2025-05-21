@@ -48,6 +48,18 @@ const ContratoSindicalPage: React.FC = () => {
       iconColor: "text-accent-prosaludteal",
     },
     {
+      icon: Gavel,
+      title: "Naturaleza Jurídica del Contrato Sindical",
+      description: "Conoce el marco legal y las normativas que rigen el contrato sindical.",
+      details: (
+        <div className="space-y-3 text-gray-700 leading-relaxed">
+          <p>Según el Decreto Reglamentario 1429 del 28 de abril 2010, art 1: “El contrato sindical como un acuerdo de voluntades, es de naturaleza colectivo [...]"</p>
+          <p>En el artículo 482 del C.S.T. se afirma en la parte final que la duración, la revisión y la extinción del contrato sindical se rige por las normas del contrato individual de trabajo.</p>
+          <p className="font-medium">Por lo tanto, se concluye que la naturaleza jurídica del contrato sindical es de estirpe laboral en la modalidad colectiva.</p>
+        </div>
+      ),
+    },
+    {
       icon: AlertTriangle,
       title: "Diferencias Clave: Contrato Sindical vs. Contrato Laboral",
       description: "Comprende la distinción fundamental en la relación y la ausencia de subordinación.",
@@ -59,18 +71,6 @@ const ContratoSindicalPage: React.FC = () => {
         </div>
       ),
       iconColor: "text-blue-600"
-    },
-    {
-      icon: Gavel,
-      title: "Naturaleza Jurídica del Contrato Sindical",
-      description: "Conoce el marco legal y las normativas que rigen el contrato sindical.",
-      details: (
-        <div className="space-y-3 text-gray-700 leading-relaxed">
-          <p>Según el Decreto Reglamentario 1429 del 28 de abril 2010, art 1: “El contrato sindical como un acuerdo de voluntades, es de naturaleza colectivo [...]"</p>
-          <p>En el artículo 482 del C.S.T. se afirma en la parte final que la duración, la revisión y la extinción del contrato sindical se rige por las normas del contrato individual de trabajo.</p>
-          <p className="font-medium">Por lo tanto, se concluye que la naturaleza jurídica del contrato sindical es de estirpe laboral en la modalidad colectiva.</p>
-        </div>
-      ),
     }
   ];
 
