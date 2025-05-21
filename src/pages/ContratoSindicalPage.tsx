@@ -1,7 +1,7 @@
 import React from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Users, FileText, Gavel, Briefcase, Info, AlertTriangle } from 'lucide-react';
+import { Users, FileText, Gavel, Briefcase, Info, AlertTriangle, Home } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import { Link } from 'react-router-dom';
 import {
@@ -89,12 +89,27 @@ const ContratoSindicalPage: React.FC = () => {
           <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <Link to="/nosotros/quienes-somos">Nosotros</Link>
+                <Link to="/" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
+                  <Home className="h-4 w-4" />
+                  Inicio
+                </Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Contrato Sindical</BreadcrumbPage>
+              <BreadcrumbLink asChild>
+                <Link to="/nosotros/quienes-somos" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
+                  <Users className="h-4 w-4" /> 
+                  Nosotros
+                </Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage className="flex items-center gap-1 font-medium text-foreground">
+                <FileText className="h-4 w-4" />
+                Contrato Sindical
+              </BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>

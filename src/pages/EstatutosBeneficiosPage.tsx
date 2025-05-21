@@ -2,7 +2,7 @@ import React from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Separator } from '@/components/ui/separator';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { BookOpen, Users, ShieldCheck, ClipboardCheck, Gavel, BadgeDollarSign, Info } from 'lucide-react';
+import { BookOpen, Users, ShieldCheck, ClipboardCheck, Gavel, BadgeDollarSign, Info, Home, FileText } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import {
   Breadcrumb,
@@ -47,12 +47,27 @@ const EstatutosBeneficiosPage: React.FC = () => {
           <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <Link to="/nosotros/quienes-somos">Nosotros</Link>
+                <Link to="/" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
+                  <Home className="h-4 w-4" />
+                  Inicio
+                </Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Estatutos y Beneficios Sindicales</BreadcrumbPage>
+              <BreadcrumbLink asChild>
+                <Link to="/nosotros/quienes-somos" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
+                   <Users className="h-4 w-4" />
+                  Nosotros
+                </Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage className="flex items-center gap-1 font-medium text-foreground">
+                <FileText className="h-4 w-4" />
+                Estatutos y Beneficios Sindicales
+              </BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
