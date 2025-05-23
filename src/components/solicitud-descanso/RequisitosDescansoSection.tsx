@@ -4,10 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Download, FileText } from 'lucide-react';
 
 const RequisitosDescansoSection: React.FC = () => {
-  const handleDownload = (fileName: string) => {
-    // Simular descarga de archivo PDF
-    console.log(`Descargando: ${fileName}`);
-    // En una implementación real, aquí se descargaría el archivo desde el servidor
+  const handleDownload = (url: string) => {
+    window.open(url, '_blank');
   };
 
   return (
@@ -18,7 +16,7 @@ const RequisitosDescansoSection: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Button
           variant="outline"
-          onClick={() => handleDownload('Requisitos_Solicitud_Descanso.pdf')}
+          onClick={() => handleDownload('http://orgs.ddns.net:8091/DocPublicos/Modelo%20de%20Plantillas/Solicitud%20compensacion%20Anual%20de%20Descanso/Procedimiento%20Compensaci%C3%B3n%20Anual%20de%20descanso%20P-A-01.pdf')}
           className="flex items-center gap-2 h-auto p-4 border-secondary-prosaludgreen text-secondary-prosaludgreen hover:bg-secondary-prosaludgreen hover:text-white"
         >
           <Download className="h-5 w-5" />
@@ -29,7 +27,7 @@ const RequisitosDescansoSection: React.FC = () => {
         </Button>
         <Button
           variant="outline"
-          onClick={() => handleDownload('Formato_Solicitud_Descanso.pdf')}
+          onClick={() => handleDownload('http://orgs.ddns.net:8091/DocPublicos/Modelo%20de%20Plantillas/Solicitud%20compensacion%20Anual%20de%20Descanso/Solicitud%20compensacion%20de%20Descanso.pdf')}
           className="flex items-center gap-2 h-auto p-4 border-secondary-prosaludgreen text-secondary-prosaludgreen hover:bg-secondary-prosaludgreen hover:text-white"
         >
           <Download className="h-5 w-5" />
