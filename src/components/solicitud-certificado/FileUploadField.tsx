@@ -36,19 +36,21 @@ const FileUploadField = <TFieldValues extends FieldValues>({
         <FormItem className={className}>
           <FormLabel>{label}{isRequired && " *"}</FormLabel>
           <FormControl>
-            <Input
-              type="file"
-              accept={accept}
-              // Modificamos la key para que solo cambie si hay o no un archivo,
-              // no por el nombre específico del archivo.
-              // Esto permite que el input nativo conserve la visualización del nombre del archivo.
-              key={field.value?.[0] ? `file-present-${field.name}` : `no-file-${field.name}`}
-              onChange={(e) => field.onChange(e.target.files && e.target.files.length > 0 ? e.target.files : undefined)}
-              onBlur={field.onBlur}
-              name={field.name} // El 'name' del input HTML es importante para react-hook-form y la accesibilidad
-              ref={field.ref} // Aseguramos que la ref de react-hook-form se pase al input
-              className={`cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-primary-prosalud file:text-white hover:file:bg-primary-prosalud-dark ${inputClassName || ''}`}
-            />
+            <div className="mb-4">
+              <Input
+                type="file"
+                accept={accept}
+                // Modificamos la key para que solo cambie si hay o no un archivo,
+                // no por el nombre específico del archivo.
+                // Esto permite que el input nativo conserve la visualización del nombre del archivo.
+                key={field.value?.[0] ? `file-present-${field.name}` : `no-file-${field.name}`}
+                onChange={(e) => field.onChange(e.target.files && e.target.files.length > 0 ? e.target.files : undefined)}
+                onBlur={field.onBlur}
+                name={field.name} // El 'name' del input HTML es importante para react-hook-form y la accesibilidad
+                ref={field.ref} // Aseguramos que la ref de react-hook-form se pase al input
+                className={`cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-primary-prosalud file:text-white hover:file:bg-primary-prosalud-dark ${inputClassName || ''}`}
+              />
+            </div>
           </FormControl>
           {field.value?.[0] && (
             <div className="mt-2 p-3 border rounded-md bg-slate-50 flex items-center justify-between text-sm">
