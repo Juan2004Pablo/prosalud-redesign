@@ -43,8 +43,8 @@ const InformacionProcesoSection = <TFieldValues extends FieldValues>({
   ];
 
   const tiposSolicitud = [
-    "COMP. MENSUAL",
-    "COMP. FINAL (LIQUIDACIÓN)",
+    "COMPENSACIÓN. MENSUAL",
+    "COMPENSACIÓN. FINAL (LIQUIDACIÓN)",
     "COMPENSACIÓN DIFERIDA Y/O DESCANSO",
     "COMPENSACIÓN SEMESTRAL",
     "INCAPACIDADES",
@@ -132,7 +132,7 @@ const InformacionProcesoSection = <TFieldValues extends FieldValues>({
           name={"solicitudRelacionadaCon" as any}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Su solicitud está relacionada con *</FormLabel>
+              <FormLabel>Relación de su solicitud *</FormLabel>
               <FormControl>
                 <Select onValueChange={field.onChange} value={field.value}>
                   <SelectTrigger>
