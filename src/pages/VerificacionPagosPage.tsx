@@ -18,7 +18,7 @@ import DetalleNovedadSection from '@/components/verificacion-pagos/DetalleNoveda
 import ArchivoAnexoSection from '@/components/verificacion-pagos/ArchivoAnexoSection';
 import VerificacionHeader from '@/components/verificacion-pagos/VerificacionHeader';
 import InformacionImportanteVerificacionAlert from '@/components/verificacion-pagos/InformacionImportanteVerificacionAlert';
-import ConfirmacionEnvioSection from '@/components/verificacion-pagos/ConfirmacionEnvioSection';
+import ConfirmacionCorreoSection from '@/components/solicitud-certificado/ConfirmacionCorreoSection';
 import AutorizacionDatosSection from '@/components/solicitud-certificado/AutorizacionDatosSection';
 
 const formSchema = z.object({
@@ -145,7 +145,7 @@ const VerificacionPagosPage: React.FC = () => {
             <InformacionProcesoSection control={form.control} />
             <DetalleNovedadSection control={form.control} />
             <ArchivoAnexoSection control={form.control} />
-            <ConfirmacionEnvioSection control={form.control} />
+            <ConfirmacionCorreoSection control={form.control} />
             <AutorizacionDatosSection />
             
             <div className="flex justify-center mt-10">
