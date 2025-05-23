@@ -36,7 +36,7 @@ const FileUploadField = <TFieldValues extends FieldValues>({
         <FormItem className={className}>
           <FormLabel>{label}{isRequired && " *"}</FormLabel>
           <FormControl>
-            <div className="py-4 my-4">
+            <div>
               <Input
                 type="file"
                 accept={accept}
