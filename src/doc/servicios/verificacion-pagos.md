@@ -38,7 +38,7 @@ Este formulario permite a los afiliados solicitar la verificación de pagos o no
 
 ### Archivo Anexo (Opcional)
 - **Archivo Anexo:** (Opcional) Archivo adjunto que soporte la consulta.
-    - Tipos permitidos: PDF, Excel (xls, xlsx), Imágenes (jpg, jpeg, png, gif, webp).
+    - Tipos permitidos: PDF, Imágenes (jpg, jpeg, png).
     - Tamaño máximo: Generalmente 4MB (verificar `MAX_FILE_SIZE`).
 
 ### Confirmación de Envío

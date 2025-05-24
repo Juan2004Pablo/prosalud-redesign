@@ -56,7 +56,7 @@ Puede solicitar que el certificado incluya la siguiente información:
 - Imágenes (.jpg, .jpeg, .png, .gif)
 
 **Restricciones**:
-- Tamaño máximo: 10 MB por archivo
+- Tamaño máximo: 4 MB por archivo
 - Solo se permite adjuntar un archivo adicional
 
 ## Autorización de Datos
