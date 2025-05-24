@@ -172,7 +172,7 @@ const Chatbot: React.FC = () => {
     }, [suggestions, messages])
 
     useEffect(() => {
-        let timer: NodeJS.Timeout;
+        let timer: NodeJS.Timeout | undefined; // Ensure timer can be undefined
         let clickCount = 0
 
         const handleClickOutside = (event: MouseEvent) => {
@@ -186,7 +186,7 @@ const Chatbot: React.FC = () => {
                         clickCount = 0
                     }, 300) // 300ms para detectar doble clic
                 } else if (clickCount === 2) {
-                    clearTimeout(timer)
+                    if (timer) clearTimeout(timer); // Clear timer if it exists
                     clickCount = 0
                     setIsOpen(false)
                 }
@@ -196,7 +196,7 @@ const Chatbot: React.FC = () => {
         document.addEventListener('click', handleClickOutside)
         return () => {
             document.removeEventListener('click', handleClickOutside)
-            clearTimeout(timer)
+            if (timer) clearTimeout(timer); // Clear timer on unmount
         }
     }, [])
 
@@ -410,7 +410,10 @@ const Chatbot: React.FC = () => {
         }
     }, []);
 
-    const toggleChat = () => {
+    const toggleChat = (e?: React.MouseEvent) => {
+        if (e) {
+            e.stopPropagation();
+        }
         if (!isOpen && !openaiApiKey) {
             console.warn("OpenAI API Key (VITE_OPENAI_API_KEY) is not set. Chatbot may not function correctly.");
         }
@@ -525,13 +528,13 @@ const Chatbot: React.FC = () => {
             }
         }
 
-        const newMessage: ChatMessage = { // Use ChatMessage type
+        const newMessage: ChatMessage = { 
             role: 'user',
             content: inputMessage.replace(/\n$/, ''),
             isBot: false,
         }
 
-        let currentChatMessages: ChatMessage[] = []; // Ensure this is ChatMessage[]
+        let currentChatMessages: ChatMessage[] = []; 
 
         setMessages((prevMessages) => {
             currentChatMessages = [...prevMessages, newMessage];
@@ -546,23 +549,23 @@ const Chatbot: React.FC = () => {
             textareaRef.current.style.height = 'auto'
         }
 
-        // Map messages to the format expected by the AI SDK
+        
         const aiSdkMessages = currentChatMessages
             .filter(msg => msg.role === 'system' || msg.role === 'user' || msg.role === 'assistant')
             .map(({ role, content }) => ({
-                role, // role is now ChatMessageRole ('system' | 'user' | 'assistant')
+                role: role as 'system' | 'user' | 'assistant', 
                 content,
             }));
 
         try {
             setMessages((prev) => [
                 ...prev,
-                { role: 'assistant', content: '', isBot: true, isStreaming: true }, // This conforms to ChatMessage
+                { role: 'assistant', content: '', isBot: true, isStreaming: true }, 
             ])
 
             const { textStream } = await streamText({
                 model: openai('gpt-4o-mini'),
-                messages: aiSdkMessages, // Pass the correctly typed and shaped messages
+                messages: aiSdkMessages, 
                 maxTokens: 450,
             })
 
@@ -571,34 +574,34 @@ const Chatbot: React.FC = () => {
             for await (const delta of textStream) {
                 streamedText += delta
 
-                setMessages((prevBotMessages) => { // Renamed prev to avoid conflict
+                setMessages((prevBotMessages) => { 
                     const updatedMessages = [...prevBotMessages]
                     if (updatedMessages.length > 0 && updatedMessages[updatedMessages.length - 1].isStreaming) {
                         const lastMessage = updatedMessages[updatedMessages.length - 1];
                         updatedMessages[updatedMessages.length - 1] = {
-                            ...lastMessage, // Spread previous message properties
-                            content: streamedText, // Update content
+                            ...lastMessage, 
+                            content: streamedText, 
                         };
                     }
                     return updatedMessages
                 })
             }
 
-            setMessages((prevBotMessages) => { // Renamed prev to avoid conflict
+            setMessages((prevBotMessages) => { 
                 const updatedMessages = [...prevBotMessages]
                 if (updatedMessages.length > 0 && updatedMessages[updatedMessages.length - 1].isStreaming) {
                     updatedMessages[updatedMessages.length - 1] = {
-                        role: 'assistant', // Explicitly 'assistant'
+                        role: 'assistant', 
                         content: streamedText,
                         isBot: true,
-                        isStreaming: false, // Mark as not streaming
+                        isStreaming: false, 
                     };
                 }
                 return updatedMessages
             })
         } catch (error) {
             console.error('Error generating response:', error)
-            const errorBotMessage: ChatMessage = { // Use ChatMessage type
+            const errorBotMessage: ChatMessage = { 
                 role: 'assistant',
                 content: "Lo siento, encontré un error al procesar tu solicitud. Por favor, intenta de nuevo más tarde. Si el problema persiste, contacta al administrador. 🛠️",
                 isBot: true,
@@ -767,7 +770,7 @@ const Chatbot: React.FC = () => {
             <style>{markdownStyles}</style>
             {showChatbot && !isOpen && (
                  <button
-                    onClick={toggleChat}
+                    onClick={(e) => toggleChat(e)}
                     className={`fixed bottom-6 right-6 z-[9998] transform rounded-full bg-prosalud-salud p-3.5
                     text-white shadow-xl transition-all 
                     duration-300 hover:rotate-3 hover:scale-110 hover:bg-prosalud-salud/90 focus:outline-none
@@ -849,7 +852,7 @@ const Chatbot: React.FC = () => {
                                         )}
                                     </button>
                                     <button
-                                        onClick={toggleChat}
+                                        onClick={(e) => toggleChat(e)}
                                         className="text-gray-500 transition-colors duration-200 hover:text-prosalud-sindicato focus:outline-none dark:text-gray-400 dark:hover:text-prosalud-sindicato"
                                         title="Cerrar chat"
                                         aria-label="Cerrar chat"
