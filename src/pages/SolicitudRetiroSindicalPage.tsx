@@ -31,7 +31,7 @@ const SolicitudRetiroSindicalPage: React.FC = () => {
         </Breadcrumb>
 
         <SolicitudRetiroHeader />
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-3xl ">
           <InformacionGeneralRetiroSection />
           <DescargarFormatoRetiroSection />
           <InstruccionesEnvioRetiroSection />
