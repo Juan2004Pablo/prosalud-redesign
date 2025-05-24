@@ -9,6 +9,6 @@ export const formatFileSize = (bytes: number, decimals = 2) => {
 };
 
 export const MAX_FILE_SIZE = 4 * 1024 * 1024; // 4MB
-export const ALLOWED_FILE_TYPES_GENERAL = ['application/pdf', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+export const ALLOWED_FILE_TYPES_GENERAL = ['application/pdf', 'image/jpeg', 'image/png'];
 export const ALLOWED_FILE_TYPES_PDF = ['application/pdf'];
 

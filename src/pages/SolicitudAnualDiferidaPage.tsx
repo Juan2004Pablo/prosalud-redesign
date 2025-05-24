@@ -34,7 +34,7 @@ const fileValidation = z.any().refine(files => {
   if (!files || files.length === 0) return true;
   const file = files[0];
   return ALLOWED_FILE_TYPES_GENERAL.includes(file.type);
-}, 'Tipo de archivo no permitido. Use PDF, Excel o imágenes.');
+}, 'Tipo de archivo no permitido. Use PDF o imágenes.');
 
 const formSchemaAnualDiferida = z.object({
   tipoIdentificacion: z.string().min(1, "Este campo es requerido."),
@@ -134,7 +134,7 @@ const SolicitudAnualDiferidaPage: React.FC = () => {
             <BreadcrumbItem>
               <BreadcrumbPage className="flex items-center gap-1 font-medium text-foreground">
                 <PageIcon className="h-4 w-4" />
-                Solicitud Anual Diferida
+                Solicitud Compensación Anual Diferida
               </BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
