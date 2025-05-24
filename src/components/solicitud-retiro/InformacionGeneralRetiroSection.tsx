@@ -3,7 +3,7 @@ import React from 'react';
 
 const InformacionGeneralRetiroSection: React.FC = () => {
   return (
-    <div className="mb-6 p-6 border rounded-lg shadow-sm bg-white">
+    <div className="mb-6 border rounded-lg shadow-sm bg-white">
       <p className="text-base text-gray-700 mb-4">
         Señor(a) afiliado, al pertenecer a este sindicato en calidad de <strong className="font-semibold">AFILIADO PARTÍCIPE INDEPENDIENTE AGREMIADO CODIGO (53)</strong>, le recordamos el proceso para notificación de Retiro como Afiliado Partícipe el cual es de carácter obligatorio.
       </p>
