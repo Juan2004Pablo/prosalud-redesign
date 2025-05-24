@@ -139,7 +139,7 @@ const SolicitudMicrocreditoPage: React.FC = () => {
                   <Alert className="border-amber-300 bg-amber-50">
                     <Clock className="h-5 w-5 text-amber-600" />
                     <AlertDescription className="text-amber-800">
-                      <strong>NOTA IMPORTANTE:</strong> El horario de revisión de solicitudes es de lunes a viernes de 8:00 a.m. a 4:00 p.m., cualquier registro vencido el citado horario, se entenderá presentado el siguiente día hábil. Se registran y asigna su revisión por orden de registro.
+                       El horario de revisión de solicitudes es de lunes a viernes de 8:00 a.m. a 4:00 p.m., cualquier registro vencido el citado horario, se entenderá presentado el siguiente día hábil. Se registran y asigna su revisión por orden de registro.
                     </AlertDescription>
                   </Alert>
                 </div>
