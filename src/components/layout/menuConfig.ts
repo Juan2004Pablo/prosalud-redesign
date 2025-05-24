@@ -1,4 +1,3 @@
-
 import { Briefcase, Home, Users, FileText, FolderArchive, Shield, LucideIcon } from 'lucide-react';
 
 // Define types for menu items
@@ -76,9 +75,9 @@ export const menuItems: MenuItemType[] = [
         name: 'Solicitudes de afiliados', // This MenuSubItem acts as a header
         submenu: [
           { name: 'Verificación de pagos', path: '/documentos-formatos/solicitudes-afiliados/verificacion-pagos' },
-          { name: 'Certificado de Convenio', path: '/servicios/certificado-convenio' }, // Updated path
+          { name: 'Certificado de Convenio', path: '/servicios/certificado-convenio' }, 
           { name: 'Descanso', path: '/documentos-formatos/solicitudes-afiliados/descanso' },
-          { name: 'Solicitud anual diferida', path: '/documentos-formatos/solicitudes-afiliados/solicitud-anual-diferida' },
+          { name: 'Solicitud anual diferida', path: '/documentos-formatos/solicitudes-afiliados/solicitud-anual-diferida' }, // Path updated below
         ]
       },
     ]
@@ -124,4 +123,3 @@ export const mobileNavItems = menuItems.map(item => {
     icon: item.icon
   };
 });
-

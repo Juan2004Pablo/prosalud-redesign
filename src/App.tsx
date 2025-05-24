@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -11,6 +10,7 @@ import QuienesSomos from "./pages/QuienesSomos";
 import LoginPage from "./pages/LoginPage";
 import SolicitudCertificadoConvenioPage from "./pages/SolicitudCertificadoConvenioPage";
 import SolicitudDescansoLaboralPage from "./pages/SolicitudDescansoLaboralPage";
+import SolicitudAnualDiferidaPage from "./pages/SolicitudAnualDiferidaPage";
 import VerificacionPagosPage from "./pages/VerificacionPagosPage";
 import EstatutosBeneficiosPage from "./pages/EstatutosBeneficiosPage";
 import ContratoSindicalPage from "./pages/ContratoSindicalPage";
@@ -65,7 +65,7 @@ const App = () => (
           <Route path="/documentos-formatos/solicitudes-afiliados/verificacion-pagos" element={<VerificacionPagosPage />} />
           <Route path="/documentos-formatos/solicitudes-afiliados/certificado-convenio" element={<PlaceholderPage title="Certificado de Convenio (Solicitudes)" />} />
           <Route path="/documentos-formatos/solicitudes-afiliados/descanso" element={<SolicitudDescansoLaboralPage />} />
-          <Route path="/documentos-formatos/solicitudes-afiliados/solicitud-anual-diferida" element={<PlaceholderPage title="Solicitud anual diferida (Solicitudes)" />} />
+          <Route path="/documentos-formatos/solicitudes-afiliados/solicitud-anual-diferida" element={<SolicitudAnualDiferidaPage />} /> {/* New Route */}
           
           <Route path="/archivo-digital/articulos-interes" element={<PlaceholderPage title="Artículos de interés" />} />
           
@@ -86,7 +86,7 @@ const App = () => (
           {/* Updated route for Certificado de Convenio Sindical */}
           <Route path="/servicios/certificado-convenio" element={<SolicitudCertificadoConvenioPage />} />
           <Route path="/servicios/descanso-laboral" element={<SolicitudDescansoLaboralPage />} />
-          <Route path="/servicios/compensacion-anual" element={<PlaceholderPage title="Compensación Anual Diferida" />} />
+          <Route path="/servicios/compensacion-anual" element={<SolicitudAnualDiferidaPage />} /> {/* Updated to new page */}
           {/* Nueva ruta para consulta de pagos desde servicios */}
           <Route path="/servicios/consulta-pagos" element={<VerificacionPagosPage />} />
           <Route path="/servicios/incapacidad-maternidad" element={<PlaceholderPage title="Incapacidad y Licencia de Maternidad" />} />
