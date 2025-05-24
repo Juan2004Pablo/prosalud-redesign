@@ -120,7 +120,7 @@ const SolicitudMicrocreditoPage: React.FC = () => {
             </p>
           </header>
 
-          <section className="mt-10 p-6 border rounded-lg shadow-sm bg-blue-50 border-blue-200">
+          <section className="mt-10 mb-8 p-6 border rounded-lg shadow-sm bg-blue-50 border-blue-200">
                 <h2 className="text-xl font-semibold mb-4 text-blue-800 flex items-center">
                   <Info className="mr-3 h-6 w-6 text-blue-700" /> Información importante
                 </h2>
