@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -27,7 +28,7 @@ const queryClient = new QueryClient();
 // Placeholder pages for navigation items
 const PlaceholderPage = ({ title }: { title: string }) => (
   <MainLayout>
-    <div className="container mx-auto py-10 px-4 text-center">
+    <div className="container mx-auto py-10 px-4 md:px-6 lg:px-8 text-center"> {/* <-- Cambio aquí */}
       <h1 className="text-3xl font-bold">{title}</h1>
       <p className="mt-4">Contenido para {title} próximamente.</p>
     </div>

@@ -13,7 +13,7 @@ import { Home, FileText } from 'lucide-react';
 const SolicitudRetiroSindicalPage: React.FC = () => {
   return (
     <MainLayout>
-      <div className="container mx-auto py-10 px-4">
+      <div className="container mx-auto py-10 px-4 md:px-6 lg:px-8"> {/* <-- Cambio aquí */}
         <Breadcrumb className="mb-8">
           <BreadcrumbList>
             <BreadcrumbItem>
