@@ -19,6 +19,7 @@ import ActualizarCuentaBancariaPage from "./pages/ActualizarCuentaBancariaPage";
 import SolicitudRetiroSindicalPage from "./pages/SolicitudRetiroSindicalPage";
 import ScrollToTop from "./components/utils/ScrollToTop";
 import CertificadoSeguridadSocialPage from "./pages/CertificadoSeguridadSocialPage";
+import SolicitudPermisosCambioTurnosPage from "./pages/SolicitudPermisosCambioTurnosPage";
 
 const queryClient = new QueryClient();
 
@@ -103,7 +104,8 @@ const App = () => (
           <Route path="/servicios/galeria-bienestar" element={<PlaceholderPage title="Galería de Bienestar" />} />
           <Route path="/servicios/encuesta-bienestar" element={<PlaceholderPage title="Encuesta de Bienestar Laboral" />} />
           <Route path="/servicios/comfenalco" element={<PlaceholderPage title="Servicios de Comfenalco Antioquia" />} />
-          <Route path="/servicios/permisos-turnos" element={<PlaceholderPage title="Permisos y Cambio de Turnos" />} />
+          {/* Actualizar la ruta para Permisos y Cambio de Turnos */}
+          <Route path="/servicios/permisos-turnos" element={<SolicitudPermisosCambioTurnosPage />} />
           <Route path="/servicios/cuadro-turnos" element={<PlaceholderPage title="Cuadro de Turnos" />} />
           <Route path="/servicios/microcredito" element={<PlaceholderPage title="Solicitud de Microcrédito" />} />
           {/* Actualizar la ruta para Solicitud de Retiro Sindical */}
