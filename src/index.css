@@ -92,6 +92,18 @@ html, body {
   }
 }
 
+/* Custom animation for fade in from bottom */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(2rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Custom styles for category accordion triggers */
 @layer components {
   .category-accordion-trigger {

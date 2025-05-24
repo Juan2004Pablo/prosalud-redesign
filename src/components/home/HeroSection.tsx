@@ -26,8 +26,8 @@ const HeroSection: React.FC = () => {
         {isVisible ? (
           <div className="grid md:grid-cols-2 gap-12 lg:gap-16 items-center">
             {/* Left Column: Textual Content & Buttons */}
-            <div className="md:text-left text-center">
-              <h1 className="font-bold mb-8 animate-fade-in">
+            <div className="md:text-left text-center transform transition-all duration-1000 opacity-0 translate-y-8 animate-[fadeInUp_0.8s_ease-out_forwards]">
+              <h1 className="font-bold mb-8">
                 <span className="inline-block bg-secondary-prosaludgreen/20 text-secondary-prosaludgreen px-3 py-1 text-sm font-medium rounded-full mb-4">
                   Tu Bienestar, Nuestra Prioridad
                 </span>
@@ -42,7 +42,7 @@ const HeroSection: React.FC = () => {
               <p className="text-lg md:text-xl text-primary-prosalud-light/90 mb-10 max-w-2xl mx-auto md:mx-0">
                 Tu portal de autogestión para acceder a servicios, trámites y beneficios de manera ágil y segura. Simplificamos tu día a día.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 md:justify-start justify-center animate-fade-in animation-delay-200">
+              <div className="flex flex-col sm:flex-row gap-4 md:justify-start justify-center">
                 <Button 
                 size="lg" 
                 className="bg-secondary-prosaludgreen hover:bg-secondary-prosaludgreen/90 text-white text-base shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 px-8 py-6"
@@ -64,7 +64,7 @@ const HeroSection: React.FC = () => {
             </div>
 
             {/* Right Column: Image Collage */}
-            <div className="animate-fade-in animation-delay-300 hidden md:block">
+            <div className="hidden md:block transform transition-all duration-1000 opacity-0 translate-y-8 animate-[fadeInUp_1s_ease-out_0.2s_forwards]">
               <div className="grid grid-cols-2 gap-4 p-4 bg-slate-800/30 rounded-xl shadow-xl">
                 {[
                   "/images/collage/image_collage_1.jpg",
