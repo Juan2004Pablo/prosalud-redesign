@@ -1,27 +1,38 @@
+
 import React from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { useToast } from '@/hooks/use-toast';
-import { DevTool } from '@hookform/devtools';
+import { DevTool } from '@hookform/devtools'; // Keep this if you want to use devtools
+import { Link, useNavigate } from 'react-router-dom'; // Added Link, useNavigate
+import { toast } from 'sonner'; // Using sonner toast
+import { CheckCircle2, AlertCircle, Home, Landmark, FileText, Send } from 'lucide-react'; // Added Icons
 
-import { MAX_FILE_SIZE, ALLOWED_FILE_TYPES_PDF } from '@/features/solicitud-certificado/utils'; // Ruta corregida
-import { idTypes } from '@/features/solicitud-certificado/config/constants'; // Ruta corregida
-import { procesoOptions, ubicacionOptions } from '@/components/actualizar-cuenta/options';
+import MainLayout from '@/components/layout/MainLayout'; // Added MainLayout
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbSeparator,
+  BreadcrumbPage,
+} from '@/components/ui/breadcrumb'; // Added Breadcrumb components
+import { Form } from '@/components/ui/form'; // Added Form
+
+import { MAX_FILE_SIZE } from '@/features/solicitud-certificado/utils';
+// Removed import for options, as they are defined in InformacionProcesoCuentaSection
 
 import ActualizarCuentaHeader from '@/components/actualizar-cuenta/ActualizarCuentaHeader';
-import DatosPersonalesSection from '@/features/solicitud-certificado/components/DatosPersonalesSection'; // Ruta corregida
-import ConfirmacionCorreoSection from '@/features/solicitud-certificado/components/ConfirmacionCorreoSection'; // Ruta corregida
-import AutorizacionDatosSection from '@/features/solicitud-certificado/components/AutorizacionDatosSection'; // Ruta corregida
+import DatosPersonalesSection from '@/features/solicitud-certificado/components/DatosPersonalesSection';
+import ConfirmacionCorreoSection from '@/features/solicitud-certificado/components/ConfirmacionCorreoSection';
+import AutorizacionDatosSection from '@/features/solicitud-certificado/components/AutorizacionDatosSection';
 import InformacionProcesoCuentaSection from '@/components/actualizar-cuenta/InformacionProcesoCuentaSection';
 import AnexoCertificacionBancariaSection from '@/components/actualizar-cuenta/AnexoCertificacionBancariaSection';
 import InformacionImportanteCuentaAlert from '@/components/actualizar-cuenta/InformacionImportanteCuentaAlert';
 
-// Ajustar tipos permitidos para certificación bancaria (PDF e imágenes)
 const ALLOWED_FILE_TYPES_CERTIFICADO = ['application/pdf', 'image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-
 
 const formSchemaActualizarCuenta = z.object({
   tipoIdentificacion: z.string().min(1, "Este campo es requerido."),
@@ -30,19 +41,23 @@ const formSchemaActualizarCuenta = z.object({
   apellidos: z.string().min(2, "Este campo es requerido."),
   correoElectronico: z.string().email("Correo electrónico inválido."),
   numeroCelular: z.string().min(7, "Número de celular inválido.").regex(/^\d+$/, "Solo se permiten números."),
+  fechaNacimiento: z.date({ required_error: "Fecha de nacimiento es requerida" }).optional(), // Added, assuming it comes from DatosPersonalesSection
   
   proceso: z.string().min(1, "Este campo es requerido."),
   dondeRealizaProceso: z.string().min(1, "Este campo es requerido."),
   
   certificacionBancaria: z.any()
-    .refine(files => files && files.length > 0, "La certificación bancaria es requerida.")
+    .refine(files => files && files.length > 0 && files[0] !== null && files[0] !== undefined, "La certificación bancaria es requerida.")
     .refine(files => files && files?.[0]?.size <= MAX_FILE_SIZE, `El archivo no debe exceder los ${MAX_FILE_SIZE / (1024*1024)}MB.`)
     .refine(files => files && ALLOWED_FILE_TYPES_CERTIFICADO.includes(files?.[0]?.type), 'Tipo de archivo no permitido. Use PDF o imágenes (JPG, PNG, GIF, WEBP).'),
   
   confirmacionCorreo: z.boolean().default(false),
+   aceptoAutorizacion: z.boolean().refine((value) => value === true, { // Added from AutorizacionDatosSection
+    message: 'Debes aceptar la autorización de tratamiento de datos.',
+  }),
 });
 
-type FormValuesActualizarCuenta = z.infer<typeof formSchemaActualizarCuenta>;
+export type FormValuesActualizarCuenta = z.infer<typeof formSchemaActualizarCuenta>;
 
 const ActualizarCuentaBancariaPage: React.FC = () => {
   const navigate = useNavigate();
@@ -55,11 +70,14 @@ const ActualizarCuentaBancariaPage: React.FC = () => {
       apellidos: '',
       correoElectronico: '',
       numeroCelular: '',
+      fechaNacimiento: undefined, // Default for optional date
       proceso: '',
       dondeRealizaProceso: '',
       certificacionBancaria: undefined,
       confirmacionCorreo: false,
+      aceptoAutorizacion: false,
     },
+    mode: "onChange",
   });
 
   const onSubmit = (data: FormValuesActualizarCuenta) => {
@@ -113,7 +131,7 @@ const ActualizarCuentaBancariaPage: React.FC = () => {
             <BreadcrumbSeparator />
             <BreadcrumbItem>
                  <BreadcrumbLink asChild>
-                    <Link to="/servicios/actualizar-cuenta" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
+                    <Link to="/servicios" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"> {/* Assuming /servicios is the parent route for services */}
                         <Landmark className="h-4 w-4" />
                         Servicios
                     </Link>
@@ -134,23 +152,31 @@ const ActualizarCuentaBancariaPage: React.FC = () => {
         <ActualizarCuentaHeader />
         <InformacionImportanteCuentaAlert />
 
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit, handleError)} className="space-y-8">
-            <DatosPersonalesSection control={form.control} idTypes={idTypes} />
-            <InformacionProcesoCuentaSection control={form.control} />
-            <AnexoCertificacionBancariaSection control={form.control} />
-            <ConfirmacionCorreoSection control={form.control} />
-            <AutorizacionDatosSection />
-                        
-            <div className="flex justify-center mt-10">
-              <Button type="submit" size="lg" className="w-full md:w-auto bg-secondary-prosaludgreen hover:bg-secondary-prosaludgreen/90 text-white flex items-center gap-2">
-                <Send className="h-5 w-5" />
-                Enviar Solicitud
-              </Button>
-            </div>
-          </form>
-        </Form>
+        <FormProvider {...form}> {/* Use FormProvider here */}
+          <Form {...form}> {/* Shadcn Form component */}
+            <form onSubmit={form.handleSubmit(onSubmit, handleError)} className="space-y-8">
+              <DatosPersonalesSection control={form.control} idTypes={idTypes} />
+              <Separator className="my-6" />
+              <ConfirmacionCorreoSection control={form.control} />
+              <Separator className="my-6" />
+              <InformacionProcesoCuentaSection control={form.control} />
+              <Separator className="my-6" />
+              <AnexoCertificacionBancariaSection control={form.control} setValue={form.setValue} />
+              <Separator className="my-6" />
+              <AutorizacionDatosSection control={form.control} /> {/* Pass control here */}
+              <Separator className="my-6" />
+                          
+              <div className="flex justify-center mt-10">
+                <Button type="submit" size="lg" className="w-full md:w-auto bg-primary-prosalud hover:bg-primary-prosalud/90 text-white flex items-center gap-2">
+                  <Send className="h-5 w-5" />
+                  Enviar Solicitud
+                </Button>
+              </div>
+            </form>
+          </Form>
+        </FormProvider>
       </div>
+      {process.env.NODE_ENV === 'development' && <DevTool control={form.control} />} {/* Conditionally render DevTool */}
     </MainLayout>
   );
 };

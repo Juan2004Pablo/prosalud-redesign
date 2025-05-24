@@ -1,13 +1,14 @@
+
 import React from 'react';
 import { Control, UseFormSetValue } from 'react-hook-form';
-import { ActualizarCuentaBancariaFormValues } from '@/pages/ActualizarCuentaBancariaPage';
+import { FormValuesActualizarCuenta } from '@/pages/ActualizarCuentaBancariaPage'; // Corrected import
 import { AlertCircle } from 'lucide-react';
-import FileUploadField from '@/features/solicitud-certificado/components/FileUploadField'; // Ruta corregida
+import FileUploadField from '@/features/solicitud-certificado/components/FileUploadField';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 interface AnexoCertificacionBancariaSectionProps {
-  control: Control<ActualizarCuentaBancariaFormValues>;
-  setValue: UseFormSetValue<ActualizarCuentaBancariaFormValues>;
+  control: Control<FormValuesActualizarCuenta>;
+  setValue: UseFormSetValue<FormValuesActualizarCuenta>; // Added setValue to props
 }
 
 const AnexoCertificacionBancariaSection: React.FC<AnexoCertificacionBancariaSectionProps> = ({ control, setValue }) => {
@@ -20,16 +21,18 @@ const AnexoCertificacionBancariaSection: React.FC<AnexoCertificacionBancariaSect
         <AlertCircle className="h-4 w-4" />
         <AlertTitle>Anexo de Certificación Bancaria</AlertTitle>
         <AlertDescription>
-          Adjunte una copia de su certificación bancaria en formato PDF. Asegúrese de que el documento sea legible y contenga la información necesaria para verificar su cuenta.
+          Adjunte una copia de su certificación bancaria en formato PDF o imagen (JPG, PNG, GIF, WEBP). Asegúrese de que el documento sea legible y contenga la información necesaria para verificar su cuenta.
         </AlertDescription>
       </Alert>
 
       <FileUploadField
         control={control}
-        name="anexoCertificacionBancaria"
-        label="Certificación Bancaria (PDF)"
-        accept=".pdf"
-        description="Adjunte su certificación bancaria en formato PDF. Tamaño máximo: 4MB."
+        name="certificacionBancaria" // Ensure this name matches the schema in ActualizarCuentaBancariaPage
+        label="Certificación Bancaria (PDF, JPG, PNG, GIF, WEBP)"
+        accept=".pdf,.jpg,.jpeg,.png,.gif,.webp"
+        description="Adjunte su certificación bancaria. Tamaño máximo: 4MB."
+        setValue={setValue}
+        fieldName="certificacionBancaria"
       />
     </section>
   );

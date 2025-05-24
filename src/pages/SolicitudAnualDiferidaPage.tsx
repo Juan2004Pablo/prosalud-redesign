@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -5,8 +6,8 @@ import * as z from 'zod';
 import MainLayout from '@/components/layout/MainLayout';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { useToast } from '@/hooks/use-toast';
-import { DevTool } from '@hookform/devtools';
+import { useToast } from '@/hooks/use-toast'; // Using shadcn toast here
+import { DevTool } from '@hookform/devtools'; // Keep if using devtools
 
 import { MAX_FILE_SIZE, ALLOWED_FILE_TYPES_PDF } from '@/features/solicitud-certificado/utils';
 import { idTypes } from '@/features/solicitud-certificado/config/constants';
@@ -41,12 +42,17 @@ const formSchema = z.object({
   cedulaGerencia: z.string().min(1, { message: "Cédula de gerencia es requerida" }),
   cartaSolicitud: z
     .any()
+    .refine((files) => files && files.length > 0 && files[0] !== null && files[0] !== undefined, "Carta de solicitud es requerida.")
     .refine((files) => files?.[0]?.size <= MAX_FILE_SIZE, `Tamaño máximo 4MB.`)
     .refine(
       (files) => ALLOWED_FILE_TYPES_PDF.includes(files?.[0]?.type),
       "Solo se permiten archivos PDF."
-    , {message: "Carta de solicitud es requerida"}),
+    ),
+}).refine(data => data.correoElectronico === data.confirmarCorreoElectronico, {
+  message: "Los correos electrónicos no coinciden",
+  path: ["confirmarCorreoElectronico"],
 });
+
 
 export type SolicitudAnualDiferidaFormValues = z.infer<typeof formSchema>;
 
@@ -61,7 +67,7 @@ const SolicitudAnualDiferidaPage: React.FC = () => {
       segundoNombre: undefined,
       primerApellido: '',
       segundoApellido: undefined,
-      fechaNacimiento: new Date(),
+      fechaNacimiento: undefined, // Set to undefined or handle appropriately for date picker
       numeroCelular: '',
       correoElectronico: '',
       confirmarCorreoElectronico: '',
@@ -69,7 +75,7 @@ const SolicitudAnualDiferidaPage: React.FC = () => {
       nombreBanco: '',
       tipoCuenta: '',
       numeroCuenta: '',
-      cedulaGerencia: undefined,
+      cedulaGerencia: '', // Changed from undefined for string type consistency
       cartaSolicitud: undefined,
     },
     mode: "onChange",
@@ -80,6 +86,7 @@ const SolicitudAnualDiferidaPage: React.FC = () => {
     toast({
       title: "¡Formulario enviado!",
       description: "Hemos recibido tu solicitud y la estamos procesando.",
+      variant: "default", // or success if you have that variant
     })
   }
 
@@ -91,22 +98,22 @@ const SolicitudAnualDiferidaPage: React.FC = () => {
           <InformacionImportanteAnualDiferidaAlert />
           <Separator className="my-6" />
 
-          <DatosPersonalesSection idTypes={idTypes} />
+          <DatosPersonalesSection control={form.control} idTypes={idTypes} />
           <Separator className="my-6" />
 
-          <ConfirmacionCorreoSection />
+          <ConfirmacionCorreoSection control={form.control} />
           <Separator className="my-6" />
 
-          <InformacionAnualDiferidaSection />
+          <InformacionAnualDiferidaSection control={form.control}/> {/* Assuming this needs control */}
           <Separator className="my-6" />
 
           <RequisitosAnualDiferidaSection />
           <Separator className="my-6" />
 
-          <AnexosAnualDiferidaSection control={form.control} />
+          <AnexosAnualDiferidaSection control={form.control} setValue={form.setValue}/>
           <Separator className="my-6" />
 
-          <AutorizacionDatosSection />
+          <AutorizacionDatosSection control={form.control} />
           <Separator className="my-6" />
 
           <div className="flex justify-center mt-8">
@@ -114,7 +121,7 @@ const SolicitudAnualDiferidaPage: React.FC = () => {
               Enviar Solicitud
             </Button>
           </div>
-          <DevTool control={form.control} />
+          {process.env.NODE_ENV === 'development' && <DevTool control={form.control} />}
         </form>
       </FormProvider>
     </MainLayout>
@@ -122,3 +129,4 @@ const SolicitudAnualDiferidaPage: React.FC = () => {
 };
 
 export default SolicitudAnualDiferidaPage;
+
