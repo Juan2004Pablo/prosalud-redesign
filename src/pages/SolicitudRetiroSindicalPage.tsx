@@ -24,14 +24,8 @@ const SolicitudRetiroSindicalPage: React.FC = () => {
             <BreadcrumbSeparator />
             <BreadcrumbItem>
                 <BreadcrumbLink asChild>
-                    <Link to="#"> {/* Idealmente a una página de "Servicios" si existiera */}
-                        <FileText className="h-4 w-4 mr-1 inline-block" /> Servicios
-                    </Link>
+                    <FileText className="h-4 w-4 mr-1 inline-block" /> Solicitud de Retiro Sindical
                 </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>Solicitud de Retiro Sindical</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
