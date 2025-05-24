@@ -24,7 +24,7 @@ const InformacionImportanteAnualDiferidaAlert: React.FC = () => {
         <AlertDescription className="text-amber-600">
           Si la solicitud es enviada <strong>ANTES del día 24 del mes</strong>, será revisada y en caso de ser aprobada será incluida junto con la compensación del mes en curso.
           En caso de recibirse <strong>posterior a esta fecha</strong>, se aplicará para ser revisada y sería incluida junto con la compensación del mes siguiente.
-          <br />
+          <br /><br />
           <strong>NOTA IMPORTANTE:</strong> El horario de revisión de solicitudes es de lunes a viernes de 7:00 a.m. a 4:00 p.m. Cualquier registro vencido el citado horario, se entenderá presentado el siguiente día hábil. Se registran y asigna su revisión por orden de registro.
         </AlertDescription>
       </Alert>
