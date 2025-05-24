@@ -102,30 +102,17 @@ const ActualizarCuentaBancariaPage: React.FC = () => {
   return (
     <MainLayout>
       <div className="container mx-auto pt-6 pb-2 px-4 md:px-6 lg:px-8">
-        <Breadcrumb>
-          <BreadcrumbList className="flex items-center space-x-2 text-sm">
+        <Breadcrumb className="mb-8">
+          <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <Link to="/" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
-                  <Home className="h-4 w-4" />
-                  Inicio
-                </Link>
+                <Link to="/"><Home className="h-4 w-4 mr-1 inline-block" /> Inicio</Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-                 <BreadcrumbLink asChild>
-                    <Link to="/servicios/actualizar-cuenta" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
-                        <Landmark className="h-4 w-4" />
-                        Servicios
-                    </Link>
-                </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage className="flex items-center gap-1 font-medium text-foreground">
-                <FileText className="h-4 w-4" />
-                Actualizar Cuenta Bancaria
+              <BreadcrumbPage>
+                <FileText className="h-4 w-4 mr-1 inline-block" /> Actualizar Cuenta Bancaria
               </BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
