@@ -20,6 +20,7 @@ import SolicitudRetiroSindicalPage from "./pages/SolicitudRetiroSindicalPage";
 import ScrollToTop from "./components/utils/ScrollToTop";
 import CertificadoSeguridadSocialPage from "./pages/CertificadoSeguridadSocialPage";
 import SolicitudPermisosCambioTurnosPage from "./pages/SolicitudPermisosCambioTurnosPage";
+import SolicitudMicrocreditoPage from "./pages/SolicitudMicrocreditoPage";
 
 const queryClient = new QueryClient();
 
@@ -107,7 +108,8 @@ const App = () => (
           {/* Actualizar la ruta para Permisos y Cambio de Turnos */}
           <Route path="/servicios/permisos-turnos" element={<SolicitudPermisosCambioTurnosPage />} />
           <Route path="/servicios/cuadro-turnos" element={<PlaceholderPage title="Cuadro de Turnos" />} />
-          <Route path="/servicios/microcredito" element={<PlaceholderPage title="Solicitud de Microcrédito" />} />
+          {/* Actualizar la ruta para Solicitud de Microcrédito */}
+          <Route path="/servicios/microcredito" element={<SolicitudMicrocreditoPage />} /> {/* <-- NUEVA RUTA */}
           {/* Actualizar la ruta para Solicitud de Retiro Sindical */}
           <Route path="/servicios/retiro-sindical" element={<SolicitudRetiroSindicalPage />} />
           
