@@ -240,11 +240,11 @@ const Chatbot: React.FC = () => {
         **Recordatorios Finales:**
         -   Sé proactivo al ofrecer ayuda.
         -   Verifica siempre la documentación antes de responder.
-        -   Si un documento Markdown específico sobre un servicio (ej: `servicios/nombre-servicio.md`) existe, prioriza la información de ese archivo.
-        -   La documentación general en `README.md` y `servicios/overview.md` puede usarse como complemento.
+        -   Si un documento Markdown específico sobre un servicio (ej: \`servicios/nombre-servicio.md\`) existe, prioriza la información de ese archivo.
+        -   La documentación general en \`README.md\` y \`servicios/overview.md\` puede usarse como complemento.
         
         Contenido del sitio web general (capturado al momento de la carga, puede ser menos específico que los .md):
-        """${isGeneralContext && typeof document !== 'undefined' ? document.body.innerText.substring(0, 2000) : 'Contexto de página no disponible.'}"""
+        ${isGeneralContext && typeof document !== 'undefined' ? document.body.innerText.substring(0, 2000) : 'Contexto de página no disponible.'}
         `;
 
         const systemMessage = {
@@ -277,7 +277,7 @@ const Chatbot: React.FC = () => {
     
         await resetChatState(newSpecialtyInfo.specialty);
         setSpecialty(newSpecialtyInfo.specialty);
-        setLocale(window.location.pathname.includes('/en/') ? 'en' : 'es');
+        setLocale(typeof window !== 'undefined' && window.location.pathname.includes('/en/') ? 'en' : 'es');
     
         initializeMessages(
             newSpecialtyInfo.specialty,
@@ -408,6 +408,10 @@ const Chatbot: React.FC = () => {
         }
         setIsFullscreen(false);
         setIsOpen(!isOpen);
+    };
+
+    const toggleFullscreen = () => {
+        setIsFullscreen(!isFullscreen);
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -732,7 +736,7 @@ const Chatbot: React.FC = () => {
         color: #93c5fd; /* theme('colors.blue.300') */
     }
   `;
-
+    
     if (!showChatbot && !isOpen) {
         return null;
     }
