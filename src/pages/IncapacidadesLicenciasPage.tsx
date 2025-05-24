@@ -84,7 +84,7 @@ const IncapacidadesLicenciasPage: React.FC = () => {
                 "Solo se reciben incapacidades expedidas por su respectiva EPS/ARL."
               ].map((item, index) => (
                 <div key={index} className="flex items-start">
-                  <CheckCircle2 size={20} className="mr-2 text-green-600 flex-shrink-0 mt-1" />
+                  <CheckCircle2 size={20} className="mr-2 text-primary flex-shrink-0 mt-1" />
                   <p>{item}</p>
                 </div>
               ))}
