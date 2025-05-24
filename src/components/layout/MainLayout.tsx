@@ -2,7 +2,7 @@
 import React from 'react';
 import Header from './Header';
 import Footer from './Footer';
-import ChatbotFab from '@/components/home/ChatbotFab'; // Importar ChatbotFab
+import ChatbotFab from '@/components/home/ChatbotFab'; // Corregir la importación (jsx a jsx)
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -16,7 +16,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         {children}
       </main>
       <Footer />
-      <ChatbotFab /> {/* Agregar ChatbotFab aquí */}
+      <ChatbotFab /> {/* ChatbotFab está correctamente agregado aquí */}
     </div>
   );
 };
