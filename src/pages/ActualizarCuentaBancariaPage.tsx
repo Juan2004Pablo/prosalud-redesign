@@ -1,25 +1,23 @@
-
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Button } from '@/components/ui/button';
-import { Form } from '@/components/ui/form';
-import MainLayout from '@/components/layout/MainLayout';
-import { toast } from 'sonner';
-import { Send, CheckCircle2, AlertCircle, Home, Landmark, FileText } from 'lucide-react';
-import { MAX_FILE_SIZE, ALLOWED_FILE_TYPES_GENERAL } from '@/components/solicitud-certificado/utils'; // Reutilizamos utils
-import { Link, useNavigate } from 'react-router-dom';
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
+import { Separator } from '@/components/ui/separator';
+import { useToast } from '@/hooks/use-toast';
+import { DevTool } from '@hookform/devtools';
 
-import DatosPersonalesSection from '@/components/solicitud-certificado/DatosPersonalesSection';
-import ConfirmacionCorreoSection from '@/components/solicitud-certificado/ConfirmacionCorreoSection';
-import AutorizacionDatosSection from '@/components/solicitud-certificado/AutorizacionDatosSection';
+import { MAX_FILE_SIZE, ALLOWED_FILE_TYPES_PDF } from '@/features/solicitud-certificado/utils'; // Ruta corregida
+import { idTypes } from '@/features/solicitud-certificado/config/constants'; // Ruta corregida
+import { procesoOptions, ubicacionOptions } from '@/components/actualizar-cuenta/options';
 
 import ActualizarCuentaHeader from '@/components/actualizar-cuenta/ActualizarCuentaHeader';
-import InformacionImportanteCuentaAlert from '@/components/actualizar-cuenta/InformacionImportanteCuentaAlert';
+import DatosPersonalesSection from '@/features/solicitud-certificado/components/DatosPersonalesSection'; // Ruta corregida
+import ConfirmacionCorreoSection from '@/features/solicitud-certificado/components/ConfirmacionCorreoSection'; // Ruta corregida
+import AutorizacionDatosSection from '@/features/solicitud-certificado/components/AutorizacionDatosSection'; // Ruta corregida
 import InformacionProcesoCuentaSection from '@/components/actualizar-cuenta/InformacionProcesoCuentaSection';
 import AnexoCertificacionBancariaSection from '@/components/actualizar-cuenta/AnexoCertificacionBancariaSection';
+import InformacionImportanteCuentaAlert from '@/components/actualizar-cuenta/InformacionImportanteCuentaAlert';
 
 // Ajustar tipos permitidos para certificación bancaria (PDF e imágenes)
 const ALLOWED_FILE_TYPES_CERTIFICADO = ['application/pdf', 'image/jpeg', 'image/png', 'image/gif', 'image/webp'];

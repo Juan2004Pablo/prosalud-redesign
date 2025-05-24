@@ -15,7 +15,8 @@ import VerificacionPagosPage from "./pages/VerificacionPagosPage";
 import EstatutosBeneficiosPage from "./pages/EstatutosBeneficiosPage";
 import ContratoSindicalPage from "./pages/ContratoSindicalPage";
 import IncapacidadesLicenciasPage from "./pages/IncapacidadesLicenciasPage";
-import ActualizarCuentaBancariaPage from "./pages/ActualizarCuentaBancariaPage"; // Nueva importación
+import ActualizarCuentaBancariaPage from "./pages/ActualizarCuentaBancariaPage";
+import SolicitudRetiroSindicalPage from "./pages/SolicitudRetiroSindicalPage";
 
 const queryClient = new QueryClient();
 
@@ -101,7 +102,7 @@ const App = () => (
           <Route path="/servicios/permisos-turnos" element={<PlaceholderPage title="Permisos y Cambio de Turnos" />} />
           <Route path="/servicios/cuadro-turnos" element={<PlaceholderPage title="Cuadro de Turnos" />} />
           <Route path="/servicios/microcredito" element={<PlaceholderPage title="Solicitud de Microcrédito" />} />
-          <Route path="/servicios/retiro-sindical" element={<PlaceholderPage title="Solicitud de Retiro Sindical" />} />
+          <Route path="/servicios/retiro-sindical" element={<SolicitudRetiroSindicalPage />} /> {/* ACTUALIZADA */}
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

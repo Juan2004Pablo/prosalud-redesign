@@ -1,44 +1,54 @@
-
 import React from 'react';
-import { Control, FieldValues } from 'react-hook-form';
-import { Paperclip } from 'lucide-react';
-import FileUploadField from '../solicitud-certificado/FileUploadField'; // Reusing the existing component
+import { Control } from 'react-hook-form';
+import { SolicitudAnualDiferidaFormValues } from '@/pages/SolicitudAnualDiferidaPage';
+import { AlertCircle } from 'lucide-react';
+import FileUploadField from '@/features/solicitud-certificado/components/FileUploadField'; // Ruta corregida
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
-interface AnexosAnualDiferidaSectionProps<TFieldValues extends FieldValues> {
-  control: Control<TFieldValues>;
+interface AnexosAnualDiferidaSectionProps {
+  control: Control<SolicitudAnualDiferidaFormValues>;
 }
 
-const AnexosAnualDiferidaSection = <TFieldValues extends FieldValues>({
-  control,
-}: AnexosAnualDiferidaSectionProps<TFieldValues>) => {
+const AnexosAnualDiferidaSection: React.FC<AnexosAnualDiferidaSectionProps> = ({ control }) => {
+  const MAX_FILE_SIZE = 4 * 1024 * 1024; // 4MB
+  const ALLOWED_FILE_TYPES_PDF = ['application/pdf'];
+
   return (
-    <section className="p-6 border rounded-lg shadow-sm bg-white space-y-6">
-      <div>
-        <h2 className="text-xl font-semibold mb-4 text-primary-prosalud-dark flex items-center">
-          <Paperclip className="mr-2 h-6 w-6" /> Anexo: Formato Diligenciado (Requerido)
-        </h2>
-        <FileUploadField
-          control={control}
-          name={"anexoFormatoDiligenciado" as any}
-          label="Seleccione el formato diligenciado (PDF, Excel o imagen, máx. 4MB)"
-          accept=".pdf,.xls,.xlsx,.jpg,.jpeg,.png,.gif,.webp"
-          description="Debe adjuntar el formato de solicitud debidamente diligenciado. Este archivo es obligatorio."
-          isRequired={true}
-        />
-      </div>
-      <div>
-        <h2 className="text-xl font-semibold mb-4 text-primary-prosalud-dark flex items-center">
-          <Paperclip className="mr-2 h-6 w-6" /> Anexo: Evidencia de la Solicitud (Requerido)
-        </h2>
-        <FileUploadField
-          control={control}
-          name={"anexoEvidenciaSolicitud" as any}
-          label="Seleccione la evidencia de la solicitud (PDF, Excel o imagen, máx. 4MB)"
-          accept=".pdf,.xls,.xlsx,.jpg,.jpeg,.png,.gif,.webp"
-          description="Adjunte la evidencia que soporta su solicitud (varía según el motivo, ver requisitos). Este archivo es obligatorio."
-          isRequired={true}
-        />
-      </div>
+    <section className="space-y-4">
+      <Alert variant="default">
+        <AlertCircle className="h-4 w-4" />
+        <AlertTitle>Anexos Requeridos</AlertTitle>
+        <AlertDescription>
+          Por favor, adjunte los siguientes documentos en formato PDF. El tamaño máximo permitido por archivo es de 4MB.
+        </AlertDescription>
+      </Alert>
+
+      <FileUploadField
+        control={control}
+        name="cartaSolicitud"
+        label="Carta de Solicitud"
+        accept=".pdf"
+        description="Adjunte la carta de solicitud firmada."
+        isRequired
+      />
+
+      <FileUploadField
+        control={control}
+        name="copiaCedula"
+        label="Copia de Cédula"
+        accept=".pdf"
+        description="Adjunte una copia legible de su cédula de identidad."
+        isRequired
+      />
+
+      <FileUploadField
+        control={control}
+        name="certificadoLaboral"
+        label="Certificado Laboral"
+        accept=".pdf"
+        description="Adjunte su certificado laboral actualizado."
+        isRequired
+      />
     </section>
   );
 };
