@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -15,8 +16,9 @@ import VerificacionPagosPage from "./pages/VerificacionPagosPage";
 import EstatutosBeneficiosPage from "./pages/EstatutosBeneficiosPage";
 import ContratoSindicalPage from "./pages/ContratoSindicalPage";
 import IncapacidadesLicenciasPage from "./pages/IncapacidadesLicenciasPage";
-import ActualizarCuentaBancariaPage from "./pages/ActualizarCuentaBancariaPage"; // Nueva importación
-import SolicitudRetiroSindicalPage from "./pages/SolicitudRetiroSindicalPage"; // Nueva importación
+import ActualizarCuentaBancariaPage from "./pages/ActualizarCuentaBancariaPage";
+import SolicitudRetiroSindicalPage from "./pages/SolicitudRetiroSindicalPage";
+import ScrollToTop from "./components/utils/ScrollToTop"; // Nueva importación
 
 const queryClient = new QueryClient();
 
@@ -36,6 +38,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <ScrollToTop /> {/* Componente añadido aquí */}
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/login" element={<LoginPage />} />
