@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -18,7 +17,8 @@ import ContratoSindicalPage from "./pages/ContratoSindicalPage";
 import IncapacidadesLicenciasPage from "./pages/IncapacidadesLicenciasPage";
 import ActualizarCuentaBancariaPage from "./pages/ActualizarCuentaBancariaPage";
 import SolicitudRetiroSindicalPage from "./pages/SolicitudRetiroSindicalPage";
-import ScrollToTop from "./components/utils/ScrollToTop"; // Nueva importación
+import ScrollToTop from "./components/utils/ScrollToTop";
+import CertificadoSeguridadSocialPage from "./pages/CertificadoSeguridadSocialPage";
 
 const queryClient = new QueryClient();
 
@@ -38,7 +38,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <ScrollToTop /> {/* Componente añadido aquí */}
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/login" element={<LoginPage />} />
@@ -96,7 +96,8 @@ const App = () => (
           {/* Nueva ruta para consulta de pagos desde servicios */}
           <Route path="/servicios/consulta-pagos" element={<VerificacionPagosPage />} />
           <Route path="/servicios/incapacidad-maternidad" element={<IncapacidadesLicenciasPage />} /> {/* Actualizada */}
-          <Route path="/servicios/certificado-seguridad-social" element={<PlaceholderPage title="Certificado de Seguridad Social" />} />
+          {/* Actualizar la ruta para Certificado de Seguridad Social */}
+          <Route path="/servicios/certificado-seguridad-social" element={<CertificadoSeguridadSocialPage />} />
           <Route path="/servicios/actualizar-cuenta" element={<ActualizarCuentaBancariaPage />} /> {/* ACTUALIZADA */}
           <Route path="/servicios/sst" element={<PlaceholderPage title="Seguridad y Salud en el Trabajo (SST)" />} />
           <Route path="/servicios/galeria-bienestar" element={<PlaceholderPage title="Galería de Bienestar" />} />
