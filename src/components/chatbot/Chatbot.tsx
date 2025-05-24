@@ -17,7 +17,7 @@ import js from 'react-syntax-highlighter/dist/cjs/languages/hljs/javascript'
 import json from 'react-syntax-highlighter/dist/cjs/languages/hljs/json'
 import php from 'react-syntax-highlighter/dist/cjs/languages/hljs/php'
 import { atomOneDark } from 'react-syntax-highlighter/dist/cjs/styles/hljs'
-import { generateText, streamText } from 'ai'
+import { streamText } from 'ai'
 import { createOpenAI } from '@ai-sdk/openai'
 import ReactMarkdown from 'react-markdown'
 
@@ -25,18 +25,26 @@ SyntaxHighlighter.registerLanguage('javascript', js)
 SyntaxHighlighter.registerLanguage('json', json)
 SyntaxHighlighter.registerLanguage('php', php)
 
-// Ensure this environment variable is set in your .env file (e.g., .env.local)
-// VITE_OPENAI_API_KEY=your_openai_api_key_here
 const openaiApiKey = import.meta.env.VITE_OPENAI_API_KEY;
 
 const openai = createOpenAI({
-    compatibility: 'strict', // or 'compatible'
-    apiKey: openaiApiKey || '', // Use the environment variable
+    compatibility: 'strict',
+    apiKey: openaiApiKey || '',
 })
+
+// Define more specific types for chat messages
+type ChatMessageRole = 'system' | 'user' | 'assistant';
+
+interface ChatMessage {
+  role: ChatMessageRole;
+  content: string;
+  isBot: boolean;
+  isStreaming?: boolean;
+}
 
 const Chatbot: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false)
-    const [messages, setMessages] = useState<Array<{ role: string; content: string; isBot: boolean; isStreaming?: boolean }>>([])
+    const [messages, setMessages] = useState<ChatMessage[]>([]) // Use the new ChatMessage type
     const [inputMessage, setInputMessage] = useState('')
     const [isTyping, setIsTyping] = useState(false)
     const [isFullscreen, setIsFullscreen] = useState(false)
@@ -247,14 +255,14 @@ const Chatbot: React.FC = () => {
         ${isGeneralContext && typeof document !== 'undefined' ? document.body.innerText.substring(0, 2000) : 'Contexto de página no disponible.'}
         `;
 
-        const systemMessage = {
+        const systemMessage: ChatMessage = { // Use ChatMessage type
             role: 'system',
             content: systemPrompt,
             isBot: true,
         }
 
         const initialMessageContent = getInitialMessage(currentSpecialty);
-        const initialMessage = {
+        const initialMessage: ChatMessage = { // Use ChatMessage type
             role: 'assistant',
             content: initialMessageContent,
             isBot: true,
@@ -490,7 +498,8 @@ const Chatbot: React.FC = () => {
         if (inputMessage.trim() === '' || !openaiApiKey) {
             if (!openaiApiKey) {
                 console.error("Cannot send message: OpenAI API Key is not configured.");
-                setMessages(prev => [...prev, { role: 'assistant', content: "⚠️ No puedo procesar tu mensaje porque la clave API de OpenAI no está configurada. Por favor, contacta al administrador.", isBot: true }]);
+                const errorApiKeyMessage: ChatMessage = { role: 'assistant', content: "⚠️ No puedo procesar tu mensaje porque la clave API de OpenAI no está configurada. Por favor, contacta al administrador.", isBot: true };
+                setMessages(prev => [...prev, errorApiKeyMessage]);
             }
             return;
         }
@@ -500,24 +509,29 @@ const Chatbot: React.FC = () => {
         if (match) {
             const n = parseInt(match[1], 10);
             if (n > 5) {
-                const warning = {
+                const userQueryMessage: ChatMessage = {
+                    role: 'user',
+                    content: text,
+                    isBot: false
+                };
+                const warningLimitMessage: ChatMessage = {
                     role: 'assistant',
                     content: `Lo siento, puedo generar hasta 5 ítems (preguntas, recomendaciones, pasos, etc.) a la vez. ¿Podrías solicitar un número menor o acotar tu petición?`,
                     isBot: true
                 };
-                setMessages(prev => [...prev, { role: 'user', content: text, isBot: false }, warning]);
+                setMessages(prev => [...prev, userQueryMessage, warningLimitMessage]);
                 setInputMessage('');
                 return;
             }
         }
 
-        const newMessage = {
+        const newMessage: ChatMessage = { // Use ChatMessage type
             role: 'user',
             content: inputMessage.replace(/\n$/, ''),
             isBot: false,
         }
 
-        let currentChatMessages: Array<{ role: string; content: string; isBot: boolean; isStreaming?: boolean }> = [];
+        let currentChatMessages: ChatMessage[] = []; // Ensure this is ChatMessage[]
 
         setMessages((prevMessages) => {
             currentChatMessages = [...prevMessages, newMessage];
@@ -532,15 +546,23 @@ const Chatbot: React.FC = () => {
             textareaRef.current.style.height = 'auto'
         }
 
+        // Map messages to the format expected by the AI SDK
+        const aiSdkMessages = currentChatMessages
+            .filter(msg => msg.role === 'system' || msg.role === 'user' || msg.role === 'assistant')
+            .map(({ role, content }) => ({
+                role, // role is now ChatMessageRole ('system' | 'user' | 'assistant')
+                content,
+            }));
+
         try {
             setMessages((prev) => [
                 ...prev,
-                { role: 'assistant', content: '', isBot: true, isStreaming: true },
+                { role: 'assistant', content: '', isBot: true, isStreaming: true }, // This conforms to ChatMessage
             ])
 
             const { textStream } = await streamText({
                 model: openai('gpt-4o-mini'),
-                messages: currentChatMessages.filter(m => m.role === 'system' || m.role === 'user' || m.role === 'assistant'),
+                messages: aiSdkMessages, // Pass the correctly typed and shaped messages
                 maxTokens: 450,
             })
 
@@ -549,41 +571,40 @@ const Chatbot: React.FC = () => {
             for await (const delta of textStream) {
                 streamedText += delta
 
-                setMessages((prevMessages) => {
-                    const updatedMessages = [...prevMessages]
+                setMessages((prevBotMessages) => { // Renamed prev to avoid conflict
+                    const updatedMessages = [...prevBotMessages]
                     if (updatedMessages.length > 0 && updatedMessages[updatedMessages.length - 1].isStreaming) {
+                        const lastMessage = updatedMessages[updatedMessages.length - 1];
                         updatedMessages[updatedMessages.length - 1] = {
-                            ...updatedMessages[updatedMessages.length - 1],
-                            content: streamedText,
-                        }
+                            ...lastMessage, // Spread previous message properties
+                            content: streamedText, // Update content
+                        };
                     }
                     return updatedMessages
                 })
             }
 
-            setMessages((prevMessages) => {
-                const updatedMessages = [...prevMessages]
+            setMessages((prevBotMessages) => { // Renamed prev to avoid conflict
+                const updatedMessages = [...prevBotMessages]
                 if (updatedMessages.length > 0 && updatedMessages[updatedMessages.length - 1].isStreaming) {
                     updatedMessages[updatedMessages.length - 1] = {
-                        role: 'assistant',
+                        role: 'assistant', // Explicitly 'assistant'
                         content: streamedText,
                         isBot: true,
-                        isStreaming: false,
-                    }
+                        isStreaming: false, // Mark as not streaming
+                    };
                 }
                 return updatedMessages
             })
         } catch (error) {
             console.error('Error generating response:', error)
-            setMessages((prev) => [
-                ...prev,
-                {
-                    role: 'assistant',
-                    content: "Lo siento, encontré un error al procesar tu solicitud. Por favor, intenta de nuevo más tarde. Si el problema persiste, contacta al administrador. 🛠️",
-                    isBot: true,
-                    isStreaming: false,
-                },
-            ])
+            const errorBotMessage: ChatMessage = { // Use ChatMessage type
+                role: 'assistant',
+                content: "Lo siento, encontré un error al procesar tu solicitud. Por favor, intenta de nuevo más tarde. Si el problema persiste, contacta al administrador. 🛠️",
+                isBot: true,
+                isStreaming: false,
+            };
+            setMessages((prev) => [...prev, errorBotMessage]);
         } finally {
             setIsTyping(false)
             setShowSuggestions(true)
@@ -883,8 +904,8 @@ const Chatbot: React.FC = () => {
                                                         className={`rounded-lg px-3 py-2 ${message.isBot
                                                             ? 'bg-white text-gray-800 shadow-sm dark:bg-gray-700 dark:text-gray-100'
                                                             : 'bg-prosalud-sindicato text-white shadow-sm'
-                                                            } max-w-[85%] overflow-x-auto transition-all duration-200 ease-out ${index === messages.length - 2 && isTyping ? 'animate-none' : 
-                                                               (index >= messages.length - (isTyping ? 2:1)) ? 'animate-fadeInQuick' : ''
+                                                            } max-w-[85%] overflow-x-auto transition-all duration-200 ease-out ${index === messages.filter(m => m.role !== 'system').length - (isTyping ? 2 : 1) && isTyping ? 'animate-none' : 
+                                                               (index >= messages.filter(m => m.role !== 'system').length - (isTyping ? 2:1)) ? 'animate-fadeInQuick' : ''
                                                             }`}
                                                     >
                                                         <div className="break-words markdown-content">
