@@ -4,6 +4,7 @@ import MainLayout from '@/components/layout/MainLayout';
 import { Mail, CheckCircle2, AlertTriangle, FileText, Send, Info } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import CopyToClipboardButton from '@/components/ui/copyToClipboardButton';
 
 const IncapacidadesLicenciasPage: React.FC = () => {
   const proSaludLogoUrl = "/lovable-uploads/2bf2da56-4967-4a17-8849-9efab8759375.png";
@@ -36,9 +37,12 @@ const IncapacidadesLicenciasPage: React.FC = () => {
                 <h3 className="font-semibold text-lg mb-2 flex items-center">
                   <Mail size={20} className="mr-2 text-primary" /> Correo para envío:
                 </h3>
-                <p className="text-secondary font-medium text-lg bg-primary/10 p-3 rounded-md inline-block">
-                  incapacidades@sindicatoprosalud.com
-                </p>
+                <div className="flex items-center">
+                  <p className="text-secondary font-medium text-lg bg-primary/10 p-3 rounded-md inline-block">
+                    incapacidades@sindicatoprosalud.com
+                  </p>
+                  <CopyToClipboardButton text="incapacidades@sindicatoprosalud.com" />
+                </div>
                 <p className="text-sm text-muted-foreground mt-1">
                   Este es el único canal para la recepción de incapacidades.
                 </p>
@@ -112,7 +116,7 @@ const IncapacidadesLicenciasPage: React.FC = () => {
             <p>
               Las incapacidades temporales remitidas por este buzón no se entienden como aprobadas ni aceptadas para pago hasta su validación.
             </p>
-             <p className="font-semibold">
+            <p className="font-semibold">
               Este buzón es exclusivo para la recepción de incapacidades por parte de los afiliados.
             </p>
           </CardContent>
@@ -123,7 +127,7 @@ const IncapacidadesLicenciasPage: React.FC = () => {
           <AlertTitle className="text-lg font-semibold">¡Atención!</AlertTitle>
           <AlertDescription className="text-base">
             Solo se procesarán incapacidades expedidas por su respectiva <strong>EPS o ARL</strong>. Asegúrese de que los documentos cumplan con este requisito fundamental.
-             <p className="mt-2 text-sm">
+            <p className="mt-2 text-sm">
               El horario de revisión de solicitudes es de lunes a viernes de 7:00 a.m. a 4:00 p.m. Cualquier registro vencido el citado horario, se entenderá presentado el siguiente día hábil. Se registran y asigna su revisión por orden de registro.
             </p>
           </AlertDescription>

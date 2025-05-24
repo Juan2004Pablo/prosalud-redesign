@@ -19,9 +19,9 @@ export default {
 			}
 		},
 		extend: {
-      fontFamily: {
-        sans: ['Lato', 'sans-serif'],
-      },
+			fontFamily: {
+				sans: ['Lato', 'sans-serif'],
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
@@ -31,17 +31,17 @@ export default {
 				primary: {
 					DEFAULT: 'hsl(var(--primary))', // Main primary color
 					foreground: 'hsl(var(--primary-foreground))', // Text on primary
-          // Custom ProSalud colors
-          prosalud: '#00529B', // ProSalud Blue
-          'prosalud-light': '#E3F2FD', // Light blue for backgrounds/accents
-          'prosalud-dark': '#003A70',  // Darker ProSalud Blue
+					// Custom ProSalud colors
+					prosalud: '#00529B', // ProSalud Blue
+					'prosalud-light': '#E3F2FD', // Light blue for backgrounds/accents
+					'prosalud-dark': '#003A70',  // Darker ProSalud Blue
 				},
 				secondary: {
 					DEFAULT: 'hsl(var(--secondary))', // Main secondary color
 					foreground: 'hsl(var(--secondary-foreground))', // Text on secondary
-          // Custom ProSalud colors
-          prosaludgreen: '#4CAF50', // ProSalud Green
-          'prosaludgreen-dark': '#388E3C', // Darker ProSalud Green
+					// Custom ProSalud colors
+					prosaludgreen: '#4CAF50', // ProSalud Green
+					'prosaludgreen-dark': '#388E3C', // Darker ProSalud Green
 				},
 				destructive: {
 					DEFAULT: 'hsl(var(--destructive))',
@@ -54,7 +54,7 @@ export default {
 				accent: {
 					DEFAULT: 'hsl(var(--accent))', // Main accent color
 					foreground: 'hsl(var(--accent-foreground))', // Text on accent
-          prosaludteal: '#17a2b8', // ProSalud Teal
+					prosaludteal: '#17a2b8', // ProSalud Teal
 				},
 				popover: {
 					DEFAULT: 'hsl(var(--popover))',
@@ -64,14 +64,14 @@ export default {
 					DEFAULT: 'hsl(var(--card))', // Card background (e.g., #ffffff)
 					foreground: 'hsl(var(--card-foreground))' // Text in card (e.g., #212529)
 				},
-        // Custom text colors
-        'text-dark': '#333333',
-        'text-light': '#FFFFFF',
-        'text-gray': '#555555',
-        'prosalud-border': '#DDDDDD',
-        'background-light': '#F8F9FA', // Page background
+				// Custom text colors
+				'text-dark': '#333333',
+				'text-light': '#FFFFFF',
+				'text-gray': '#555555',
+				'prosalud-border': '#DDDDDD',
+				'background-light': '#F8F9FA', // Page background
 				// ... keep existing sidebar colors
-        sidebar: {
+				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
 					primary: 'hsl(var(--sidebar-primary))',
@@ -81,9 +81,9 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-        // Added specific ProSalud brand colors for the title
-        'prosalud-pro': '#0078a0',
-        'prosalud-salud': '#0095c8',
+				// Added specific ProSalud brand colors for the title
+				'prosalud-pro': '#0078a0',
+				'prosalud-salud': '#0095c8',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -106,11 +106,16 @@ export default {
 					to: {
 						height: '0'
 					}
-				}
+				},
+				fadeIn: {
+					'0%': { opacity: '0', transform: 'translateY(4px)' },
+					'100%': { opacity: '1', transform: 'translateY(0)' },
+				},
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'fadeIn': 'fadeIn 0.3s ease-out',
 			}
 		}
 	},
