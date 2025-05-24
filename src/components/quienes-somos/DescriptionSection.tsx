@@ -24,7 +24,7 @@ const statsData: StatData[] = [
     subText: "de experiencia",
     iconColor: "text-primary-prosalud",
     textColor: "text-primary-prosalud",
-    duration: 1000,
+    duration: 1500,
   },
   {
     icon: Briefcase,
@@ -33,7 +33,7 @@ const statsData: StatData[] = [
     subText: "en Antioquia",
     iconColor: "text-secondary-prosaludgreen",
     textColor: "text-secondary-prosaludgreen",
-    duration: 800,
+    duration: 1200,
   },
   {
     icon: Users,
@@ -42,7 +42,7 @@ const statsData: StatData[] = [
     subText: "afiliados",
     iconColor: "text-accent-prosaludteal",
     textColor: "text-accent-prosaludteal",
-    duration: 1500,
+    duration: 2000,
   },
 ];
 
