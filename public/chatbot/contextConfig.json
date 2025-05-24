@@ -1,0 +1,38 @@
+{
+    "general": {
+        "show-chatbot": true,
+        "docs": [
+            "README.md",
+            "contacto/informacion-contacto.md",
+            "convenios/convenios-alianzas.md",
+            "legal/contrato-sindical.md",
+            "legal/estatutos-beneficios.md",
+            "quienes-somos/estructura-organizacional.md",
+            "quienes-somos/mision-vision.md",
+            "quienes-somos/overview.md",
+            "quienes-somos/principios.md",
+            "quienes-somos/valores.md",
+            "servicios/actualizar-cuenta-bancaria.md",
+            "servicios/certificado-convenio.md",
+            "servicios/certificado-seguridad-social.md",
+            "servicios/cuadro-turnos.md",
+            "servicios/encuesta-bienestar-laboral.md",
+            "servicios/galeria-bienestar.md",
+            "servicios/incapacidades-licencias.md",
+            "servicios/overview.md",
+            "servicios/permisos-cambio-turnos.md",
+            "servicios/solicitud-compensacion-anual-diferida.md",
+            "servicios/solicitud-descanso-laboral.md",
+            "servicios/solicitud-microcredito.md",
+            "servicios/solicitud-retiro-sindical.md",
+            "servicios/sst.md",
+            "servicios/verificacion-pagos.md"
+        ]
+    },
+    "payments": {
+        "show-chatbot": true,
+        "docs": [
+            "payments/index.md"
+        ]
+    }
+}

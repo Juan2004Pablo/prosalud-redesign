@@ -16,19 +16,14 @@ import VerificacionPagosPage from "./pages/VerificacionPagosPage";
 import EstatutosBeneficiosPage from "./pages/EstatutosBeneficiosPage";
 import ContratoSindicalPage from "./pages/ContratoSindicalPage";
 import IncapacidadesLicenciasPage from "./pages/IncapacidadesLicenciasPage";
-import ActualizarCuentaBancariaPage from "./pages/ActualizarCuentaBancariaPage";
-import SolicitudRetiroSindicalPage from "./pages/SolicitudRetiroSindicalPage";
-import ScrollToTop from "./components/utils/ScrollToTop";
-import CertificadoSeguridadSocialPage from "./pages/CertificadoSeguridadSocialPage";
-import SolicitudPermisosCambioTurnosPage from "./pages/SolicitudPermisosCambioTurnosPage";
-import SolicitudMicrocreditoPage from "./pages/SolicitudMicrocreditoPage";
+import ActualizarCuentaBancariaPage from "./pages/ActualizarCuentaBancariaPage"; // Nueva importación
 
 const queryClient = new QueryClient();
 
 // Placeholder pages for navigation items
 const PlaceholderPage = ({ title }: { title: string }) => (
   <MainLayout>
-    <div className="container mx-auto py-10 px-4 md:px-6 lg:px-8 text-center"> {/* <-- Cambio aquí */}
+    <div className="container mx-auto py-10 px-4 text-center">
       <h1 className="text-3xl font-bold">{title}</h1>
       <p className="mt-4">Contenido para {title} próximamente.</p>
     </div>
@@ -41,7 +36,6 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/login" element={<LoginPage />} />
@@ -99,20 +93,16 @@ const App = () => (
           {/* Nueva ruta para consulta de pagos desde servicios */}
           <Route path="/servicios/consulta-pagos" element={<VerificacionPagosPage />} />
           <Route path="/servicios/incapacidad-maternidad" element={<IncapacidadesLicenciasPage />} /> {/* Actualizada */}
-          {/* Actualizar la ruta para Certificado de Seguridad Social */}
-          <Route path="/servicios/certificado-seguridad-social" element={<CertificadoSeguridadSocialPage />} />
+          <Route path="/servicios/certificado-seguridad-social" element={<PlaceholderPage title="Certificado de Seguridad Social" />} />
           <Route path="/servicios/actualizar-cuenta" element={<ActualizarCuentaBancariaPage />} /> {/* ACTUALIZADA */}
           <Route path="/servicios/sst" element={<PlaceholderPage title="Seguridad y Salud en el Trabajo (SST)" />} />
           <Route path="/servicios/galeria-bienestar" element={<PlaceholderPage title="Galería de Bienestar" />} />
           <Route path="/servicios/encuesta-bienestar" element={<PlaceholderPage title="Encuesta de Bienestar Laboral" />} />
           <Route path="/servicios/comfenalco" element={<PlaceholderPage title="Servicios de Comfenalco Antioquia" />} />
-          {/* Actualizar la ruta para Permisos y Cambio de Turnos */}
-          <Route path="/servicios/permisos-turnos" element={<SolicitudPermisosCambioTurnosPage />} />
+          <Route path="/servicios/permisos-turnos" element={<PlaceholderPage title="Permisos y Cambio de Turnos" />} />
           <Route path="/servicios/cuadro-turnos" element={<PlaceholderPage title="Cuadro de Turnos" />} />
-          {/* Actualizar la ruta para Solicitud de Microcrédito */}
-          <Route path="/servicios/microcredito" element={<SolicitudMicrocreditoPage />} /> {/* <-- NUEVA RUTA */}
-          {/* Actualizar la ruta para Solicitud de Retiro Sindical */}
-          <Route path="/servicios/retiro-sindical" element={<SolicitudRetiroSindicalPage />} />
+          <Route path="/servicios/microcredito" element={<PlaceholderPage title="Solicitud de Microcrédito" />} />
+          <Route path="/servicios/retiro-sindical" element={<PlaceholderPage title="Solicitud de Retiro Sindical" />} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
