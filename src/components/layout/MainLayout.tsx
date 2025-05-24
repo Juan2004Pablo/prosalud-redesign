@@ -2,7 +2,7 @@
 import React from 'react';
 import Header from './Header';
 import Footer from './Footer';
-import ChatbotFab from '@/components/home/ChatbotFab'; // Importar ChatbotFab
+import Chatbot from '@/components/chatbot/chatbot.jsx'; // Importar el nuevo Chatbot.jsx
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -16,7 +16,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         {children}
       </main>
       <Footer />
-      <ChatbotFab /> {/* Agregar ChatbotFab aquí */}
+      <Chatbot /> {/* Usar el nuevo Chatbot.jsx aquí */}
     </div>
   );
 };
