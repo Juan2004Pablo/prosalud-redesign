@@ -1,28 +1,48 @@
 
 import React from 'react';
 import { Award, Briefcase, Users } from 'lucide-react';
+import AnimatedNumber from './AnimatedNumber'; // Importar el nuevo componente
 
-const statsData = [
+interface StatData {
+  icon: React.ElementType;
+  prefix?: string;
+  targetNumber?: number;
+  mainText?: string; // Para casos sin número animado
+  suffix?: string;
+  subText: string;
+  iconColor: string;
+  textColor: string;
+  duration?: number;
+}
+
+const statsData: StatData[] = [
   {
     icon: Award,
-    mainText: "+10 años",
+    prefix: "+",
+    targetNumber: 10,
+    suffix: " años",
     subText: "de experiencia",
     iconColor: "text-primary-prosalud",
     textColor: "text-primary-prosalud",
+    duration: 1000,
   },
   {
     icon: Briefcase,
-    mainText: "7 convenios",
+    targetNumber: 7,
+    suffix: " convenios",
     subText: "en Antioquia",
     iconColor: "text-secondary-prosaludgreen",
     textColor: "text-secondary-prosaludgreen",
+    duration: 800,
   },
   {
     icon: Users,
-    mainText: "Aprox 1500",
+    prefix: "Aprox ",
+    targetNumber: 1500,
     subText: "afiliados",
     iconColor: "text-accent-prosaludteal",
     textColor: "text-accent-prosaludteal",
+    duration: 1500,
   },
 ];
 
@@ -47,7 +67,15 @@ const DescriptionSection: React.FC = () => {
               style={{ animationDelay: `${index * 150}ms` }}
             >
               <stat.icon size={48} className={`${stat.iconColor} mb-3 sm:mb-4`} />
-              <h3 className={`text-2xl sm:text-3xl font-bold ${stat.textColor} mb-1 sm:mb-2`}>{stat.mainText}</h3>
+              <h3 className={`text-2xl sm:text-3xl font-bold ${stat.textColor} mb-1 sm:mb-2`}>
+                {stat.prefix}
+                {typeof stat.targetNumber === 'number' ? (
+                  <AnimatedNumber targetValue={stat.targetNumber} duration={stat.duration} />
+                ) : (
+                  stat.mainText
+                )}
+                {stat.suffix}
+              </h3>
               <p className="text-base sm:text-lg text-text-gray">{stat.subText}</p>
             </div>
           ))}
