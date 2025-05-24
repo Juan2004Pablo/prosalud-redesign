@@ -7,13 +7,21 @@ Esta documentación contiene la información disponible en el sitio web del Sind
 
 - **quienes-somos/**: Información institucional, misión, visión, valores y principios
 - **servicios/**: Detalle de los servicios y formularios disponibles.
-  - Certificado de Convenio Sindical
-  - Solicitud de Retiro Sindical
-  - Solicitud de Descanso Laboral
-  - Solicitud de Compensación Anual Diferida
-  - Verificación de Pagos
-  - Solicitud de Microcrédito CEII
-  - (Otros servicios pueden estar en desarrollo o no documentados aquí aún)
+  - Certificado de Convenio Sindical (`certificado-convenio.md`)
+  - Solicitud de Retiro Sindical (`solicitud-retiro-sindical.md`)
+  - Solicitud de Descanso Laboral (`solicitud-descanso-laboral.md`)
+  - Solicitud de Compensación Anual Diferida (`solicitud-compensacion-anual-diferida.md`)
+  - Verificación de Pagos / Consulta de Pagos (`verificacion-pagos.md`)
+  - Solicitud de Microcrédito CEII (`solicitud-microcredito.md`)
+  - Certificado de Seguridad Social (`certificado-seguridad-social.md`)
+  - Actualización de Cuenta Bancaria (`actualizar-cuenta-bancaria.md`)
+  - Incapacidades y Licencias (`incapacidades-licencias.md`)
+  - Seguridad y Salud en el Trabajo (SST) (`sst.md`)
+  - Encuesta de Bienestar Laboral (`encuesta-bienestar-laboral.md`)
+  - Galería de Bienestar (`galeria-bienestar.md`)
+  - Formato de Permisos y Cambio de Turnos (`permisos-cambio-turnos.md`)
+  - Cuadro de Turnos (`cuadro-turnos.md`)
+  - (Resumen de todos los servicios: `overview.md`)
 - **legal/**: Documentación legal sobre contratos sindicales y estatutos
 - **contacto/**: Información de contacto disponible
 - **convenios/**: Información sobre convenios y alianzas
