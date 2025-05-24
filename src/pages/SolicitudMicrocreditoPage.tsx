@@ -97,12 +97,6 @@ const SolicitudMicrocreditoPage: React.FC = () => {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-               <BreadcrumbLink asChild>
-                <Link to="/">Servicios</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
               <BreadcrumbPage>
                 <CreditCard className="h-4 w-4 mr-1 inline-block" /> Solicitud de Microcrédito
               </BreadcrumbPage>
@@ -124,6 +118,31 @@ const SolicitudMicrocreditoPage: React.FC = () => {
               Por favor, complete todos los campos del siguiente formulario para tramitar su solicitud de microcrédito. Verifique que la información ingresada sea correcta.
             </p>
           </header>
+
+          <section className="mt-10 p-6 border rounded-lg shadow-sm bg-blue-50 border-blue-200">
+                <h2 className="text-xl font-semibold mb-4 text-blue-800 flex items-center">
+                  <Info className="mr-3 h-6 w-6 text-blue-700" /> Información importante
+                </h2>
+                <div className="space-y-3 text-blue-700">
+                  <p>Por favor diligencie los datos solicitados. Los datos enviados son solo de manera informativa. No garantiza o autoriza ningún proceso.</p>
+                  
+                  <Alert className="border-blue-300 bg-blue-100">
+                    <Mail className="h-5 w-5 text-blue-600" />
+                    <AlertDescription className="text-blue-800">
+                      Para evitar que los correos que se le envíen lleguen a SPAM sugerimos agregar la cuenta de correo <strong className="font-mono bg-blue-200 px-1 rounded">ceiisas@hotmail.com</strong> al correo deseado y a la lista de contactos.
+                    </AlertDescription>
+                  </Alert>
+                  
+                  <p>Si la solicitud es aprobada recibirá un correo de continuidad del proceso por parte de Capital & Ideas S.A.S. desde el correo <strong className="font-mono bg-blue-200 px-1 rounded">ceiisas@hotmail.com</strong>.</p>
+                  
+                  <Alert className="border-amber-300 bg-amber-50">
+                    <Clock className="h-5 w-5 text-amber-600" />
+                    <AlertDescription className="text-amber-800">
+                      <strong>NOTA IMPORTANTE:</strong> El horario de revisión de solicitudes es de lunes a viernes de 8:00 a.m. a 4:00 p.m., cualquier registro vencido el citado horario, se entenderá presentado el siguiente día hábil. Se registran y asigna su revisión por orden de registro.
+                    </AlertDescription>
+                  </Alert>
+                </div>
+          </section>
 
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -184,34 +203,10 @@ const SolicitudMicrocreditoPage: React.FC = () => {
               </section>
               
               <ConfirmacionCorreoSection control={form.control} />
-
-              <section className="mt-10 p-6 border rounded-lg shadow-sm bg-blue-50 border-blue-200">
-                <h2 className="text-xl font-semibold mb-4 text-blue-800 flex items-center">
-                  <Info className="mr-3 h-6 w-6 text-blue-700" /> IMPORTANTE
-                </h2>
-                <div className="space-y-3 text-blue-700">
-                  <p>Por favor diligencie los datos solicitados. Los datos enviados son solo de manera informativa. No garantiza o autoriza ningún proceso.</p>
-                  
-                  <Alert className="border-blue-300 bg-blue-100">
-                    <Mail className="h-5 w-5 text-blue-600" />
-                    <AlertDescription className="text-blue-800">
-                      Para evitar que los correos que se le envíen lleguen a SPAM sugerimos agregar la cuenta de correo <strong className="font-mono bg-blue-200 px-1 rounded">ceiisas@hotmail.com</strong> al correo deseado y a la lista de contactos.
-                    </AlertDescription>
-                  </Alert>
-                  
-                  <p>Si la solicitud es aprobada recibirá un correo de continuidad del proceso por parte de Capital & Ideas S.A.S. desde el correo <strong className="font-mono bg-blue-200 px-1 rounded">ceiisas@hotmail.com</strong>.</p>
-                  
-                  <Alert className="border-amber-300 bg-amber-50">
-                    <Clock className="h-5 w-5 text-amber-600" />
-                    <AlertDescription className="text-amber-800">
-                      <strong>NOTA IMPORTANTE:</strong> El horario de revisión de solicitudes es de lunes a viernes de 8:00 a.m. a 4:00 p.m., cualquier registro vencido el citado horario, se entenderá presentado el siguiente día hábil. Se registran y asigna su revisión por orden de registro.
-                    </AlertDescription>
-                  </Alert>
-                </div>
-              </section>
+              <AutorizacionDatosSection />
 
               <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-10">
-                <Button type="submit" size="lg" className="w-full sm:w-auto bg-primary-prosalud hover:bg-primary-prosalud/90">
+                <Button type="submit" size="lg" className="w-full sm:w-auto bg-secondary-prosaludgreen hover:bg-secondary-prosaludgreen/90">
                   <Send className="mr-2 h-5 w-5" />
                   Enviar Solicitud
                 </Button>
