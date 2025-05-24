@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -14,6 +15,7 @@ import SolicitudAnualDiferidaPage from "./pages/SolicitudAnualDiferidaPage";
 import VerificacionPagosPage from "./pages/VerificacionPagosPage";
 import EstatutosBeneficiosPage from "./pages/EstatutosBeneficiosPage";
 import ContratoSindicalPage from "./pages/ContratoSindicalPage";
+import IncapacidadesLicenciasPage from "./pages/IncapacidadesLicenciasPage"; // Nueva importación
 
 const queryClient = new QueryClient();
 
@@ -89,7 +91,7 @@ const App = () => (
           <Route path="/servicios/compensacion-anual" element={<SolicitudAnualDiferidaPage />} /> {/* Updated to new page */}
           {/* Nueva ruta para consulta de pagos desde servicios */}
           <Route path="/servicios/consulta-pagos" element={<VerificacionPagosPage />} />
-          <Route path="/servicios/incapacidad-maternidad" element={<PlaceholderPage title="Incapacidad y Licencia de Maternidad" />} />
+          <Route path="/servicios/incapacidad-maternidad" element={<IncapacidadesLicenciasPage />} /> {/* Actualizada */}
           <Route path="/servicios/certificado-seguridad-social" element={<PlaceholderPage title="Certificado de Seguridad Social" />} />
           <Route path="/servicios/actualizar-cuenta" element={<PlaceholderPage title="Actualizar Cuenta Bancaria" />} />
           <Route path="/servicios/sst" element={<PlaceholderPage title="Seguridad y Salud en el Trabajo (SST)" />} />
