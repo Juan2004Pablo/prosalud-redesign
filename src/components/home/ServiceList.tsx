@@ -1,3 +1,4 @@
+
 import React, { useMemo } from 'react';
 import ServiceCard from '@/components/shared/ServiceCard';
 import { 
@@ -32,11 +33,11 @@ const newServices = [
   { icon: Banknote, title: 'Actualizar cuenta bancaria', description: 'Notifica un cambio en tu cuenta para recibir pagos.', linkTo: '/servicios/actualizar-cuenta' },
   { icon: Hospital, title: 'Incapacidades y licencias', description: 'Reporta tu incapacidad o licencia de maternidad al sindicato.', linkTo: '/servicios/incapacidad-maternidad' },
   { icon: BriefcaseMedical, title: 'Seguridad y salud en el trabajo (S.S.T)', description: 'Accede a recursos y reportes relacionados con SST.', linkTo: '/servicios/sst' },
-  { icon: Poll, title: 'Encuesta de bienestar laboral', description: 'Participa en encuestas para mejorar tu entorno laboral.', linkTo: '/servicios/encuesta-bienestar' },
+  { icon: Poll, title: 'Encuesta de bienestar laboral', description: 'Participa en encuestas para mejorar tu entorno laboral.', linkTo: 'https://forms.gle/2YnLMixdN6EnZ7Qq6' },
   { icon: Image, title: 'Galería de bienestar', description: 'Explora fotos y eventos organizados para tu bienestar.', linkTo: '/servicios/galeria-bienestar' },
   { icon: Store, title: 'Servicios de Comfenalco Antioquia', description: 'Conoce los beneficios y convenios con Comfenalco.', linkTo: '/servicios/comfenalco' },
   { icon: Calendar, title: 'Formato de permisos y cambio de turnos', description: 'Diligencia el formato para solicitudes de permisos laborales o ajustes en tus turnos.', linkTo: '/servicios/permisos-turnos' },
-  { icon: CalendarDays, title: 'Cuadro de turnos', description: 'Consulta tu calendario de turnos asignados.', linkTo: '/servicios/cuadro-turnos' },
+  { icon: CalendarDays, title: 'Cuadro de turnos', description: 'Consulta tu calendario de turnos asignados.', linkTo: 'https://www.prosanet.com/#/shifts-employees/index' },
   { icon: CreditCard, title: 'Solicitud de microcrédito', description: 'Aplica a un microcrédito con condiciones especiales para afiliados.', linkTo: '/servicios/microcredito' },
   { icon: LogOut, title: 'Solicitud de retiro sindical', description: 'Inicia el proceso para retirarte del sindicato.', linkTo: '/servicios/retiro-sindical' },
 ];
@@ -86,3 +87,4 @@ const ServiceList: React.FC<ServiceListProps> = ({ searchTerm }) => {
 };
 
 export default ServiceList;
+
