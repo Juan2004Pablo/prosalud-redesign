@@ -2,7 +2,7 @@
 import React from 'react';
 import Header from './Header';
 import Footer from './Footer';
-import Chatbot from '@/components/home/chatbotFab.jsx'; // Importar el nuevo Chatbot.jsx
+import Chatbot from '@/components/chatbot/chatbot.jsx'; // Importar el nuevo Chatbot.jsx
 
 interface MainLayoutProps {
   children: React.ReactNode;
