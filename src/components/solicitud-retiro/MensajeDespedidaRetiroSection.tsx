@@ -12,7 +12,7 @@ const MensajeDespedidaRetiroSection: React.FC = () => {
           Agradecemos sinceramente tu participación y contribución al sindicato ProSalud.
         </p>
         <p className="text-md">
-          Te deseamos mucho éxito en tus futuros proyectos y emprendimientos. ¡Las puertas siempre estarán abiertas!
+          Te deseamos mucho éxito en tus futuros proyectos y metas. ¡Las puertas siempre estarán abiertas!
         </p>
       </div>
     </div>
