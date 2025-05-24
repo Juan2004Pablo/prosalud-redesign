@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -12,7 +11,7 @@ import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/comp
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Alert, AlertDescription } from "@/components/ui/alert"; // AlertTitle might not be used directly in the "IMPORTANTE" section, but Alert is.
 import { Home, CreditCard, Info, Mail, Clock, Send } from 'lucide-react';
 import { toast } from "@/hooks/use-toast";
 
@@ -113,7 +112,7 @@ const SolicitudMicrocreditoPage: React.FC = () => {
       </div>
 
       <div className="container mx-auto py-8 px-4 md:px-6 lg:px-8">
-        <div className="bg-card p-6 md:p-8 rounded-lg shadow-lg border border-prosalud-border max-w-4xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           <header className="mb-8 text-center">
             <div className="flex justify-center items-center gap-3 mb-4">
                 <CreditCard className="h-10 w-10 text-primary-prosalud" />
@@ -121,6 +120,9 @@ const SolicitudMicrocreditoPage: React.FC = () => {
                 Solicitud - Microcrédito CEII
                 </h1>
             </div>
+            <p className="mt-2 text-base text-muted-foreground max-w-3xl mx-auto">
+              Por favor, complete todos los campos del siguiente formulario para tramitar su solicitud de microcrédito. Verifique que la información ingresada sea correcta.
+            </p>
           </header>
 
           <Form {...form}>
@@ -213,12 +215,6 @@ const SolicitudMicrocreditoPage: React.FC = () => {
                   <Send className="mr-2 h-5 w-5" />
                   Enviar Solicitud
                 </Button>
-                <Button variant="outline" asChild size="lg" className="w-full sm:w-auto">
-                  <Link to="/">
-                    <Home className="mr-2 h-4 w-4" />
-                    Volver al Inicio
-                  </Link>
-                </Button>
               </div>
             </form>
           </Form>
@@ -229,4 +225,3 @@ const SolicitudMicrocreditoPage: React.FC = () => {
 };
 
 export default SolicitudMicrocreditoPage;
-
