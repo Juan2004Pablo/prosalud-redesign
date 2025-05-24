@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -17,6 +16,7 @@ import EstatutosBeneficiosPage from "./pages/EstatutosBeneficiosPage";
 import ContratoSindicalPage from "./pages/ContratoSindicalPage";
 import IncapacidadesLicenciasPage from "./pages/IncapacidadesLicenciasPage";
 import ActualizarCuentaBancariaPage from "./pages/ActualizarCuentaBancariaPage"; // Nueva importación
+import SolicitudRetiroSindicalPage from "./pages/SolicitudRetiroSindicalPage"; // Nueva importación
 
 const queryClient = new QueryClient();
 
@@ -102,7 +102,8 @@ const App = () => (
           <Route path="/servicios/permisos-turnos" element={<PlaceholderPage title="Permisos y Cambio de Turnos" />} />
           <Route path="/servicios/cuadro-turnos" element={<PlaceholderPage title="Cuadro de Turnos" />} />
           <Route path="/servicios/microcredito" element={<PlaceholderPage title="Solicitud de Microcrédito" />} />
-          <Route path="/servicios/retiro-sindical" element={<PlaceholderPage title="Solicitud de Retiro Sindical" />} />
+          {/* Actualizar la ruta para Solicitud de Retiro Sindical */}
+          <Route path="/servicios/retiro-sindical" element={<SolicitudRetiroSindicalPage />} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

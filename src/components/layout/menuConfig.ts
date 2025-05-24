@@ -77,7 +77,8 @@ export const menuItems: MenuItemType[] = [
           { name: 'Verificación de pagos', path: '/documentos-formatos/solicitudes-afiliados/verificacion-pagos' },
           { name: 'Certificado de Convenio', path: '/servicios/certificado-convenio' }, 
           { name: 'Descanso', path: '/documentos-formatos/solicitudes-afiliados/descanso' },
-          { name: 'Solicitud anual diferida', path: '/documentos-formatos/solicitudes-afiliados/solicitud-anual-diferida' }, // Path updated below
+          { name: 'Solicitud anual diferida', path: '/documentos-formatos/solicitudes-afiliados/solicitud-anual-diferida' },
+          { name: 'Solicitud de Retiro Sindical', path: '/servicios/retiro-sindical' }, // Nueva opción de menú
         ]
       },
     ]
