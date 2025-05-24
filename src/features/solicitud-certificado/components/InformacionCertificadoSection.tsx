@@ -5,7 +5,7 @@ import { FormField, FormItem, FormLabel, FormControl, FormMessage, FormDescripti
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import FileUploadField from './FileUploadField'; // Assuming FormValues type is defined elsewhere or passed
+import FileUploadField from './FileUploadField'; // Updated import path
 
 interface InformacionCertificadoSectionProps<TFieldValues extends FieldValues> {
   control: Control<TFieldValues>;
@@ -16,7 +16,7 @@ const InformacionCertificadoSection = <TFieldValues extends FieldValues>({
   control,
   watch,
 }: InformacionCertificadoSectionProps<TFieldValues>) => {
-  const watchInfoCertificado = watch("infoCertificado" as any); // Use 'as any' if type inference is tricky
+  const watchInfoCertificado = watch("infoCertificado" as any); 
 
   return (
     <section className="p-6 border rounded-lg shadow-sm bg-white">

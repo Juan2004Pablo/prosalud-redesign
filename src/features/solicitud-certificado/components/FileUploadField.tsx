@@ -5,11 +5,11 @@ import { Input } from '@/components/ui/input';
 import { FormField, FormItem, FormLabel, FormControl, FormMessage, FormDescription } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { FileCheck, FileX } from 'lucide-react';
-import { formatFileSize } from './utils';
+import { formatFileSize } from '../utils'; // Updated import path
 
 interface FileUploadFieldProps<TFieldValues extends FieldValues> {
   control: Control<TFieldValues>;
-  name: any; // keyof TFieldValues not working well with nested file paths
+  name: any; 
   label: string;
   accept: string;
   description?: string;
@@ -40,14 +40,11 @@ const FileUploadField = <TFieldValues extends FieldValues>({
               <Input
                 type="file"
                 accept={accept}
-                // Modificamos la key para que solo cambie si hay o no un archivo,
-                // no por el nombre específico del archivo.
-                // Esto permite que el input nativo conserve la visualización del nombre del archivo.
                 key={field.value?.[0] ? `file-present-${field.name}` : `no-file-${field.name}`}
                 onChange={(e) => field.onChange(e.target.files && e.target.files.length > 0 ? e.target.files : undefined)}
                 onBlur={field.onBlur}
-                name={field.name} // El 'name' del input HTML es importante para react-hook-form y la accesibilidad
-                ref={field.ref} // Aseguramos que la ref de react-hook-form se pase al input
+                name={field.name} 
+                ref={field.ref} 
                 className={`cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-primary-prosalud file:text-white hover:file:bg-primary-prosalud-dark ${inputClassName || ''}`}
               />
             </div>
@@ -66,7 +63,7 @@ const FileUploadField = <TFieldValues extends FieldValues>({
                 variant="ghost"
                 size="sm"
                 className="text-red-600 hover:text-red-700 hover:bg-red-50 px-2 shrink-0"
-                onClick={() => field.onChange(undefined)} // Esto limpia el valor en react-hook-form
+                onClick={() => field.onChange(undefined)}
               >
                 <FileX className="h-4 w-4" />
               </Button>

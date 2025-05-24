@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -9,7 +8,7 @@ import NotFound from "./pages/NotFound";
 import MainLayout from "./components/layout/MainLayout";
 import QuienesSomos from "./pages/QuienesSomos";
 import LoginPage from "./pages/LoginPage";
-import SolicitudCertificadoConvenioPage from "./pages/SolicitudCertificadoConvenioPage";
+import SolicitudCertificadoConvenioPage from "./features/solicitud-certificado/SolicitudCertificadoConvenioPage";
 import SolicitudDescansoLaboralPage from "./pages/SolicitudDescansoLaboralPage";
 import SolicitudAnualDiferidaPage from "./pages/SolicitudAnualDiferidaPage";
 import VerificacionPagosPage from "./pages/VerificacionPagosPage";
