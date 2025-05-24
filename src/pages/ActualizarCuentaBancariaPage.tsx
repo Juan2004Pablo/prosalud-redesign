@@ -1,37 +1,29 @@
 
 import React from 'react';
-import { useForm, FormProvider } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
-import { DevTool } from '@hookform/devtools';
-import { Link, useNavigate } from 'react-router-dom';
-import { toast } from 'sonner';
-import { CheckCircle2, AlertCircle, Home, Landmark, FileText, Send } from 'lucide-react';
-
-import MainLayout from '@/components/layout/MainLayout';
-import {
-  Breadcrumb,
-  BreadcrumbList,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbSeparator,
-  BreadcrumbPage,
-} from '@/components/ui/breadcrumb';
 import { Form } from '@/components/ui/form';
+import MainLayout from '@/components/layout/MainLayout';
+import { toast } from 'sonner';
+import { Send, CheckCircle2, AlertCircle, Home, Landmark, FileText } from 'lucide-react';
+import { MAX_FILE_SIZE, ALLOWED_FILE_TYPES_GENERAL } from '@/components/solicitud-certificado/utils'; // Reutilizamos utils
+import { Link, useNavigate } from 'react-router-dom';
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 
-import { MAX_FILE_SIZE } from '@/features/solicitud-certificado/utils';
+import DatosPersonalesSection from '@/components/solicitud-certificado/DatosPersonalesSection';
+import ConfirmacionCorreoSection from '@/components/solicitud-certificado/ConfirmacionCorreoSection';
+import AutorizacionDatosSection from '@/components/solicitud-certificado/AutorizacionDatosSection';
 
 import ActualizarCuentaHeader from '@/components/actualizar-cuenta/ActualizarCuentaHeader';
-import DatosPersonalesSection from '@/features/solicitud-certificado/components/DatosPersonalesSection';
-import ConfirmacionCorreoSection from '@/features/solicitud-certificado/components/ConfirmacionCorreoSection';
-import AutorizacionDatosSection from '@/features/solicitud-certificado/components/AutorizacionDatosSection';
+import InformacionImportanteCuentaAlert from '@/components/actualizar-cuenta/InformacionImportanteCuentaAlert';
 import InformacionProcesoCuentaSection from '@/components/actualizar-cuenta/InformacionProcesoCuentaSection';
 import AnexoCertificacionBancariaSection from '@/components/actualizar-cuenta/AnexoCertificacionBancariaSection';
-import InformacionImportanteCuentaAlert from '@/components/actualizar-cuenta/InformacionImportanteCuentaAlert';
 
+// Ajustar tipos permitidos para certificación bancaria (PDF e imágenes)
 const ALLOWED_FILE_TYPES_CERTIFICADO = ['application/pdf', 'image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+
 
 const formSchemaActualizarCuenta = z.object({
   tipoIdentificacion: z.string().min(1, "Este campo es requerido."),
@@ -40,23 +32,19 @@ const formSchemaActualizarCuenta = z.object({
   apellidos: z.string().min(2, "Este campo es requerido."),
   correoElectronico: z.string().email("Correo electrónico inválido."),
   numeroCelular: z.string().min(7, "Número de celular inválido.").regex(/^\d+$/, "Solo se permiten números."),
-  fechaNacimiento: z.date({ required_error: "Fecha de nacimiento es requerida" }).optional(),
   
   proceso: z.string().min(1, "Este campo es requerido."),
   dondeRealizaProceso: z.string().min(1, "Este campo es requerido."),
   
   certificacionBancaria: z.any()
-    .refine(files => files && files.length > 0 && files[0] !== null && files[0] !== undefined, "La certificación bancaria es requerida.")
+    .refine(files => files && files.length > 0, "La certificación bancaria es requerida.")
     .refine(files => files && files?.[0]?.size <= MAX_FILE_SIZE, `El archivo no debe exceder los ${MAX_FILE_SIZE / (1024*1024)}MB.`)
     .refine(files => files && ALLOWED_FILE_TYPES_CERTIFICADO.includes(files?.[0]?.type), 'Tipo de archivo no permitido. Use PDF o imágenes (JPG, PNG, GIF, WEBP).'),
   
   confirmacionCorreo: z.boolean().default(false),
-   aceptoAutorizacion: z.boolean().refine((value) => value === true, {
-    message: 'Debes aceptar la autorización de tratamiento de datos.',
-  }),
 });
 
-export type FormValuesActualizarCuenta = z.infer<typeof formSchemaActualizarCuenta>;
+type FormValuesActualizarCuenta = z.infer<typeof formSchemaActualizarCuenta>;
 
 const ActualizarCuentaBancariaPage: React.FC = () => {
   const navigate = useNavigate();
@@ -69,14 +57,11 @@ const ActualizarCuentaBancariaPage: React.FC = () => {
       apellidos: '',
       correoElectronico: '',
       numeroCelular: '',
-      fechaNacimiento: undefined,
       proceso: '',
       dondeRealizaProceso: '',
       certificacionBancaria: undefined,
       confirmacionCorreo: false,
-      aceptoAutorizacion: false,
     },
-    mode: "onChange",
   });
 
   const onSubmit = (data: FormValuesActualizarCuenta) => {
@@ -130,7 +115,7 @@ const ActualizarCuentaBancariaPage: React.FC = () => {
             <BreadcrumbSeparator />
             <BreadcrumbItem>
                  <BreadcrumbLink asChild>
-                    <Link to="/servicios" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
+                    <Link to="/servicios/actualizar-cuenta" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
                         <Landmark className="h-4 w-4" />
                         Servicios
                     </Link>
@@ -151,31 +136,23 @@ const ActualizarCuentaBancariaPage: React.FC = () => {
         <ActualizarCuentaHeader />
         <InformacionImportanteCuentaAlert />
 
-        <FormProvider {...form}>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit, handleError)} className="space-y-8">
-              <DatosPersonalesSection control={form.control} idTypes={idTypes} />
-              <Separator className="my-6" />
-              <ConfirmacionCorreoSection control={form.control} />
-              <Separator className="my-6" />
-              <InformacionProcesoCuentaSection control={form.control} />
-              <Separator className="my-6" />
-              <AnexoCertificacionBancariaSection control={form.control} setValue={form.setValue} />
-              <Separator className="my-6" />
-              <AutorizacionDatosSection control={form.control} />
-              <Separator className="my-6" />
-                          
-              <div className="flex justify-center mt-10">
-                <Button type="submit" size="lg" className="w-full md:w-auto bg-primary-prosalud hover:bg-primary-prosalud/90 text-white flex items-center gap-2">
-                  <Send className="h-5 w-5" />
-                  Enviar Solicitud
-                </Button>
-              </div>
-            </form>
-          </Form>
-        </FormProvider>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit, handleError)} className="space-y-8">
+            <DatosPersonalesSection control={form.control} idTypes={idTypes} />
+            <InformacionProcesoCuentaSection control={form.control} />
+            <AnexoCertificacionBancariaSection control={form.control} />
+            <ConfirmacionCorreoSection control={form.control} />
+            <AutorizacionDatosSection />
+                        
+            <div className="flex justify-center mt-10">
+              <Button type="submit" size="lg" className="w-full md:w-auto bg-secondary-prosaludgreen hover:bg-secondary-prosaludgreen/90 text-white flex items-center gap-2">
+                <Send className="h-5 w-5" />
+                Enviar Solicitud
+              </Button>
+            </div>
+          </form>
+        </Form>
       </div>
-      {process.env.NODE_ENV === 'development' && <DevTool control={form.control} />}
     </MainLayout>
   );
 };

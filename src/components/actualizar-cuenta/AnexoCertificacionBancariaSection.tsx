@@ -1,38 +1,31 @@
 
 import React from 'react';
-import { Control, UseFormSetValue } from 'react-hook-form';
-import { FormValuesActualizarCuenta } from '@/pages/ActualizarCuentaBancariaPage';
-import { AlertCircle } from 'lucide-react';
-import FileUploadField from '@/features/solicitud-certificado/components/FileUploadField';
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Control, FieldValues } from 'react-hook-form';
+import { Paperclip } from 'lucide-react';
+import FileUploadField from '../solicitud-certificado/FileUploadField'; // Reutilizamos el componente existente
 
-interface AnexoCertificacionBancariaSectionProps {
-  control: Control<FormValuesActualizarCuenta>;
-  setValue: UseFormSetValue<FormValuesActualizarCuenta>;
+interface AnexoCertificacionBancariaSectionProps<TFieldValues extends FieldValues> {
+  control: Control<TFieldValues>;
 }
 
-const AnexoCertificacionBancariaSection: React.FC<AnexoCertificacionBancariaSectionProps> = ({ control, setValue }) => {
-  const MAX_FILE_SIZE = 4 * 1024 * 1024; // 4MB
-  const ALLOWED_FILE_TYPES_PDF = ['application/pdf'];
-
+const AnexoCertificacionBancariaSection = <TFieldValues extends FieldValues>({
+  control,
+}: AnexoCertificacionBancariaSectionProps<TFieldValues>) => {
   return (
-    <section className="space-y-4">
-      <Alert variant="default">
-        <AlertCircle className="h-4 w-4" />
-        <AlertTitle>Anexo de Certificación Bancaria</AlertTitle>
-        <AlertDescription>
-          Adjunte una copia de su certificación bancaria en formato PDF o imagen (JPG, PNG, GIF, WEBP). Asegúrese de que el documento sea legible y contenga la información necesaria para verificar su cuenta.
-        </AlertDescription>
-      </Alert>
-
-      <FileUploadField
-        control={control}
-        name="certificacionBancaria"
-        label="Certificación Bancaria (PDF, JPG, PNG, GIF, WEBP)"
-        accept=".pdf,.jpg,.jpeg,.png,.gif,.webp"
-        description="Adjunte su certificación bancaria. Tamaño máximo: 4MB."
-        setValue={setValue}
-      />
+    <section className="p-6 border rounded-lg shadow-sm bg-white space-y-6">
+      <div>
+        <h2 className="text-xl font-semibold mb-4 text-primary-prosalud-dark flex items-center">
+          <Paperclip className="mr-2 h-6 w-6" /> Anexo: Certificación Bancaria (Requerido)
+        </h2>
+        <FileUploadField
+          control={control}
+          name={"certificacionBancaria" as any}
+          label="Seleccione la certificación bancaria (PDF o imagen, máx. 4MB)"
+          accept=".pdf,.jpg,.jpeg,.png,.gif,.webp" // Ajustado para PDF e imágenes comunes
+          description="Debe adjuntar la certificación bancaria de la nueva cuenta. Esta debe estar a nombre del titular (afiliado) y ser legible."
+          isRequired={true}
+        />
+      </div>
     </section>
   );
 };

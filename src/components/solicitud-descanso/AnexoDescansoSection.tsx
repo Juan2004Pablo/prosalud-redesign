@@ -1,37 +1,28 @@
 
 import React from 'react';
-import { Control, UseFormSetValue } from 'react-hook-form';
-import { SolicitudDescansoLaboralFormValues } from '@/pages/SolicitudDescansoLaboralPage';
-import { AlertCircle } from 'lucide-react';
-import FileUploadField from '@/features/solicitud-certificado/components/FileUploadField';
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Control, FieldValues } from 'react-hook-form';
+import { Paperclip } from 'lucide-react';
+import FileUploadField from '../solicitud-certificado/FileUploadField';
 
-interface AnexoDescansoSectionProps {
-  control: Control<SolicitudDescansoLaboralFormValues>;
-  setValue?: UseFormSetValue<SolicitudDescansoLaboralFormValues>;
+interface AnexoDescansoSectionProps<TFieldValues extends FieldValues> {
+  control: Control<TFieldValues>;
 }
 
-const AnexoDescansoSection: React.FC<AnexoDescansoSectionProps> = ({ control, setValue }) => {
-  const MAX_FILE_SIZE = 4 * 1024 * 1024; // 4MB
-  const ALLOWED_FILE_TYPES_PDF = ['application/pdf'];
-
+const AnexoDescansoSection = <TFieldValues extends FieldValues>({
+  control,
+}: AnexoDescansoSectionProps<TFieldValues>) => {
   return (
-    <section className="space-y-4">
-      <Alert variant="default">
-        <AlertCircle className="h-4 w-4" />
-        <AlertTitle>Anexos</AlertTitle>
-        <AlertDescription>
-          Adjunte los documentos requeridos en formato PDF. El tamaño máximo permitido por archivo es de 4MB.
-        </AlertDescription>
-      </Alert>
-
+    <section className="p-6 border rounded-lg shadow-sm bg-white">
+      <h2 className="text-xl font-semibold mb-4 text-primary-prosalud-dark flex items-center">
+        <Paperclip className="mr-2 h-6 w-6" /> Anexo (Requerido)
+      </h2>
       <FileUploadField
         control={control}
-        name="anexoSoporte"
-        label="Soporte Documental (Carta de solicitud, etc.)"
-        accept=".pdf"
-        description="Adjunte aquí el soporte documental en formato PDF (Máx. 4MB)."
-        setValue={setValue}
+        name={"anexoDescanso" as any}
+        label="Seleccione un archivo (PDF, Excel o imagen, máx. 4MB)"
+        accept=".pdf,.xls,.xlsx,.jpg,.jpeg,.png,.gif,.webp"
+        description="Debe adjuntar el documento con el V°B° del coordinador. Este archivo es obligatorio."
+        isRequired={true}
       />
     </section>
   );
