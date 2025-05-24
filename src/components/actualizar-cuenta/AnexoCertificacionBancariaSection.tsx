@@ -1,14 +1,14 @@
 
 import React from 'react';
 import { Control, UseFormSetValue } from 'react-hook-form';
-import { FormValuesActualizarCuenta } from '@/pages/ActualizarCuentaBancariaPage'; // Corrected import
+import { FormValuesActualizarCuenta } from '@/pages/ActualizarCuentaBancariaPage';
 import { AlertCircle } from 'lucide-react';
 import FileUploadField from '@/features/solicitud-certificado/components/FileUploadField';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 interface AnexoCertificacionBancariaSectionProps {
   control: Control<FormValuesActualizarCuenta>;
-  setValue: UseFormSetValue<FormValuesActualizarCuenta>; // Added setValue to props
+  setValue: UseFormSetValue<FormValuesActualizarCuenta>;
 }
 
 const AnexoCertificacionBancariaSection: React.FC<AnexoCertificacionBancariaSectionProps> = ({ control, setValue }) => {
@@ -27,12 +27,11 @@ const AnexoCertificacionBancariaSection: React.FC<AnexoCertificacionBancariaSect
 
       <FileUploadField
         control={control}
-        name="certificacionBancaria" // Ensure this name matches the schema in ActualizarCuentaBancariaPage
+        name="certificacionBancaria"
         label="Certificación Bancaria (PDF, JPG, PNG, GIF, WEBP)"
         accept=".pdf,.jpg,.jpeg,.png,.gif,.webp"
         description="Adjunte su certificación bancaria. Tamaño máximo: 4MB."
         setValue={setValue}
-        fieldName="certificacionBancaria"
       />
     </section>
   );

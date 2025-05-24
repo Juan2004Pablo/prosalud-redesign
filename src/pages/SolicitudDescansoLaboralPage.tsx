@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -104,17 +105,17 @@ const SolicitudDescansoLaboralPage: React.FC = () => {
         <FormProvider {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <DescansoHeader />
-            <InformacionDescansoSection />
+            <InformacionDescansoSection control={form.control} />
             <Separator />
             <RequisitosDescansoSection />
             <Separator />
-            <DatosPersonalesDescansoSection idTypes={idTypes} />
+            <DatosPersonalesDescansoSection control={form.control} idTypes={idTypes} />
             <Separator />
-            <ConfirmacionCorreoSection />
+            <ConfirmacionCorreoSection control={form.control} />
             <Separator />
-            <AnexoDescansoSection />
+            <AnexoDescansoSection control={form.control} setValue={form.setValue} />
             <Separator />
-            <AutorizacionDatosSection />
+            <AutorizacionDatosSection control={form.control} />
             <InformacionImportanteDescansoAlert />
             <div>
               <Button type="submit" size="lg" disabled={!form.formState.isValid}>
@@ -123,7 +124,7 @@ const SolicitudDescansoLaboralPage: React.FC = () => {
             </div>
           </form>
         </FormProvider>
-        <DevTool control={form.control} />
+        {process.env.NODE_ENV === 'development' && <DevTool control={form.control} />}
       </div>
     </MainLayout>
   );

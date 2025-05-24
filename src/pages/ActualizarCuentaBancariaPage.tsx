@@ -5,12 +5,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { DevTool } from '@hookform/devtools'; // Keep this if you want to use devtools
-import { Link, useNavigate } from 'react-router-dom'; // Added Link, useNavigate
-import { toast } from 'sonner'; // Using sonner toast
-import { CheckCircle2, AlertCircle, Home, Landmark, FileText, Send } from 'lucide-react'; // Added Icons
+import { DevTool } from '@hookform/devtools';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
+import { CheckCircle2, AlertCircle, Home, Landmark, FileText, Send } from 'lucide-react';
 
-import MainLayout from '@/components/layout/MainLayout'; // Added MainLayout
+import MainLayout from '@/components/layout/MainLayout';
 import {
   Breadcrumb,
   BreadcrumbList,
@@ -18,11 +18,10 @@ import {
   BreadcrumbLink,
   BreadcrumbSeparator,
   BreadcrumbPage,
-} from '@/components/ui/breadcrumb'; // Added Breadcrumb components
-import { Form } from '@/components/ui/form'; // Added Form
+} from '@/components/ui/breadcrumb';
+import { Form } from '@/components/ui/form';
 
 import { MAX_FILE_SIZE } from '@/features/solicitud-certificado/utils';
-// Removed import for options, as they are defined in InformacionProcesoCuentaSection
 
 import ActualizarCuentaHeader from '@/components/actualizar-cuenta/ActualizarCuentaHeader';
 import DatosPersonalesSection from '@/features/solicitud-certificado/components/DatosPersonalesSection';
@@ -41,7 +40,7 @@ const formSchemaActualizarCuenta = z.object({
   apellidos: z.string().min(2, "Este campo es requerido."),
   correoElectronico: z.string().email("Correo electrónico inválido."),
   numeroCelular: z.string().min(7, "Número de celular inválido.").regex(/^\d+$/, "Solo se permiten números."),
-  fechaNacimiento: z.date({ required_error: "Fecha de nacimiento es requerida" }).optional(), // Added, assuming it comes from DatosPersonalesSection
+  fechaNacimiento: z.date({ required_error: "Fecha de nacimiento es requerida" }).optional(),
   
   proceso: z.string().min(1, "Este campo es requerido."),
   dondeRealizaProceso: z.string().min(1, "Este campo es requerido."),
@@ -52,7 +51,7 @@ const formSchemaActualizarCuenta = z.object({
     .refine(files => files && ALLOWED_FILE_TYPES_CERTIFICADO.includes(files?.[0]?.type), 'Tipo de archivo no permitido. Use PDF o imágenes (JPG, PNG, GIF, WEBP).'),
   
   confirmacionCorreo: z.boolean().default(false),
-   aceptoAutorizacion: z.boolean().refine((value) => value === true, { // Added from AutorizacionDatosSection
+   aceptoAutorizacion: z.boolean().refine((value) => value === true, {
     message: 'Debes aceptar la autorización de tratamiento de datos.',
   }),
 });
@@ -70,7 +69,7 @@ const ActualizarCuentaBancariaPage: React.FC = () => {
       apellidos: '',
       correoElectronico: '',
       numeroCelular: '',
-      fechaNacimiento: undefined, // Default for optional date
+      fechaNacimiento: undefined,
       proceso: '',
       dondeRealizaProceso: '',
       certificacionBancaria: undefined,
@@ -131,7 +130,7 @@ const ActualizarCuentaBancariaPage: React.FC = () => {
             <BreadcrumbSeparator />
             <BreadcrumbItem>
                  <BreadcrumbLink asChild>
-                    <Link to="/servicios" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"> {/* Assuming /servicios is the parent route for services */}
+                    <Link to="/servicios" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
                         <Landmark className="h-4 w-4" />
                         Servicios
                     </Link>
@@ -152,8 +151,8 @@ const ActualizarCuentaBancariaPage: React.FC = () => {
         <ActualizarCuentaHeader />
         <InformacionImportanteCuentaAlert />
 
-        <FormProvider {...form}> {/* Use FormProvider here */}
-          <Form {...form}> {/* Shadcn Form component */}
+        <FormProvider {...form}>
+          <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit, handleError)} className="space-y-8">
               <DatosPersonalesSection control={form.control} idTypes={idTypes} />
               <Separator className="my-6" />
@@ -163,7 +162,7 @@ const ActualizarCuentaBancariaPage: React.FC = () => {
               <Separator className="my-6" />
               <AnexoCertificacionBancariaSection control={form.control} setValue={form.setValue} />
               <Separator className="my-6" />
-              <AutorizacionDatosSection control={form.control} /> {/* Pass control here */}
+              <AutorizacionDatosSection control={form.control} />
               <Separator className="my-6" />
                           
               <div className="flex justify-center mt-10">
@@ -176,7 +175,7 @@ const ActualizarCuentaBancariaPage: React.FC = () => {
           </Form>
         </FormProvider>
       </div>
-      {process.env.NODE_ENV === 'development' && <DevTool control={form.control} />} {/* Conditionally render DevTool */}
+      {process.env.NODE_ENV === 'development' && <DevTool control={form.control} />}
     </MainLayout>
   );
 };

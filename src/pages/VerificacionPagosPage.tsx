@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -117,15 +118,15 @@ const VerificacionPagosPage: React.FC = () => {
       <div className="container mx-auto py-10 px-4 sm:px-6 lg:px-8">
         <VerificacionHeader />
         <InformacionImportanteVerificacionAlert />
-        <InformacionProcesoSection />
+        <InformacionProcesoSection control={form.control} />
         <Separator className="my-6" />
         <FormProvider {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <DatosPersonalesVerificacionSection idTypes={idTypes} />
-            <ConfirmacionCorreoSection />
-            <DetalleNovedadSection tipoNovedadOptions={tipoNovedadOptions} />
-            <ArchivoAnexoSection />
-            <AutorizacionDatosSection />
+            <DatosPersonalesVerificacionSection control={form.control} idTypes={idTypes} />
+            <ConfirmacionCorreoSection control={form.control} />
+            <DetalleNovedadSection control={form.control} tipoNovedadOptions={tipoNovedadOptions} />
+            <ArchivoAnexoSection control={form.control} />
+            <AutorizacionDatosSection control={form.control} />
             <div>
               <Button type="submit" className="w-full sm:w-auto">
                 Enviar Solicitud
@@ -133,7 +134,7 @@ const VerificacionPagosPage: React.FC = () => {
             </div>
           </form>
         </FormProvider>
-        <DevTool control={form.control} />
+        {process.env.NODE_ENV === 'development' && <DevTool control={form.control} />}
       </div>
     </MainLayout>
   );

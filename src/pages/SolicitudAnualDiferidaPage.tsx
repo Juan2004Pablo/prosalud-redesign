@@ -48,6 +48,8 @@ const formSchema = z.object({
       (files) => ALLOWED_FILE_TYPES_PDF.includes(files?.[0]?.type),
       "Solo se permiten archivos PDF."
     ),
+  copiaCedula: z.any().optional(),
+  certificadoLaboral: z.any().optional(),
 }).refine(data => data.correoElectronico === data.confirmarCorreoElectronico, {
   message: "Los correos electrónicos no coinciden",
   path: ["confirmarCorreoElectronico"],
@@ -77,6 +79,8 @@ const SolicitudAnualDiferidaPage: React.FC = () => {
       numeroCuenta: '',
       cedulaGerencia: '', // Changed from undefined for string type consistency
       cartaSolicitud: undefined,
+      copiaCedula: undefined,
+      certificadoLaboral: undefined,
     },
     mode: "onChange",
   });
@@ -86,7 +90,7 @@ const SolicitudAnualDiferidaPage: React.FC = () => {
     toast({
       title: "¡Formulario enviado!",
       description: "Hemos recibido tu solicitud y la estamos procesando.",
-      variant: "default", // or success if you have that variant
+      variant: "default",
     })
   }
 
@@ -104,13 +108,13 @@ const SolicitudAnualDiferidaPage: React.FC = () => {
           <ConfirmacionCorreoSection control={form.control} />
           <Separator className="my-6" />
 
-          <InformacionAnualDiferidaSection control={form.control}/> {/* Assuming this needs control */}
+          <InformacionAnualDiferidaSection control={form.control} />
           <Separator className="my-6" />
 
           <RequisitosAnualDiferidaSection />
           <Separator className="my-6" />
 
-          <AnexosAnualDiferidaSection control={form.control} setValue={form.setValue}/>
+          <AnexosAnualDiferidaSection control={form.control} setValue={form.setValue} />
           <Separator className="my-6" />
 
           <AutorizacionDatosSection control={form.control} />
@@ -129,4 +133,3 @@ const SolicitudAnualDiferidaPage: React.FC = () => {
 };
 
 export default SolicitudAnualDiferidaPage;
-

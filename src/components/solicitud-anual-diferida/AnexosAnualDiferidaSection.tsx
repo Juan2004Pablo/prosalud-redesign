@@ -1,15 +1,17 @@
+
 import React from 'react';
-import { Control } from 'react-hook-form';
+import { Control, UseFormSetValue } from 'react-hook-form';
 import { SolicitudAnualDiferidaFormValues } from '@/pages/SolicitudAnualDiferidaPage';
 import { AlertCircle } from 'lucide-react';
-import FileUploadField from '@/features/solicitud-certificado/components/FileUploadField'; // Ruta corregida
+import FileUploadField from '@/features/solicitud-certificado/components/FileUploadField';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 interface AnexosAnualDiferidaSectionProps {
   control: Control<SolicitudAnualDiferidaFormValues>;
+  setValue: UseFormSetValue<SolicitudAnualDiferidaFormValues>;
 }
 
-const AnexosAnualDiferidaSection: React.FC<AnexosAnualDiferidaSectionProps> = ({ control }) => {
+const AnexosAnualDiferidaSection: React.FC<AnexosAnualDiferidaSectionProps> = ({ control, setValue }) => {
   const MAX_FILE_SIZE = 4 * 1024 * 1024; // 4MB
   const ALLOWED_FILE_TYPES_PDF = ['application/pdf'];
 
@@ -30,6 +32,7 @@ const AnexosAnualDiferidaSection: React.FC<AnexosAnualDiferidaSectionProps> = ({
         accept=".pdf"
         description="Adjunte la carta de solicitud firmada."
         isRequired
+        setValue={setValue}
       />
 
       <FileUploadField
@@ -39,6 +42,7 @@ const AnexosAnualDiferidaSection: React.FC<AnexosAnualDiferidaSectionProps> = ({
         accept=".pdf"
         description="Adjunte una copia legible de su cédula de identidad."
         isRequired
+        setValue={setValue}
       />
 
       <FileUploadField
@@ -48,6 +52,7 @@ const AnexosAnualDiferidaSection: React.FC<AnexosAnualDiferidaSectionProps> = ({
         accept=".pdf"
         description="Adjunte su certificado laboral actualizado."
         isRequired
+        setValue={setValue}
       />
     </section>
   );
