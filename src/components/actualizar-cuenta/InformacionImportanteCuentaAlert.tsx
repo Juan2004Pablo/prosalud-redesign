@@ -10,7 +10,7 @@ const InformacionImportanteCuentaAlert: React.FC = () => {
       <AlertTitle className="font-semibold text-amber-700">IMPORTANTE</AlertTitle>
       <AlertDescription className="text-amber-600 space-y-2">
         <p>
-          Por favor, tenga muy presente al momento de realizar cambios de su cuenta bancaria, hacer llegar la certificación Bancaria <strong>ANTES del día 24 del mes</strong>, esto, con el fin de poder realizar los registros bancarios y contables que den a lugar. Procure realizar el reporte de novedad antes de esta fecha para evitar inconvenientes con SU transferencia.
+          Por favor, tenga muy presente al momento de realizar cambios de su cuenta bancaria, hacer llegar la certificación Bancaria <strong>ANTES del día 24 del mes</strong>, esto, con el fin de poder realizar los registros bancarios y contables que den a lugar. Procure realizar el reporte de novedad antes de esta fecha para evitar inconvenientes con su transferencia.
         </p>
         <p>
           Solo se permite realizar pagos a la cuenta del Afiliado y este debe de figurar como titular de la cuenta.
