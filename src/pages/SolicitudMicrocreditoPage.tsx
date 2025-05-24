@@ -15,8 +15,9 @@ import { Alert, AlertDescription } from "@/components/ui/alert"; // AlertTitle m
 import { Home, CreditCard, Info, Mail, Clock, Send } from 'lucide-react';
 import { toast } from "@/hooks/use-toast";
 
-import DatosPersonalesSection from '@/components/solicitud-certificado/DatosPersonalesSection'; // Reutilizamos para datos personales
-import ConfirmacionCorreoSection from '@/components/solicitud-certificado/ConfirmacionCorreoSection'; // Reutilizamos para confirmación
+import DatosPersonalesSection from '@/components/solicitud-certificado/DatosPersonalesSection';
+import ConfirmacionCorreoSection from '@/components/solicitud-certificado/ConfirmacionCorreoSection';
+import AutorizacionDatosSection from '@/components/solicitud-certificado/AutorizacionDatosSection';
 
 const idTypes = [
   { value: 'CC', label: 'Cédula de Ciudadanía' },
