@@ -41,7 +41,7 @@ const IncapacidadesLicenciasPage: React.FC = () => {
                   <p className="text-secondary font-medium text-lg bg-primary/10 p-3 rounded-md inline-block">
                     incapacidades@sindicatoprosalud.com
                   </p>
-                  <CopyToClipboardButton text="incapacidades@sindicatoprosalud.com" />
+                  <CopyToClipboardButton textToCopy="incapacidades@sindicatoprosalud.com" />
                 </div>
                 <p className="text-sm text-muted-foreground mt-1">
                   Este es el único canal para la recepción de incapacidades.

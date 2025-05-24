@@ -15,7 +15,8 @@ import SolicitudAnualDiferidaPage from "./pages/SolicitudAnualDiferidaPage";
 import VerificacionPagosPage from "./pages/VerificacionPagosPage";
 import EstatutosBeneficiosPage from "./pages/EstatutosBeneficiosPage";
 import ContratoSindicalPage from "./pages/ContratoSindicalPage";
-import IncapacidadesLicenciasPage from "./pages/IncapacidadesLicenciasPage"; // Nueva importación
+import IncapacidadesLicenciasPage from "./pages/IncapacidadesLicenciasPage";
+import ActualizarCuentaBancariaPage from "./pages/ActualizarCuentaBancariaPage"; // Nueva importación
 
 const queryClient = new QueryClient();
 
@@ -93,7 +94,7 @@ const App = () => (
           <Route path="/servicios/consulta-pagos" element={<VerificacionPagosPage />} />
           <Route path="/servicios/incapacidad-maternidad" element={<IncapacidadesLicenciasPage />} /> {/* Actualizada */}
           <Route path="/servicios/certificado-seguridad-social" element={<PlaceholderPage title="Certificado de Seguridad Social" />} />
-          <Route path="/servicios/actualizar-cuenta" element={<PlaceholderPage title="Actualizar Cuenta Bancaria" />} />
+          <Route path="/servicios/actualizar-cuenta" element={<ActualizarCuentaBancariaPage />} /> {/* ACTUALIZADA */}
           <Route path="/servicios/sst" element={<PlaceholderPage title="Seguridad y Salud en el Trabajo (SST)" />} />
           <Route path="/servicios/galeria-bienestar" element={<PlaceholderPage title="Galería de Bienestar" />} />
           <Route path="/servicios/encuesta-bienestar" element={<PlaceholderPage title="Encuesta de Bienestar Laboral" />} />
