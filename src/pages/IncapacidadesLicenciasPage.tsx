@@ -1,7 +1,7 @@
-
 import React from 'react';
+import { Link } from 'react-router-dom';
 import MainLayout from '@/components/layout/MainLayout';
-import { Mail, CheckCircle2, AlertTriangle, FileText, Send, Info } from 'lucide-react';
+import { Mail, CheckCircle2, AlertTriangle, FileText, Send, Info, Home } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import CopyToClipboardButton from '@/components/ui/copyToClipboardButton';
