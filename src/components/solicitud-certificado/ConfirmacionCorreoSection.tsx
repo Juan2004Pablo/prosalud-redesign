@@ -1,37 +1,16 @@
 
 import React from 'react';
-import { Control, FieldValues, FieldPath } from 'react-hook-form';
-import { FormField, FormItem, FormLabel, FormControl } from '@/components/ui/form';
-import { Switch } from '@/components/ui/switch';
+import { Info } from 'lucide-react';
 
-interface ConfirmacionCorreoSectionProps<TFieldValues extends FieldValues> {
-  control: Control<TFieldValues>;
-}
-
-const ConfirmacionCorreoSection = <TFieldValues extends FieldValues>({ 
-  control 
-}: ConfirmacionCorreoSectionProps<TFieldValues>) => {
+const ConfirmacionCorreoSection = () => {
   return (
     <section className="p-6 border rounded-lg shadow-sm bg-white">
-      <FormField
-        control={control}
-        name={"confirmacionCorreo" as FieldPath<TFieldValues>}
-        render={({ field }) => (
-          <FormItem className="flex flex-row items-center space-x-3 space-y-0">
-            <FormControl>
-              <Switch
-                checked={field.value as boolean}
-                onCheckedChange={field.onChange}
-                aria-label="Confirmar recepción de correo"
-                className="data-[state=checked]:bg-secondary-prosaludgreen"
-              />
-            </FormControl>
-            <FormLabel className="font-normal text-sm">
-              Deseo recibir confirmación de envío de mi solicitud al correo electrónico.
-            </FormLabel>
-          </FormItem>
-        )}
-      />
+      <div className="flex flex-row items-center space-x-3">
+        <Info className="h-5 w-5 text-sky-600 flex-shrink-0" aria-label="Información" />
+        <p className="font-normal text-sm text-gray-700">
+          Recibirá una confirmación automática del envío de esta solicitud al correo electrónico que indicó en sus datos personales.
+        </p>
+      </div>
     </section>
   );
 };

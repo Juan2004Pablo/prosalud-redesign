@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -68,7 +67,7 @@ const formSchema = z.object({
     return ALLOWED_FILE_TYPES_GENERAL.includes(file.type);
   }, 'Tipo de archivo no permitido. Use PDF, Excel o imágenes.'),
   
-  confirmacionCorreo: z.boolean().default(false),
+  // confirmacionCorreo: z.boolean().default(false), // Eliminado
   // recaptchaToken: z.string().min(1, "Por favor, completa el reCAPTCHA."),
 }).superRefine((data, ctx) => {
   if (data.infoCertificado.dirigidoAEntidad && !data.dirigidoAQuien?.trim()) {
@@ -111,7 +110,7 @@ const SolicitudCertificadoConvenioPage: React.FC = () => {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      tipoIdentificacion: 'CC', // Default value set to "CC"
+      tipoIdentificacion: 'CC', 
       numeroIdentificacion: '',
       nombres: '',
       apellidos: '',
@@ -135,7 +134,7 @@ const SolicitudCertificadoConvenioPage: React.FC = () => {
       placaVehiculo: '',
       otrosDescripcion: '',
       adjuntarArchivoAdicional: undefined,
-      confirmacionCorreo: false,
+      // confirmacionCorreo: false, // Eliminado
       // recaptchaToken: '', 
     },
   });
@@ -213,7 +212,7 @@ const SolicitudCertificadoConvenioPage: React.FC = () => {
             <DatosPersonalesSection control={form.control} idTypes={idTypes} />
             <InformacionCertificadoSection control={form.control} watch={form.watch} />
             <ArchivoAdicionalSection control={form.control} />
-            <ConfirmacionCorreoSection control={form.control} />
+            <ConfirmacionCorreoSection /> {/* Removido el prop 'control' */}
             <AutorizacionDatosSection />
             
             {/* Campo ReCAPTCHA Comentado Temporalmente */}
@@ -254,4 +253,3 @@ const SolicitudCertificadoConvenioPage: React.FC = () => {
 };
 
 export default SolicitudCertificadoConvenioPage;
-
