@@ -25,8 +25,8 @@ const ProtocoloIncapacidadesCard: React.FC = () => {
           <AlertTitle className="font-semibold text-primary-prosalud">Envío de Incapacidades</AlertTitle>
           <AlertDescription>
             Los formatos por incapacidad solo se reciben en el correo:
-            <div className="flex items-center my-2">
-              <strong className="text-secondary-prosaludgreen mr-2">incapacidades@sindicatoprosalud.com</strong>
+            <div className="flex flex-col sm:flex-row sm:items-center my-2">
+              <strong className="text-secondary-prosaludgreen mb-1 sm:mb-0 sm:mr-2 break-all">incapacidades@sindicatoprosalud.com</strong>
               <CopyToClipboardButton textToCopy="incapacidades@sindicatoprosalud.com" />
             </div>
           </AlertDescription>
@@ -34,8 +34,8 @@ const ProtocoloIncapacidadesCard: React.FC = () => {
         <p>
           Para una guía detallada sobre el trámite de incapacidades y licencias, incluyendo requisitos y recomendaciones, visita nuestra página dedicada.
         </p>
-        <Link to="/servicios/incapacidad-maternidad">
-          <Button className="my-5 bg-secondary-prosaludgreen hover:bg-secondary-prosaludgreen/90 text-white">
+        <Link to="/servicios/incapacidad-maternidad" className="block">
+          <Button className="my-5 w-full sm:w-auto bg-secondary-prosaludgreen hover:bg-secondary-prosaludgreen/90 text-white">
             Ver Guía Completa de Incapacidades y Licencias
             <ArrowRightCircle size={20} className="ml-2" />
           </Button>
@@ -46,3 +46,4 @@ const ProtocoloIncapacidadesCard: React.FC = () => {
 };
 
 export default ProtocoloIncapacidadesCard;
+
