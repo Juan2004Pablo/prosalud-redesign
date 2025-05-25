@@ -127,7 +127,6 @@ const SstPage: React.FC = () => {
     <MainLayout>
       <div className="container mx-auto py-10 px-4 sm:px-6 lg:px-8">
         <header className="mb-12 text-center animate-fade-in">
-          <img src={proSaludLogoUrl} alt="ProSalud Logo" className="h-20 w-auto mx-auto mb-6" />
           <h1 className="text-4xl font-extrabold text-primary mb-4 tracking-tight">
             Seguridad y Salud en el Trabajo (SST)
           </h1>
@@ -163,7 +162,7 @@ const SstPage: React.FC = () => {
               Para una guía detallada sobre el trámite de incapacidades y licencias, incluyendo requisitos y recomendaciones, visita nuestra página dedicada.
             </p>
             <Link to="/servicios/incapacidad-maternidad">
-              <Button className="bg-secondary-prosaludgreen hover:bg-secondary-prosaludgreen/90 text-white">
+              <Button className="my-5 bg-secondary-prosaludgreen hover:bg-secondary-prosaludgreen/90 text-white">
                 Ver Guía Completa de Incapacidades y Licencias
                 <ArrowRightCircle size={20} className="ml-2" />
               </Button>
