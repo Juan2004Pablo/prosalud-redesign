@@ -12,35 +12,16 @@ import TiposEmergenciasSection, { EmergencyType } from '@/components/sst/TiposEm
 import ArticulosSstSection from '@/components/sst/ArticulosSstSection';
 import ImagePreviewDialog from '@/components/sst/ImagePreviewDialog';
 
-// Import Lucide icons that are still directly used or passed as props to complex components like TiposEmergenciasSection
 import {
   ShieldAlert,
   Bomb,
   Activity,
   Flame,
   DoorOpen,
-  // FileText, // Moved or no longer directly needed at this level
-  // Mail, // Moved
-  // Briefcase, // Moved
-  // AlertTriangle, // Moved
-  // AlertCircle, // Moved
-  // ClipboardCheck, // Moved
-  // ChevronDown, // Moved
-  // ChevronUp, // Moved
-  // Building, // Moved
-  // Info, // Moved
-  // ArrowRightCircle, // Moved
-  // HelpCircle, // Moved
-  // Hand, // Moved
-  // ExternalLink, // Moved
-  // Home, // Moved
-  // ZoomIn, // Moved
-  // X, // Moved to ImagePreviewDialog
 } from 'lucide-react';
 
 const SstPage: React.FC = () => {
   // Data definitions remain here
-  // const proSaludLogoUrl = "/lovable-uploads/2bf2da56-4967-4a17-8849-9efab8759375.png"; // Not used in current view
   const tusManosSiembreLimpiasUrl = "/lovable-uploads/a1e97d0b-a5c4-4af9-b62d-e9afc323a614.png";
 
   const emergencyTypes: EmergencyType[] = [
