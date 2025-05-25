@@ -143,28 +143,27 @@ const SstPage: React.FC = () => {
 
   return (
     <MainLayout>
-      <Breadcrumb className="mb-8 py-2 px-4 sm:px-6 lg:px-8">
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link to="/" className="flex items-center gap-1.5 hover:text-primary-prosalud transition-colors">
-                <Home size={16} />
-                Inicio
-              </Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link to="/servicios" className="hover:text-primary-prosalud transition-colors">Servicios</Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>Seguridad y Salud en el Trabajo</BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+      <div className="container mx-auto pt-6 pb-2 px-4 md:px-6 lg:px-8">
+        <Breadcrumb>
+          <BreadcrumbList className="flex items-center space-x-2 text-sm">
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link to="/" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
+                  <Home className="h-4 w-4" />
+                  Inicio
+                </Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage className="flex items-center gap-1 font-medium text-foreground">
+                <FileText className="h-4 w-4" />
+                Seguridad y Salud en el Trabajo
+              </BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+      </div>
 
       <div className="container mx-auto py-10 px-4 sm:px-6 lg:px-8">
         <header className="mb-12 text-center animate-fade-in">
