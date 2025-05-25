@@ -7,6 +7,14 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import CopyToClipboardButton from '@/components/ui/copyToClipboardButton';
 import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import {
   ShieldAlert,
   Bomb,
   Activity,
@@ -15,22 +23,22 @@ import {
   FileText,
   Mail,
   Briefcase,
-  HeartPulse,
+  // HeartPulse, // Not used, can be removed if not planned elsewhere
   AlertTriangle,
   AlertCircle,
   ClipboardCheck,
   ChevronDown,
   ChevronUp,
-  Phone,
+  Phone, // Not used
   Building,
   Info,
   ArrowRightCircle,
-  Users,
+  Users, // Not used
   HelpCircle,
   Hand,
   ExternalLink
 } from 'lucide-react';
-import { toast } from 'sonner';
+// import { toast } from 'sonner'; // Not used currently, can be removed or kept for future use
 
 const SstPage: React.FC = () => {
   const proSaludLogoUrl = "/lovable-uploads/2bf2da56-4967-4a17-8849-9efab8759375.png"; // ProSalud logo
@@ -38,6 +46,7 @@ const SstPage: React.FC = () => {
 
   const emergencyTypes = [
     {
+      id: "atraco",
       title: "Atraco",
       icon: <ShieldAlert size={48} className="text-red-500 mb-4" />,
       points: [
@@ -50,6 +59,7 @@ const SstPage: React.FC = () => {
       imagePlaceholder: true,
     },
     {
+      id: "bomba",
       title: "Bomba",
       icon: <Bomb size={48} className="text-gray-700 mb-4" />,
       points: [
@@ -59,6 +69,7 @@ const SstPage: React.FC = () => {
       imagePlaceholder: true,
     },
     {
+      id: "sismos",
       title: "Sismos",
       icon: <Activity size={48} className="text-yellow-500 mb-4" />,
       points: [
@@ -72,6 +83,7 @@ const SstPage: React.FC = () => {
       imagePlaceholder: true,
     },
     {
+      id: "incendio",
       title: "Incendio",
       icon: <Flame size={48} className="text-orange-500 mb-4" />,
       points: [
@@ -85,6 +97,7 @@ const SstPage: React.FC = () => {
       imagePlaceholder: true,
     },
     {
+      id: "evacuacion",
       title: "Evacuación",
       icon: <DoorOpen size={48} className="text-blue-500 mb-4" />,
       points: [
@@ -103,11 +116,16 @@ const SstPage: React.FC = () => {
   ];
   
   const [openCollapsible, setOpenCollapsible] = React.useState<Record<string, boolean>>({});
+  const [openEmergencyDetails, setOpenEmergencyDetails] = React.useState<Record<string, boolean>>({});
 
   const toggleCollapsible = (id: string) => {
     setOpenCollapsible(prev => ({ ...prev, [id]: !prev[id] }));
   };
 
+  const toggleEmergencyDetail = (id: string) => {
+    setOpenEmergencyDetails(prev => ({ ...prev, [id]: !prev[id] }));
+  };
+  
   const handWashingSteps = [
     { number: 1, text: "Mójese las manos con agua corriente limpia (tibia o fría), cierre el grifo y enjabónese las manos." },
     { number: 2, text: "Frótese las manos con el jabón hasta que haga espuma. Frótese la espuma por el dorso de las manos, entre los dedos y debajo de las uñas." },
@@ -125,6 +143,27 @@ const SstPage: React.FC = () => {
 
   return (
     <MainLayout>
+      <Breadcrumb className="mb-8">
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <Link to="/">Inicio</Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              {/* Assuming a general services page exists, otherwise link to another relevant page or make it non-linkable */}
+              <Link to="/servicios">Servicios</Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>Seguridad y Salud en el Trabajo</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+
       <div className="container mx-auto py-10 px-4 sm:px-6 lg:px-8">
         <header className="mb-12 text-center animate-fade-in">
           <h1 className="text-4xl font-bold text-primary mb-4 tracking-tight">
@@ -275,8 +314,8 @@ const SstPage: React.FC = () => {
                     <p className="text-xs text-center text-muted-foreground mt-2">Infografía de preparación</p>
                 </div>
                 <div className="md:w-2/3 space-y-4">
-                    <Collapsible className="border rounded-md p-4 shadow-sm">
-                        <CollapsibleTrigger onClick={() => toggleCollapsible('q1')} className="flex justify-between items-center w-full font-semibold text-lg text-primary-prosalud hover:underline">
+                    <Collapsible open={openCollapsible['q1']} onOpenChange={() => toggleCollapsible('q1')} className="border rounded-md p-4 shadow-sm">
+                        <CollapsibleTrigger className="flex justify-between items-center w-full font-semibold text-lg text-primary-prosalud hover:underline">
                         ¿Qué hacer en casos de emergencias?
                         {openCollapsible['q1'] ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                         </CollapsibleTrigger>
@@ -285,8 +324,8 @@ const SstPage: React.FC = () => {
                         </CollapsibleContent>
                     </Collapsible>
 
-                    <Collapsible className="border rounded-md p-4 shadow-sm">
-                        <CollapsibleTrigger onClick={() => toggleCollapsible('q2')} className="flex justify-between items-center w-full font-semibold text-lg text-primary-prosalud hover:underline">
+                    <Collapsible open={openCollapsible['q2']} onOpenChange={() => toggleCollapsible('q2')} className="border rounded-md p-4 shadow-sm">
+                        <CollapsibleTrigger className="flex justify-between items-center w-full font-semibold text-lg text-primary-prosalud hover:underline">
                         ¿Cómo estar preparados para una emergencia?
                         {openCollapsible['q2'] ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                         </CollapsibleTrigger>
@@ -297,8 +336,8 @@ const SstPage: React.FC = () => {
                         </CollapsibleContent>
                     </Collapsible>
                     
-                    <Collapsible className="border rounded-md p-4 shadow-sm">
-                        <CollapsibleTrigger onClick={() => toggleCollapsible('q3')} className="flex justify-between items-center w-full font-semibold text-lg text-primary-prosalud hover:underline">
+                    <Collapsible open={openCollapsible['q3']} onOpenChange={() => toggleCollapsible('q3')} className="border rounded-md p-4 shadow-sm">
+                        <CollapsibleTrigger className="flex justify-between items-center w-full font-semibold text-lg text-primary-prosalud hover:underline">
                         ¿Simulacros para saber cómo actuar en emergencias?
                         {openCollapsible['q3'] ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                         </CollapsibleTrigger>
@@ -349,20 +388,29 @@ const SstPage: React.FC = () => {
             Tipos de Emergencias y Cómo Actuar
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {emergencyTypes.map((emergency, index) => (
-              <Card key={index} className="shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col">
+            {emergencyTypes.map((emergency) => (
+              <Card key={emergency.id} className="shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col">
                 <CardHeader className="text-center">
                   {emergency.icon}
                   <CardTitle className="text-xl font-semibold text-primary-prosalud">{emergency.title}</CardTitle>
                 </CardHeader>
-                <CardContent className="flex-grow">
-                  <ul className="list-disc list-inside space-y-2 text-muted-foreground text-sm">
-                    {emergency.points.map((point, i) => (
-                      <li key={i}>{point}</li>
-                    ))}
-                  </ul>
+                <CardContent className="flex-grow flex flex-col">
+                  <Collapsible open={openEmergencyDetails[emergency.id]} onOpenChange={() => toggleEmergencyDetail(emergency.id)}>
+                    <CollapsibleContent className="space-y-2 text-muted-foreground text-sm mb-3">
+                      <ul className="list-disc list-inside space-y-2">
+                        {emergency.points.map((point, i) => (
+                          <li key={i}>{point}</li>
+                        ))}
+                      </ul>
+                    </CollapsibleContent>
+                    <CollapsibleTrigger className="w-full text-sm text-primary-prosalud hover:underline flex items-center justify-center">
+                      {openEmergencyDetails[emergency.id] ? "Leer menos" : "Leer más"}
+                      {openEmergencyDetails[emergency.id] ? <ChevronUp size={18} className="ml-1" /> : <ChevronDown size={18} className="ml-1" />}
+                    </CollapsibleTrigger>
+                  </Collapsible>
+                  
                   {emergency.imagePlaceholder && (
-                     <div className="mt-4">
+                     <div className="mt-auto pt-4"> {/* Ensure image is at the bottom if content above is short */}
                         <img src="" alt={`${emergency.title} ilustración`} className="rounded-md bg-gray-200 aspect-video object-cover w-full h-auto" />
                          <p className="text-xs text-center text-muted-foreground mt-1">Ilustración para {emergency.title}</p>
                      </div>
