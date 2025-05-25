@@ -5,17 +5,37 @@ import { Mail, CheckCircle2, AlertTriangle, FileText, Send, Info } from 'lucide-
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import CopyToClipboardButton from '@/components/ui/copyToClipboardButton';
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 
 const IncapacidadesLicenciasPage: React.FC = () => {
   const proSaludLogoUrl = "/lovable-uploads/2bf2da56-4967-4a17-8849-9efab8759375.png";
 
   return (
     <MainLayout>
+      <div className="container mx-auto pt-6 pb-2 px-4 md:px-6 lg:px-8">
+        <Breadcrumb>
+          <BreadcrumbList className="flex items-center space-x-2 text-sm">
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link to="/" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
+                  <Home className="h-4 w-4" />
+                  Inicio
+                </Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage className="flex items-center gap-1 font-medium text-foreground">
+                <FileText className="h-4 w-4" />
+                Incapacidades y Licencias
+              </BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+      </div>
+
       <div className="container mx-auto py-10 px-4 sm:px-6 lg:px-8 animate-[fadeInUp_0.5s_ease-out]">
         <header className="mb-12 text-center">
-          <div className="flex justify-center mb-6">
-            <img src={proSaludLogoUrl} alt="ProSalud Logo" className="h-20 w-auto" />
-          </div>
           <h1 className="text-4xl font-bold text-primary mb-4">
             Incapacidades y Licencias
           </h1>
