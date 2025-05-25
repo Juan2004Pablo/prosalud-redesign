@@ -22,6 +22,7 @@ import SolicitudRetiroSindicalPage from "./pages/SolicitudRetiroSindicalPage";
 import SolicitudPermisosCambioTurnosPage from "./pages/SolicitudPermisosCambioTurnosPage";
 import CertificadoSeguridadSocialPage from "./pages/CertificadoSeguridadSocialPage";
 import ScrollToTop from "./components/utils/ScrollToTop"; // Importar ScrollToTop
+import SstPage from "./pages/SstPage"; // Importar la nueva página SST
 
 const queryClient = new QueryClient();
 
@@ -99,7 +100,7 @@ const App = () => (
           <Route path="/servicios/certificado-seguridad-social" element={<CertificadoSeguridadSocialPage />} />
           <Route path="/servicios/actualizar-cuenta" element={<ActualizarCuentaBancariaPage />} />
           <Route path="/servicios/incapacidad-maternidad" element={<IncapacidadesLicenciasPage />} />
-          <Route path="/servicios/sst" element={<PlaceholderPage title="Seguridad y Salud en el Trabajo (SST)" />} />
+          <Route path="/servicios/sst" element={<SstPage />} /> {/* <<< Updated Route for SST */}
           <Route path="/servicios/galeria-bienestar" element={<PlaceholderPage title="Galería de Bienestar" />} />
           <Route path="/servicios/encuesta-bienestar" element={<PlaceholderPage title="Encuesta de Bienestar Laboral" />} />
           <Route path="/servicios/permisos-turnos" element={<SolicitudPermisosCambioTurnosPage />} />
