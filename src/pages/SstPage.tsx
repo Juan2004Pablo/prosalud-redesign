@@ -1,4 +1,3 @@
-
 import React from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Link } from 'react-router-dom';
@@ -10,7 +9,7 @@ import CopyToClipboardButton from '@/components/ui/copyToClipboardButton';
 import {
   ShieldAlert,
   Bomb,
-  Activity, // Using Activity as a placeholder for Sismos, can be changed
+  Activity,
   Flame,
   DoorOpen,
   FileText,
@@ -27,12 +26,15 @@ import {
   Info,
   ArrowRightCircle,
   Users,
-  HelpCircle
+  HelpCircle,
+  WashingHands,
+  ExternalLink
 } from 'lucide-react';
 import { toast } from 'sonner';
 
 const SstPage: React.FC = () => {
   const proSaludLogoUrl = "/lovable-uploads/2bf2da56-4967-4a17-8849-9efab8759375.png"; // ProSalud logo
+  const tusManosSiembreLimpiasUrl = "/lovable-uploads/a1e97d0b-a5c4-4af9-b62d-e9afc323a614.png"; // Tus manos siempre limpias image
 
   const emergencyTypes = [
     {
@@ -45,7 +47,7 @@ const SstPage: React.FC = () => {
         "No se enfrente al asaltante, especialmente, cuando éste se encuentre armado.",
         "No toque nada en el área del atraco para no entorpecer la obtención de huellas."
       ],
-      imagePlaceholder: true, // To remind to add an image if needed
+      imagePlaceholder: true,
     },
     {
       title: "Bomba",
@@ -106,6 +108,20 @@ const SstPage: React.FC = () => {
     setOpenCollapsible(prev => ({ ...prev, [id]: !prev[id] }));
   };
 
+  const handWashingSteps = [
+    { number: 1, text: "Mójese las manos con agua corriente limpia (tibia o fría), cierre el grifo y enjabónese las manos." },
+    { number: 2, text: "Frótese las manos con el jabón hasta que haga espuma. Frótese la espuma por el dorso de las manos, entre los dedos y debajo de las uñas." },
+    { number: 3, text: "Restriéguese las manos durante al menos 20 segundos." },
+    { number: 4, text: "Enjuáguese bien las manos con agua corriente limpia." },
+    { number: 5, text: "Séquese las manos con una toalla limpia o al aire." },
+  ];
+
+  const articles = [
+    { title: "Sus 5 momentos para la Higiene de las Manos", url: "https://www.sindicatoprosalud.com/portal/images/PROSALUD/Coronavirus/5%20Momentos%20para%20la%20Higiene%20de%20Manos.pdf" },
+    { title: "¿Cómo desinfectarse las manos?", url: "https://www.sindicatoprosalud.com/portal/images/PROSALUD/Coronavirus/Como%20desinfectarse%20las%20manos.pdf" },
+    { title: "Coronavirus: Higiene de las manos - por qué, cómo, cuándo", url: "https://www.sindicatoprosalud.com/portal/images/PROSALUD/Coronavirus/Higiene%20de%20las%20manos%20-%20por%20qu%C3%A9,%20c%C3%B3mo,%20cu%C3%A1ndo.pdf" },
+    { title: "Medidas básicas para el Control de Infecciones en IPS", url: "https://www.sindicatoprosalud.com/portal/images/PROSALUD/Coronavirus/Cartilla%20Coronavirus.pdf" },
+  ];
 
   return (
     <MainLayout>
@@ -147,7 +163,7 @@ const SstPage: React.FC = () => {
               Para una guía detallada sobre el trámite de incapacidades y licencias, incluyendo requisitos y recomendaciones, visita nuestra página dedicada.
             </p>
             <Link to="/servicios/incapacidad-maternidad">
-              <Button variant="solid" className="bg-secondary-prosaludgreen hover:bg-secondary-prosaludgreen/90 text-white">
+              <Button className="bg-secondary-prosaludgreen hover:bg-secondary-prosaludgreen/90 text-white">
                 Ver Guía Completa de Incapacidades y Licencias
                 <ArrowRightCircle size={20} className="ml-2" />
               </Button>
@@ -229,7 +245,6 @@ const SstPage: React.FC = () => {
                 </ol>
               </div>
               <div className="md:w-1/3 mt-6 md:mt-0">
-                {/* Placeholder for image inspired by user upload */}
                 <img src="" alt="Protocolo accidente de trabajo" className="rounded-lg shadow-md bg-gray-200 aspect-video object-cover w-full h-auto" />
                 <p className="text-xs text-center text-muted-foreground mt-2">Referencia visual del protocolo</p>
               </div>
@@ -257,7 +272,6 @@ const SstPage: React.FC = () => {
           <CardContent className="space-y-6">
              <div className="md:flex md:items-start md:gap-6">
                 <div className="md:w-1/3 mb-6 md:mb-0">
-                    {/* Placeholder for image inspired by user upload */}
                     <img src="" alt="Preparación para emergencias" className="rounded-lg shadow-md bg-gray-200 aspect-[3/4] object-cover w-full h-auto" />
                     <p className="text-xs text-center text-muted-foreground mt-2">Infografía de preparación</p>
                 </div>
@@ -300,8 +314,69 @@ const SstPage: React.FC = () => {
           </CardContent>
         </Card>
 
+        {/* Tus manos siempre limpias */}
+        <Card className="mb-12 shadow-lg animate-[fadeInUp_0.5s_ease-out_1.2s_forwards] opacity-0">
+          <CardHeader>
+            <CardTitle className="flex items-center text-2xl text-primary">
+              <WashingHands size={28} className="mr-3 text-secondary-prosaludgreen" />
+              Tus manos siempre limpias
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <p className="text-muted-foreground">
+              A pesar de que no haya un número específico de veces para lavarse las manos a diario, existen ciertas situaciones en las que es fundamental hacerlo. Asegúrese de que usted y los niños siempre se limpien las manos antes de comer, así como después de usar el baño y de entrar en contacto con cualquier superficie potencialmente contaminada con microbios.
+            </p>
+            <div className="grid md:grid-cols-2 gap-6 items-center">
+              <div>
+                <img src={tusManosSiembreLimpiasUrl} alt="Pasos para lavarse las manos" className="rounded-lg shadow-md w-full h-auto" />
+              </div>
+              <ol className="space-y-3 text-muted-foreground">
+                {handWashingSteps.map(step => (
+                  <li key={step.number} className="flex items-start">
+                    <span className="flex-shrink-0 mr-3 bg-primary-prosalud text-white rounded-full h-8 w-8 flex items-center justify-center font-bold text-lg">
+                      {step.number}
+                    </span>
+                    <span>{step.text}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Artículos */}
+        <section className="mb-12 animate-[fadeInUp_0.5s_ease-out_1.4s_forwards] opacity-0">
+          <h2 className="text-3xl font-bold text-primary mb-8 text-center">
+            <FileText size={32} className="mr-3 inline-block text-secondary-prosaludgreen" />
+            Artículos: Para que estemos preparados ten en cuenta lo siguiente
+          </h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            {articles.map((article, index) => (
+              <Card key={index} className="shadow-md hover:shadow-xl transition-shadow duration-300">
+                <CardHeader>
+                  <CardTitle className="text-xl font-semibold text-primary-prosalud flex items-center">
+                    <FileText size={22} className="mr-2 text-primary-prosalud" />
+                    {article.title}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <a
+                    href={article.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center text-secondary-prosaludgreen hover:text-secondary-prosaludgreen/80 font-medium"
+                  >
+                    Ver documento
+                    <ExternalLink size={18} className="ml-2" />
+                  </a>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
+
         {/* Tipos de emergencias */}
-        <section className="mb-12 animate-[fadeInUp_0.5s_ease-out_1.2s_forwards] opacity-0">
+        <section className="mb-12 animate-[fadeInUp_0.5s_ease-out_1.6s_forwards] opacity-0">
           <h2 className="text-3xl font-bold text-primary mb-8 text-center">
             Tipos de Emergencias y Cómo Actuar
           </h2>
