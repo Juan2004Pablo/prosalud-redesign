@@ -34,11 +34,11 @@ import {
   ClipboardCheck,
   ChevronDown,
   ChevronUp,
-  Phone, // Not used
+  // Phone, // Not used
   Building,
   Info,
   ArrowRightCircle,
-  Users, // Not used
+  // Users, // Not used
   HelpCircle,
   Hand,
   ExternalLink,
@@ -430,46 +430,29 @@ const SstPage: React.FC = () => {
                   <CardTitle className="text-xl font-semibold text-primary-prosalud">{emergency.title}</CardTitle>
                 </CardHeader>
                 <CardContent className="flex-grow flex flex-col">
-                  <div className="text-muted-foreground text-sm space-y-1">
+                  <div className="text-muted-foreground text-sm space-y-2"> {/* Changed from space-y-1 */}
                     {emergency.points.length > 0 && (
                       <p className="leading-relaxed">
                         {emergency.points[0]}
-                        {emergency.points.length > 1 && (
-                          <Collapsible 
-                            open={openEmergencyDetails[emergency.id]} 
-                            onOpenChange={() => toggleEmergencyDetail(emergency.id)}
-                            className="inline" 
-                          >
-                            <CollapsibleContent className="inline">
-                              {openEmergencyDetails[emergency.id] && emergency.points.slice(1).map((point, i) => (
-                                <React.Fragment key={`detail-${emergency.id}-${i}`}> {point}</React.Fragment>
-                              ))}
-                            </CollapsibleContent>
-                            <CollapsibleTrigger className="text-primary-prosalud hover:underline flex items-center text-xs sm:text-sm p-0 h-auto font-medium ml-1 inline-flex align-baseline">
-                              {openEmergencyDetails[emergency.id] ? "Leer menos" : "Leer más"}
-                              {openEmergencyDetails[emergency.id] ? <ChevronUp size={16} className="ml-1" /> : <ChevronDown size={16} className="ml-1" />}
-                            </CollapsibleTrigger>
-                          </Collapsible>
-                        )}
                       </p>
                     )}
-                    {emergency.points.length > 1 && !openEmergencyDetails[emergency.id] && emergency.points.slice(1).length > 0 && (
-                       // This part is tricky - the original collapsible was for all points AFTER the first one.
-                       // The "Leer más" for the first point now shows the rest.
-                       // If the original design had a list for subsequent points, that needs to be handled within the CollapsibleContent.
-                       // The current implementation displays points inline after the first one when expanded.
-                       // If a list is desired when expanded:
-                       /*
-                        <CollapsibleContent>
-                          <ul className="list-disc list-inside space-y-1 mt-1">
+                    {emergency.points.length > 1 && (
+                      <Collapsible
+                        open={openEmergencyDetails[emergency.id]}
+                        onOpenChange={() => toggleEmergencyDetail(emergency.id)}
+                      >
+                        <CollapsibleTrigger className="text-primary-prosalud hover:underline flex items-center text-xs sm:text-sm font-medium py-1">
+                          {openEmergencyDetails[emergency.id] ? "Leer menos" : "Leer más"}
+                          {openEmergencyDetails[emergency.id] ? <ChevronUp size={16} className="ml-1" /> : <ChevronDown size={16} className="ml-1" />}
+                        </CollapsibleTrigger>
+                        <CollapsibleContent className="mt-2">
+                          <ol className="list-decimal list-inside space-y-1 text-muted-foreground">
                             {emergency.points.slice(1).map((point, i) => (
                               <li key={`detail-${emergency.id}-${i}`}>{point}</li>
                             ))}
-                          </ul>
+                          </ol>
                         </CollapsibleContent>
-                       */
-                       // For now, keeping them inline as per the text "muestre el restante"
-                       null
+                      </Collapsible>
                     )}
                   </div>
                 </CardContent>
