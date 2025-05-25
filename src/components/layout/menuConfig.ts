@@ -47,7 +47,7 @@ export const menuItems: MenuItemType[] = [
     ]
   },
   {
-    name: 'Salud y seguridad laboral',
+    name: 'Seguridad y Salud en el Trabajo',
     icon: Shield,
     submenu: [
       {
