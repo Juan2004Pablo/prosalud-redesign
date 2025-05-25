@@ -22,7 +22,7 @@ const ImagePreviewDialog: React.FC<ImagePreviewDialogProps> = ({ selectedImage, 
         )}
         <DialogClose asChild className="absolute top-2 right-2 sm:top-3 sm:right-3">
             <Button variant="ghost" size="icon" className="rounded-full hover:bg-gray-200">
-              <X className="h-5 w-5 sm:h-6 sm:w-6 text-gray-700" />
+              
             </Button>
         </DialogClose>
       </DialogContent>
