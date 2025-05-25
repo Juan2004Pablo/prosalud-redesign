@@ -86,4 +86,3 @@ const ServiceList: React.FC<ServiceListProps> = ({ searchTerm }) => {
 };
 
 export default ServiceList;
-
