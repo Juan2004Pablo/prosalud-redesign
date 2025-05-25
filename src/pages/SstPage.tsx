@@ -23,7 +23,6 @@ import {
   FileText,
   Mail,
   Briefcase,
-  // HeartPulse, // Not used, can be removed if not planned elsewhere
   AlertTriangle,
   AlertCircle,
   ClipboardCheck,
@@ -36,7 +35,8 @@ import {
   Users, // Not used
   HelpCircle,
   Hand,
-  ExternalLink
+  ExternalLink,
+  Home,
 } from 'lucide-react';
 // import { toast } from 'sonner'; // Not used currently, can be removed or kept for future use
 
@@ -143,18 +143,20 @@ const SstPage: React.FC = () => {
 
   return (
     <MainLayout>
-      <Breadcrumb className="mb-8">
+      <Breadcrumb className="mb-8 py-2 px-4 sm:px-6 lg:px-8">
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link to="/">Inicio</Link>
+              <Link to="/" className="flex items-center gap-1.5 hover:text-primary-prosalud transition-colors">
+                <Home size={16} />
+                Inicio
+              </Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              {/* Assuming a general services page exists, otherwise link to another relevant page or make it non-linkable */}
-              <Link to="/servicios">Servicios</Link>
+              <Link to="/servicios" className="hover:text-primary-prosalud transition-colors">Servicios</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
@@ -283,7 +285,7 @@ const SstPage: React.FC = () => {
                 </ol>
               </div>
               <div className="md:w-1/3 mt-6 md:mt-0">
-                <img src="" alt="Protocolo accidente de trabajo" className="rounded-lg shadow-md bg-gray-200 aspect-video object-cover w-full h-auto" />
+                <img src="/lovable-uploads/ae428eb9-0bc1-40b2-93b5-0a4126a7ba23.png" alt="Protocolo accidente de trabajo" className="rounded-lg shadow-md bg-gray-200 aspect-video object-cover w-full h-auto" />
                 <p className="text-xs text-center text-muted-foreground mt-2">Referencia visual del protocolo</p>
               </div>
             </div>
@@ -310,7 +312,7 @@ const SstPage: React.FC = () => {
           <CardContent className="space-y-6">
              <div className="md:flex md:items-start md:gap-6">
                 <div className="md:w-1/3 mb-6 md:mb-0">
-                    <img src="" alt="Preparación para emergencias" className="rounded-lg shadow-md bg-gray-200 aspect-[3/4] object-cover w-full h-auto" />
+                    <img src="/lovable-uploads/138161d3-ff19-4e89-a637-ef145b62113b.png" alt="Preparación para emergencias" className="rounded-lg shadow-md bg-gray-200 aspect-[3/4] object-cover w-full h-auto" />
                     <p className="text-xs text-center text-muted-foreground mt-2">Infografía de preparación</p>
                 </div>
                 <div className="md:w-2/3 space-y-4">
@@ -395,19 +397,32 @@ const SstPage: React.FC = () => {
                   <CardTitle className="text-xl font-semibold text-primary-prosalud">{emergency.title}</CardTitle>
                 </CardHeader>
                 <CardContent className="flex-grow flex flex-col">
-                  <Collapsible open={openEmergencyDetails[emergency.id]} onOpenChange={() => toggleEmergencyDetail(emergency.id)}>
-                    <CollapsibleContent className="space-y-2 text-muted-foreground text-sm mb-3">
-                      <ul className="list-disc list-inside space-y-2">
-                        {emergency.points.map((point, i) => (
-                          <li key={i}>{point}</li>
-                        ))}
-                      </ul>
-                    </CollapsibleContent>
-                    <CollapsibleTrigger className="w-full text-sm text-primary-prosalud hover:underline flex items-center justify-center">
-                      {openEmergencyDetails[emergency.id] ? "Leer menos" : "Leer más"}
-                      {openEmergencyDetails[emergency.id] ? <ChevronUp size={18} className="ml-1" /> : <ChevronDown size={18} className="ml-1" />}
-                    </CollapsibleTrigger>
-                  </Collapsible>
+                  <div className="text-muted-foreground text-sm space-y-1">
+                    {emergency.points.length > 0 && (
+                      <p className="leading-relaxed">
+                        {emergency.points[0]}
+                      </p>
+                    )}
+                    {emergency.points.length > 1 && (
+                      <Collapsible 
+                        open={openEmergencyDetails[emergency.id]} 
+                        onOpenChange={() => toggleEmergencyDetail(emergency.id)}
+                        className="mt-1"
+                      >
+                        <CollapsibleContent className="space-y-1 text-muted-foreground text-sm mt-1 leading-relaxed">
+                          <ul className="list-disc list-inside space-y-1">
+                            {emergency.points.slice(1).map((point, i) => (
+                              <li key={`detail-${emergency.id}-${i}`}>{point}</li>
+                            ))}
+                          </ul>
+                        </CollapsibleContent>
+                        <CollapsibleTrigger className="text-primary-prosalud hover:underline flex items-center text-xs sm:text-sm p-0 h-auto font-medium mt-2">
+                          {openEmergencyDetails[emergency.id] ? "Leer menos" : "Leer más"}
+                          {openEmergencyDetails[emergency.id] ? <ChevronUp size={16} className="ml-1" /> : <ChevronDown size={16} className="ml-1" />}
+                        </CollapsibleTrigger>
+                      </Collapsible>
+                    )}
+                  </div>
                   
                   {emergency.imagePlaceholder && (
                      <div className="mt-auto pt-4"> {/* Ensure image is at the bottom if content above is short */}
@@ -427,6 +442,7 @@ const SstPage: React.FC = () => {
             <FileText size={32} className="mr-3 inline-block text-secondary-prosaludgreen" />
             Artículos
           </h2>
+          <p className="text-center text-muted-foreground mb-8 -mt-4">Para que estemos preparados ten en cuenta lo siguiente:</p>
           <div className="grid md:grid-cols-2 gap-6">
             {articles.map((article, index) => (
               <Card key={index} className="shadow-md hover:shadow-xl transition-shadow duration-300">
