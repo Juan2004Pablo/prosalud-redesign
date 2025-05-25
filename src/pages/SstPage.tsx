@@ -27,7 +27,7 @@ import {
   ArrowRightCircle,
   Users,
   HelpCircle,
-  WashingHands,
+  Hand,
   ExternalLink
 } from 'lucide-react';
 import { toast } from 'sonner';
@@ -318,7 +318,7 @@ const SstPage: React.FC = () => {
         <Card className="mb-12 shadow-lg animate-[fadeInUp_0.5s_ease-out_1.2s_forwards] opacity-0">
           <CardHeader>
             <CardTitle className="flex items-center text-2xl text-primary">
-              <WashingHands size={28} className="mr-3 text-secondary-prosaludgreen" />
+              <Hand size={28} className="mr-3 text-secondary-prosaludgreen" />
               Tus manos siempre limpias
             </CardTitle>
           </CardHeader>
