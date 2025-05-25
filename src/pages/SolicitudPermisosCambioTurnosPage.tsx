@@ -31,8 +31,7 @@ const SolicitudPermisosCambioTurnosPage: React.FC = () => {
       </div>
 
       <div className="container mx-auto py-8 px-4 md:px-6 lg:px-8">
-        <div className="bg-card p-6 md:p-8 rounded-lg shadow-lg border border-prosalud-border">
-          <header className="mb-8 text-center">
+        <header className="mb-8 text-center">
             <div className="flex justify-center items-center gap-3 mb-4">
                 <FileText className="h-8 w-8 text-primary-prosalud-dark" />
                 <h1 className="text-3xl font-bold text-primary-prosalud-dark">
@@ -43,6 +42,8 @@ const SolicitudPermisosCambioTurnosPage: React.FC = () => {
               Encuentra aquí los formatos necesarios y la información importante para gestionar tus solicitudes de permisos o cambios de turno.
             </p>
           </header>
+        <div className="bg-card p-6 md:p-8 rounded-lg shadow-lg border border-prosalud-border">
+          
 
           <section className="mb-10 p-6 border rounded-lg bg-gray-50 shadow-sm">
             <h2 className="text-xl font-semibold text-gray-700 mb-4 flex items-center">
