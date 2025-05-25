@@ -31,8 +31,7 @@ const CertificadoSeguridadSocialPage: React.FC = () => {
       </div>
 
       <div className="container mx-auto py-8 px-4 md:px-6 lg:px-8">
-        <div className="bg-card p-6 md:p-8 rounded-lg shadow-lg border border-prosalud-border">
-          <header className="mb-8 text-center">
+        <header className="mb-8 text-center">
             <div className="flex justify-center items-center gap-3 mb-2">
               <ShieldCheck className="h-8 w-8 text-primary-prosalud-dark" />
               <h1 className="text-3xl font-bold text-primary-prosalud-dark">
@@ -42,8 +41,8 @@ const CertificadoSeguridadSocialPage: React.FC = () => {
             <p className="text-lg text-muted-foreground">
               Autoconsultar tu certificado es un proceso simple.
             </p>
-          </header>
-
+        </header>
+        <div className="bg-card p-6 md:p-8 rounded-lg shadow-lg border border-prosalud-border">
           <section className="mb-8">
             <Alert className="bg-blue-50 border-blue-200 text-blue-700">
               <Info className="h-5 w-5 text-blue-600" />
