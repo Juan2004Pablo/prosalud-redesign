@@ -1,3 +1,4 @@
+
 import { Briefcase, Home, Users, FileText, FolderArchive, Shield, LucideIcon } from 'lucide-react';
 
 // Define types for menu items
@@ -52,7 +53,7 @@ export const menuItems: MenuItemType[] = [
       {
         name: 'Campañas', // This MenuSubItem acts as a header, path is not needed
         submenu: [
-          { name: 'Estilo de Vida y Trabajo Saludable', path: '/salud-seguridad-laboral/campanas/estilo-vida-trabajo-saludable' },
+          { name: 'Estilo de Vida y Trabajo Saludable', path: '/servicios/sst' }, // Updated path
         ]
       },
     ]
@@ -124,3 +125,4 @@ export const mobileNavItems = menuItems.map(item => {
     icon: item.icon
   };
 });
+
