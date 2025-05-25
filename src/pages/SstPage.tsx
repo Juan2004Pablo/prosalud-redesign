@@ -119,8 +119,8 @@ const SstPage: React.FC = () => {
   const articles = [
     { title: "Sus 5 momentos para la Higiene de las Manos", url: "https://www.sindicatoprosalud.com/portal/images/PROSALUD/Coronavirus/5%20Momentos%20para%20la%20Higiene%20de%20Manos.pdf" },
     { title: "¿Cómo desinfectarse las manos?", url: "https://www.sindicatoprosalud.com/portal/images/PROSALUD/Coronavirus/Como%20desinfectarse%20las%20manos.pdf" },
-    { title: "Coronavirus: Higiene de las manos - por qué, cómo, cuándo", url: "https://www.sindicatoprosalud.com/portal/images/PROSALUD/Coronavirus/Higiene%20de%20las%20manos%20-%20por%20qu%C3%A9,%20c%C3%B3mo,%20cu%C3%A1ndo.pdf" },
     { title: "Medidas básicas para el Control de Infecciones en IPS", url: "https://www.sindicatoprosalud.com/portal/images/PROSALUD/Coronavirus/Cartilla%20Coronavirus.pdf" },
+    { title: "Coronavirus: Higiene de las manos - por qué, cómo, cuándo", url: "https://www.sindicatoprosalud.com/portal/images/PROSALUD/Coronavirus/Higiene%20de%20las%20manos%20-%20por%20qu%C3%A9,%20c%C3%B3mo,%20cu%C3%A1ndo.pdf" },
   ];
 
   return (
@@ -343,37 +343,6 @@ const SstPage: React.FC = () => {
           </CardContent>
         </Card>
 
-        {/* Artículos */}
-        <section className="mb-12 animate-[fadeInUp_0.5s_ease-out_1.4s_forwards] opacity-0">
-          <h2 className="text-3xl font-bold text-primary mb-8 text-center">
-            <FileText size={32} className="mr-3 inline-block text-secondary-prosaludgreen" />
-            Artículos: Para que estemos preparados ten en cuenta lo siguiente
-          </h2>
-          <div className="grid md:grid-cols-2 gap-6">
-            {articles.map((article, index) => (
-              <Card key={index} className="shadow-md hover:shadow-xl transition-shadow duration-300">
-                <CardHeader>
-                  <CardTitle className="text-xl font-semibold text-primary-prosalud flex items-center">
-                    <FileText size={22} className="mr-2 text-primary-prosalud" />
-                    {article.title}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <a
-                    href={article.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center text-secondary-prosaludgreen hover:text-secondary-prosaludgreen/80 font-medium"
-                  >
-                    Ver documento
-                    <ExternalLink size={18} className="ml-2" />
-                  </a>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </section>
-
         {/* Tipos de emergencias */}
         <section className="mb-12 animate-[fadeInUp_0.5s_ease-out_1.6s_forwards] opacity-0">
           <h2 className="text-3xl font-bold text-primary mb-8 text-center">
@@ -398,6 +367,37 @@ const SstPage: React.FC = () => {
                          <p className="text-xs text-center text-muted-foreground mt-1">Ilustración para {emergency.title}</p>
                      </div>
                   )}
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
+
+        {/* Artículos */}
+        <section className="mb-12 animate-[fadeInUp_0.5s_ease-out_1.4s_forwards] opacity-0">
+          <h2 className="text-3xl font-bold text-primary mb-8 text-center">
+            <FileText size={32} className="mr-3 inline-block text-secondary-prosaludgreen" />
+            Artículos
+          </h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            {articles.map((article, index) => (
+              <Card key={index} className="shadow-md hover:shadow-xl transition-shadow duration-300">
+                <CardHeader>
+                  <CardTitle className="text-xl font-semibold text-primary-prosalud flex items-center">
+                    <FileText size={22} className="mr-2 text-primary-prosalud" />
+                    {article.title}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <a
+                    href={article.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center text-secondary-prosaludgreen hover:text-secondary-prosaludgreen/80 font-medium"
+                  >
+                    Ver documento
+                    <ExternalLink size={18} className="ml-2" />
+                  </a>
                 </CardContent>
               </Card>
             ))}
