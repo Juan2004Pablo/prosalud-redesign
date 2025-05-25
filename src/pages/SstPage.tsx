@@ -69,16 +69,19 @@ const SstPage: React.FC = () => {
       imagePlaceholder: true,
     },
     {
-      id: "sismos",
-      title: "Sismos",
-      icon: <Activity size={48} className="text-yellow-500 mb-4" />,
+      id: "evacuacion",
+      title: "Evacuación",
+      icon: <DoorOpen size={48} className="text-blue-500 mb-4" />,
       points: [
-        "En caso de encontrarse en la vía pública, diríjase a zonas verdes o parques donde no existan peligros con los cables eléctricos o estructuras que se derrumben.",
-        "Si va en carro deténgalo inmediatamente, permaneciendo en el interior, o debajo de él si hay otros carros en movimiento.",
-        "Si está en un bus permanezca adentro hasta que el sismo haya terminado.",
-        "Si se encuentra cerca de un río o quebrada debe alejarse de la orilla y buscar refugio en un sitio alto y de poca pendiente, porque puede haber deslizamiento de tierra, represamientos y avalanchas.",
-        "Apague equipos, maquinaria y sistema antes de salir.",
-        "Mantenga la calma y evite correr. El pánico es tan peligroso como el terremoto."
+        "Al escuchar la señal de alarma desconecte todos los aparatos eléctricos.",
+        "Suspenda toda actividad.",
+        "Salga inmediatamente, no se devuelva por ningún motivo, evite congestiones.",
+        "Salga despacio y sin correr por las rutas de evacuación establecidas.",
+        "Utilice siempre las escaleras.",
+        "Atienda y cumpla estrictamente las órdenes de los coordinadores de evacuación.",
+        "Si cae un compañero retírelo de la ruta de evacuación para que no obstruya la vía.",
+        "Si nota que falta algún compañero avise al coordinador.",
+        "Apréndase los teléfonos de emergencia: Cruz Roja, Bomberos, Policía, Control de Tránsito."
       ],
       imagePlaceholder: true,
     },
@@ -97,19 +100,16 @@ const SstPage: React.FC = () => {
       imagePlaceholder: true,
     },
     {
-      id: "evacuacion",
-      title: "Evacuación",
-      icon: <DoorOpen size={48} className="text-blue-500 mb-4" />,
+      id: "sismos",
+      title: "Sismos",
+      icon: <Activity size={48} className="text-yellow-500 mb-4" />,
       points: [
-        "Al escuchar la señal de alarma desconecte todos los aparatos eléctricos.",
-        "Suspenda toda actividad.",
-        "Salga inmediatamente, no se devuelva por ningún motivo, evite congestiones.",
-        "Salga despacio y sin correr por las rutas de evacuación establecidas.",
-        "Utilice siempre las escaleras.",
-        "Atienda y cumpla estrictamente las órdenes de los coordinadores de evacuación.",
-        "Si cae un compañero retírelo de la ruta de evacuación para que no obstruya la vía.",
-        "Si nota que falta algún compañero avise al coordinador.",
-        "Apréndase los teléfonos de emergencia: Cruz Roja, Bomberos, Policía, Control de Tránsito."
+        "En caso de encontrarse en la vía pública, diríjase a zonas verdes o parques donde no existan peligros con los cables eléctricos o estructuras que se derrumben.",
+        "Si va en carro deténgalo inmediatamente, permaneciendo en el interior, o debajo de él si hay otros carros en movimiento.",
+        "Si está en un bus permanezca adentro hasta que el sismo haya terminado.",
+        "Si se encuentra cerca de un río o quebrada debe alejarse de la orilla y buscar refugio en un sitio alto y de poca pendiente, porque puede haber deslizamiento de tierra, represamientos y avalanchas.",
+        "Apague equipos, maquinaria y sistema antes de salir.",
+        "Mantenga la calma y evite correr. El pánico es tan peligroso como el terremoto."
       ],
       imagePlaceholder: true,
     }
@@ -284,7 +284,7 @@ const SstPage: React.FC = () => {
                 </ol>
               </div>
               <div className="md:w-1/3 mt-6 md:mt-0">
-                <img src="/lovable-uploads/ae428eb9-0bc1-40b2-93b5-0a4126a7ba23.png" alt="Protocolo accidente de trabajo" className="rounded-lg shadow-md bg-gray-200 aspect-video object-cover w-full h-auto" />
+                <img src="/images/sst/referencia_visual_protocolo.png" alt="Protocolo accidente de trabajo" className="rounded-lg shadow-md bg-gray-200 aspect-video object-cover w-full h-auto" />
                 <p className="text-xs text-center text-muted-foreground mt-2">Referencia visual del protocolo</p>
               </div>
             </div>
@@ -311,7 +311,7 @@ const SstPage: React.FC = () => {
           <CardContent className="space-y-6">
              <div className="md:flex md:items-start md:gap-6">
                 <div className="md:w-1/3 mb-6 md:mb-0">
-                    <img src="/lovable-uploads/138161d3-ff19-4e89-a637-ef145b62113b.png" alt="Preparación para emergencias" className="rounded-lg shadow-md bg-gray-200 aspect-[3/4] object-cover w-full h-auto" />
+                    <img src="/images/sst/infografia_de_preparacion.png" alt="Preparación para emergencias" className="rounded-lg shadow-md bg-gray-200 aspect-[3/4] object-cover w-full h-auto" />
                     <p className="text-xs text-center text-muted-foreground mt-2">Infografía de preparación</p>
                 </div>
                 <div className="md:w-2/3 space-y-4">
@@ -422,13 +422,6 @@ const SstPage: React.FC = () => {
                       </Collapsible>
                     )}
                   </div>
-                  
-                  {emergency.imagePlaceholder && (
-                     <div className="mt-auto pt-4"> {/* Ensure image is at the bottom if content above is short */}
-                        <img src="" alt={`${emergency.title} ilustración`} className="rounded-md bg-gray-200 aspect-video object-cover w-full h-auto" />
-                         <p className="text-xs text-center text-muted-foreground mt-1">Ilustración para {emergency.title}</p>
-                     </div>
-                  )}
                 </CardContent>
               </Card>
             ))}
@@ -466,7 +459,6 @@ const SstPage: React.FC = () => {
             ))}
           </div>
         </section>
-
       </div>
     </MainLayout>
   );
