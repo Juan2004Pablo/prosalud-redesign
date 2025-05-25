@@ -127,7 +127,7 @@ const SstPage: React.FC = () => {
     <MainLayout>
       <div className="container mx-auto py-10 px-4 sm:px-6 lg:px-8">
         <header className="mb-12 text-center animate-fade-in">
-          <h1 className="text-4xl font-extrabold text-primary mb-4 tracking-tight">
+          <h1 className="text-4xl font-bold text-primary mb-4 tracking-tight">
             Seguridad y Salud en el Trabajo (SST)
           </h1>
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
