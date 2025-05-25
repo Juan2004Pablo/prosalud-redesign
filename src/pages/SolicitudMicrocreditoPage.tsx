@@ -11,7 +11,7 @@ import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/comp
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
-import { Alert, AlertDescription } from "@/components/ui/alert"; // AlertTitle might not be used directly in the "IMPORTANTE" section, but Alert is.
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Home, CreditCard, Info, Mail, Clock, Send } from 'lucide-react';
 import { toast } from "@/hooks/use-toast";
 
@@ -110,8 +110,8 @@ const SolicitudMicrocreditoPage: React.FC = () => {
         <div className="max-w-4xl mx-auto">
           <header className="mb-8 text-center">
             <div className="flex justify-center items-center gap-3 mb-4">
-                <CreditCard className="h-10 w-10 text-primary-prosalud" />
-                <h1 className="text-3xl font-bold text-primary-prosalud">
+                <CreditCard className="h-8 w-8 text-primary-prosalud-dark" />
+                <h1 className="text-3xl font-bold text-primary-prosalud-dark">
                 Solicitud - Microcrédito CEII
                 </h1>
             </div>
