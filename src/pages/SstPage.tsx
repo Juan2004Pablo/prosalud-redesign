@@ -7,6 +7,12 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import CopyToClipboardButton from '@/components/ui/copyToClipboardButton';
 import {
+  Dialog,
+  DialogContent,
+  DialogClose,
+  // DialogTrigger, // Not used directly if we manage open state
+} from "@/components/ui/dialog";
+import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
@@ -37,7 +43,10 @@ import {
   Hand,
   ExternalLink,
   Home,
+  ZoomIn,
+  X, // For the close button in the dialog
 } from 'lucide-react';
+
 // import { toast } from 'sonner'; // Not used currently, can be removed or kept for future use
 
 const SstPage: React.FC = () => {
@@ -117,6 +126,7 @@ const SstPage: React.FC = () => {
   
   const [openCollapsible, setOpenCollapsible] = React.useState<Record<string, boolean>>({});
   const [openEmergencyDetails, setOpenEmergencyDetails] = React.useState<Record<string, boolean>>({});
+  const [selectedImage, setSelectedImage] = React.useState<string | null>(null);
 
   const toggleCollapsible = (id: string) => {
     setOpenCollapsible(prev => ({ ...prev, [id]: !prev[id] }));
@@ -148,7 +158,7 @@ const SstPage: React.FC = () => {
           <BreadcrumbList className="flex items-center space-x-2 text-sm">
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <Link to="/" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
+                <Link to="/" className="flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors">
                   <Home className="h-4 w-4" />
                   Inicio
                 </Link>
@@ -156,7 +166,7 @@ const SstPage: React.FC = () => {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage className="flex items-center gap-1 font-medium text-foreground">
+              <BreadcrumbPage className="flex items-center gap-1.5 font-medium text-foreground">
                 <FileText className="h-4 w-4" />
                 Seguridad y Salud en el Trabajo
               </BreadcrumbPage>
@@ -284,8 +294,20 @@ const SstPage: React.FC = () => {
                 </ol>
               </div>
               <div className="md:w-1/3 mt-6 md:mt-0">
-                <img src="/images/sst/referencia_visual_protocolo.png" alt="Protocolo accidente de trabajo" className="rounded-lg shadow-md bg-gray-200 aspect-video object-cover w-full h-auto" />
-                <p className="text-xs text-center text-muted-foreground mt-2">Referencia visual del protocolo</p>
+                <div 
+                  className="relative group cursor-pointer"
+                  onClick={() => setSelectedImage("/images/sst/referencia_visual_protocolo.png")}
+                >
+                  <img 
+                    src="/images/sst/referencia_visual_protocolo.png" 
+                    alt="Protocolo accidente de trabajo" 
+                    className="rounded-lg shadow-md bg-gray-200 aspect-video object-contain w-full h-auto" 
+                  />
+                  <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 flex items-center justify-center transition-opacity duration-300 rounded-lg">
+                    <ZoomIn size={48} className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  </div>
+                </div>
+                <p className="text-xs text-center text-muted-foreground mt-2">Referencia visual del protocolo (clic para ampliar)</p>
               </div>
             </div>
              <Alert variant="default" className="bg-primary-prosalud/5 border-primary-prosalud mt-6">
@@ -311,11 +333,23 @@ const SstPage: React.FC = () => {
           <CardContent className="space-y-6">
              <div className="md:flex md:items-start md:gap-6">
                 <div className="md:w-1/3 mb-6 md:mb-0">
-                    <img src="/images/sst/infografia_de_preparacion.png" alt="Preparación para emergencias" className="rounded-lg shadow-md bg-gray-200 aspect-[3/4] object-cover w-full h-auto" />
-                    <p className="text-xs text-center text-muted-foreground mt-2">Infografía de preparación</p>
+                  <div 
+                    className="relative group cursor-pointer"
+                    onClick={() => setSelectedImage("/images/sst/infografia_de_preparacion.png")}
+                  >
+                    <img 
+                      src="/images/sst/infografia_de_preparacion.png" 
+                      alt="Preparación para emergencias" 
+                      className="rounded-lg shadow-md bg-gray-200 aspect-[3/4] object-contain w-full h-auto" 
+                    />
+                    <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 flex items-center justify-center transition-opacity duration-300 rounded-lg">
+                      <ZoomIn size={48} className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    </div>
+                  </div>
+                  <p className="text-xs text-center text-muted-foreground mt-2">Infografía de preparación (clic para ampliar)</p>
                 </div>
                 <div className="md:w-2/3 space-y-4">
-                    <Collapsible open={openCollapsible['q1']} onOpenChange={() => toggleCollapsible('q1')} className="border rounded-md p-4 shadow-sm">
+                  <Collapsible open={openCollapsible['q1']} onOpenChange={() => toggleCollapsible('q1')} className="border rounded-md p-4 shadow-sm">
                         <CollapsibleTrigger className="flex justify-between items-center w-full font-semibold text-lg text-primary-prosalud hover:underline">
                         ¿Qué hacer en casos de emergencias?
                         {openCollapsible['q1'] ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
@@ -400,26 +434,42 @@ const SstPage: React.FC = () => {
                     {emergency.points.length > 0 && (
                       <p className="leading-relaxed">
                         {emergency.points[0]}
+                        {emergency.points.length > 1 && (
+                          <Collapsible 
+                            open={openEmergencyDetails[emergency.id]} 
+                            onOpenChange={() => toggleEmergencyDetail(emergency.id)}
+                            className="inline" 
+                          >
+                            <CollapsibleContent className="inline">
+                              {openEmergencyDetails[emergency.id] && emergency.points.slice(1).map((point, i) => (
+                                <React.Fragment key={`detail-${emergency.id}-${i}`}> {point}</React.Fragment>
+                              ))}
+                            </CollapsibleContent>
+                            <CollapsibleTrigger className="text-primary-prosalud hover:underline flex items-center text-xs sm:text-sm p-0 h-auto font-medium ml-1 inline-flex align-baseline">
+                              {openEmergencyDetails[emergency.id] ? "Leer menos" : "Leer más"}
+                              {openEmergencyDetails[emergency.id] ? <ChevronUp size={16} className="ml-1" /> : <ChevronDown size={16} className="ml-1" />}
+                            </CollapsibleTrigger>
+                          </Collapsible>
+                        )}
                       </p>
                     )}
-                    {emergency.points.length > 1 && (
-                      <Collapsible 
-                        open={openEmergencyDetails[emergency.id]} 
-                        onOpenChange={() => toggleEmergencyDetail(emergency.id)}
-                        className="mt-1"
-                      >
-                        <CollapsibleContent className="space-y-1 text-muted-foreground text-sm mt-1 leading-relaxed">
-                          <ul className="list-disc list-inside space-y-1">
+                    {emergency.points.length > 1 && !openEmergencyDetails[emergency.id] && emergency.points.slice(1).length > 0 && (
+                       // This part is tricky - the original collapsible was for all points AFTER the first one.
+                       // The "Leer más" for the first point now shows the rest.
+                       // If the original design had a list for subsequent points, that needs to be handled within the CollapsibleContent.
+                       // The current implementation displays points inline after the first one when expanded.
+                       // If a list is desired when expanded:
+                       /*
+                        <CollapsibleContent>
+                          <ul className="list-disc list-inside space-y-1 mt-1">
                             {emergency.points.slice(1).map((point, i) => (
                               <li key={`detail-${emergency.id}-${i}`}>{point}</li>
                             ))}
                           </ul>
                         </CollapsibleContent>
-                        <CollapsibleTrigger className="text-primary-prosalud hover:underline flex items-center text-xs sm:text-sm p-0 h-auto font-medium mt-2">
-                          {openEmergencyDetails[emergency.id] ? "Leer menos" : "Leer más"}
-                          {openEmergencyDetails[emergency.id] ? <ChevronUp size={16} className="ml-1" /> : <ChevronDown size={16} className="ml-1" />}
-                        </CollapsibleTrigger>
-                      </Collapsible>
+                       */
+                       // For now, keeping them inline as per the text "muestre el restante"
+                       null
                     )}
                   </div>
                 </CardContent>
@@ -460,6 +510,24 @@ const SstPage: React.FC = () => {
           </div>
         </section>
       </div>
+
+      <Dialog open={!!selectedImage} onOpenChange={(isOpen) => { if (!isOpen) setSelectedImage(null); }}>
+        <DialogContent className="sm:max-w-[90vw] md:max-w-[80vw] lg:max-w-[70vw] xl:max-w-[60vw] max-h-[90vh] p-2 bg-white">
+          {selectedImage && (
+            <img 
+              src={selectedImage} 
+              alt="Vista ampliada" 
+              className="w-full h-auto max-h-[calc(90vh-2rem)] object-contain" // Adjusted max-h to account for padding and close button
+            />
+          )}
+          <DialogClose asChild className="absolute top-2 right-2 sm:top-3 sm:right-3">
+              <Button variant="ghost" size="icon" className="rounded-full hover:bg-gray-200">
+                <X className="h-5 w-5 sm:h-6 sm:w-6 text-gray-700" />
+              </Button>
+          </DialogClose>
+        </DialogContent>
+      </Dialog>
+
     </MainLayout>
   );
 };
