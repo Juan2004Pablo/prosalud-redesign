@@ -141,7 +141,7 @@ const VerificacionPagosPage: React.FC = () => {
             <InformacionProcesoSection control={form.control} />
             <DetalleNovedadSection control={form.control} />
             <ArchivoAnexoSection control={form.control} />
-            <ConfirmacionCorreoSection control={form.control} />
+            <ConfirmacionCorreoSection /> {/* Removed control prop */}
             <AutorizacionDatosSection />
             
             <div className="flex justify-center mt-10">

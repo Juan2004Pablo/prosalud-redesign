@@ -147,7 +147,7 @@ const SolicitudDescansoLaboralPage: React.FC = () => {
             <DatosPersonalesDescansoSection control={form.control} idTypes={idTypes} />
             <InformacionDescansoSection control={form.control} />
             <AnexoDescansoSection control={form.control} />
-            <ConfirmacionCorreoSection control={form.control} />
+            <ConfirmacionCorreoSection /> {/* Removed control prop */}
             <AutorizacionDatosSection />
             
             <div className="flex justify-center mt-10">

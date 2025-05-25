@@ -151,7 +151,7 @@ const SolicitudAnualDiferidaPage: React.FC = () => {
             <DatosPersonalesDescansoSection control={form.control} idTypes={idTypes} />
             <InformacionAnualDiferidaSection control={form.control} />
             <AnexosAnualDiferidaSection control={form.control} />
-            <ConfirmacionCorreoSection control={form.control} />
+            <ConfirmacionCorreoSection /> {/* Removed control prop */}
             <AutorizacionDatosSection />
             
             <div className="flex justify-center mt-10">

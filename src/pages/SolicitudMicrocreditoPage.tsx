@@ -203,7 +203,7 @@ const SolicitudMicrocreditoPage: React.FC = () => {
                 </div>
               </section>
               
-              <ConfirmacionCorreoSection control={form.control} />
+              <ConfirmacionCorreoSection />
               <AutorizacionDatosSection />
 
               <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-10">
