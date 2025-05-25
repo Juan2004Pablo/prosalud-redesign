@@ -68,7 +68,6 @@ export const menuItems: MenuItemType[] = [
           { name: 'Formatos de dotación', path: '/documentos-formatos/documentos-publicos/formatos-dotacion' },
           { name: 'Listados de asistencia', path: '/documentos-formatos/documentos-publicos/listados-asistencia' },
           { name: 'MIPRES', path: '/documentos-formatos/documentos-publicos/mipres' },
-          { name: 'Requerimiento y verificación de pagos', path: '/documentos-formatos/documentos-publicos/requerimiento-verificacion-pagos' },
           { name: 'Retefuente: documentos Requeridos', path: '/documentos-formatos/documentos-publicos/retefuente-documentos-requeridos' },
         ]
       },
