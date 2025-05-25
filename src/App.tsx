@@ -21,6 +21,7 @@ import SolicitudMicrocreditoPage from "./pages/SolicitudMicrocreditoPage";
 import SolicitudRetiroSindicalPage from "./pages/SolicitudRetiroSindicalPage";
 import SolicitudPermisosCambioTurnosPage from "./pages/SolicitudPermisosCambioTurnosPage";
 import CertificadoSeguridadSocialPage from "./pages/CertificadoSeguridadSocialPage";
+import ScrollToTop from "./components/utils/ScrollToTop"; // Importar ScrollToTop
 
 const queryClient = new QueryClient();
 
@@ -40,6 +41,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <ScrollToTop /> {/* Añadir ScrollToTop aquí */}
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/login" element={<LoginPage />} />
