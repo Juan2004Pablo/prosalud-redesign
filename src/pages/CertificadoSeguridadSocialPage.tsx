@@ -1,9 +1,8 @@
-
 import React from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { Link } from 'react-router-dom';
-import { Home, FileText, ExternalLink } from 'lucide-react';
+import { Home, FileText, ExternalLink, ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Info } from 'lucide-react';
@@ -34,9 +33,12 @@ const CertificadoSeguridadSocialPage: React.FC = () => {
       <div className="container mx-auto py-8 px-4 md:px-6 lg:px-8">
         <div className="bg-card p-6 md:p-8 rounded-lg shadow-lg border border-prosalud-border">
           <header className="mb-8 text-center">
-            <h1 className="text-3xl font-bold text-primary-prosalud mb-2">
-              Certificado de Aportes a la Seguridad Social
-            </h1>
+            <div className="flex justify-center items-center gap-3 mb-2">
+              <ShieldCheck className="h-8 w-8 text-primary-prosalud-dark" />
+              <h1 className="text-3xl font-bold text-primary-prosalud-dark">
+                Certificado de Aportes a la Seguridad Social
+              </h1>
+            </div>
             <p className="text-lg text-muted-foreground">
               Autoconsultar tu certificado es un proceso simple.
             </p>

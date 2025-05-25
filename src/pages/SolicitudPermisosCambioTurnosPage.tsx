@@ -1,4 +1,3 @@
-
 import React from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
@@ -35,8 +34,8 @@ const SolicitudPermisosCambioTurnosPage: React.FC = () => {
         <div className="bg-card p-6 md:p-8 rounded-lg shadow-lg border border-prosalud-border">
           <header className="mb-8 text-center">
             <div className="flex justify-center items-center gap-3 mb-4">
-                <FileText className="h-10 w-10 text-primary-prosalud" />
-                <h1 className="text-3xl font-bold text-primary-prosalud">
+                <FileText className="h-8 w-8 text-primary-prosalud-dark" />
+                <h1 className="text-3xl font-bold text-primary-prosalud-dark">
                 Solicitud de Permisos y Cambio de Turnos
                 </h1>
             </div>

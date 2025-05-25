@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import MainLayout from '@/components/layout/MainLayout';
-import { Mail, CheckCircle2, AlertTriangle, FileText, Send, Info, Home } from 'lucide-react';
+import { Mail, CheckCircle2, AlertTriangle, FileText, Send, Info, Home, Hospital } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import CopyToClipboardButton from '@/components/ui/copyToClipboardButton';
@@ -36,9 +36,12 @@ const IncapacidadesLicenciasPage: React.FC = () => {
 
       <div className="container mx-auto py-10 px-4 sm:px-6 lg:px-8 animate-[fadeInUp_0.5s_ease-out]">
         <header className="mb-12 text-center">
-          <h1 className="text-4xl font-bold text-primary mb-4">
-            Incapacidades y Licencias
-          </h1>
+          <div className="flex justify-center items-center gap-3 mb-4">
+            <Hospital className="h-8 w-8 text-primary-prosalud-dark" />
+            <h1 className="text-4xl font-bold text-primary-prosalud-dark">
+              Incapacidades y Licencias
+            </h1>
+          </div>
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
             Guía completa para el trámite de incapacidades y licencias. Sigue estos pasos para asegurar un proceso ágil y correcto.
           </p>
