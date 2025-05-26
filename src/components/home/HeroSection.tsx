@@ -65,7 +65,7 @@ const HeroSection: React.FC = () => {
                     size="lg"
                     className="text-primary-prosalud border-text-light/70 hover:bg-text-light px-8 py-3 hover:text-primary-prosalud hover:underline w-full sm:w-auto transition-all duration-300 transform hover:scale-105 px-8 py-6"
                   >
-                    Conócenos Más
+                    Conoce Más
                   </Button>
                 </Link>
               </div>
