@@ -36,8 +36,9 @@ const HeroSection: React.FC = () => {
             {/* Left Column: Textual Content & Buttons */}
             <div className="md:text-left text-center transform transition-all duration-4000 opacity-0 translate-y-8 animate-[fadeInUp_0.8s_ease-out_forwards]">
               <h1 className="font-bold mb-8">
-                <span className="inline-block bg-secondary-prosaludgreen/20 text-secondary-prosaludgreen px-3 py-1 text-sm font-medium rounded-full mb-4">
-                  Tu Bienestar, Nuestra Prioridad
+                <span className="inline-block bg-secondary-prosaludgreen/20 text-secondary-prosaludgreen px-3 py-1 text-sm font-medium rounded-full mb-4 gap-2">
+                    <Icon icon="lucide:heart-pulse" />
+                    Tu Bienestar, Nuestra Prioridad
                 </span>
                 <span className="block text-5xl md:text-6xl lg:text-7xl leading-tight">
                   <span className="text-prosalud-pro">Pro</span><span className="text-prosalud-salud">Salud</span>
