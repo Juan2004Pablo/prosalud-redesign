@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, HeartPulse } from 'lucide-react';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -37,7 +37,7 @@ const HeroSection: React.FC = () => {
             <div className="md:text-left text-center transform transition-all duration-4000 opacity-0 translate-y-8 animate-[fadeInUp_0.8s_ease-out_forwards]">
               <h1 className="font-bold mb-8">
                 <span className="inline-block bg-secondary-prosaludgreen/20 text-secondary-prosaludgreen px-3 py-1 text-sm font-medium rounded-full mb-4 gap-2">
-                    <Icon icon="lucide:heart-pulse" />
+                    <HeartPulse />
                     Tu Bienestar, Nuestra Prioridad
                 </span>
                 <span className="block text-5xl md:text-6xl lg:text-7xl leading-tight">
