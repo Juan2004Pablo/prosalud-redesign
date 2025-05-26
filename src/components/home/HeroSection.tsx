@@ -1,10 +1,10 @@
-
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 const HeroSection: React.FC = () => {
   const sectionRef = useRef<HTMLDivElement | null>(null);
@@ -16,6 +16,14 @@ const HeroSection: React.FC = () => {
       quickLinksSection.scrollIntoView({ behavior: 'smooth' });
     }
   };
+
+  // Placeholder avatars - en una aplicación real, estos vendrían de datos dinámicos o imágenes específicas.
+  const avatarPlaceholders = [
+    { src: "/lovable-uploads/ae428eb9-0bc1-40b2-93b5-0a4126a7ba23.png", fallback: "P1", alt: "Profesional 1"}, // Usando imagen existente como ejemplo
+    { src: "/lovable-uploads/2bf2da56-4967-4a17-8849-9efab8759375.png", fallback: "P2", alt: "Profesional 2"}, // Usando imagen existente como ejemplo
+    { src: "/lovable-uploads/138161d3-ff19-4e89-a637-ef145b62113b.png", fallback: "P3", alt: "Profesional 3"}, // Usando imagen existente como ejemplo
+    { src: "https://via.placeholder.com/50/4CAF50/FFFFFF?text=P4", fallback: "P4", alt: "Profesional 4"} // Placeholder genérico
+  ];
 
   return (
     <section 
@@ -61,6 +69,21 @@ const HeroSection: React.FC = () => {
                   </Button>
                 </Link>
               </div>
+
+              {/* Nueva sección de avatares y texto de confianza */}
+              <div className="mt-10 flex items-center justify-center md:justify-start">
+                <div className="flex -space-x-3">
+                  {avatarPlaceholders.map((avatar, index) => (
+                    <Avatar key={index} className="h-10 w-10 border-2 border-slate-800/50">
+                      <AvatarImage src={avatar.src} alt={avatar.alt} className="object-cover" />
+                      <AvatarFallback className="bg-secondary-prosaludgreen text-white">{avatar.fallback}</AvatarFallback>
+                    </Avatar>
+                  ))}
+                </div>
+                <p className="ml-4 text-sm text-text-light font-medium">
+                  +1500 profesionales ya confían en nosotros
+                </p>
+              </div>
             </div>
 
             {/* Right Column: Image Collage */}
@@ -95,6 +118,16 @@ const HeroSection: React.FC = () => {
               <div className="flex flex-col sm:flex-row gap-4 md:justify-start justify-center">
                 <Skeleton className="h-12 w-48" />
                 <Skeleton className="h-12 w-40" />
+              </div>
+              {/* Skeleton para la nueva sección de confianza */}
+              <div className="mt-10 flex items-center justify-center md:justify-start">
+                <div className="flex -space-x-3">
+                  <Skeleton className="h-10 w-10 rounded-full" />
+                  <Skeleton className="h-10 w-10 rounded-full" />
+                  <Skeleton className="h-10 w-10 rounded-full" />
+                  <Skeleton className="h-10 w-10 rounded-full" />
+                </div>
+                <Skeleton className="ml-4 h-6 w-64" />
               </div>
             </div>
             <div className="hidden md:block">
