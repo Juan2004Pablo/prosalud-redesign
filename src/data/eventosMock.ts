@@ -29,7 +29,6 @@ const baseEvents: EventData[] = [
     location: 'Bello',
     mainImage: { src: 'https://www.sindicatoprosalud.com/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HMFS_241203_2&file=3ded3ff3-84b3-4c7c-a5c6-1e2604dd770e.jpg', alt: 'Celebración día del medico' },
     description: 'Campaña de prevención y diagnóstico temprano de problemas visuales. Se ofrecieron exámenes gratuitos y descuentos en lentes.',
-    gift: 'Gotas lubricantes para ojos',
     attendees: 9,
     provider: 'ProSalud',
     additionalImages: [
@@ -61,20 +60,38 @@ const baseEvents: EventData[] = [
   },
   {
     id: 'evento-4',
-    title: 'Torneo Deportivo Anual',
-    date: '2024-08-10',
-    location: 'Complejo Deportivo Municipal',
-    mainImage: { src: 'https://source.unsplash.com/random/400x300?sports,team&sig=11', alt: 'Torneo Deportivo Anual' },
+    title: 'Simulacro de evacuación HMFS sede Niquia',
+    date: '2024-11-21',
+    location: 'HMFS sede Niquia',
+    mainImage: { src: 'https://www.sindicatoprosalud.com/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HMFS_241121&file=0e0ea685-c576-43a5-99d5-d5d0484a5cda.jpg', alt: 'Simulacro emergencias' },
     description: 'Fomentando la integración y el espíritu deportivo, se realizaron torneos de fútbol, baloncesto y voleibol. ¡Una jornada llena de energía!',
-    gift: 'Medallas y trofeos para los ganadores',
     attendees: 200,
     provider: 'Departamento de Deportes ProSalud',
     additionalImages: [
-        { src: 'https://source.unsplash.com/random/800x600?soccer,game&sig=12', alt: 'Partido de fútbol' },
-        { src: 'https://source.unsplash.com/random/800x600?basketball,action&sig=13', alt: 'Jugada de baloncesto' },
-        { src: 'https://source.unsplash.com/random/800x600?volleyball,team&sig=14', alt: 'Equipo de voleibol' },
+        { src: 'https://www.sindicatoprosalud.com/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HMFS_241121&file=2a5355fe-1f46-442f-978f-e0885f56b581.jpg', alt: 'Partido de fútbol' },
+        { src: 'https://www.sindicatoprosalud.com/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HMFS_241121&file=4846655f-b292-46d6-946a-36d65248cad2.jpg', alt: 'Jugada de baloncesto' },
+        { src: 'https://www.sindicatoprosalud.com/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HMFS_241121&file=5b7863e7-a7ee-45ec-b8e3-6d47eb8eff32.jpg', alt: 'Equipo de voleibol' },
+        { src: 'https://www.sindicatoprosalud.com/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HMFS_241121&file=a5b4812c-a395-4b47-86ba-dddaeba56533.jpg', alt: 'Partido de fútbol' },
+        { src: 'https://www.sindicatoprosalud.com/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HMFS_241121&file=baa857e4-8380-4a1b-9f66-365770c4630e.jpg', alt: 'Jugada de baloncesto' },
+        { src: 'https://www.sindicatoprosalud.com/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HMFS_241121&file=e606a432-13c5-4dbf-8437-22c62ab4b68b.jpg', alt: 'Equipo de voleibol' },
     ],
-    category: 'Deportes'
+    category: 'Simulacro'
+  },
+  {
+    id: 'evento-4',
+    title: 'Integración y Esparcimiento Líderes',
+    date: '2024-11-22',
+    location: 'Hospital Bello Sede Autopista',
+    mainImage: { src: 'https://www.sindicatoprosalud.com/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HMFS_241122&file=27538880-85d5-4142-acf5-93029e94c768.jpg', alt: 'Cena grupal' },
+    description: 'Fomentando la integración y el espíritu deportivo, se realizaron torneos de fútbol, baloncesto y voleibol. ¡Una jornada llena de energía!',
+    attendees: 8,
+    provider: 'CEISAS',
+    additionalImages: [
+        { src: 'https://www.sindicatoprosalud.com/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HMFS_241122&file=753102bb-a90f-434e-a1d8-2e573a38e594.jpg', alt: 'Partido de fútbol' },
+        { src: 'https://www.sindicatoprosalud.com/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HMFS_241122&file=799c36a7-38d0-4c9d-90cf-56000989cbd4.jpg', alt: 'Jugada de baloncesto' },
+        { src: 'https://www.sindicatoprosalud.com/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HMFS_241122&file=fe81ae0e-1b53-4c66-aa1b-981def0567b3.jpg', alt: 'Equipo de voleibol' },
+    ],
+    category: 'Integración'
   },
 ];
 
