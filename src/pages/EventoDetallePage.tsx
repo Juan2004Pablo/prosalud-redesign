@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import MainLayout from '@/components/layout/MainLayout';
@@ -148,8 +147,8 @@ const EventoDetallePage: React.FC = () => {
                     </CarouselContent>
                     {hasMultipleImages && (
                       <>
-                        <CarouselPrevious className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-primary-prosalud disabled:opacity-30 z-10 transform transition-all" />
-                        <CarouselNext className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-primary-prosalud disabled:opacity-30 z-10 transform transition-all" />
+                        <CarouselPrevious className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 bg-white/80 text-primary-prosalud disabled:opacity-30 z-10" />
+                        <CarouselNext className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 bg-white/80 text-primary-prosalud disabled:opacity-30 z-10" />
                       </>
                     )}
                   </Carousel>
