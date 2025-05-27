@@ -88,14 +88,14 @@ const GaleriaBienestarPage: React.FC = () => {
           </BreadcrumbList>
         </Breadcrumb>
         
-        <div className="text-center mb-4">
+        <div className="text-center mb-8">
           <div className="flex justify-center items-center gap-3 mb-4">
               <Image className="h-8 w-8 text-primary-prosalud-dark" />
               <h1 className="text-3xl md:text-4xl font-bold text-primary-prosalud-dark tracking-tight">
                 Galería de Bienestar
               </h1>
           </div>
-          <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed px-4">
+          <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed px-4 mb-4">
             Explora los momentos y actividades que hemos compartido juntos, fortaleciendo nuestra comunidad ProSalud.
           </p>
         </div>
