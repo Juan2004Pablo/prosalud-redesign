@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import MainLayout from '@/components/layout/MainLayout';
 import { mockEvents } from '@/data/eventosMock';
 import { EventData } from '@/types/eventos';
-import { CalendarDays, MapPin, Users, Gift, Briefcase, ChevronLeft } from 'lucide-react';
+import { CalendarDays, MapPin, Users, Gift, Briefcase, ChevronLeft, Maximize } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { Slash } from "lucide-react";
@@ -13,13 +13,38 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/carousel"; // Importar componentes del carrusel
-
-// En el futuro, aquí se importaría un componente ImageGallery
+  type CarouselApi
+} from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
+import ImagePreviewDialog from '@/components/sst/ImagePreviewDialog'; // Asegúrate que la ruta es correcta
 
 const EventoDetallePage: React.FC = () => {
   const { eventId } = useParams<{ eventId: string }>();
   const event = mockEvents.find(e => e.id === eventId);
+
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedImageAlt, setSelectedImageAlt] = useState<string | undefined>(undefined);
+
+  // Referencia para el plugin de autoplay
+  const autoplayPlugin = useRef(
+    Autoplay({ delay: 4000, stopOnInteraction: true, stopOnMouseEnter: true })
+  );
+
+  const [api, setApi] = React.useState<CarouselApi>()
+  const [current, setCurrent] = React.useState(0)
+  const [count, setCount] = React.useState(0)
+
+  useEffect(() => {
+    if (!api) {
+      return
+    }
+    setCount(api.scrollSnapList().length)
+    setCurrent(api.selectedScrollSnap() + 1)
+
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap() + 1)
+    })
+  }, [api])
 
   if (!event) {
     return (
@@ -34,6 +59,14 @@ const EventoDetallePage: React.FC = () => {
       </MainLayout>
     );
   }
+
+  const allImages = event.additionalImages ? [event.mainImage, ...event.additionalImages] : [event.mainImage];
+  const hasMultipleImages = allImages.length > 1;
+
+  const handleImageClick = (imageSrc: string, imageAlt?: string) => {
+    setSelectedImage(imageSrc);
+    setSelectedImageAlt(imageAlt || event.title);
+  };
 
   return (
     <MainLayout>
@@ -74,11 +107,59 @@ const EventoDetallePage: React.FC = () => {
 
           <div className="grid md:grid-cols-3 gap-8">
             <div className="md:col-span-2">
-              <img 
-                src={event.mainImage.src} 
-                alt={event.mainImage.alt} 
-                className="w-full h-auto max-h-[500px] object-cover rounded-lg shadow-md mb-6"
-              />
+              {!hasMultipleImages || allImages.length <= 1 ? (
+                <img
+                  src={event.mainImage.src}
+                  alt={event.mainImage.alt}
+                  className="w-full h-auto max-h-[500px] object-cover rounded-lg shadow-md mb-6 cursor-pointer hover:opacity-90 transition-opacity"
+                  onClick={() => handleImageClick(event.mainImage.src, event.mainImage.alt)}
+                />
+              ) : (
+                 <div className="bg-background-light p-0 rounded-lg border-0 mb-6"> {/* Contenedor para el carrusel principal si es necesario */}
+                  <Carousel 
+                    setApi={setApi}
+                    className="w-full relative" 
+                    opts={{ loop: true }} 
+                    plugins={[autoplayPlugin.current]}
+                    onMouseEnter={autoplayPlugin.current.stop}
+                    onMouseLeave={autoplayPlugin.current.play}
+                  >
+                    <CarouselContent>
+                      {allImages.map((image, index) => (
+                        <CarouselItem key={index} className="relative">
+                          <div className="p-0"> {/* Removido p-1 para que la imagen ocupe todo el espacio */}
+                            <img 
+                              src={image.src} 
+                              alt={image.alt || `${event.title} - Imagen ${index + 1}`} 
+                              className="w-full h-auto max-h-[500px] object-cover rounded-md shadow-sm cursor-pointer"
+                              onClick={() => handleImageClick(image.src, image.alt || `${event.title} - Imagen ${index + 1}`)}
+                            />
+                             <button
+                                onClick={() => handleImageClick(image.src, image.alt || `${event.title} - Imagen ${index + 1}`)}
+                                className="absolute bottom-2 right-2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-colors"
+                                aria-label="Ampliar imagen"
+                              >
+                                <Maximize size={18} />
+                              </button>
+                          </div>
+                        </CarouselItem>
+                      ))}
+                    </CarouselContent>
+                    {hasMultipleImages && (
+                      <>
+                        <CarouselPrevious className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-primary-prosalud disabled:opacity-30 hover:translate-y-[-50%] z-10" />
+                        <CarouselNext className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-primary-prosalud disabled:opacity-30 hover:translate-y-[-50%] z-10" />
+                      </>
+                    )}
+                  </Carousel>
+                   {api && count > 1 && (
+                    <div className="text-center text-sm text-muted-foreground mt-2">
+                      Imagen {current} de {count}
+                    </div>
+                  )}
+                </div>
+              )}
+              
               <h2 className="text-2xl font-semibold text-primary-prosalud-dark mb-3">Descripción del Evento</h2>
               <p className="text-gray-700 leading-relaxed whitespace-pre-line">{event.description}</p>
             </div>
@@ -119,37 +200,15 @@ const EventoDetallePage: React.FC = () => {
                   )}
                 </ul>
               </div>
-              
-              {event.additionalImages && event.additionalImages.length > 0 && (
-                <div className="bg-background-light p-4 rounded-lg border border-prosalud-border">
-                  <h3 className="text-lg font-semibold text-primary-prosalud-dark mb-4">Más Imágenes</h3>
-                  <Carousel className="w-full max-w-xs mx-auto" opts={{ loop: true }}>
-                    <CarouselContent>
-                      {event.additionalImages.map((image, index) => (
-                        <CarouselItem key={index}>
-                          <div className="p-1">
-                            <img 
-                              src={image.src} 
-                              alt={image.alt || `${event.title} - Imagen adicional ${index + 1}`} 
-                              className="w-full h-auto aspect-video object-cover rounded-md shadow-sm"
-                            />
-                          </div>
-                        </CarouselItem>
-                      ))}
-                    </CarouselContent>
-                    {event.additionalImages.length > 1 && (
-                      <>
-                        <CarouselPrevious className="absolute left-2 top-1/2 -translate-y-1/2  bg-white/80 hover:bg-white text-primary-prosalud disabled:opacity-30" />
-                        <CarouselNext className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-primary-prosalud disabled:opacity-30" />
-                      </>
-                    )}
-                  </Carousel>
-                </div>
-              )}
             </aside>
           </div>
         </article>
       </div>
+      <ImagePreviewDialog 
+        selectedImage={selectedImage} 
+        setSelectedImage={setSelectedImage}
+        imageAlt={selectedImageAlt}
+      />
     </MainLayout>
   );
 };

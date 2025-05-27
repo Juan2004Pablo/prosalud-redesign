@@ -7,21 +7,25 @@ import { X } from 'lucide-react';
 interface ImagePreviewDialogProps {
   selectedImage: string | null;
   setSelectedImage: (image: string | null) => void;
+  imageAlt?: string;
 }
 
-const ImagePreviewDialog: React.FC<ImagePreviewDialogProps> = ({ selectedImage, setSelectedImage }) => {
+const ImagePreviewDialog: React.FC<ImagePreviewDialogProps> = ({ selectedImage, setSelectedImage, imageAlt = "Vista ampliada" }) => {
   return (
     <Dialog open={!!selectedImage} onOpenChange={(isOpen) => { if (!isOpen) setSelectedImage(null); }}>
-      <DialogContent className="sm:max-w-[90vw] md:max-w-[80vw] lg:max-w-[70vw] xl:max-w-[60vw] max-h-[90vh] p-2 bg-white">
+      <DialogContent className="sm:max-w-[90vw] md:max-w-[80vw] lg:max-w-[70vw] xl:max-w-[60vw] max-h-[90vh] p-2 bg-white flex items-center justify-center">
         {selectedImage && (
           <img 
             src={selectedImage} 
-            alt="Vista ampliada" 
-            className="w-full h-auto max-h-[calc(90vh-2rem)] object-contain"
+            alt={imageAlt} 
+            className="w-auto h-auto max-w-full max-h-[calc(90vh-4rem)] object-contain rounded-md"
           />
         )}
         <DialogClose asChild className="absolute top-2 right-2 sm:top-3 sm:right-3">
-            
+          <Button variant="ghost" size="icon" className="rounded-full">
+            <X className="h-5 w-5" />
+            <span className="sr-only">Cerrar</span>
+          </Button>
         </DialogClose>
       </DialogContent>
     </Dialog>
