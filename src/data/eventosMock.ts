@@ -93,6 +93,25 @@ const baseEvents: EventData[] = [
     ],
     category: 'Integración'
   },
+  {
+    id: 'evento-4',
+    title: 'Celebración día del niñ@ HSJD',
+    date: '2024-10-25',
+    location: 'Hospital san juan de Dios, sede GMM',
+    mainImage: { src: 'https://www.sindicatoprosalud.com/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HSJD_20241025&file=415f8d7d-5833-44ce-88b2-3976df64b0a0.jpg', alt: 'Nino disfrutando' },
+    description: 'Fomentando la integración y el espíritu deportivo, se realizaron torneos de fútbol, baloncesto y voleibol. ¡Una jornada llena de energía!',
+    attendees: 100,
+    gift: 'Regalos y juegos',
+    provider: 'ProSalud',
+    additionalImages: [
+        { src: 'https://www.sindicatoprosalud.com/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HSJD_20241025&file=49888f05-f9e2-4493-9ddd-8e2b908c0f85.jpg', alt: 'Partido de fútbol' },
+        { src: 'https://www.sindicatoprosalud.com/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HSJD_20241025&file=c19b7ce3-1128-4c3f-b756-ad5c180e91f3.jpg', alt: 'Jugada de baloncesto' },
+        { src: 'https://www.sindicatoprosalud.com/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HSJD_20241025&file=8c055c15-6e96-4ad3-b6ca-701fcd4be287.jpg', alt: 'Equipo de voleibol' },
+        { src: 'https://www.sindicatoprosalud.com/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HSJD_20241025&file=69fb6282-0bb8-4f09-b2dc-cd40815c4c73.jpg', alt: 'Jugada de baloncesto' },
+        { src: 'https://www.sindicatoprosalud.com/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HSJD_20241025&file=be936b77-a353-4c04-8ac0-37c0a303cc95.jpg', alt: 'Equipo de voleibol' },
+    ],
+    category: 'Celebración'
+  },
 ];
 
 export const mockEvents: EventData[] = [...baseEvents];
