@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -30,24 +31,6 @@ const images: Image[] = [{
 }, {
   src: "https://www.sindicatoprosalud.com/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HLM_241203&file=83fa956d-0de5-4bf5-9e1d-3437cad82b14.jpg",
   alt: "Ejercicio de relajación grupal"
-}, {
-  src: "https://www.sindicatoprosalud.com/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HLM_241203&file=9aff4819-ccff-49a7-a329-5319f594ec97.jpg",
-  alt: "Participantes ProSalud"
-}, {
-  src: "https://www.sindicatoprosalud.com/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HLM_241203&file=a52b4ad2-f1a7-43ba-86a7-2d09f29c1a20.jpg",
-  alt: "Relajación ProSalud"
-}, {
-  src: "https://www.sindicatoprosalud.com/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HLM_241203&file=b00dd65f-4748-4003-bb3f-0e174881b8dc.jpg",
-  alt: "Taller ProSalud"
-}, {
-  src: "https://www.sindicatoprosalud.com/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HLM_241203&file=d06ae58a-dc2a-48b0-8b20-45d8de68de57.jpg",
-  alt: "Dinámica grupal ProSalud"
-}, {
-  src: "https://www.sindicatoprosalud.com/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HLM_241203&file=87349f8e-4adc-4f63-af2f-6c85b5f23ad4.jpg",
-  alt: "Evento grupal ProSalud"
-}, {
-  src: "https://www.sindicatoprosalud.com/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HMFS_241121&file=97b90aa5-9e14-43eb-bdaa-e5e4e6f12689.jpg",
-  alt: "Integración de equipo ProSalud"
 }];
 
 const GaleriaBienestarIntroSection: React.FC = () => {
@@ -61,41 +44,7 @@ const GaleriaBienestarIntroSection: React.FC = () => {
     setMounted(true);
   }, []);
 
-  const staticDisplayImages = images.slice(0, 5); // Usaremos las primeras 5 imágenes
-
-  // Estilos para cada imagen en el abanico. Podrían definirse aquí o directamente en el JSX.
-  const imageStyles = [
-    { // Izquierda exterior
-      transform: 'rotate(-12deg) translateX(-45%)',
-      zIndex: 10,
-      widthClass: 'w-32 sm:w-36 md:w-40',
-      hoverTransform: 'rotate(-15deg) scale(1.1) translateX(-45%)'
-    },
-    { // Izquierda interior
-      transform: 'rotate(-6deg) translateX(-22%)',
-      zIndex: 20,
-      widthClass: 'w-36 sm:w-40 md:w-44',
-      hoverTransform: 'rotate(-8deg) scale(1.1) translateX(-22%)'
-    },
-    { // Centro
-      transform: 'scale(1.05) translateX(0%)', // translateX(0%) para asegurar que la base del transform está centrada
-      zIndex: 30,
-      widthClass: 'w-40 sm:w-44 md:w-48',
-      hoverTransform: 'scale(1.15) translateX(0%)'
-    },
-    { // Derecha interior
-      transform: 'rotate(6deg) translateX(22%)',
-      zIndex: 20,
-      widthClass: 'w-36 sm:w-40 md:w-44',
-      hoverTransform: 'rotate(8deg) scale(1.1) translateX(22%)'
-    },
-    { // Derecha exterior
-      transform: 'rotate(12deg) translateX(45%)',
-      zIndex: 10,
-      widthClass: 'w-32 sm:w-36 md:w-40',
-      hoverTransform: 'rotate(15deg) scale(1.1) translateX(45%)'
-    },
-  ];
+  const galleryImages = images.slice(0, 7); // Usar exactamente 7 imágenes
 
   return (
     <section 
@@ -117,36 +66,57 @@ const GaleriaBienestarIntroSection: React.FC = () => {
         En cada encuentro hay una historia, una risa compartida, un recuerdo que permanece. Sumérgete en nuestra galería y revive los espacios donde el bienestar, la cercanía y la alegría fortalecen nuestra comunidad. Porque en ProSalud, cuidarte también es celebrar contigo.
       </p>
 
-      {/* Contenedor para las imágenes estáticas en abanico */}
+      {/* Nueva galería de fotografías en estilo 3D */}
       <div 
-        className={`relative flex justify-center items-center py-10 min-h-[280px] sm:min-h-[320px] md:min-h-[380px] lg:min-h-[420px] mb-8 group
-                    transition-all duration-500 ease-out delay-300 
-                    ${mounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+        className={`relative overflow-hidden mx-auto py-16 transition-all duration-500 ease-out delay-300 bg-gradient-to-b from-neutral-100 to-neutral-200 rounded-xl mb-8
+                   ${mounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+        style={{ perspective: '1000px' }}
       >
-        {staticDisplayImages.map((img, index) => (
-          <div
-            key={img.src}
-            className="absolute transition-all duration-300 ease-in-out origin-bottom"
-            style={{ 
-              transform: imageStyles[index].transform, 
-              zIndex: imageStyles[index].zIndex 
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = imageStyles[index].hoverTransform;
-              e.currentTarget.style.zIndex = '40';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = imageStyles[index].transform;
-              e.currentTarget.style.zIndex = imageStyles[index].zIndex.toString();
-            }}
-          >
-            <img 
-              src={img.src} 
-              alt={img.alt} 
-              className={`${imageStyles[index].widthClass} aspect-[3/4] object-cover rounded-lg shadow-xl border-2 md:border-4 border-white`}
-            />
-          </div>
-        ))}
+        <div className="flex justify-center" style={{ transformStyle: 'preserve-3d', transform: 'rotateX(5deg)' }}>
+          {galleryImages.map((img, index) => {
+            // Calcular la rotación para crear el efecto semicircular
+            // Distribuir las imágenes en un arco de aproximadamente 60 grados (-30 a +30)
+            const angle = -30 + (60 / (galleryImages.length - 1)) * index;
+            const zPosition = 30 * Math.abs(Math.sin(angle * Math.PI / 180)); // Posiciones Z para efecto de profundidad
+            
+            return (
+              <div
+                key={img.src}
+                className="relative transition-transform duration-300 hover:translate-y-[-10px] hover:z-10 group"
+                style={{
+                  transform: `rotateY(${angle}deg) translateZ(${zPosition}px)`,
+                  transformStyle: 'preserve-3d',
+                  margin: '0 -10px', // Solapamiento para efecto de galería
+                  zIndex: index === 3 ? 7 : 6 - Math.abs(index - 3) // Mayor zIndex para las imágenes centrales
+                }}
+              >
+                <div 
+                  className="w-32 sm:w-40 md:w-48 aspect-[3/4] overflow-hidden rounded-lg shadow-xl transition-all duration-300
+                           group-hover:shadow-2xl bg-white p-1.5"
+                  style={{ 
+                    transform: 'rotateX(2deg)',
+                    transformStyle: 'preserve-3d',
+                    boxShadow: '0 15px 30px rgba(0,0,0,0.15), 0 5px 15px rgba(0,0,0,0.12)'
+                  }}
+                >
+                  <img 
+                    src={img.src} 
+                    alt={img.alt} 
+                    className="w-full h-full object-cover rounded-md"
+                    style={{ transform: 'translateZ(5px)' }} // Da más profundidad a la imagen
+                  />
+                </div>
+                
+                {/* Sombra debajo de la imagen para efecto de suspensión */}
+                <div 
+                  className="absolute -bottom-4 left-1/2 w-3/4 h-2 bg-black opacity-10 blur-md rounded-full transition-all duration-300
+                           group-hover:opacity-20 group-hover:w-4/5"
+                  style={{ transform: 'translateX(-50%) rotateX(80deg)' }}
+                />
+              </div>
+            );
+          })}
+        </div>
       </div>
 
       <div className={`pt-5 transition-all duration-500 ease-out delay-400 ${mounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
