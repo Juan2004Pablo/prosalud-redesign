@@ -1,15 +1,69 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import EventCard from '@/components/galeria-bienestar/EventCard';
 import { mockEvents } from '@/data/eventosMock'; // Usaremos datos mock por ahora
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { Slash } from "lucide-react"
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 
+const ITEMS_PER_PAGE = 12; // Mostrar 12 eventos por página
 
 const GaleriaBienestarPage: React.FC = () => {
-  // Lógica de paginación se añadirá aquí en el futuro
-  const eventsToDisplay = mockEvents;
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const totalPages = Math.ceil(mockEvents.length / ITEMS_PER_PAGE);
+
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const eventsToDisplay = mockEvents.slice(startIndex, endIndex);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo(0, 0); // Scroll al inicio de la página al cambiar de página
+  };
+
+  const getPageNumbers = () => {
+    const pageNumbers = [];
+    const maxPagesToShow = 5; // Máximo de números de página directos a mostrar
+    const halfPagesToShow = Math.floor(maxPagesToShow / 2);
+
+    if (totalPages <= maxPagesToShow) {
+      for (let i = 1; i <= totalPages; i++) {
+        pageNumbers.push(i);
+      }
+    } else {
+      if (currentPage <= halfPagesToShow + 1) {
+        for (let i = 1; i <= maxPagesToShow - 1; i++) {
+          pageNumbers.push(i);
+        }
+        pageNumbers.push('ellipsis-end');
+        pageNumbers.push(totalPages);
+      } else if (currentPage >= totalPages - halfPagesToShow) {
+        pageNumbers.push(1);
+        pageNumbers.push('ellipsis-start');
+        for (let i = totalPages - maxPagesToShow + 2; i <= totalPages; i++) {
+          pageNumbers.push(i);
+        }
+      } else {
+        pageNumbers.push(1);
+        pageNumbers.push('ellipsis-start');
+        for (let i = currentPage - halfPagesToShow + 1; i <= currentPage + halfPagesToShow -1; i++) {
+          pageNumbers.push(i);
+        }
+        pageNumbers.push('ellipsis-end');
+        pageNumbers.push(totalPages);
+      }
+    }
+    return pageNumbers;
+  };
 
   return (
     <MainLayout>
@@ -54,7 +108,53 @@ const GaleriaBienestarPage: React.FC = () => {
             <p className="text-xl text-muted-foreground">No hay eventos para mostrar en este momento.</p>
           </div>
         )}
-        {/* Aquí irá el componente de paginación en el futuro */}
+        
+        {totalPages > 1 && (
+          <Pagination className="mt-12">
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (currentPage > 1) handlePageChange(currentPage - 1);
+                  }}
+                  className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+                />
+              </PaginationItem>
+
+              {getPageNumbers().map((page, index) => (
+                <PaginationItem key={index}>
+                  {typeof page === 'number' ? (
+                    <PaginationLink
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handlePageChange(page);
+                      }}
+                      isActive={currentPage === page}
+                    >
+                      {page}
+                    </PaginationLink>
+                  ) : (
+                    <PaginationEllipsis />
+                  )}
+                </PaginationItem>
+              ))}
+
+              <PaginationItem>
+                <PaginationNext
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (currentPage < totalPages) handlePageChange(currentPage + 1);
+                  }}
+                  className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        )}
       </div>
     </MainLayout>
   );
