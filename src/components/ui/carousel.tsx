@@ -207,18 +207,16 @@ const CarouselPrevious = React.forwardRef<
       className={cn(
         "absolute h-8 w-8 rounded-full flex items-center justify-center", // Removed transform and transition classes
         orientation === "horizontal"
-          ? "-left-12 top-1/2 -translate-y-1/2"
+          ? "-left-12 top-1/2"
           : "-top-12 left-1/2 -translate-x-1/2 rotate-90",
-        className // User can still pass custom classes, including hover effects if desired, but default ones are removed.
-                  // The base Button component already has cursor-pointer and transition-colors.
-                  // We are removing the specific hover:bg-white from EventoDetallePage.tsx and hover:translate-y from here.
+        className
       )}
       disabled={!canScrollPrev}
       onClick={scrollPrev}
       {...props}
     >
       <ArrowLeft className="h-4 w-4 pointer-events-none" />
-      <span className="sr-only">Previous slide</span>
+      <span className="sr-only">Anterior</span>
     </Button>
   )
 })
@@ -238,18 +236,16 @@ const CarouselNext = React.forwardRef<
       className={cn(
         "absolute h-8 w-8 rounded-full flex items-center justify-center", // Removed transform and transition classes
         orientation === "horizontal"
-          ? "-right-12 top-1/2 -translate-y-1/2"
+          ? "-right-12 top-1/2"
           : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90",
-        className // User can still pass custom classes, including hover effects if desired, but default ones are removed.
-                  // The base Button component already has cursor-pointer and transition-colors.
-                  // We are removing the specific hover:bg-white from EventoDetallePage.tsx and hover:translate-y from here.
+        className
       )}
       disabled={!canScrollNext}
       onClick={scrollNext}
       {...props}
     >
       <ArrowRight className="h-4 w-4 pointer-events-none" />
-      <span className="sr-only">Next slide</span>
+      <span className="sr-only">Siguiente</span>
     </Button>
   )
 })
