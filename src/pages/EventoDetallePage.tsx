@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import MainLayout from '@/components/layout/MainLayout';
@@ -154,15 +155,21 @@ const EventoDetallePage: React.FC = () => {
                               src={image.src} 
                               alt={image.alt || `${event.title} - Imagen ${index + 1}`} 
                               className="w-auto h-auto max-w-full max-h-full object-contain rounded-md shadow-sm cursor-pointer"
-                              onClick={() => handleImageClick(image.src, image.alt || `${event.title} - Imagen ${index + 1}`)}
+                              onClick={(e) => {
+                                e.stopPropagation(); // Prevent triggering carousel navigation
+                                handleImageClick(image.src, image.alt || `${event.title} - Imagen ${index + 1}`);
+                              }}
                             />
-                             <button
-                                onClick={() => handleImageClick(image.src, image.alt || `${event.title} - Imagen ${index + 1}`)}
-                                className="absolute bottom-2 right-2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-colors opacity-0 group-hover:opacity-100"
-                                aria-label="Ampliar imagen"
-                              >
-                                <Maximize size={18} />
-                              </button>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation(); // Prevent triggering carousel navigation
+                                handleImageClick(image.src, image.alt || `${event.title} - Imagen ${index + 1}`);
+                              }}
+                              className="absolute bottom-2 right-2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-colors opacity-0 group-hover:opacity-100"
+                              aria-label="Ampliar imagen"
+                            >
+                              <Maximize size={18} />
+                            </button>
                           </div>
                         </CarouselItem>
                       ))}
@@ -174,7 +181,7 @@ const EventoDetallePage: React.FC = () => {
                       </>
                     )}
                   </Carousel>
-                   {api && count > 1 && (
+                  {api && count > 1 && (
                     <div className="text-center text-sm text-muted-foreground mt-2">
                       Imagen {current + 1} de {count} {/* Ajustado para mostrar 1-based */}
                     </div>
