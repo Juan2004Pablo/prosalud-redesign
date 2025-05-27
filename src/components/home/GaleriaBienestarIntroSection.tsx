@@ -42,21 +42,39 @@ const GaleriaBienestarIntroSection: React.FC = () => {
               </Link>
             </div>
 
-            {/* Collage de Imágenes */}
-            <div className="lg:w-1/2 grid grid-cols-2 grid-rows-2 gap-4 h-[400px] md:h-[450px]">
-              <div className="col-span-1 row-span-2 relative group overflow-hidden rounded-lg shadow-xl">
-                <img src={images[0].src} alt={images[0].alt} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 border-0" />
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
-              </div>
-              <div className="col-span-1 row-span-1 relative group overflow-hidden rounded-lg shadow-xl">
-                <img src={images[1].src} alt={images[1].alt} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 border-0" />
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
-              </div>
-              <div className="col-span-1 row-span-1 relative group overflow-hidden rounded-lg shadow-xl">
-                <img src={images[2].src} alt={images[2].alt} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 border-0" />
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
-              </div>
-            </div>
+            
+            <div className="lg:w-1/2 grid grid-cols-2 grid-rows-2 gap-4">
+  {/* Imagen grande (columna izquierda, ocupa 2 filas) */}
+  <div className="relative aspect-[3/4] group overflow-hidden rounded-xl shadow-lg">
+    <img
+      src={images[0].src}
+      alt={images[0].alt}
+      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+    />
+    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors" />
+  </div>
+
+  {/* Imagen superior derecha */}
+  <div className="relative aspect-[4/3] group overflow-hidden rounded-xl shadow-lg">
+    <img
+      src={images[1].src}
+      alt={images[1].alt}
+      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+    />
+    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors" />
+  </div>
+
+  {/* Imagen inferior derecha */}
+  <div className="relative aspect-[4/3] group overflow-hidden rounded-xl shadow-lg">
+    <img
+      src={images[2].src}
+      alt={images[2].alt}
+      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+    />
+    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors" />
+  </div>
+</div>
+
           </div>
         ) : (
           // Skeleton Loader
