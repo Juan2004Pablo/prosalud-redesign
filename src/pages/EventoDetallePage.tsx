@@ -16,6 +16,8 @@ import {
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import ImagePreviewDialog from '@/components/sst/ImagePreviewDialog';
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { cn } from "@/lib/utils";
 
 const EventoDetallePage: React.FC = () => {
   const { eventId } = useParams<{ eventId: string }>();
@@ -30,7 +32,7 @@ const EventoDetallePage: React.FC = () => {
   );
 
   const [api, setApi] = React.useState<CarouselApi>()
-  const [current, setCurrent] = React.useState(0)
+  const [current, setCurrent] = React.useState(0) // El índice actual es 0-based
   const [count, setCount] = React.useState(0)
 
   useEffect(() => {
@@ -38,10 +40,10 @@ const EventoDetallePage: React.FC = () => {
       return
     }
     setCount(api.scrollSnapList().length)
-    setCurrent(api.selectedScrollSnap() + 1)
+    setCurrent(api.selectedScrollSnap()) // Actualiza current al índice 0-based
 
     api.on("select", () => {
-      setCurrent(api.selectedScrollSnap() + 1)
+      setCurrent(api.selectedScrollSnap()) // Actualiza current al índice 0-based
     })
   }, [api])
 
@@ -65,6 +67,12 @@ const EventoDetallePage: React.FC = () => {
   const handleImageClick = (imageSrc: string, imageAlt?: string) => {
     setSelectedImage(imageSrc);
     setSelectedImageAlt(imageAlt || event.title);
+  };
+
+  const handleThumbnailClick = (index: number) => {
+    if (api) {
+      api.scrollTo(index);
+    }
   };
 
   return (
@@ -129,7 +137,7 @@ const EventoDetallePage: React.FC = () => {
                   </button>
                 </div>
               ) : (
-                 <div className="bg-background-light p-0 rounded-lg border-0 mb-6 md:mb-0"> {/* md:mb-0 para que no haya doble margen en desktop */}
+                 <div className="bg-background-light p-0 rounded-lg border-0 mb-6 md:mb-0">
                   <Carousel 
                     setApi={setApi}
                     className="w-full relative" 
@@ -161,21 +169,46 @@ const EventoDetallePage: React.FC = () => {
                     </CarouselContent>
                     {hasMultipleImages && (
                       <>
-                        <CarouselPrevious className="absolute left-2 sm:left-3 top-1/2 bg-white/80 text-primary-prosalud disabled:opacity-30 z-10" />
-                        <CarouselNext className="absolute right-2 sm:right-3 top-1/2 bg-white/80 text-primary-prosalud disabled:opacity-30 z-10" />
+                        <CarouselPrevious className="absolute left-0 top-1/2 -translate-y-1/2 bg-white/70 hover:bg-white/90 text-primary-prosalud disabled:opacity-30 z-10 p-2 sm:left-1" />
+                        <CarouselNext className="absolute right-0 top-1/2 -translate-y-1/2 bg-white/70 hover:bg-white/90 text-primary-prosalud disabled:opacity-30 z-10 p-2 sm:right-1" />
                       </>
                     )}
                   </Carousel>
                    {api && count > 1 && (
                     <div className="text-center text-sm text-muted-foreground mt-2">
-                      Imagen {current} de {count}
+                      Imagen {current + 1} de {count} {/* Ajustado para mostrar 1-based */}
                     </div>
+                  )}
+                  {/* Sección de Miniaturas */}
+                  {hasMultipleImages && allImages.length > 1 && (
+                    <ScrollArea className="w-full whitespace-nowrap rounded-md border mt-4">
+                      <div className="flex space-x-2 p-2">
+                        {allImages.map((image, index) => (
+                          <button
+                            key={`thumb-${index}`}
+                            onClick={() => handleThumbnailClick(index)}
+                            className={cn(
+                              "flex-shrink-0 w-20 h-20 rounded-md overflow-hidden border-2 focus:outline-none focus:ring-2 focus:ring-primary-prosalud focus:ring-offset-2 transition-all",
+                              index === current ? "border-primary-prosalud shadow-lg" : "border-transparent hover:border-secondary-prosaludgreen/50"
+                            )}
+                            aria-label={`Ver imagen ${index + 1}`}
+                          >
+                            <img
+                              src={image.src}
+                              alt={image.alt || `Miniatura ${index + 1}`}
+                              className="w-full h-full object-cover"
+                            />
+                          </button>
+                        ))}
+                      </div>
+                      <ScrollBar orientation="horizontal" />
+                    </ScrollArea>
                   )}
                 </div>
               )}
             </div>
 
-            {/* Columna Derecha: Descripción (movida aquí) y Detalles del Evento */}
+            {/* Columna Derecha: Descripción y Detalles del Evento */}
             <aside className="md:col-span-1 space-y-6">
               {/* Descripción del Evento (Movida aquí) */}
               <div className="order-first"> {/* Para asegurar que se muestra primero en el flujo normal y en la columna */}
