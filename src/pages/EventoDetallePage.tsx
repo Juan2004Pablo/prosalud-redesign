@@ -172,31 +172,6 @@ const EventoDetallePage: React.FC = () => {
                     </div>
                   )}
                 </div>
-      {/* Sección de Miniaturas */}
-                  {hasMultipleImages && allImages.length > 1 && (
-                    <ScrollArea className="w-full whitespace-nowrap rounded-md border mt-4">
-                      <div className="flex space-x-2 p-2">
-                        {allImages.map((image, index) => (
-                          <button
-                            key={`thumb-${index}`}
-                            onClick={() => handleThumbnailClick(index)}
-                            className={cn(
-                              "flex-shrink-0 w-20 h-20 rounded-md overflow-hidden border-2 focus:outline-none focus:ring-2 focus:ring-primary-prosalud focus:ring-offset-2 transition-all",
-                              index === current ? "border-primary-prosalud shadow-lg" : "border-transparent hover:border-secondary-prosaludgreen/50"
-                            )}
-                            aria-label={`Ver imagen ${index + 1}`}
-                          >
-                            <img
-                              src={image.src}
-                              alt={image.alt || `Miniatura ${index + 1}`}
-                              className="w-full h-full object-cover"
-                            />
-                          </button>
-                        ))}
-                      </div>
-                      <ScrollBar orientation="horizontal" />
-                    </ScrollArea>
-                  )}
               )}
             </div>
 
