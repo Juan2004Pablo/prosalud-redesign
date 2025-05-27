@@ -59,7 +59,7 @@ const GaleriaBienestarIntroSection: React.FC = () => {
                 key={imgIdx}
                 src={img.src}
                 alt={img.alt}
-                className="w-24 h-36 object-cover rounded-md m-0.5 my-2 shadow-md transition-transform duration-300 hover:scale-105 hover:shadow-lg"
+                className="w-24 h-28 object-cover rounded-md m-0.5 my-2 shadow-md transition-transform duration-300 hover:scale-105 hover:shadow-lg"
               />
             ))}
           </div>
@@ -67,7 +67,7 @@ const GaleriaBienestarIntroSection: React.FC = () => {
       </div>
 
       {/* Contenido central */}
-      <div className="relative text-center pt-40 space-y-2">
+      <div className="relative text-center pt-28 space-y-2">
         <div className="inline-flex items-center rounded-lg bg-secondary-prosalud/10 px-3 py-1.5 text-sm text-secondary-prosalud-dark font-medium mb-4">
                 <Sparkles className="h-5 w-5 mr-2" />
                 Momentos que Inspiran
