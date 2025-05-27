@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -23,6 +22,8 @@ import SolicitudPermisosCambioTurnosPage from "./pages/SolicitudPermisosCambioTu
 import CertificadoSeguridadSocialPage from "./pages/CertificadoSeguridadSocialPage";
 import ScrollToTop from "./components/utils/ScrollToTop"; // Importar ScrollToTop
 import SstPage from "./pages/SstPage"; // Importar la nueva página SST
+import GaleriaBienestarPage from "./pages/GaleriaBienestarPage"; // Nueva página
+import EventoDetallePage from "./pages/EventoDetallePage"; // Nueva página
 
 const queryClient = new QueryClient();
 
@@ -100,8 +101,13 @@ const App = () => (
           <Route path="/servicios/certificado-seguridad-social" element={<CertificadoSeguridadSocialPage />} />
           <Route path="/servicios/actualizar-cuenta" element={<ActualizarCuentaBancariaPage />} />
           <Route path="/servicios/incapacidad-maternidad" element={<IncapacidadesLicenciasPage />} />
-          <Route path="/servicios/sst" element={<SstPage />} /> {/* <<< Updated Route for SST */}
-          <Route path="/servicios/galeria-bienestar" element={<PlaceholderPage title="Galería de Bienestar" />} />
+          <Route path="/servicios/sst" element={<SstPage />} />
+          
+          {/* === NUEVAS RUTAS PARA GALERÍA DE BIENESTAR === */}
+          <Route path="/servicios/galeria-bienestar" element={<GaleriaBienestarPage />} />
+          <Route path="/servicios/galeria-bienestar/:eventId" element={<EventoDetallePage />} />
+          {/* =============================================== */}
+
           <Route path="/servicios/encuesta-bienestar" element={<PlaceholderPage title="Encuesta de Bienestar Laboral" />} />
           <Route path="/servicios/permisos-turnos" element={<SolicitudPermisosCambioTurnosPage />} />
           <Route path="/servicios/microcredito" element={<SolicitudMicrocreditoPage />} />
