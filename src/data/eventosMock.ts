@@ -9,8 +9,8 @@ import { EventData } from '@/types/eventos';
 const baseEvents: EventData[] = [
   {
     id: 'evento-1',
-    title: 'Celebración Día del Trabajo ProSalud',
-    date: '2024-05-01',
+    title: 'Acompañamiento Reunión Cirugía',
+    date: '05 Diciembre 2024',
     location: 'Sede Principal ProSalud',
     mainImage: { src: 'https://source.unsplash.com/random/400x300?event,celebration&sig=1', alt: 'Celebración Día del Trabajo' },
     description: 'Un día especial para reconocer la labor y dedicación de todos nuestros afiliados. Hubo actividades recreativas, música y un almuerzo especial.',
