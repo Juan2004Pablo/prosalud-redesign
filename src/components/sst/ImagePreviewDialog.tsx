@@ -22,10 +22,6 @@ const ImagePreviewDialog: React.FC<ImagePreviewDialogProps> = ({ selectedImage, 
           />
         )}
         <DialogClose asChild className="absolute top-2 right-2 sm:top-3 sm:right-3">
-          <Button variant="ghost" size="icon" className="rounded-full">
-            <X className="h-5 w-5" />
-            <span className="sr-only">Cerrar</span>
-          </Button>
         </DialogClose>
       </DialogContent>
     </Dialog>
