@@ -3,7 +3,7 @@ import MainLayout from '@/components/layout/MainLayout';
 import EventCard from '@/components/galeria-bienestar/EventCard';
 import { mockEvents } from '@/data/eventosMock'; // Usaremos datos mock por ahora
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
-import { Slash } from "lucide-react"
+import { Slash, Image } from "lucide-react"
 import {
   Pagination,
   PaginationContent,
@@ -88,11 +88,12 @@ const GaleriaBienestarPage: React.FC = () => {
           </BreadcrumbList>
         </Breadcrumb>
         
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold tracking-tight text-primary-prosalud sm:text-5xl">
+        <div className="flex justify-center text-center items-center gap-3 mb-4">
+          <Image className="h-8 w-8 text-primary-prosalud-dark" />
+          <h1 className="text-3xl md:text-4xl font-bold text-primary-prosalud-dark tracking-tight">
             Galería de Bienestar
           </h1>
-          <p className="mt-3 max-w-2xl mx-auto text-xl text-gray-600">
+          <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed px-4">
             Explora los momentos y actividades que hemos compartido juntos, fortaleciendo nuestra comunidad ProSalud.
           </p>
         </div>
