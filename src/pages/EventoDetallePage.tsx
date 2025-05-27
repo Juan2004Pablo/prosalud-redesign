@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import MainLayout from '@/components/layout/MainLayout';
@@ -8,6 +7,14 @@ import { CalendarDays, MapPin, Users, Gift, Briefcase, ChevronLeft } from 'lucid
 import { Badge } from '@/components/ui/badge';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { Slash } from "lucide-react";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel"; // Importar componentes del carrusel
+
 // En el futuro, aquí se importaría un componente ImageGallery
 
 const EventoDetallePage: React.FC = () => {
@@ -113,19 +120,30 @@ const EventoDetallePage: React.FC = () => {
                 </ul>
               </div>
               
-              {/* Placeholder para la galería adicional */}
               {event.additionalImages && event.additionalImages.length > 0 && (
                 <div className="bg-background-light p-4 rounded-lg border border-prosalud-border">
-                  <h3 className="text-lg font-semibold text-primary-prosalud-dark mb-3">Más Imágenes</h3>
-                  <p className="text-sm text-muted-foreground italic">(Galería de imágenes adicional se implementará aquí)</p>
-                  {/* Temporalmente mostrar la primera imagen adicional si existe */}
-                  {event.additionalImages[0] && (
-                    <img 
-                      src={event.additionalImages[0].src} 
-                      alt={event.additionalImages[0].alt} 
-                      className="w-full h-auto object-cover rounded-md shadow-sm mt-2"
-                    />
-                  )}
+                  <h3 className="text-lg font-semibold text-primary-prosalud-dark mb-4">Más Imágenes</h3>
+                  <Carousel className="w-full max-w-xs mx-auto" opts={{ loop: true }}>
+                    <CarouselContent>
+                      {event.additionalImages.map((image, index) => (
+                        <CarouselItem key={index}>
+                          <div className="p-1">
+                            <img 
+                              src={image.src} 
+                              alt={image.alt || `${event.title} - Imagen adicional ${index + 1}`} 
+                              className="w-full h-auto aspect-video object-cover rounded-md shadow-sm"
+                            />
+                          </div>
+                        </CarouselItem>
+                      ))}
+                    </CarouselContent>
+                    {event.additionalImages.length > 1 && (
+                      <>
+                        <CarouselPrevious className="absolute left-2 top-1/2 -translate-y-1/2  bg-white/80 hover:bg-white text-primary-prosalud disabled:opacity-30" />
+                        <CarouselNext className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-primary-prosalud disabled:opacity-30" />
+                      </>
+                    )}
+                  </Carousel>
                 </div>
               )}
             </aside>
