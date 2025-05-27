@@ -10,7 +10,7 @@ interface Image {
   alt: string;
 }
 
-// Using the first 11 images for the new layout
+// Using 13 images for the new 9-column layout
 const images: Image[] = [{
   src: "https://www.sindicatoprosalud.com/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HLM_241203&file=087e2a05-444f-4afe-afc2-ee6169b1efbc.jpg",
   alt: "Evento de bienestar ProSalud 1"
@@ -44,11 +44,17 @@ const images: Image[] = [{
 }, {
   src: "https://www.sindicatoprosalud.com/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HLM_241203&file=d06ae58a-dc2a-48b0-8b20-45d8de68de57.jpg",
   alt: "Ejercicio de relajación"
+}, {
+  src: "https://www.sindicatoprosalud.com/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HLM_241203&file=87349f8e-4adc-4f63-af2f-6c85b5f23ad4.jpg",
+  alt: "Evento grupal ProSalud"
+}, {
+  src: "https://www.sindicatoprosalud.com/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HMFS_241121&file=97b90aa5-9e14-43eb-bdaa-e5e4e6f12689.jpg",
+  alt: "Integración de equipo ProSalud"
 }];
 
 const GaleriaBienestarIntroSection: React.FC = () => {
   const sectionRef = React.useRef<HTMLDivElement | null>(null);
-  const isVisible = useIntersectionObserver(sectionRef, { // isVisible can be used for animations if needed
+  const isVisible = useIntersectionObserver(sectionRef, {
     threshold: 0.1,
     freezeOnceVisible: true
   });
@@ -57,28 +63,32 @@ const GaleriaBienestarIntroSection: React.FC = () => {
     setMounted(true);
   }, []);
 
-  const imagesToDisplay = images.slice(0, 11);
-  // Layout: 2-2-1-1-1-2-2 images per column
+  const imagesToDisplay = images.slice(0, 13); // Use 13 images for the new layout
+  
+  // New layout: 2-1-1-1-1-1-1-1-2 images per column (9 columns total)
   const columnsLayout: Image[][] = [
-    imagesToDisplay.slice(0, 2), 
-    imagesToDisplay.slice(2, 4), 
-    [imagesToDisplay[4]], 
-    [imagesToDisplay[5]], // Center column
-    [imagesToDisplay[6]], 
-    imagesToDisplay.slice(7, 9), 
-    imagesToDisplay.slice(9, 11)
+    imagesToDisplay.slice(0, 2),    // Column 1: 2 images
+    [imagesToDisplay[2]],           // Column 2: 1 image
+    [imagesToDisplay[3]],           // Column 3: 1 image
+    [imagesToDisplay[4]],           // Column 4: 1 image
+    [imagesToDisplay[5]],           // Column 5: 1 image (center)
+    [imagesToDisplay[6]],           // Column 6: 1 image
+    [imagesToDisplay[7]],           // Column 7: 1 image
+    [imagesToDisplay[8]],           // Column 8: 1 image
+    imagesToDisplay.slice(9, 11),   // Column 9: 2 images
   ];
 
-  // translate-y pushes images down. items-start aligns columns to the top of the image container.
-  // Center (index 3) has translate-y-0, making it the highest point in the arc.
+  // Use the specified offset classes with responsive adjustments
   const offsetClasses = [
-    'translate-y-10 md:translate-y-16', 
-    'translate-y-5 md:translate-y-8', 
-    'translate-y-1 md:translate-y-2', 
-    'translate-y-0', // Center
-    'translate-y-1 md:translate-y-2', 
-    'translate-y-5 md:translate-y-8', 
-    'translate-y-10 md:translate-y-16'
+    'translate-y-0 md:translate-y-0',
+    '-translate-y-6 md:-translate-y-12',
+    '-translate-y-14 md:-translate-y-28',
+    '-translate-y-20 md:-translate-y-40',
+    '-translate-y-16 md:-translate-y-32',
+    '-translate-y-20 md:-translate-y-40',
+    '-translate-y-14 md:-translate-y-28',
+    '-translate-y-6 md:-translate-y-12',
+    'translate-y-0 md:translate-y-0'
   ];
 
   return (
@@ -88,18 +98,18 @@ const GaleriaBienestarIntroSection: React.FC = () => {
       className="relative bg-card shadow-xl p-8 lg:p-12 overflow-hidden my-16 mx-auto max-w-6xl rounded-xl"
     >
       {/* Images in arc */}
-      <div className="absolute inset-x-0 top-0 flex justify-center items-start gap-x-2 sm:gap-x-3 md:gap-x-4 pointer-events-none pt-8 sm:pt-12">
+      <div className="absolute inset-x-0 top-0 flex justify-center items-start gap-x-1.5 sm:gap-x-2 md:gap-x-3 pointer-events-none pt-8 sm:pt-12">
         {columnsLayout.map((col, colIdx) => (
           <div 
             key={colIdx} 
-            className={`${offsetClasses[colIdx]} transition-all duration-700 ease-out ${mounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 ' + offsetClasses[colIdx].replace(/translate-y-\d+/g, 'translate-y-full') }`}
+            className={`${offsetClasses[colIdx]} transition-all duration-700 ease-out ${mounted && isVisible ? 'opacity-100' : 'opacity-0'}`}
           >
             {col.map((img, imgIdx) => (
               <img 
                 key={imgIdx} 
                 src={img.src} 
                 alt={img.alt} 
-                className="w-28 h-32 md:w-32 md:h-36 object-cover rounded-lg m-1 my-1.5 shadow-lg transition-transform duration-300 hover:scale-105 hover:shadow-xl" 
+                className="w-8 h-10 sm:w-16 sm:h-20 md:w-24 md:h-28 lg:w-28 lg:h-32 object-cover rounded-lg m-1 my-1.5 shadow-lg transition-transform duration-300 hover:scale-105 hover:shadow-xl border-0" 
               />
             ))}
           </div>
@@ -107,8 +117,8 @@ const GaleriaBienestarIntroSection: React.FC = () => {
       </div>
 
       {/* Contenido central */}
-      {/* Adjusted padding-top to accommodate images: pt-[280px] sm:pt-[350px] lg:pt-[420px] */}
-      <div className="relative text-center space-y-3 pt-[280px] sm:pt-[350px] lg:pt-[420px]">
+      {/* Adjust padding-top to accommodate the new image arrangement */}
+      <div className="relative text-center space-y-3 pt-[220px] sm:pt-[280px] md:pt-[320px] lg:pt-[380px]">
         <div className={`inline-flex items-center rounded-lg bg-primary/10 px-3 py-1.5 text-sm text-primary font-semibold mb-4 transition-opacity duration-500 ease-out ${mounted && isVisible ? 'opacity-100' : 'opacity-0'}`}>
           <Sparkles className="h-5 w-5 mr-2 text-primary" />
           Momentos que Inspiran
