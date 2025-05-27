@@ -46,10 +46,17 @@ const GaleriaBienestarIntroSection: React.FC = () => {
             {/* Collage de Imágenes */}
             <div className="lg:w-1/2 grid grid-cols-2 grid-rows-2 gap-4 h-[400px] md:h-[450px]">
               <div className="col-span-1 row-span-2 relative group overflow-hidden rounded-lg shadow-xl">
-                <img src={images[0].src} alt="Test" className="w-full h-auto" />
+                <img src={images[0].src} alt={images[0].alt} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                 <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
               </div>
-              
+              <div className="col-span-1 row-span-1 relative group overflow-hidden rounded-lg shadow-xl">
+                <img src={images[1].src} alt={images[1].alt} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
+              </div>
+              <div className="col-span-1 row-span-1 relative group overflow-hidden rounded-lg shadow-xl">
+                <img src={images[2].src} alt={images[2].alt} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
+              </div>
             </div>
           </div>
         ) : (
