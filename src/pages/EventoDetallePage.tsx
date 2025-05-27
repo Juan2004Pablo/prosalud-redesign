@@ -67,6 +67,14 @@ const EventoDetallePage: React.FC = () => {
     setSelectedImageAlt(imageAlt || event.title);
   };
 
+  const handleThumbnailClick = (index: number) => {
+    if (api) {
+      api.scrollTo(index);
+      // Detener autoplay al seleccionar manualmente una miniatura
+      autoplayPlugin.current.stop();
+    }
+  };
+
   return (
     <MainLayout>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-10">
@@ -146,10 +154,16 @@ const EventoDetallePage: React.FC = () => {
                               src={image.src} 
                               alt={image.alt || `${event.title} - Imagen ${index + 1}`} 
                               className="w-auto h-auto max-w-full max-h-full object-contain rounded-md shadow-sm cursor-pointer"
-                              onClick={() => handleImageClick(image.src, image.alt || `${event.title} - Imagen ${index + 1}`)}
+                              onClick={(e) => {
+                                e.stopPropagation(); // Prevenir que el click en la imagen active otros handlers del carrusel si los hubiera
+                                handleImageClick(image.src, image.alt || `${event.title} - Imagen ${index + 1}`);
+                              }}
                             />
                              <button
-                                onClick={() => handleImageClick(image.src, image.alt || `${event.title} - Imagen ${index + 1}`)}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleImageClick(image.src, image.alt || `${event.title} - Imagen ${index + 1}`);
+                                }}
                                 className="absolute bottom-2 right-2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-colors opacity-0 group-hover:opacity-100"
                                 aria-label="Ampliar imagen"
                               >
@@ -161,14 +175,34 @@ const EventoDetallePage: React.FC = () => {
                     </CarouselContent>
                     {hasMultipleImages && (
                       <>
-                        <CarouselPrevious className="absolute left-2 sm:left-3 top-1/2 bg-white/80 text-primary-prosalud disabled:opacity-30 z-10" />
-                        <CarouselNext className="absolute right-2 sm:right-3 top-1/2 bg-white/80 text-primary-prosalud disabled:opacity-30 z-10" />
+                        <CarouselPrevious className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 bg-white/80 text-primary-prosalud hover:bg-white disabled:opacity-30 z-10" />
+                        <CarouselNext className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 bg-white/80 text-primary-prosalud hover:bg-white disabled:opacity-30 z-10" />
                       </>
                     )}
                   </Carousel>
                    {api && count > 1 && (
                     <div className="text-center text-sm text-muted-foreground mt-2">
                       Imagen {current} de {count}
+                    </div>
+                  )}
+                  {/* Thumbnail Gallery */}
+                  {hasMultipleImages && allImages.length > 1 && (
+                    <div className="mt-4 flex flex-wrap justify-center gap-2">
+                      {allImages.map((image, index) => (
+                        <button
+                          key={`thumb-${index}`}
+                          onClick={() => handleThumbnailClick(index)}
+                          className={`w-16 h-16 sm:w-20 sm:h-20 rounded-md overflow-hidden border-2 transition-all duration-200 ease-in-out
+                                      ${current === index + 1 ? 'border-primary-prosalud ring-2 ring-primary-prosalud ring-offset-1' : 'border-transparent hover:border-primary-prosalud/50'}`}
+                          aria-label={`Ver imagen ${index + 1}`}
+                        >
+                          <img
+                            src={image.src}
+                            alt={`Miniatura ${index + 1} de ${event.title}`}
+                            className="w-full h-full object-cover"
+                          />
+                        </button>
+                      ))}
                     </div>
                   )}
                 </div>
