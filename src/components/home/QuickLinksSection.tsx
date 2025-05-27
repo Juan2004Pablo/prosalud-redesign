@@ -30,38 +30,41 @@ const QuickLinksSection: React.FC = () => {
             </div>
 
             <div className="max-w-xl mx-auto mb-10">
-              <div className="flex items-stretch rounded-md border border-gray-300 overflow-hidden shadow-sm focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2">
-                <div className="flex-shrink-0 border-r border-gray-300 bg-background">
-                  <Select value={selectedCategory} onValueChange={(value) => setSelectedCategory(value as ServiceCategory)}>
-                    <SelectTrigger 
-                      className="w-auto min-w-[180px] text-base md:text-lg h-full px-4 py-3 border-0 rounded-none focus:ring-0 focus:ring-offset-0 data-[state=open]:bg-accent/10 text-muted-foreground hover:text-foreground"
-                      aria-label="Filtrar por categoría"
-                    >
-                      <SelectValue placeholder="Categoría" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {serviceCategories.map(category => (
-                        <SelectItem key={category} value={category}>
-                          {category}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="relative flex-grow max-w-full sm:max-w-lg lg:max-w-2xl xl:max-w-3xl mx-auto">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground z-10" size={20} />
-                  <Input 
-                    type="text"
-                    placeholder="Buscar trámite por nombre o descripción..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full text-base md:text-lg h-full py-3 pl-10 pr-4 border-0 rounded-none focus-visible:ring-0 focus-visible:ring-offset-0"
-                    aria-label="Buscar trámite por nombre o descripción"
-                  />
-                </div>
+            <div className="flex items-stretch rounded-md border border-gray-300 overflow-hidden shadow-sm focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 h-[40px]">
+              
+              {/* Select (categoría) */}
+              <div className="flex-shrink-0 border-r border-gray-300 bg-background">
+                <Select value={selectedCategory} onValueChange={(value) => setSelectedCategory(value as ServiceCategory)}>
+                  <SelectTrigger 
+                    className="w-auto min-w-[180px] text-sm md:text-base h-[40px] px-3 border-0 rounded-none focus:ring-0 focus:ring-offset-0 data-[state=open]:bg-accent/10 text-muted-foreground hover:text-foreground"
+                    aria-label="Filtrar por categoría"
+                  >
+                    <SelectValue placeholder="Categoría" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {serviceCategories.map(category => (
+                      <SelectItem key={category} value={category}>
+                        {category}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+          
+              {/* Input de búsqueda */}
+              <div className="relative flex-grow max-w-full sm:max-w-lg lg:max-w-2xl xl:max-w-3xl mx-auto">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground z-10" size={18} />
+                <Input 
+                  type="text"
+                  placeholder="Buscar trámite por nombre o descripción..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full text-sm md:text-base h-[40px] pl-10 pr-4 border-0 rounded-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                  aria-label="Buscar trámite por nombre o descripción"
+                />
               </div>
             </div>
+          </div>
 
             <ServiceList searchTerm={searchTerm} selectedCategory={selectedCategory} />
           </>
