@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Camera, Users, Sparkles } from 'lucide-react';
+import { ArrowRight, Sparkles } from 'lucide-react'; // Se eliminaron Camera y Users
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -18,7 +18,7 @@ const GaleriaBienestarIntroSection: React.FC = () => {
   const isVisible = useIntersectionObserver(sectionRef, { threshold: 0.1, freezeOnceVisible: true });
 
   return (
-    <section ref={sectionRef} id="galeria-bienestar-intro" className="py-16 md:py-20 bg-gradient-to-br from-primary-prosalud/5 via-background-light to-secondary-prosalud/5">
+    <section ref={sectionRef} id="galeria-bienestar-intro" className="py-16 md:py-20 bg-gradient-to-br from-primary-prosalud/5 via-background-light to-secondary/5"> {/* Corregido to-secondary-prosalud/5 a to-secondary/5 */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {isVisible ? (
           <div className="flex flex-col lg:flex-row items-center gap-12">
@@ -35,7 +35,8 @@ const GaleriaBienestarIntroSection: React.FC = () => {
                 En ProSalud, valoramos cada sonrisa y cada instante compartido. Explora nuestra galería y descubre cómo fomentamos el bienestar, la unión y la camaradería entre nuestros afiliados a través de eventos, actividades y programas diseñados para ti.
               </p>
               <Link to="/servicios/galeria-bienestar">
-                <Button size="lg" className="bg-secondary-prosalud hover:bg-secondary-prosalud/90 text-white group">
+                {/* Se cambió el botón para usar la variante 'secondary' y se mantuvo 'group' para la animación del icono */}
+                <Button variant="secondary" size="lg" className="group">
                   Explorar Galería Completa
                   <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
                 </Button>
@@ -82,3 +83,4 @@ const GaleriaBienestarIntroSection: React.FC = () => {
 };
 
 export default GaleriaBienestarIntroSection;
+
