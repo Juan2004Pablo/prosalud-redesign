@@ -73,17 +73,13 @@ const GaleriaBienestarIntroSection: React.FC = () => {
       >
         <div className="flex justify-center" style={{ transformStyle: 'preserve-3d', transform: 'rotateX(5deg)' }}>
           {galleryImages.map((img, index) => {
-            // Calcular la rotación para crear el efecto semicircular
-            const angleDegrees = -30 + (60 / (galleryImages.length - 1)) * index; // Rango de -30 a +30 grados
+            const angleDegrees = -30 + (60 / (galleryImages.length - 1)) * index;
             const angleRadians = angleDegrees * Math.PI / 180;
 
-            // zPosition para una curva cóncava (centro más cerca o en z=0, lados se alejan)
-            // (1 - cos(theta)) da 0 en el centro y aumenta hacia los lados
-            const curveDepthFactor = 60; // Profundidad de la curva. Ajustar para más/menos curvatura.
-            const zPosition = curveDepthFactor * (1 - Math.cos(angleRadians));
+            const curveDepthFactor = 60; 
+            const zPosition = -curveDepthFactor * (1 - Math.cos(angleRadians));
             
-            // Factor de escala para que las imágenes laterales parezcan más grandes
-            const sideImageScaleBoost = 0.1; // Lados hasta 10% más grandes. Ajustar si es necesario.
+            const sideImageScaleBoost = 0.1; 
             const scaleFactor = 1 + sideImageScaleBoost * Math.abs(Math.sin(angleRadians));
             
             return (
@@ -93,29 +89,26 @@ const GaleriaBienestarIntroSection: React.FC = () => {
                 style={{
                   transform: `rotateY(${angleDegrees}deg) translateZ(${zPosition}px) scale(${scaleFactor})`,
                   transformStyle: 'preserve-3d',
-                  margin: '0 -12px', // Solapamiento ajustado ligeramente
-                  zIndex: index === 3 ? 7 : 6 - Math.abs(index - 3)
+                  margin: '0 4px',
+                  zIndex: index === 3 ? 5 : 4 - Math.abs(index - 3)
                 }}
               >
                 <div 
                   className="w-32 sm:w-40 md:w-48 aspect-[3/4] overflow-hidden rounded-lg shadow-xl transition-all duration-300
-                           group-hover:shadow-2xl" // Se eliminó bg-white p-1.5
+                           group-hover:shadow-2xl"
                   style={{ 
-                    transform: 'rotateX(2deg)', // Ligera inclinación de la tarjeta
+                    transform: 'rotateX(2deg)', 
                     transformStyle: 'preserve-3d',
-                    // boxShadow original para mantener consistencia si se quita el de Tailwind y se personaliza más
-                    // boxShadow: '0 15px 30px rgba(0,0,0,0.15), 0 5px 15px rgba(0,0,0,0.12)'
                   }}
                 >
                   <img 
                     src={img.src} 
                     alt={img.alt} 
-                    className="w-full h-full object-cover rounded-md" // Mantenemos rounded-md en la imagen misma
+                    className="w-full h-full object-cover rounded-md"
                     style={{ transform: 'translateZ(5px)' }} 
                   />
                 </div>
                 
-                {/* Sombra debajo de la imagen para efecto de suspensión */}
                 <div 
                   className="absolute -bottom-4 left-1/2 w-3/4 h-2 bg-black opacity-10 blur-md rounded-full transition-all duration-300
                            group-hover:opacity-20 group-hover:w-4/5"
