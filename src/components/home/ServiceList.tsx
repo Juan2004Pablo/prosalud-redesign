@@ -1,8 +1,7 @@
-
 import React, { useMemo } from 'react';
 import ServiceCard from '@/components/shared/ServiceCard';
 import { 
-  Search as SearchIcon, // Renamed to avoid conflict with Search component
+  Search as SearchIconLucide, // Renamed to avoid conflict with Search component/icon if any
   FileText, 
   BedDouble, 
   Banknote, 
@@ -57,7 +56,7 @@ const newServices: Service[] = [
 
   // Pagos
   { icon: DollarSign, title: 'Compensación anual diferida', description: 'Gestiona el pago correspondiente a tu compensación anual.', linkTo: '/servicios/compensacion-anual', category: 'Pagos' },
-  { icon: SearchIcon, title: 'Consulta de pagos', description: 'Verifica los pagos realizados por concepto laboral o sindical.', linkTo: '/servicios/consulta-pagos', category: 'Pagos' }, 
+  { icon: SearchIconLucide, title: 'Consulta de pagos', description: 'Verifica los pagos realizados por concepto laboral o sindical.', linkTo: '/servicios/consulta-pagos', category: 'Pagos' }, 
   { icon: Banknote, title: 'Actualizar cuenta bancaria', description: 'Notifica un cambio en tu cuenta para recibir pagos.', linkTo: '/servicios/actualizar-cuenta', category: 'Pagos' },
   { icon: CreditCard, title: 'Solicitud de microcrédito', description: 'Aplica a un microcrédito con condiciones especiales para afiliados.', linkTo: '/servicios/microcredito', category: 'Pagos' },
   
@@ -93,21 +92,24 @@ const ServiceList: React.FC<ServiceListProps> = ({ searchTerm, selectedCategory 
   return (
     <>
       {filteredServices.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
+        <div 
+          key={`${selectedCategory}-${searchTerm}`} // Key to re-trigger animation on filter/search change
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 animate-fadeIn"
+        >
           {filteredServices.map((service, index) => (
             <ServiceCard
-              key={index}
+              key={index} // React's internal key for list items
               icon={service.icon}
               title={service.title}
               description={service.description}
               linkTo={service.linkTo}
-              className="animate-scale-in" // Keep existing animation
+              className="animate-scale-in" // Keep existing animation for individual cards
             />
           ))}
         </div>
       ) : (
-        <div className="text-center py-10">
-          <SearchIcon size={48} className="mx-auto text-muted-foreground mb-4" />
+        <div className="text-center py-10 animate-fadeIn"> {/* Added animation here too */}
+          <SearchIconLucide size={48} className="mx-auto text-muted-foreground mb-4" />
           <p className="text-xl text-muted-foreground">No se encontraron trámites.</p>
           <p className="text-sm text-muted-foreground">Intenta con otras palabras clave o cambia la categoría.</p>
         </div>

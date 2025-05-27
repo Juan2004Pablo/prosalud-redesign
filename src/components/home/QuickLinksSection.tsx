@@ -29,34 +29,37 @@ const QuickLinksSection: React.FC = () => {
               </p>
             </div>
 
-            <div className="max-w-xl mx-auto space-y-6 mb-10">
-              {/* Search Input */}
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={20} />
-                <Input 
-                  type="text"
-                  placeholder="Buscar trámite por nombre o descripción..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full text-base md:text-lg py-3 pl-10 pr-4 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary rounded-md border border-gray-300"
-                  aria-label="Buscar trámite"
-                />
-              </div>
+            <div className="max-w-xl mx-auto mb-10">
+              <div className="flex items-stretch rounded-md border border-gray-300 overflow-hidden shadow-sm focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2">
+                <div className="flex-shrink-0 border-r border-gray-300 bg-background">
+                  <Select value={selectedCategory} onValueChange={(value) => setSelectedCategory(value as ServiceCategory)}>
+                    <SelectTrigger 
+                      className="w-auto min-w-[180px] text-base md:text-lg h-full px-4 py-3 border-0 rounded-none focus:ring-0 focus:ring-offset-0 data-[state=open]:bg-accent/10 text-muted-foreground hover:text-foreground"
+                      aria-label="Filtrar por categoría"
+                    >
+                      <SelectValue placeholder="Categoría" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {serviceCategories.map(category => (
+                        <SelectItem key={category} value={category}>
+                          {category}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
 
-              {/* Category Filter Select */}
-              <div>
-                <Select value={selectedCategory} onValueChange={(value) => setSelectedCategory(value as ServiceCategory)}>
-                  <SelectTrigger className="w-full text-base md:text-lg py-3 border border-gray-300 rounded-md">
-                    <SelectValue placeholder="Filtrar por categoría..." />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {serviceCategories.map(category => (
-                      <SelectItem key={category} value={category}>
-                        {category}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <div className="relative flex-grow">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground z-10" size={20} />
+                  <Input 
+                    type="text"
+                    placeholder="Buscar trámite..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="w-full text-base md:text-lg h-full py-3 pl-10 pr-4 border-0 rounded-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                    aria-label="Buscar trámite por nombre o descripción"
+                  />
+                </div>
               </div>
             </div>
 
@@ -71,11 +74,9 @@ const QuickLinksSection: React.FC = () => {
               <Skeleton className="h-6 w-4/5 mx-auto" />
               <Skeleton className="h-6 w-3/5 mx-auto" />
             </div>
-            <div className="mb-10 max-w-xl mx-auto space-y-6">
-              <Skeleton className="h-12 w-full" /> {/* Skeleton for search */}
-              <Skeleton className="h-12 w-full" /> {/* Skeleton for select */}
+            <div className="mb-10 max-w-xl mx-auto">
+              <Skeleton className="h-12 w-full" />
             </div>
-            {/* Skeleton for ServiceList - show 4 cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
               {[...Array(4)].map((_, index) => (
                 <div key={index} className="bg-card p-6 rounded-lg shadow-lg border border-prosalud-border">
