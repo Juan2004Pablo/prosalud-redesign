@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import MainLayout from '@/components/layout/MainLayout';
@@ -16,7 +17,7 @@ import {
   type CarouselApi
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
-import ImagePreviewDialog from '@/components/sst/ImagePreviewDialog'; // Asegúrate que la ruta es correcta
+import ImagePreviewDialog from '@/components/sst/ImagePreviewDialog';
 
 const EventoDetallePage: React.FC = () => {
   const { eventId } = useParams<{ eventId: string }>();
@@ -111,11 +112,11 @@ const EventoDetallePage: React.FC = () => {
                 <img
                   src={event.mainImage.src}
                   alt={event.mainImage.alt}
-                  className="w-full h-auto max-h-[500px] object-cover rounded-lg shadow-md mb-6 cursor-pointer hover:opacity-90 transition-opacity"
+                  className="w-full h-auto max-h-[500px] object-contain rounded-lg shadow-md mb-6 cursor-pointer hover:opacity-90 transition-opacity"
                   onClick={() => handleImageClick(event.mainImage.src, event.mainImage.alt)}
                 />
               ) : (
-                 <div className="bg-background-light p-0 rounded-lg border-0 mb-6"> {/* Contenedor para el carrusel principal si es necesario */}
+                 <div className="bg-background-light p-0 rounded-lg border-0 mb-6">
                   <Carousel 
                     setApi={setApi}
                     className="w-full relative" 
@@ -127,11 +128,11 @@ const EventoDetallePage: React.FC = () => {
                     <CarouselContent>
                       {allImages.map((image, index) => (
                         <CarouselItem key={index} className="relative">
-                          <div className="p-0"> {/* Removido p-1 para que la imagen ocupe todo el espacio */}
+                          <div className="p-0">
                             <img 
                               src={image.src} 
                               alt={image.alt || `${event.title} - Imagen ${index + 1}`} 
-                              className="w-full h-auto max-h-[500px] object-cover rounded-md shadow-sm cursor-pointer"
+                              className="w-full h-[400px] object-contain rounded-md shadow-sm cursor-pointer"
                               onClick={() => handleImageClick(image.src, image.alt || `${event.title} - Imagen ${index + 1}`)}
                             />
                              <button
@@ -147,8 +148,8 @@ const EventoDetallePage: React.FC = () => {
                     </CarouselContent>
                     {hasMultipleImages && (
                       <>
-                        <CarouselPrevious className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-primary-prosalud disabled:opacity-30 hover:translate-y-[-50%] z-10" />
-                        <CarouselNext className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-primary-prosalud disabled:opacity-30 hover:translate-y-[-50%] z-10" />
+                        <CarouselPrevious className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-primary-prosalud disabled:opacity-30 z-10 transform transition-all" />
+                        <CarouselNext className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-primary-prosalud disabled:opacity-30 z-10 transform transition-all" />
                       </>
                     )}
                   </Carousel>
