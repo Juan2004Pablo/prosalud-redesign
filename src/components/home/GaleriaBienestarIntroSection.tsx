@@ -1,17 +1,8 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
-import Autoplay from "embla-carousel-autoplay";
 
 interface Image {
   src: string;
@@ -70,7 +61,41 @@ const GaleriaBienestarIntroSection: React.FC = () => {
     setMounted(true);
   }, []);
 
-  const carouselImages = images.slice(0, 7); // Use first 7 images for the carousel
+  const staticDisplayImages = images.slice(0, 5); // Usaremos las primeras 5 imágenes
+
+  // Estilos para cada imagen en el abanico. Podrían definirse aquí o directamente en el JSX.
+  const imageStyles = [
+    { // Izquierda exterior
+      transform: 'rotate(-12deg) translateX(-45%)',
+      zIndex: 10,
+      widthClass: 'w-32 sm:w-36 md:w-40',
+      hoverTransform: 'rotate(-15deg) scale(1.1) translateX(-45%)'
+    },
+    { // Izquierda interior
+      transform: 'rotate(-6deg) translateX(-22%)',
+      zIndex: 20,
+      widthClass: 'w-36 sm:w-40 md:w-44',
+      hoverTransform: 'rotate(-8deg) scale(1.1) translateX(-22%)'
+    },
+    { // Centro
+      transform: 'scale(1.05) translateX(0%)', // translateX(0%) para asegurar que la base del transform está centrada
+      zIndex: 30,
+      widthClass: 'w-40 sm:w-44 md:w-48',
+      hoverTransform: 'scale(1.15) translateX(0%)'
+    },
+    { // Derecha interior
+      transform: 'rotate(6deg) translateX(22%)',
+      zIndex: 20,
+      widthClass: 'w-36 sm:w-40 md:w-44',
+      hoverTransform: 'rotate(8deg) scale(1.1) translateX(22%)'
+    },
+    { // Derecha exterior
+      transform: 'rotate(12deg) translateX(45%)',
+      zIndex: 10,
+      widthClass: 'w-32 sm:w-36 md:w-40',
+      hoverTransform: 'rotate(15deg) scale(1.1) translateX(45%)'
+    },
+  ];
 
   return (
     <section 
@@ -92,37 +117,39 @@ const GaleriaBienestarIntroSection: React.FC = () => {
         En cada encuentro hay una historia, una risa compartida, un recuerdo que permanece. Sumérgete en nuestra galería y revive los espacios donde el bienestar, la cercanía y la alegría fortalecen nuestra comunidad. Porque en ProSalud, cuidarte también es celebrar contigo.
       </p>
 
-      <Carousel
-        opts={{
-          align: "start",
-          loop: true,
-        }}
-        plugins={[
-          Autoplay({
-            delay: 5000,
-            stopOnInteraction: true,
-          }),
-        ]}
-        className="w-full max-w-xs sm:max-w-xl md:max-w-3xl lg:max-w-4xl mx-auto mb-8"
+      {/* Contenedor para las imágenes estáticas en abanico */}
+      <div 
+        className={`relative flex justify-center items-center py-10 min-h-[280px] sm:min-h-[320px] md:min-h-[380px] lg:min-h-[420px] mb-8 group
+                    transition-all duration-500 ease-out delay-300 
+                    ${mounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
       >
-        <CarouselContent>
-          {carouselImages.map((img, index) => (
-            <CarouselItem key={index} className="sm:basis-1/2 md:basis-1/3 lg:basis-1/3 p-2">
-              <div className="aspect-[3/4] overflow-hidden rounded-lg shadow-lg group">
-                <img 
-                  src={img.src} 
-                  alt={img.alt} 
-                  className="w-full h-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
-                />
-              </div>
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-        <CarouselPrevious className="hidden sm:flex -left-4 md:-left-8" />
-        <CarouselNext className="hidden sm:flex -right-4 md:-right-8" />
-      </Carousel>
+        {staticDisplayImages.map((img, index) => (
+          <div
+            key={img.src}
+            className="absolute transition-all duration-300 ease-in-out origin-bottom"
+            style={{ 
+              transform: imageStyles[index].transform, 
+              zIndex: imageStyles[index].zIndex 
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = imageStyles[index].hoverTransform;
+              e.currentTarget.style.zIndex = '40';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = imageStyles[index].transform;
+              e.currentTarget.style.zIndex = imageStyles[index].zIndex.toString();
+            }}
+          >
+            <img 
+              src={img.src} 
+              alt={img.alt} 
+              className={`${imageStyles[index].widthClass} aspect-[3/4] object-cover rounded-lg shadow-xl border-2 md:border-4 border-white`}
+            />
+          </div>
+        ))}
+      </div>
 
-      <div className={`pt-5 transition-all duration-500 ease-out delay-300 ${mounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+      <div className={`pt-5 transition-all duration-500 ease-out delay-400 ${mounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
         <Link to="/galeria-bienestar" aria-label="Explorar Galería de Bienestar ProSalud">
           <Button size="lg" className="rounded-full group bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 shadow-md hover:shadow-lg transform transition-transform hover:-translate-y-0.5">
             Explorar Galería
@@ -135,4 +162,3 @@ const GaleriaBienestarIntroSection: React.FC = () => {
 };
 
 export default GaleriaBienestarIntroSection;
-
