@@ -3,10 +3,9 @@ import { useParams, Link } from 'react-router-dom';
 import MainLayout from '@/components/layout/MainLayout';
 import { mockEvents } from '@/data/eventosMock';
 import { EventData } from '@/types/eventos';
-import { CalendarDays, MapPin, Users, Gift, Briefcase, ChevronLeft, Maximize } from 'lucide-react';
+import { CalendarDays, MapPin, Users, Gift, Briefcase, ChevronLeft, Maximize, Home, LayoutGrid, GalleryVertical } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
-import { Slash } from "lucide-react";
 import {
   Carousel,
   CarouselContent,
@@ -72,22 +71,27 @@ const EventoDetallePage: React.FC = () => {
     <MainLayout>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <Breadcrumb className="mb-8">
-          <BreadcrumbList>
+          <BreadcrumbList className="flex items-center space-x-2 text-sm">
             <BreadcrumbItem>
-              <BreadcrumbLink href="/">Inicio</BreadcrumbLink>
+              <BreadcrumbLink asChild className="flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors">
+                <Link to="/"><Home size={16} className="mr-1" />Inicio</Link>
+              </BreadcrumbLink>
             </BreadcrumbItem>
-            <BreadcrumbSeparator><Slash /></BreadcrumbSeparator>
+            <BreadcrumbSeparator />
             <BreadcrumbItem>
-              {/* Asumiendo que hay una página de servicios, si no, quitar este item */}
-              <BreadcrumbLink href="/servicios">Servicios</BreadcrumbLink> 
+              <BreadcrumbLink asChild className="flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors">
+                <Link to="/servicios"><LayoutGrid size={16} className="mr-1" />Servicios</Link> 
+              </BreadcrumbLink>
             </BreadcrumbItem>
-            <BreadcrumbSeparator><Slash /></BreadcrumbSeparator>
+            <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbLink href="/servicios/galeria-bienestar">Galería de Bienestar</BreadcrumbLink>
+              <BreadcrumbLink asChild className="flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors">
+                <Link to="/servicios/galeria-bienestar"><GalleryVertical size={16} className="mr-1" />Galería de Bienestar</Link>
+              </BreadcrumbLink>
             </BreadcrumbItem>
-            <BreadcrumbSeparator><Slash /></BreadcrumbSeparator>
+            <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage className="truncate max-w-xs">{event.title}</BreadcrumbPage>
+              <BreadcrumbPage className="font-medium text-foreground truncate max-w-xs">{event.title}</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
@@ -106,6 +110,7 @@ const EventoDetallePage: React.FC = () => {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
+            {/* Columna Izquierda: Imágenes */}
             <div className="md:col-span-2">
               {!hasMultipleImages || allImages.length <= 1 ? (
                 <div className="relative group">
@@ -124,7 +129,7 @@ const EventoDetallePage: React.FC = () => {
                   </button>
                 </div>
               ) : (
-                 <div className="bg-background-light p-0 rounded-lg border-0 mb-6">
+                 <div className="bg-background-light p-0 rounded-lg border-0 mb-6 md:mb-0"> {/* md:mb-0 para que no haya doble margen en desktop */}
                   <Carousel 
                     setApi={setApi}
                     className="w-full relative" 
@@ -168,12 +173,17 @@ const EventoDetallePage: React.FC = () => {
                   )}
                 </div>
               )}
-              
-              <h2 className="text-2xl font-semibold text-primary-prosalud-dark mb-3">Descripción del Evento</h2>
-              <p className="text-gray-700 leading-relaxed whitespace-pre-line">{event.description}</p>
             </div>
 
+            {/* Columna Derecha: Descripción (movida aquí) y Detalles del Evento */}
             <aside className="md:col-span-1 space-y-6">
+              {/* Descripción del Evento (Movida aquí) */}
+              <div className="order-first"> {/* Para asegurar que se muestra primero en el flujo normal y en la columna */}
+                <h2 className="text-2xl font-semibold text-primary-prosalud-dark mb-3">Descripción del Evento</h2>
+                <p className="text-gray-700 leading-relaxed whitespace-pre-line">{event.description}</p>
+              </div>
+              
+              {/* Detalles del Evento */}
               <div className="bg-background-light p-4 rounded-lg border border-prosalud-border">
                 <h3 className="text-lg font-semibold text-primary-prosalud-dark mb-3">Detalles del Evento</h3>
                 <ul className="space-y-2 text-sm text-gray-600">
