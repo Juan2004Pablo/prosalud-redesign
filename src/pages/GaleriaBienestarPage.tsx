@@ -67,26 +67,28 @@ const GaleriaBienestarPage: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <Breadcrumb className="mb-8">
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/">Inicio</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator>
-              <Slash />
-            </BreadcrumbSeparator>
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/servicios">Servicios</BreadcrumbLink> {/* Asumiendo que hay una página de servicios */}
-            </BreadcrumbItem>
-            <BreadcrumbSeparator>
-              <Slash />
-            </BreadcrumbSeparator>
-            <BreadcrumbItem>
-              <BreadcrumbPage>Galería de Bienestar</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
+      <div className="container mx-auto pt-6 pb-2 px-4 md:px-6 lg:px-8">
+          <Breadcrumb>
+            <BreadcrumbList className="flex items-center space-x-2 text-sm">
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
+                  <Link to="/" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
+                    <Home className="h-4 w-4" />
+                    Inicio
+                  </Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage className="flex items-center gap-1 font-medium text-foreground">
+                  <FileText className="h-4 w-4" />
+                  Galería de Bienestar
+                </BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        
+        
         
         <div className="text-center mb-8">
           <div className="flex justify-center items-center gap-3 mb-4">
