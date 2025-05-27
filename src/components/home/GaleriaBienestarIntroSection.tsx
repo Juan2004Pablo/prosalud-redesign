@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Sparkles } from 'lucide-react'; // Se eliminaron Camera y Users
+import { ArrowRight, Sparkles } from 'lucide-react';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -18,7 +18,7 @@ const GaleriaBienestarIntroSection: React.FC = () => {
   const isVisible = useIntersectionObserver(sectionRef, { threshold: 0.1, freezeOnceVisible: true });
 
   return (
-    <section ref={sectionRef} id="galeria-bienestar-intro" className="py-16 md:py-20 bg-gradient-to-br from-primary-prosalud/5 via-background-light to-secondary/5"> {/* Corregido to-secondary-prosalud/5 a to-secondary/5 */}
+    <section ref={sectionRef} id="galeria-bienestar-intro" className="py-16 md:py-20 bg-gradient-to-br from-primary-prosalud/5 via-background-light to-secondary/5">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {isVisible ? (
           <div className="flex flex-col lg:flex-row items-center gap-12">
@@ -35,7 +35,6 @@ const GaleriaBienestarIntroSection: React.FC = () => {
                 En cada encuentro hay una historia, una risa compartida, un recuerdo que permanece. Sumérgete en nuestra galería y revive los espacios donde el bienestar, la cercanía y la alegría fortalecen nuestra comunidad. Porque en ProSalud, cuidarte también es celebrar contigo.
               </p>
               <Link to="/servicios/galeria-bienestar">
-                {/* Se cambió el botón para usar la variante 'secondary' y se mantuvo 'group' para la animación del icono */}
                 <Button variant="secondary" size="lg" className="group">
                   Explorar Galería
                   <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
@@ -46,15 +45,15 @@ const GaleriaBienestarIntroSection: React.FC = () => {
             {/* Collage de Imágenes */}
             <div className="lg:w-1/2 grid grid-cols-2 grid-rows-2 gap-4 h-[400px] md:h-[450px]">
               <div className="col-span-1 row-span-2 relative group overflow-hidden rounded-lg shadow-xl">
-                <img src={images[0].src} alt={images[0].alt} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                <img src={images[0].src} alt={images[0].alt} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 border-0" />
                 <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
               </div>
               <div className="col-span-1 row-span-1 relative group overflow-hidden rounded-lg shadow-xl">
-                <img src={images[1].src} alt={images[1].alt} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                <img src={images[1].src} alt={images[1].alt} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 border-0" />
                 <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
               </div>
               <div className="col-span-1 row-span-1 relative group overflow-hidden rounded-lg shadow-xl">
-                <img src={images[2].src} alt={images[2].alt} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                <img src={images[2].src} alt={images[2].alt} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 border-0" />
                 <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
               </div>
             </div>
@@ -83,4 +82,3 @@ const GaleriaBienestarIntroSection: React.FC = () => {
 };
 
 export default GaleriaBienestarIntroSection;
-
