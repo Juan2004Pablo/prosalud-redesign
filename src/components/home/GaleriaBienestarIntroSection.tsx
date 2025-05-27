@@ -76,21 +76,38 @@ const GaleriaBienestarIntroSection: React.FC = () => {
             const angleDegrees = -30 + (60 / (galleryImages.length - 1)) * index;
             const angleRadians = angleDegrees * Math.PI / 180;
 
-            const curveDepthFactor = 60; 
-            const zPosition = -curveDepthFactor * (1 - Math.cos(angleRadians));
+            const centerBackwardOffset = 70; // Profundidad de la curva hacia atrás para el centro
+            const edgeForwardOffset = 20;   // Cuánto avanzan los bordes hacia el frente
+            const sideImageScaleBoost = 0.15; // Aumento de escala para imágenes laterales (0.1 = 10%)
+
+            const maxAngleRad = 30 * Math.PI / 180; // Máximo ángulo en radianes (30 grados)
+            // Progreso normalizado: 0 en el centro, 1 en los bordes
+            const normalizedProgress = Math.abs(angleRadians) / maxAngleRad; 
+
+            // Efecto cóncavo: centro atrás, bordes adelante
+            // zPosition negativo empuja hacia atrás, positivo hacia adelante
+            // En el centro (normalizedProgress=0): z = edgeForwardOffset - (centerBackwardOffset + edgeForwardOffset) = -centerBackwardOffset
+            // En los bordes (normalizedProgress=1): z = edgeForwardOffset
+            const zPosition = edgeForwardOffset - (centerBackwardOffset + edgeForwardOffset) * (1 - Math.pow(normalizedProgress, 2));
             
-            const sideImageScaleBoost = 0.1; 
-            const scaleFactor = 1 + sideImageScaleBoost * Math.abs(Math.sin(angleRadians));
+            // Escala: Imágenes laterales más grandes
+            // En el centro (normalizedProgress=0): scale = 1
+            // En los bordes (normalizedProgress=1): scale = 1 + sideImageScaleBoost
+            const scaleFactor = 1 + sideImageScaleBoost * normalizedProgress;
             
+            // zIndex: Imágenes laterales (más cercanas) con mayor zIndex
+            const zIndex = Math.round(1 + normalizedProgress * (galleryImages.length -1));
+
+
             return (
               <div
                 key={img.src}
-                className="relative transition-transform duration-300 hover:translate-y-[-10px] hover:z-10 group"
+                className="relative transition-transform duration-300 hover:translate-y-[-10px] hover:z-20 group"
                 style={{
                   transform: `rotateY(${angleDegrees}deg) translateZ(${zPosition}px) scale(${scaleFactor})`,
                   transformStyle: 'preserve-3d',
-                  margin: '0 4px',
-                  zIndex: index === 3 ? 5 : 4 - Math.abs(index - 3)
+                  margin: '0 1px', // Espaciado de 1px a cada lado, total 2px entre imágenes
+                  zIndex: zIndex 
                 }}
               >
                 <div 
