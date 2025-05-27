@@ -29,7 +29,7 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
         {event.category && (
           <Badge variant="outline" className="text-xs mb-2">{event.category}</Badge>
         )}
-        <!--<p className="text-sm text-gray-700 line-clamp-3">{event.description}</p>-->
+        {/* <p className="text-sm text-gray-700 line-clamp-3">{event.description}</p> */}
       </CardContent>
       <CardFooter className="p-4 border-t">
         <Link 
