@@ -8,9 +8,9 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 // Usaremos algunas imágenes de placeholder por ahora
 const images = [
-  { src: "/images/collage/image_collage_1.jpg", alt: "Evento de bienestar ProSalud 1" },
-  { src: "/images/collage/image_collage_2.jpg", alt: "Actividad recreativa ProSalud 2" },
-  { src: "/images/collage/image_collage_3.jpg", alt: "Celebración comunitaria ProSalud 3" },
+  { src: "https://www.sindicatoprosalud.com/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HLM_241203&file=087e2a05-444f-4afe-afc2-ee6169b1efbc.jpg", alt: "Evento de bienestar ProSalud 1" },
+  { src: "https://www.sindicatoprosalud.com/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HMFS_241121&file=0e0ea685-c576-43a5-99d5-d5d0484a5cda.jpg", alt: "Actividad recreativa ProSalud 2" },
+  { src: "https://www.sindicatoprosalud.com/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HSJD_20241025&file=415f8d7d-5833-44ce-88b2-3976df64b0a0.jpg", alt: "Celebración comunitaria ProSalud 3" },
 ];
 
 const GaleriaBienestarIntroSection: React.FC = () => {
@@ -29,15 +29,15 @@ const GaleriaBienestarIntroSection: React.FC = () => {
                 Momentos que Inspiran
               </div>
               <h2 className="text-4xl font-bold tracking-tight text-primary-prosalud sm:text-5xl mb-6">
-                Revive la Alegría: Nuestra Galería de Bienestar
+                Momentos que nos unen: Galería de Bienestar ProSalud
               </h2>
               <p className="text-lg text-gray-700 md:text-xl/relaxed mb-8 leading-relaxed">
-                En ProSalud, valoramos cada sonrisa y cada instante compartido. Explora nuestra galería y descubre cómo fomentamos el bienestar, la unión y la camaradería entre nuestros afiliados a través de eventos, actividades y programas diseñados para ti.
+                En cada encuentro hay una historia, una risa compartida, un recuerdo que permanece. Sumérgete en nuestra galería y revive los espacios donde el bienestar, la cercanía y la alegría fortalecen nuestra comunidad. Porque en ProSalud, cuidarte también es celebrar contigo.
               </p>
               <Link to="/servicios/galeria-bienestar">
                 {/* Se cambió el botón para usar la variante 'secondary' y se mantuvo 'group' para la animación del icono */}
                 <Button variant="secondary" size="lg" className="group">
-                  Explorar Galería Completa
+                  Explorar Galería
                   <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
                 </Button>
               </Link>
