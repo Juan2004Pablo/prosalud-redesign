@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import EventCard from '@/components/galeria-bienestar/EventCard';
 import { mockEvents } from '@/data/eventosMock'; // Usaremos datos mock por ahora
+import { Link, useNavigate } from 'react-router-dom';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
-import { Slash, Image } from "lucide-react"
+import { Slash, Image, GalleryVertical } from "lucide-react"
 import {
   Pagination,
   PaginationContent,
@@ -82,7 +83,7 @@ const GaleriaBienestarPage: React.FC = () => {
               <BreadcrumbSeparator />
               <BreadcrumbItem>
                 <BreadcrumbPage className="flex items-center gap-1 font-medium text-foreground">
-                  <FileText className="h-4 w-4" />
+                  <GalleryVertical className="h-4 w-4" />
                   Galería de Bienestar
                 </BreadcrumbPage>
               </BreadcrumbItem>
