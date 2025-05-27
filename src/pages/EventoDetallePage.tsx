@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import MainLayout from '@/components/layout/MainLayout';
 import { mockEvents } from '@/data/eventosMock';
 import { EventData } from '@/types/eventos';
-import { CalendarDays, MapPin, Users, Gift, Briefcase, ChevronLeft, Maximize, Home, LayoutGrid, GalleryVertical } from 'lucide-react';
+import { CalendarDays, MapPin, Users, Gift, Briefcase, ChevronLeft, Maximize, Home, LayoutGrid, GalleryVertical, ArrowLeft, ArrowRight } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import {
@@ -16,9 +16,11 @@ import {
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import ImagePreviewDialog from '@/components/sst/ImagePreviewDialog';
+import { Button } from '@/components/ui/button'; // Import Button for styling links
 
 const EventoDetallePage: React.FC = () => {
   const { eventId } = useParams<{ eventId: string }>();
+  const navigate = useNavigate();
   const event = mockEvents.find(e => e.id === eventId);
 
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -45,6 +47,11 @@ const EventoDetallePage: React.FC = () => {
     })
   }, [api])
 
+  useEffect(() => {
+    // Scroll to top when eventId changes
+    window.scrollTo(0, 0);
+  }, [eventId]);
+
   if (!event) {
     return (
       <MainLayout>
@@ -70,10 +77,14 @@ const EventoDetallePage: React.FC = () => {
   const handleThumbnailClick = (index: number) => {
     if (api) {
       api.scrollTo(index);
-      // Detener autoplay al seleccionar manualmente una miniatura
       autoplayPlugin.current.stop();
     }
   };
+
+  // Navigation for previous/next event
+  const currentEventIndex = mockEvents.findIndex(e => e.id === eventId);
+  const previousEvent = currentEventIndex > 0 ? mockEvents[currentEventIndex - 1] : null;
+  const nextEvent = currentEventIndex < mockEvents.length - 1 ? mockEvents[currentEventIndex + 1] : null;
 
   return (
     <MainLayout>
@@ -155,7 +166,7 @@ const EventoDetallePage: React.FC = () => {
                               alt={image.alt || `${event.title} - Imagen ${index + 1}`} 
                               className="w-auto h-auto max-w-full max-h-full object-contain rounded-md shadow-sm cursor-pointer"
                               onClick={(e) => {
-                                e.stopPropagation(); // Prevenir que el click en la imagen active otros handlers del carrusel si los hubiera
+                                e.stopPropagation(); 
                                 handleImageClick(image.src, image.alt || `${event.title} - Imagen ${index + 1}`);
                               }}
                             />
@@ -185,7 +196,6 @@ const EventoDetallePage: React.FC = () => {
                       Imagen {current} de {count}
                     </div>
                   )}
-                  {/* Thumbnail Gallery */}
                   {hasMultipleImages && allImages.length > 1 && (
                     <div className="mt-4 flex flex-wrap justify-center gap-2">
                       {allImages.map((image, index) => (
@@ -253,6 +263,45 @@ const EventoDetallePage: React.FC = () => {
                   )}
                 </ul>
               </div>
+
+              {/* Navegación de Eventos */}
+              {(previousEvent || nextEvent) && (
+                <div className="mt-8 pt-6 border-t border-prosalud-border">
+                  <h3 className="text-lg font-semibold text-primary-prosalud-dark mb-4">Navegar Eventos</h3>
+                  <div className="flex justify-between items-center gap-4">
+                    {previousEvent ? (
+                      <Link 
+                        to={`/servicios/galeria-bienestar/${previousEvent.id}`} 
+                        className="inline-flex items-center gap-2 text-sm text-primary-prosalud hover:text-secondary-prosaludgreen font-medium px-4 py-2 rounded-md border border-primary-prosalud/50 hover:bg-primary-prosalud/5 transition-colors"
+                        title={previousEvent.title}
+                      >
+                        <ArrowLeft size={18} />
+                        Anterior
+                      </Link>
+                    ) : (
+                      <Button variant="outline" disabled className="opacity-50 cursor-not-allowed">
+                        <ArrowLeft size={18} />
+                        Anterior
+                      </Button>
+                    )}
+                    {nextEvent ? (
+                      <Link 
+                        to={`/servicios/galeria-bienestar/${nextEvent.id}`} 
+                        className="inline-flex items-center gap-2 text-sm text-primary-prosalud hover:text-secondary-prosaludgreen font-medium px-4 py-2 rounded-md border border-primary-prosalud/50 hover:bg-primary-prosalud/5 transition-colors"
+                        title={nextEvent.title}
+                      >
+                        Siguiente
+                        <ArrowRight size={18} />
+                      </Link>
+                    ) : (
+                       <Button variant="outline" disabled className="opacity-50 cursor-not-allowed">
+                        Siguiente
+                        <ArrowRight size={18} />
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              )}
             </aside>
           </div>
         </article>
