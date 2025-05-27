@@ -67,7 +67,8 @@ const GaleriaBienestarPage: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="container mx-auto pt-6 pb-2 px-4 md:px-6 lg:px-8">
+      <div className="container mx-auto pt-6 pb-2 px-4 md:px-6 lg:px-8 py-10">
+        <div>
           <Breadcrumb>
             <BreadcrumbList className="flex items-center space-x-2 text-sm">
               <BreadcrumbItem>
@@ -87,8 +88,7 @@ const GaleriaBienestarPage: React.FC = () => {
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
-        
-        
+        </div>
         
         <div className="text-center mb-8">
           <div className="flex justify-center items-center gap-3 mb-4">
