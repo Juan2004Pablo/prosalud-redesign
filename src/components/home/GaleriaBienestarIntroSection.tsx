@@ -55,13 +55,13 @@ const GaleriaBienestarIntroSection: React.FC = () => {
         <Sparkles className="h-5 w-5 mr-2 text-primary" />
         Momentos que Inspiran
       </div>
-      <h2 className={`text-3xl lg:text-4xl font-bold text-foreground transition-all duration-500 ease-out ${mounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+      <h2 className={`text-4xl lg:text-5xl font-bold text-foreground transition-all duration-500 ease-out ${mounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
         Momentos que nos unen
       </h2>
       <h3 className={`text-xl lg:text-2xl text-muted-foreground mt-1 mb-4 transition-all duration-500 ease-out delay-100 ${mounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
         Galería de Bienestar ProSalud
       </h3>
-      <p className={`max-w-2xl mx-auto text-muted-foreground mt-2 mb-8 transition-all duration-500 ease-out delay-200 ${mounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+      <p className={`max-w-xl mx-auto text-muted-foreground mt-2 mb-8 transition-all duration-500 ease-out delay-200 ${mounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
         En cada encuentro hay una historia, una risa compartida, un recuerdo que permanece. Sumérgete en nuestra galería y revive los espacios donde el bienestar, la cercanía y la alegría fortalecen nuestra comunidad. Porque en ProSalud, cuidarte también es celebrar contigo.
       </p>
 
@@ -96,7 +96,7 @@ const GaleriaBienestarIntroSection: React.FC = () => {
             const scaleFactor = 1 + sideImageScaleBoost * normalizedProgress;
             
             // zIndex: Imágenes laterales (más cercanas) con mayor zIndex
-            const zIndex = Math.round(1 + normalizedProgress * (galleryImages.length -1));
+            const zIndexVal = Math.round(1 + normalizedProgress * (galleryImages.length -1)); // Renamed to avoid conflict with CSS zIndex
 
 
             return (
@@ -107,7 +107,7 @@ const GaleriaBienestarIntroSection: React.FC = () => {
                   transform: `rotateY(${angleDegrees}deg) translateZ(${zPosition}px) scale(${scaleFactor})`,
                   transformStyle: 'preserve-3d',
                   margin: '0 1px', // Espaciado de 1px a cada lado, total 2px entre imágenes
-                  zIndex: zIndex 
+                  zIndex: zIndexVal 
                 }}
               >
                 <div 
