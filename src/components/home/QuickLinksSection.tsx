@@ -49,11 +49,11 @@ const QuickLinksSection: React.FC = () => {
                   </Select>
                 </div>
 
-                <div className="relative flex-grow">
+                <div className="relative flex-grow max-w-full sm:max-w-lg lg:max-w-2xl xl:max-w-3xl mx-auto">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground z-10" size={20} />
                   <Input 
                     type="text"
-                    placeholder="Buscar trámite..."
+                    placeholder="Buscar trámite por nombre o descripción..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="w-full text-base md:text-lg h-full py-3 pl-10 pr-4 border-0 rounded-none focus-visible:ring-0 focus-visible:ring-offset-0"
