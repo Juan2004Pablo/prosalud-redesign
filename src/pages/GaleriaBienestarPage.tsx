@@ -4,7 +4,7 @@ import EventCard from '@/components/galeria-bienestar/EventCard';
 import { mockEvents } from '@/data/eventosMock'; // Usaremos datos mock por ahora
 import { Link, useNavigate } from 'react-router-dom';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
-import { Slash, Image, GalleryVertical } from "lucide-react"
+import { Slash, Image, GalleryVertical, Home } from "lucide-react"
 import {
   Pagination,
   PaginationContent,
