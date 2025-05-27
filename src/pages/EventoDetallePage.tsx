@@ -108,12 +108,21 @@ const EventoDetallePage: React.FC = () => {
           <div className="grid md:grid-cols-3 gap-8">
             <div className="md:col-span-2">
               {!hasMultipleImages || allImages.length <= 1 ? (
-                <img
-                  src={event.mainImage.src}
-                  alt={event.mainImage.alt}
-                  className="w-full h-auto max-h-[500px] object-contain rounded-lg shadow-md mb-6 cursor-pointer hover:opacity-90 transition-opacity"
-                  onClick={() => handleImageClick(event.mainImage.src, event.mainImage.alt)}
-                />
+                <div className="relative group">
+                  <img
+                    src={event.mainImage.src}
+                    alt={event.mainImage.alt}
+                    className="w-full h-auto max-h-[500px] object-contain rounded-lg shadow-md cursor-pointer hover:opacity-90 transition-opacity"
+                    onClick={() => handleImageClick(event.mainImage.src, event.mainImage.alt)}
+                  />
+                  <button
+                    onClick={() => handleImageClick(event.mainImage.src, event.mainImage.alt)}
+                    className="absolute bottom-2 right-2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-colors opacity-0 group-hover:opacity-100"
+                    aria-label="Ampliar imagen"
+                  >
+                    <Maximize size={18} />
+                  </button>
+                </div>
               ) : (
                  <div className="bg-background-light p-0 rounded-lg border-0 mb-6">
                   <Carousel 
@@ -124,19 +133,19 @@ const EventoDetallePage: React.FC = () => {
                     onMouseEnter={autoplayPlugin.current.stop}
                     onMouseLeave={autoplayPlugin.current.play}
                   >
-                    <CarouselContent>
+                    <CarouselContent className="h-[400px] sm:h-[450px] md:h-[500px]">
                       {allImages.map((image, index) => (
-                        <CarouselItem key={index} className="relative">
-                          <div className="p-0">
+                        <CarouselItem key={index} className="relative group">
+                          <div className="p-0 w-full h-full flex items-center justify-center">
                             <img 
                               src={image.src} 
                               alt={image.alt || `${event.title} - Imagen ${index + 1}`} 
-                              className="w-full h-[400px] object-contain rounded-md shadow-sm cursor-pointer"
+                              className="w-auto h-auto max-w-full max-h-full object-contain rounded-md shadow-sm cursor-pointer"
                               onClick={() => handleImageClick(image.src, image.alt || `${event.title} - Imagen ${index + 1}`)}
                             />
                              <button
                                 onClick={() => handleImageClick(image.src, image.alt || `${event.title} - Imagen ${index + 1}`)}
-                                className="absolute bottom-2 right-2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-colors"
+                                className="absolute bottom-2 right-2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-colors opacity-0 group-hover:opacity-100"
                                 aria-label="Ampliar imagen"
                               >
                                 <Maximize size={18} />
@@ -147,8 +156,8 @@ const EventoDetallePage: React.FC = () => {
                     </CarouselContent>
                     {hasMultipleImages && (
                       <>
-                        <CarouselPrevious className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 bg-white/80 text-primary-prosalud disabled:opacity-30 z-10" />
-                        <CarouselNext className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 bg-white/80 text-primary-prosalud disabled:opacity-30 z-10" />
+                        <CarouselPrevious className="absolute left-2 sm:left-3 top-1/2 bg-white/80 text-primary-prosalud disabled:opacity-30 z-10" />
+                        <CarouselNext className="absolute right-2 sm:right-3 top-1/2 bg-white/80 text-primary-prosalud disabled:opacity-30 z-10" />
                       </>
                     )}
                   </Carousel>
