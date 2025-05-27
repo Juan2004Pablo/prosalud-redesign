@@ -62,7 +62,7 @@ const GaleriaBienestarIntroSection: React.FC = () => {
       <h3 className={`text-xl lg:text-2xl text-muted-foreground mt-1 mb-4 transition-all duration-500 ease-out delay-100 ${mounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
         Galería de Bienestar ProSalud
       </h3>
-      <p className={`max-w-lg mx-auto text-muted-foreground mt-2 mb-8 transition-all duration-500 ease-out delay-200 ${mounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+      <p className={`max-w-xl mx-auto text-muted-foreground mt-2 mb-8 transition-all duration-500 ease-out delay-200 ${mounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
         En cada encuentro hay una historia, una risa compartida, un recuerdo que permanece. <br /> Sumérgete en nuestra galería y revive los espacios donde el bienestar,<br /> la cercanía y la alegría fortalecen nuestra comunidad. <br /> Porque en ProSalud, cuidarte también es celebrar contigo.
       </p>
 
