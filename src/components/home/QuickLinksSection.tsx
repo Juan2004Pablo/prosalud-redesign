@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/input';
 import ServiceList from './ServiceList';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Search } from "lucide-react";
 
 const QuickLinksSection: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -27,16 +28,18 @@ const QuickLinksSection: React.FC = () => {
               </p>
             </div>
 
-            <div className="mb-10 max-w-xl mx-auto">
-              <Input 
-                type="text"
-                placeholder="Buscar trámite por nombre o descripción..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full text-base md:text-lg py-3 px-4 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary"
-                aria-label="Buscar trámite"
-              />
-            </div>
+            <div className="mb-10 max-w-xl mx-auto relative">
+  <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={20} />
+  <Input 
+    type="text"
+    placeholder="Buscar trámite por nombre o descripción..."
+    value={searchTerm}
+    onChange={(e) => setSearchTerm(e.target.value)}
+    className="w-full text-base md:text-lg py-3 pl-10 pr-4 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary rounded-md border border-gray-300"
+    aria-label="Buscar trámite"
+  />
+</div>
+
 
             <ServiceList searchTerm={searchTerm} />
           </>

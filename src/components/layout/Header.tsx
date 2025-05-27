@@ -1,17 +1,17 @@
 
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, LogIn } from 'lucide-react';
 import DesktopMenu from './DesktopMenu';
 import MobileMenu from './MobileMenu';
-import { Button } from '@/components/ui/button'; // Import Button
+import { Button } from '@/components/ui/button';
 
 const Header: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  
+
   const activeLinkClass = "text-primary-prosalud font-bold border-b-2 border-secondary-prosaludgreen";
   const inactiveLinkClass = "text-text-gray hover:text-primary-prosalud transition-colors";
-  
+
   return (
     <header className="bg-white shadow-md sticky top-0 z-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -29,11 +29,12 @@ const Header: React.FC = () => {
           {/* Login Button & Mobile Menu Toggle (Right) */}
           <div className="flex items-center space-x-3 sm:space-x-4 flex-shrink-0">
             <Link to="/login">
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="border-primary-prosalud text-primary-prosalud hover:bg-primary-prosalud-light hover:text-primary-prosalud focus:ring-primary-prosalud"
+              <Button
+                variant="outline"
+                size="sm"
+                className="border-primary-prosalud text-primary-prosalud hover:bg-primary-prosalud-light hover:text-primary-prosalud focus:ring-primary-prosalud flex items-center gap-2"
               >
+                <LogIn size={16} />
                 Acceder
               </Button>
             </Link>
@@ -54,10 +55,10 @@ const Header: React.FC = () => {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <MobileMenu 
-          onClose={() => setIsMobileMenuOpen(false)} 
-          activeLinkClass={activeLinkClass} 
-          inactiveLinkClass={inactiveLinkClass} 
+        <MobileMenu
+          onClose={() => setIsMobileMenuOpen(false)}
+          activeLinkClass={activeLinkClass}
+          inactiveLinkClass={inactiveLinkClass}
         />
       )}
     </header>
