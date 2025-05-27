@@ -67,7 +67,7 @@ const GaleriaBienestarIntroSection: React.FC = () => {
 
       {/* Nueva galería de fotografías en estilo 3D */}
       <div 
-        className={`relative overflow-hidden mx-auto py-16 transition-all duration-500 ease-out delay-300 bg-gradient-to-b from-neutral-100 to-neutral-200 rounded-xl mb-8
+        className={`relative overflow-hidden mx-auto py-16 transition-all duration-500 ease-out rounded-xl mb-8
                    ${mounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
         style={{ perspective: '1000px' }}
       >
