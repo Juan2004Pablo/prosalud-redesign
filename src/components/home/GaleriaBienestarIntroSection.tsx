@@ -49,7 +49,7 @@ const GaleriaBienestarIntroSection: React.FC = () => {
                 <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
               </div>
               <div className="col-span-1 row-span-1 relative group overflow-hidden rounded-lg shadow-xl">
-                <img src={images[1].src} alt={images[1].alt} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 border-0" />
+                <img src={images[1].src} alt={images[1].alt} className="absolute inset-0 w-full h-full border-0" />
                 <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
               </div>
               <div className="col-span-1 row-span-1 relative group overflow-hidden rounded-lg shadow-xl">
