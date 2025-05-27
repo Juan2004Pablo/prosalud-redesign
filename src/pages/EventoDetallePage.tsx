@@ -148,14 +148,14 @@ const EventoDetallePage: React.FC = () => {
                   </button>
                 </div>
               ) : (
-                 <div className="bg-background-light p-0 rounded-lg border-0 mb-6 md:mb-0"> {/* md:mb-0 para que no haya doble margen en desktop */}
+                 <div className="bg-background-light p-0 rounded-lg border-0 mb-6 md:mb-0">
                   <Carousel 
                     setApi={setApi}
                     className="w-full relative" 
                     opts={{ loop: true }} 
                     plugins={[autoplayPlugin.current]}
-                    onMouseEnter={autoplayPlugin.current.stop}
-                    onMouseLeave={autoplayPlugin.current.play}
+                    onMouseEnter={() => autoplayPlugin.current.stop()}
+                    onMouseLeave={() => autoplayPlugin.current.play()}
                   >
                     <CarouselContent className="h-[400px] sm:h-[450px] md:h-[500px]">
                       {allImages.map((image, index) => (
