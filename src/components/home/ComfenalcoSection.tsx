@@ -198,13 +198,13 @@ const ComfenalcoSection: React.FC = () => {
             {/* Navigation Arrows */}
             <button
               onClick={() => setCurrentSlide((prev) => (prev - 1 + featuredEvents.length) % featuredEvents.length)}
-              className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-sm text-white p-2 rounded-full hover:bg-white/30 transition-all"
+              className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-sm text-white border-2 border-white p-2 rounded-full hover:bg-white/30 transition-all"
             >
               <ChevronLeft className="h-6 w-6" />
             </button>
             <button
               onClick={() => setCurrentSlide((prev) => (prev + 1) % featuredEvents.length)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-sm text-white p-2 rounded-full hover:bg-white/30 transition-all"
+              className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-sm text-white border-2 border-white p-2 rounded-full hover:bg-white/30 transition-all"
             >
               <ChevronRight className="h-6 w-6" />
             </button>
