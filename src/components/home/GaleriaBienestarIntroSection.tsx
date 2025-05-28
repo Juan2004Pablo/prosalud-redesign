@@ -49,7 +49,7 @@ const GaleriaBienestarIntroSection: React.FC = () => {
     <section 
       ref={sectionRef} 
       id="galeria-bienestar-intro" 
-      className="shadow-xl py-8 lg:py-12 my-16 mx-auto max-w-6xl rounded-xl text-center"
+      className="shadow-xl py-8 lg:py-12 my-16 mx-auto max-w-full rounded-xl text-center"
     >
       <div className={`inline-flex items-center rounded-lg bg-primary/10 px-3 py-1.5 text-sm text-primary font-semibold mb-4 transition-opacity duration-500 ease-out ${mounted && isVisible ? 'opacity-100' : 'opacity-0'}`}>
         <Sparkles className="h-5 w-5 mr-2 text-primary" />
