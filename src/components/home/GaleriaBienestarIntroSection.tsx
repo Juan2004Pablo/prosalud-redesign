@@ -54,8 +54,8 @@ const GaleriaBienestarIntroSection: React.FC = () => {
     <section 
       ref={sectionRef} 
       id="galeria-bienestar-intro" 
-      className="py-8 lg:py-12  w-full text-center"
-      style={{ backgroundColor: '#f0f6f9' }}
+      className="py-10 lg:py-12  w-full text-center"
+      style={{ backgroundColor: '#e8f2f7' }}
     >
       <div className={`inline-flex items-center rounded-lg bg-yellow-100 px-3 py-1.5 text-sm text-yellow-500 font-semibold mb-4 transition-opacity duration-500 ease-out ${mounted && isVisible ? 'opacity-100' : 'opacity-0'}`}>
         <Sparkles className="h-5 w-5 mr-2 text-yellow-500" />
@@ -137,7 +137,7 @@ const GaleriaBienestarIntroSection: React.FC = () => {
         </div>
       </div>
 
-      <div className={`pt-2 transition-all duration-500 ease-out delay-400 ${mounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+      <div className={`pt-3 transition-all duration-500 ease-out delay-400 ${mounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
         <Link to="/galeria-bienestar" aria-label="Explorar Galería de Bienestar ProSalud">
           <Button size="lg" className="rounded-full group bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 shadow-md hover:shadow-lg transform transition-transform hover:-translate-y-0.5">
             Explorar Galería
