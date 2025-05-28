@@ -62,11 +62,10 @@ const ComfenalcoSection: React.FC = () => {
     return (
       <section ref={sectionRef} className="py-16 md:py-20 bg-gradient-to-br from-blue-50 to-green-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <Skeleton className="h-6 w-32 mx-auto mb-4" />
-            <Skeleton className="h-16 w-48 mx-auto mb-4" />
-            <Skeleton className="h-12 w-96 mx-auto mb-4" />
-            <Skeleton className="h-6 w-3/4 mx-auto" />
+          <div className="text-center mb-8">
+            <Skeleton className="h-6 w-32 mx-auto mb-3" />
+            <Skeleton className="h-10 w-80 mx-auto mb-3" />
+            <Skeleton className="h-6 w-96 mx-auto" />
           </div>
           <Skeleton className="h-96 w-full rounded-3xl mb-8" />
           <div className="grid grid-cols-12 gap-4 h-80">
@@ -79,34 +78,45 @@ const ComfenalcoSection: React.FC = () => {
   }
 
   return (
-    <section ref={sectionRef} className="py-16 md:py-20 bg-gradient-to-br from-blue-50 to-green-50 overflow-hidden">
+    <section ref={sectionRef} className="py-12 md:py-16 bg-gradient-to-br from-blue-50 to-green-50 overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center rounded-lg bg-green-100 px-3 py-1.5 text-sm text-green-600 font-semibold mb-4">
-            <Gift className="h-4 w-4 mr-2" />
-            Beneficios Exclusivos
+        {/* Compact Header */}
+        <div className="flex flex-col md:flex-row items-center justify-between mb-8 gap-4">
+          <div className="flex items-center gap-4">
+            <div className="relative">
+              <img 
+                src="/lovable-uploads/59189700-681a-411b-9728-2ffdb738c386.png" 
+                alt="Comfenalco Antioquia"
+                className="h-12 md:h-14"
+              />
+              <div className="absolute -top-1 -right-1">
+                <div className="w-4 h-4 bg-green-500 rounded-full animate-pulse" />
+              </div>
+            </div>
+            <div className="text-left">
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight">
+                Experiencias que transforman
+              </h2>
+              <p className="text-sm md:text-base text-gray-600 mt-1">
+                Beneficios exclusivos para ti y tu familia
+              </p>
+            </div>
           </div>
           
-          <div className="flex items-center justify-center mb-4">
-            <img 
-              src="/lovable-uploads/59189700-681a-411b-9728-2ffdb738c386.png" 
-              alt="Comfenalco Antioquia"
-              className="h-16 md:h-20"
-            />
+          <div className="flex items-center gap-3">
+            <Badge className="bg-green-100 text-green-700 font-semibold px-3 py-1.5">
+              <Gift className="h-4 w-4 mr-2" />
+              Beneficios Activos
+            </Badge>
+            <div className="hidden md:flex items-center text-sm text-gray-500">
+              <Sparkles className="h-4 w-4 mr-1 text-yellow-500" />
+              ¡No te los pierdas!
+            </div>
           </div>
-
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Experiencias que transforman
-          </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Descubre los beneficios, cursos, experiencias y actividades exclusivas que 
-            <strong className="text-green-600"> Comfenalco Antioquia</strong> tiene para ti y tu familia
-          </p>
         </div>
 
         {/* Hero Carousel */}
-        <div className="relative mb-12">
+        <div className="relative mb-8">
           <div className="relative h-96 md:h-[500px] rounded-3xl overflow-hidden shadow-2xl">
             {featuredEvents.map((event, index) => (
               <div
@@ -259,14 +269,6 @@ const ComfenalcoSection: React.FC = () => {
             })}
           </div>
         )}
-
-        {/* Call to Action */}
-        <div className="text-center mt-12">
-          <div className="inline-flex items-center text-sm text-gray-600 bg-white px-4 py-2 rounded-full shadow-sm">
-            <Sparkles className="h-4 w-4 mr-2 text-yellow-500" />
-            ¡No te pierdas estas oportunidades únicas!
-          </div>
-        </div>
       </div>
     </section>
   );
