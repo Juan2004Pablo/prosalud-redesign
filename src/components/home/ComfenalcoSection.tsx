@@ -236,7 +236,7 @@ const ComfenalcoSection: React.FC = () => {
             {mosaicEvents.map((event, index) => {
               const isLarge = index === 0;
               const colSpan = isLarge ? 'col-span-12 md:col-span-8' : 'col-span-12 md:col-span-4';
-              const height = isLarge ? 'h-full' : index === 1 ? 'h-full' : 'h-3/4 md:mt-2';
+              const height = isLarge ? 'h-full' : index === 1 ? 'h-3/4' : 'h-3/4 md:mt-2';
               
               return (
                 <div
