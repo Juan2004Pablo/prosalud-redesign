@@ -137,7 +137,7 @@ const GaleriaBienestarIntroSection: React.FC = () => {
         </div>
       </div>
 
-      <div className={`pt-3 transition-all duration-500 ease-out delay-400 ${mounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+      <div className={`transition-all duration-500 ease-out delay-400 ${mounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
         <Link to="/servicios/galeria-bienestar" aria-label="Explorar Galería de Bienestar ProSalud">
           <Button size="lg" className="rounded-full group bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 shadow-md hover:shadow-lg transform transition-transform hover:-translate-y-0.5">
             Explorar Galería
