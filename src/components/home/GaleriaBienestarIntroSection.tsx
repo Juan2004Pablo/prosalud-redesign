@@ -118,10 +118,7 @@ const GaleriaBienestarIntroSection: React.FC = () => {
                   <img 
                     src={img.src} 
                     alt={img.alt} 
-                    
-                    className={`rounded-2xl shadow-lg object-cover w-60 h-40 transition-transform duration-300 hover:scale-105 ${
-                      index === 0 ? 'ml-2' : index === galleryImages.length - 1 ? 'mr-2' : ''
-                    }`}
+                    className="w-full h-full object-cover rounded-md"
                     style={{ transform: 'translateZ(1px)' }} 
                   />
                 </div>
