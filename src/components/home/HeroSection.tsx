@@ -53,13 +53,13 @@ const HeroSection: React.FC = () => {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 md:justify-start justify-center">
                 <Button 
-                size="lg" 
-                className="bg-secondary-prosaludgreen hover:bg-secondary-prosaludgreen/90 text-white text-base shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 px-8 py-6"
-                onClick={handleScrollToQuickLinks}
-              >
-                Trámites Rápidos
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
+                  size="lg" 
+                  className="bg-primary-prosalud hover:bg-primary-prosalud-dark text-white text-base shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 px-8 py-6"
+                  onClick={handleScrollToQuickLinks}
+                >
+                  Trámites Rápidos
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
                 <Link to="/nosotros/quienes-somos" aria-label="Conocer más sobre ProSalud">
                   <Button
                     variant="outline"
