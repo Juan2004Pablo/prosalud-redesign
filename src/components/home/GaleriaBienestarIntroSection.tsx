@@ -54,8 +54,8 @@ const GaleriaBienestarIntroSection: React.FC = () => {
     <section 
       ref={sectionRef} 
       id="galeria-bienestar-intro" 
-      className="py-8 lg:py-12 my-16 w-full text-center"
-      style={{ backgroundColor: '#d4eafc' }}
+      className="my-8 lg:my-12 my-16 w-full text-center"
+      style={{ backgroundColor: '#cfefee' }}
     >
       <div className={`inline-flex items-center rounded-lg bg-yellow-100 px-3 py-1.5 text-sm text-yellow-500 font-semibold mb-4 transition-opacity duration-500 ease-out ${mounted && isVisible ? 'opacity-100' : 'opacity-0'}`}>
         <Sparkles className="h-5 w-5 mr-2 text-yellow-500" />
