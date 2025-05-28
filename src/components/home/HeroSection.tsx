@@ -54,7 +54,7 @@ const HeroSection: React.FC = () => {
               <div className="flex flex-col sm:flex-row gap-4 md:justify-start justify-center">
                 <Button 
                   size="lg" 
-                  className="bg-primary-prosalud hover:bg-primary-prosalud-dark text-white text-base shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 px-8 py-6"
+                  className="bg-accent-prosaludteal hover:bg-accent-prosaludteal/90 text-white text-base shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 px-8 py-6"
                   onClick={handleScrollToQuickLinks}
                 >
                   Trámites Rápidos
