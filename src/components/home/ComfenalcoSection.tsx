@@ -89,9 +89,6 @@ const ComfenalcoSection: React.FC = () => {
                 alt="Comfenalco Antioquia"
                 className="h-12 md:h-14"
               />
-              <div className="absolute -top-1 -right-1">
-                <div className="w-4 h-4 bg-green-500 rounded-full animate-pulse" />
-              </div>
             </div>
             <div className="text-left">
               <h2 className="text-2xl md:text-3xl font-bold text-primary-prosalud leading-tight">
