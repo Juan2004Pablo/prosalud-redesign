@@ -56,83 +56,76 @@ const GaleriaBienestarIntroSection: React.FC = () => {
         <Sparkles className="h-5 w-5 mr-2 text-primary" />
         Momentos que Inspiran
       </div>
-      <h2 className={`text-5xl lg:text-6xl font-bold text-foreground transition-all duration-500 ease-out ${mounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+      <h2 className={`text-4xl lg:text-5xl font-bold text-foreground transition-all duration-500 ease-out ${mounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
         Momentos que nos unen
       </h2>
       <h3 className={`text-xl lg:text-2xl text-muted-foreground mt-1 mb-4 transition-all duration-500 ease-out delay-100 ${mounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
         Galería de Bienestar ProSalud
       </h3>
-      <p className={`max-w-2xl mx-auto text-muted-foreground mt-2 transition-all duration-500 ease-out delay-200 ${mounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-        En cada encuentro hay una historia, una risa compartida, un recuerdo que permanece. <br /> Sumérgete en nuestra galería y revive los espacios donde el bienestar,<br /> la cercanía y la alegría fortalecen nuestra comunidad. <br /> Porque en ProSalud, cuidarte también es celebrar contigo.
+      <p className={`max-w-xl mx-auto text-muted-foreground mt-2 mb-8 transition-all duration-500 ease-out delay-200 ${mounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+        En cada encuentro hay una historia, una risa compartida, un recuerdo que permanece. Sumérgete en nuestra galería y revive los espacios donde el bienestar, la cercanía y la alegría fortalecen nuestra comunidad. <br /> Porque en ProSalud, cuidarte también es celebrar contigo.
       </p>
 
       {/* Nueva galería de fotografías en estilo 3D */}
-      <div
-          className={`relative overflow-visible w-full py-10 transition-all duration-700 ease-out
-                     ${mounted && isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-        >
-          <div className="flex justify-between items-end w-full px-4">
-            {images.map((img, index) => {
-              // Calcular la posición Y para crear efecto cóncavo
-              const centerIndex = (images.length - 1) / 2
-              const distanceFromCenter = Math.abs(index - centerIndex)
-              const maxDistance = centerIndex
+      <div 
+        className={`relative overflow-hidden mx-auto py-16 transition-all duration-500 ease-out rounded-xl mb-8
+                   ${mounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+        style={{ perspective: '1000px' }}
+      >
+        <div className="flex justify-center" style={{ transformStyle: 'preserve-3d', transform: 'rotateX(5deg)' }}>
+          {galleryImages.map((img, index) => {
+            const angleDegrees = -30 + (60 / (galleryImages.length - 1)) * index;
+            const angleRadians = angleDegrees * Math.PI / 180;
+            const maxAngleRad = 30 * Math.PI / 180; 
+            const normalizedProgress = Math.abs(angleRadians) / maxAngleRad; 
 
-              // Normalizar la distancia (0 en el centro, 1 en los bordes)
-              const normalizedDistance = distanceFromCenter / maxDistance
+            const baseZOffset = -50; 
+            const centerZExtrusion = 70; 
+            const zPosition = baseZOffset + centerZExtrusion * (1 - normalizedProgress);
 
-              // Crear curva cóncava: las imágenes del centro están más abajo
-              const yOffset = Math.pow(normalizedDistance, 1.5) * 40 // 40px máximo de diferencia
+            const edgeScaleReduction = 0.15; 
+            const scaleFactor = 1 - normalizedProgress * edgeScaleReduction;
+            
+            const zIndexVal = Math.round(galleryImages.length * (1 - normalizedProgress));
 
-              // Escala para hacer las imágenes de los extremos más grandes
-              const scale = 1 + normalizedDistance * 0.3 // Hasta 30% más grandes en los extremos
 
-              return (
-                <div
-                  key={index}
-                  className="relative transition-all duration-500 hover:translate-y-[-15px] group cursor-pointer flex-1 flex justify-center"
-                  style={{
-                    transform: `translateY(${yOffset}px) scale(${scale})`,
+            return (
+              <div
+                key={img.src}
+                className="relative transition-transform duration-300 hover:translate-y-[-10px] hover:z-20 group"
+                style={{
+                  transform: `rotateY(${angleDegrees}deg) translateZ(${zPosition}px) scale(${scaleFactor})`,
+                  transformStyle: 'preserve-3d',
+                  margin: '0 -5px', // Ajustado para ligero solapamiento
+                  zIndex: zIndexVal 
+                }}
+              >
+                <div 
+                  className="w-32 sm:w-40 md:w-48 aspect-[3/4] overflow-hidden rounded-lg shadow-xl transition-all duration-300
+                           group-hover:shadow-2xl"
+                  style={{ 
+                    // transform: 'rotateX(2deg)', // Opcional: se puede quitar si se prefiere más plano
+                    transformStyle: 'preserve-3d',
                   }}
                 >
-                  <div
-                    className="w-20 sm:w-24 md:w-28 lg:w-32 xl:w-36 aspect-[3/4] overflow-hidden rounded-xl shadow-2xl 
-                             transition-all duration-500 group-hover:shadow-3xl group-hover:scale-105
-                             border-2 border-white/20"
-                    style={{
-                      filter: "brightness(0.95) contrast(1.05)",
-                    }}
-                  >
-                    <img
-                      src={img.src || "/placeholder.svg"}
-                      alt={img.alt}
-                      className="w-full h-full object-cover transition-transform duration-500 
-                               group-hover:scale-110"
-                      style={{
-                        filter: "saturate(1.1)",
-                      }}
-                    />
-
-                    {/* Overlay sutil para hover */}
-                    <div
-                      className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent 
-                               opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    />
-                  </div>
-
-                  {/* Sombra proyectada simple */}
-                  <div
-                    className="absolute -bottom-6 left-1/2 w-3/4 h-3 bg-black/20 blur-lg rounded-full 
-                             transition-all duration-500 group-hover:w-4/5 group-hover:bg-black/30"
-                    style={{
-                      transform: "translateX(-50%)",
-                    }}
+                  <img 
+                    src={img.src} 
+                    alt={img.alt} 
+                    className="w-full h-full object-cover rounded-md"
+                    style={{ transform: 'translateZ(1px)' }} // Ligero translateZ para evitar z-fighting si es necesario
                   />
                 </div>
-              )
-            })}
-          </div>
+                
+                <div 
+                  className="absolute -bottom-4 left-1/2 w-3/4 h-2 bg-black opacity-10 blur-md rounded-full transition-all duration-300
+                           group-hover:opacity-20 group-hover:w-4/5"
+                  style={{ transform: 'translateX(-50%) rotateX(80deg)' }}
+                />
+              </div>
+            );
+          })}
         </div>
+      </div>
 
       <div className={`pt-5 transition-all duration-500 ease-out delay-400 ${mounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
         <Link to="/galeria-bienestar" aria-label="Explorar Galería de Bienestar ProSalud">
@@ -147,4 +140,3 @@ const GaleriaBienestarIntroSection: React.FC = () => {
 };
 
 export default GaleriaBienestarIntroSection;
-
