@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -19,7 +20,7 @@ const images: Image[] = [{
   src: "https://www.sindicatoprosalud.com/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HSJD_20241025&file=415f8d7d-5833-44ce-88b2-3976df64b0a0.jpg",
   alt: "Celebración comunitaria ProSalud 3"
 }, {
-  src: "https://www.sindicatoprosalud.com/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HLM_241203&file=38bb889f-a94b-49f8-8b62-43a701b10758.jpg",
+  src: "https://www.sindicatoprosalud.com/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HLM_241203&file=38bb8889f-a94b-49f8-8b62-43a701b10758.jpg",
   alt: "Participantes en taller"
 }, {
   src: "https://www.sindicatoprosalud.com/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HLM_241203&file=58f0c0e1-ed25-43f4-ad1a-05b875508622.jpg",
@@ -47,14 +48,14 @@ const GaleriaBienestarIntroSection: React.FC = () => {
 
   const Z_CENTER = 100; // Más alejado (atrás)
   const Z_EDGE = -50;   // Más cercano (adelante)
-  const SCALE_CENTER = 0.9; // Ligeramente más grande que antes (era 0.8)
+  const SCALE_CENTER = 0.9; // Ligeramente más grande
   const SCALE_EDGE = 1.3; // El más grande en los bordes
 
   return (
     <section 
       ref={sectionRef} 
       id="galeria-bienestar-intro" 
-      className="shadow-xl py-8 lg:py-12 my-16 mx-auto max-w-full rounded-xl text-center"
+      className="shadow-xl py-8 lg:py-12 my-16 w-full text-center" // MODIFIED: Removed mx-auto, rounded-xl. Added w-full.
     >
       <div className={`inline-flex items-center rounded-lg bg-primary/10 px-3 py-1.5 text-sm text-primary font-semibold mb-4 transition-opacity duration-500 ease-out ${mounted && isVisible ? 'opacity-100' : 'opacity-0'}`}>
         <Sparkles className="h-5 w-5 mr-2 text-primary" />
@@ -94,16 +95,10 @@ const GaleriaBienestarIntroSection: React.FC = () => {
             const scaleFactor = SCALE_CENTER + (SCALE_EDGE - SCALE_CENTER) * normalizedProgress;
             
             const zIndexVal = Math.round(1 + normalizedProgress * (totalImages -1)); 
-            const rotationYDegrees = angleDegrees; // Ajustado para que miren hacia adentro
+            const rotationYDegrees = -angleDegrees; // MODIFIED: Inverted angle for inward rotation
 
-            let itemClasses = "relative transition-transform duration-300 hover:translate-y-[-10px] hover:z-20 group";
-            if (totalImages > 1) {
-              if (index === 0) {
-                itemClasses += " mr-4"; // 16px. Con gap-2 (8px), total 24px
-              } else if (index === totalImages - 1) {
-                itemClasses += " ml-4"; // 16px. Con gap-2 (8px), total 24px
-              }
-            }
+            // MODIFIED: Removed conditional margins (mr-4, ml-4)
+            const itemClasses = "relative transition-transform duration-300 hover:translate-y-[-10px] hover:z-20 group";
 
             return (
               <div
@@ -155,3 +150,4 @@ const GaleriaBienestarIntroSection: React.FC = () => {
 };
 
 export default GaleriaBienestarIntroSection;
+
