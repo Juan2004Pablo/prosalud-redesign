@@ -29,7 +29,7 @@ const images: Image[] = [{
   src: "https://www.sindicatoprosalud.com/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HLM_241203&file=635aa054-c5bd-4acb-9f10-8b00530843ac.jpg",
   alt: "Participantes en taller de bienestar"
 }, {
-  src: "https://www.sindicatoprosalud.com/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HLM_241203&file=83fa956d-0de5-4bf5-9e1d-3437cad82b14.jpg",
+  src: "https://prosalud.org.co/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HMFS_241203_2&file=5fac6112-6971-4ba4-b082-9a5d99984788.jpg",
   alt: "Ejercicio de relajación grupal"
 }];
 
