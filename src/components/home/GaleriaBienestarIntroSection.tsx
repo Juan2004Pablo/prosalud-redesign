@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -73,28 +74,36 @@ const GaleriaBienestarIntroSection: React.FC = () => {
       >
         <div className="flex justify-center items-center" style={{ transformStyle: 'preserve-3d', transform: 'rotateX(0deg)' }}>
           {galleryImages.map((img, index) => {
-            const angleDegrees = -30 + (60 / (galleryImages.length - 1)) * index; // Angulo para la distribución cóncava
-            const angleRadians = angleDegrees * Math.PI / 180;
-            const maxAngleRad = 30 * Math.PI / 180; 
-            const normalizedProgress = Math.abs(angleRadians) / maxAngleRad; // Progreso normalizado desde el centro (0) al borde (1)
+            // Distribución angular de las imágenes
+            const totalImages = galleryImages.length;
+            const angleSpread = 60; // Rango angular total (ej: 60 grados)
+            const anglePerImage = totalImages > 1 ? angleSpread / (totalImages -1) : 0;
+            const angleDegrees = -angleSpread / 2 + anglePerImage * index;
 
-            // Ajustes para efecto cóncavo: imagen central más pequeña y atrás, bordes más grandes y adelante
-            const CENTER_Z_OFFSET_CONCAVE = 30; // Imagen central más atrás
-            const EDGE_Z_OFFSET_CONCAVE = -100;  // Imágenes de borde más adelante
-            const CENTER_SCALE_CONCAVE = 1.1;   // Imagen central más grande (corregido, era 0.8)
-            const EDGE_SCALE_CONCAVE = 0.8;   // Imágenes de borde más pequeñas (corregido, era 1.1)
+            const angleRadians = angleDegrees * Math.PI / 180;
+            const maxAngleRad = (angleSpread / 2) * Math.PI / 180; 
+            // normalizedProgress: 0 para la imagen central, 1 para las imágenes de los extremos
+            const normalizedProgress = totalImages > 1 ? Math.abs(angleRadians) / maxAngleRad : 0;
+
+            // Ajustes para el efecto deseado:
+            // Imágenes de los extremos: más grandes y más "adelante"
+            // Imagen central: más pequeña y más "atrás"
+            const Z_CENTER = 50;    // Imagen central más atrás (valor Z positivo)
+            const Z_EDGE = -100;   // Imágenes de los bordes más adelante (valor Z negativo)
+            const SCALE_CENTER = 0.7; // Imagen central más pequeña
+            const SCALE_EDGE = 1.2;   // Imágenes de los bordes más grandes
 
             // Interpolar zPosition y scaleFactor basado en normalizedProgress
-            // Si normalizedProgress es 0 (centro), zPosition = CENTER_Z_OFFSET_CONCAVE, scaleFactor = CENTER_SCALE_CONCAVE
-            // Si normalizedProgress es 1 (borde), zPosition = EDGE_Z_OFFSET_CONCAVE, scaleFactor = EDGE_SCALE_CONCAVE
-            const zPosition = EDGE_Z_OFFSET_CONCAVE + (CENTER_Z_OFFSET_CONCAVE - EDGE_Z_OFFSET_CONCAVE) * (1 - normalizedProgress);
-            const scaleFactor = EDGE_SCALE_CONCAVE + (CENTER_SCALE_CONCAVE - EDGE_SCALE_CONCAVE) * (1 - normalizedProgress);
+            // Si normalizedProgress es 0 (centro), zPosition = Z_CENTER, scaleFactor = SCALE_CENTER
+            // Si normalizedProgress es 1 (borde), zPosition = Z_EDGE, scaleFactor = SCALE_EDGE
+            const zPosition = Z_CENTER + (Z_EDGE - Z_CENTER) * normalizedProgress;
+            const scaleFactor = SCALE_CENTER + (SCALE_EDGE - SCALE_CENTER) * normalizedProgress;
             
-            const zIndexVal = Math.round(1 + (1 - normalizedProgress) * (galleryImages.length -1)); // Más prominente en el centro
+            // Imágenes de los bordes con mayor z-index para que se muestren al frente
+            const zIndexVal = Math.round(1 + normalizedProgress * (totalImages -1)); 
             
-            // Invertir rotación para que miren hacia adentro
-            const rotationYDegrees = angleDegrees > 0 ? -Math.abs(angleDegrees) : Math.abs(angleDegrees);
-
+            // Rotación para que todas las imágenes miren hacia el centro
+            const rotationYDegrees = -angleDegrees;
 
             return (
               <div
@@ -111,7 +120,7 @@ const GaleriaBienestarIntroSection: React.FC = () => {
                   className="w-32 sm:w-40 md:w-48 aspect-[3/4] overflow-hidden rounded-lg shadow-xl transition-all duration-300
                            group-hover:shadow-2xl"
                   style={{ 
-                    transform: 'rotateX(0deg)', // Sin inclinación vertical
+                    transform: 'rotateX(0deg)', // Sin inclinación vertical, imágenes rectas
                     transformStyle: 'preserve-3d',
                   }}
                 >
@@ -119,7 +128,7 @@ const GaleriaBienestarIntroSection: React.FC = () => {
                     src={img.src} 
                     alt={img.alt} 
                     className="w-full h-full object-cover rounded-md"
-                    style={{ transform: 'translateZ(1px)' }}
+                    style={{ transform: 'translateZ(1px)' }} // Pequeño ajuste para evitar z-fighting si es necesario
                   />
                 </div>
                 
@@ -127,7 +136,7 @@ const GaleriaBienestarIntroSection: React.FC = () => {
                 <div 
                   className="absolute -bottom-1 left-1/2 w-11/12 h-3 bg-black/15 blur-lg rounded-full transition-all duration-300
                            group-hover:bg-black/25 group-hover:w-full"
-                  style={{ transform: 'translateX(-50%)' }} // Sombra plana
+                  style={{ transform: 'translateX(-50%)' }}
                 />
               </div>
             );
@@ -148,3 +157,4 @@ const GaleriaBienestarIntroSection: React.FC = () => {
 };
 
 export default GaleriaBienestarIntroSection;
+
