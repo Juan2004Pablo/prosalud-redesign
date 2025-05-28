@@ -14,8 +14,8 @@ const ComfenalcoSection: React.FC = () => {
   });
 
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [featuredEvents] = useState(comfenalcoEventsMock.slice(0, 3));
-  const [mosaicEvents] = useState(comfenalcoEventsMock.slice(3));
+  const [featuredEvents] = useState(comfenalcoEventsMock.filter(event => event.displaySize === 'carousel'));
+  const [mosaicEvents] = useState(comfenalcoEventsMock.filter(event => event.displaySize === 'mosaic'));
 
   useEffect(() => {
     if (!isVisible) return;
@@ -81,7 +81,7 @@ const ComfenalcoSection: React.FC = () => {
   }
 
   return (
-    <section ref={sectionRef} className="py-12 md:py-16 bg-gradient-to-br from-primary-prosalud/5 to-primary-prosalud/10 overflow-hidden">
+    <section ref={sectionRef} className="py-12 md:py-16 bg-gradient-to-br from-primary-prosalud/10 to-primary-prosalud/20 overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Compact Header */}
         <div className="flex flex-col md:flex-row items-center justify-between mb-8 gap-4">
@@ -92,8 +92,8 @@ const ComfenalcoSection: React.FC = () => {
                 alt="Comfenalco Antioquia"
                 className="h-12 md:h-14"
                 style={{ 
-                  filter: 'drop-shadow(0 0 0 white)',
-                  mixBlendMode: 'multiply'
+                  filter: 'brightness(0) saturate(100%) invert(21%) sepia(93%) saturate(1158%) hue-rotate(191deg) brightness(96%) contrast(101%)',
+                  mixBlendMode: 'normal'
                 }}
               />
             </div>
@@ -108,7 +108,7 @@ const ComfenalcoSection: React.FC = () => {
           </div>
           
           <div className="flex items-center gap-3">
-            <Badge className="bg-green-100 text-green-700 font-semibold px-3 py-1.5 cursor-default">
+            <Badge className="bg-green-100 text-green-700 font-semibold px-3 py-1.5 pointer-events-none">
               <Gift className="h-4 w-4 mr-2" />
               Beneficios Activos
             </Badge>
@@ -119,112 +119,118 @@ const ComfenalcoSection: React.FC = () => {
           </div>
         </div>
 
-        {/* Hero Carousel */}
-        <div className="relative mb-8">
-          <div className="relative h-96 md:h-[500px] rounded-3xl overflow-hidden shadow-2xl">
-            {featuredEvents.map((event, index) => (
-              <div
-                key={event.id}
-                className={`absolute inset-0 transition-all duration-700 ease-in-out cursor-pointer ${
-                  index === currentSlide 
-                    ? 'opacity-100 scale-100' 
-                    : 'opacity-0 scale-105'
-                }`}
-                onClick={() => handleEventClick(event)}
-              >
-                <div 
-                  className="absolute inset-0 bg-cover bg-center"
-                  style={{ backgroundImage: `url(${event.bannerImage})` }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
-                
-                {/* Content Overlay */}
-                <div className="absolute inset-0 flex items-center">
-                  <div className="container mx-auto px-8">
-                    <div className="max-w-2xl text-white">
-                      <div className="flex items-center gap-3 mb-4">
-                        {event.isNew && (
-                          <Badge className="bg-red-500 text-white font-semibold animate-pulse">
-                            ¡NUEVO!
+        {/* Hero Carousel - Solo mostrar si hay eventos de carrusel */}
+        {featuredEvents.length > 0 && (
+          <div className="relative mb-8">
+            <div className="relative h-96 md:h-[500px] rounded-3xl overflow-hidden shadow-2xl">
+              {featuredEvents.map((event, index) => (
+                <div
+                  key={event.id}
+                  className={`absolute inset-0 transition-all duration-700 ease-in-out cursor-pointer ${
+                    index === currentSlide 
+                      ? 'opacity-100 scale-100' 
+                      : 'opacity-0 scale-105'
+                  }`}
+                  onClick={() => handleEventClick(event)}
+                >
+                  <div 
+                    className="absolute inset-0 bg-cover bg-center"
+                    style={{ backgroundImage: `url(${event.bannerImage})` }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
+                  
+                  {/* Content Overlay */}
+                  <div className="absolute inset-0 flex items-center">
+                    <div className="container mx-auto px-8">
+                      <div className="max-w-2xl text-white">
+                        <div className="flex items-center gap-3 mb-4">
+                          {event.isNew && (
+                            <Badge className="bg-red-500 text-white font-semibold animate-pulse">
+                              ¡NUEVO!
+                            </Badge>
+                          )}
+                          <Badge className={`${getCategoryColor(event.category)} text-white`}>
+                            {getCategoryLabel(event.category)}
                           </Badge>
+                        </div>
+                        
+                        <h3 className="text-3xl md:text-5xl font-bold mb-4">
+                          {event.title}
+                        </h3>
+                        
+                        {event.description && (
+                          <p className="text-lg md:text-xl mb-6 text-gray-200">
+                            {event.description}
+                          </p>
                         )}
-                        <Badge className={`${getCategoryColor(event.category)} text-white`}>
-                          {getCategoryLabel(event.category)}
-                        </Badge>
-                      </div>
-                      
-                      <h3 className="text-3xl md:text-5xl font-bold mb-4">
-                        {event.title}
-                      </h3>
-                      
-                      {event.description && (
-                        <p className="text-lg md:text-xl mb-6 text-gray-200">
-                          {event.description}
-                        </p>
-                      )}
 
-                      <div className="flex flex-wrap gap-4 mb-6">
-                        {event.eventDate && (
-                          <div className="flex items-center text-white/90">
-                            <Calendar className="h-5 w-5 mr-2" />
-                            <span>{formatDate(event.eventDate)}</span>
-                          </div>
-                        )}
-                        {event.registrationDeadline && (
-                          <div className="flex items-center text-white/90">
-                            <Clock className="h-5 w-5 mr-2" />
-                            <span>Hasta: {formatDate(event.registrationDeadline)}</span>
-                          </div>
-                        )}
-                      </div>
+                        <div className="flex flex-wrap gap-4 mb-6">
+                          {event.eventDate && (
+                            <div className="flex items-center text-white/90">
+                              <Calendar className="h-5 w-5 mr-2" />
+                              <span>{formatDate(event.eventDate)}</span>
+                            </div>
+                          )}
+                          {event.registrationDeadline && (
+                            <div className="flex items-center text-white/90">
+                              <Clock className="h-5 w-5 mr-2" />
+                              <span>Hasta: {formatDate(event.registrationDeadline)}</span>
+                            </div>
+                          )}
+                        </div>
 
-                      <Button 
-                        size="lg"
-                        className="bg-white text-black hover:bg-gray-100 font-semibold"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleEventClick(event);
-                        }}
-                      >
-                        <ExternalLink className="h-5 w-5 mr-2" />
-                        Inscríbete aquí
-                      </Button>
+                        <Button 
+                          size="lg"
+                          className="bg-white text-black hover:bg-gray-100 font-semibold"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleEventClick(event);
+                          }}
+                        >
+                          <ExternalLink className="h-5 w-5 mr-2" />
+                          Inscríbete aquí
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
-
-            {/* Navigation Arrows */}
-            <button
-              onClick={() => setCurrentSlide((prev) => (prev - 1 + featuredEvents.length) % featuredEvents.length)}
-              className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-sm text-white border-2 border-white p-2 rounded-full hover:bg-white/30 transition-all"
-            >
-              <ChevronLeft className="h-6 w-6" />
-            </button>
-            <button
-              onClick={() => setCurrentSlide((prev) => (prev + 1) % featuredEvents.length)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-sm text-white border-2 border-white p-2 rounded-full hover:bg-white/30 transition-all"
-            >
-              <ChevronRight className="h-6 w-6" />
-            </button>
-
-            {/* Dots Indicator */}
-            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
-              {featuredEvents.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentSlide(index)}
-                  className={`w-3 h-3 rounded-full transition-all ${
-                    index === currentSlide ? 'bg-white' : 'bg-white/50'
-                  }`}
-                />
               ))}
+
+              {/* Navigation Arrows - Solo mostrar si hay más de un evento */}
+              {featuredEvents.length > 1 && (
+                <>
+                  <button
+                    onClick={() => setCurrentSlide((prev) => (prev - 1 + featuredEvents.length) % featuredEvents.length)}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-sm text-white border-2 border-white p-2 rounded-full hover:bg-white/30 transition-all"
+                  >
+                    <ChevronLeft className="h-6 w-6" />
+                  </button>
+                  <button
+                    onClick={() => setCurrentSlide((prev) => (prev + 1) % featuredEvents.length)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-sm text-white border-2 border-white p-2 rounded-full hover:bg-white/30 transition-all"
+                  >
+                    <ChevronRight className="h-6 w-6" />
+                  </button>
+
+                  {/* Dots Indicator */}
+                  <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+                    {featuredEvents.map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setCurrentSlide(index)}
+                        className={`w-3 h-3 rounded-full transition-all ${
+                          index === currentSlide ? 'bg-white' : 'bg-white/50'
+                        }`}
+                      />
+                    ))}
+                  </div>
+                </>
+              )}
             </div>
           </div>
-        </div>
+        )}
 
-        {/* Mosaic Grid */}
+        {/* Mosaic Grid - Solo mostrar si hay eventos de mosaico */}
         {mosaicEvents.length > 0 && (
           <div className="grid grid-cols-12 gap-4 h-80 md:h-96">
             {mosaicEvents.map((event, index) => {

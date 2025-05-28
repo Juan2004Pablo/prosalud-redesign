@@ -13,7 +13,8 @@ export const comfenalcoEventsMock: ComfenalcoEvent[] = [
     registrationLink: '#',
     formLink: 'https://comfenalco.com/formulario-cata-vinos',
     isNew: true,
-    category: 'experiencia'
+    category: 'experiencia',
+    displaySize: 'carousel'
   },
   {
     id: '2',
@@ -25,7 +26,8 @@ export const comfenalcoEventsMock: ComfenalcoEvent[] = [
     registrationLink: '#',
     formLink: 'https://comfenalco.com/formulario-experiencias-gastronomicas',
     isNew: true,
-    category: 'experiencia'
+    category: 'experiencia',
+    displaySize: 'carousel'
   },
   {
     id: '3',
@@ -36,7 +38,8 @@ export const comfenalcoEventsMock: ComfenalcoEvent[] = [
     registrationLink: '#',
     formLink: 'https://comfenalco.com/formulario-beneficios-exclusivos',
     isNew: false,
-    category: 'beneficio'
+    category: 'beneficio',
+    displaySize: 'carousel'
   },
   {
     id: '4',
@@ -49,7 +52,8 @@ export const comfenalcoEventsMock: ComfenalcoEvent[] = [
     registrationLink: '#',
     formLink: 'https://comfenalco.com/formulario-cine-aire-libre',
     isNew: false,
-    category: 'recreacion'
+    category: 'recreacion',
+    displaySize: 'mosaic'
   },
   {
     id: '5',
@@ -62,7 +66,8 @@ export const comfenalcoEventsMock: ComfenalcoEvent[] = [
     registrationLink: '#',
     formLink: 'https://comfenalco.com/formulario-taller-maquillaje',
     isNew: true,
-    category: 'curso'
+    category: 'curso',
+    displaySize: 'mosaic'
   },
   {
     id: '6',
@@ -75,6 +80,7 @@ export const comfenalcoEventsMock: ComfenalcoEvent[] = [
     registrationLink: '#',
     formLink: 'https://comfenalco.com/formulario-taller-maquillaje',
     isNew: false,
-    category: 'curso'
+    category: 'curso',
+    displaySize: 'mosaic'
   }
 ];

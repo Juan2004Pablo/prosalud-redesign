@@ -11,4 +11,5 @@ export interface ComfenalcoEvent {
   formLink: string; // Nuevo campo para el enlace del formulario de Comfenalco
   isNew: boolean;
   category: 'curso' | 'experiencia' | 'beneficio' | 'regalo' | 'recreacion';
+  displaySize: 'carousel' | 'mosaic'; // Nueva propiedad para controlar dónde se muestra
 }
