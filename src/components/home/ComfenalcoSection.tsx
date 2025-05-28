@@ -81,7 +81,7 @@ const ComfenalcoSection: React.FC = () => {
   }
 
   return (
-    <section ref={sectionRef} className="py-12 md:py-16 bg-gradient-to-br from-primary-prosalud/10 to-primary-prosalud/20 overflow-hidden">
+    <section ref={sectionRef} className="py-12 md:py-16 bg-white overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Compact Header */}
         <div className="flex flex-col md:flex-row items-center justify-between mb-8 gap-4">
@@ -92,8 +92,8 @@ const ComfenalcoSection: React.FC = () => {
                 alt="Comfenalco Antioquia"
                 className="h-12 md:h-14"
                 style={{ 
-                  filter: 'brightness(0) saturate(100%) invert(21%) sepia(93%) saturate(1158%) hue-rotate(191deg) brightness(96%) contrast(101%)',
-                  mixBlendMode: 'normal'
+                  filter: 'drop-shadow(0 0 0 white)',
+                  mixBlendMode: 'multiply'
                 }}
               />
             </div>
