@@ -82,7 +82,7 @@ const HeroSection: React.FC = () => {
                   ))}
                 </div>
                 <p className="ml-4 text-sm text-text-light font-medium">
-                  +1500 profesionales ya confían en nosotros
+                  +1.500 profesionales ya confían en nosotros
                 </p>
               </div>
             </div>
