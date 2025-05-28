@@ -1,10 +1,11 @@
 
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { comfenalcoEventsMock } from '@/data/comfenalcoEventsMock';
-import ComfenalcoEventCard from './ComfenalcoEventCard';
-import useIntersectionObserver from '@/hooks/useIntersectionObserver';
+import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Gift, Sparkles } from 'lucide-react';
+import { Gift, Sparkles, Calendar, Clock, ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 
 const ComfenalcoSection: React.FC = () => {
   const sectionRef = useRef<HTMLDivElement | null>(null);
@@ -13,85 +14,259 @@ const ComfenalcoSection: React.FC = () => {
     freezeOnceVisible: true 
   });
 
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [featuredEvents] = useState(comfenalcoEventsMock.slice(0, 3));
+  const [mosaicEvents] = useState(comfenalcoEventsMock.slice(3));
+
+  useEffect(() => {
+    if (!isVisible) return;
+    
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % featuredEvents.length);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [isVisible, featuredEvents.length]);
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('es-ES', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    });
+  };
+
+  const getCategoryColor = (category: string) => {
+    const colors = {
+      curso: 'bg-blue-500',
+      experiencia: 'bg-purple-500',
+      beneficio: 'bg-green-500',
+      regalo: 'bg-pink-500',
+      recreacion: 'bg-orange-500'
+    };
+    return colors[category as keyof typeof colors] || 'bg-gray-500';
+  };
+
+  const getCategoryLabel = (category: string) => {
+    const labels = {
+      curso: 'Curso',
+      experiencia: 'Experiencia',
+      beneficio: 'Beneficio',
+      regalo: 'Regalo',
+      recreacion: 'Recreación'
+    };
+    return labels[category as keyof typeof labels] || category;
+  };
+
+  if (!isVisible) {
+    return (
+      <section ref={sectionRef} className="py-16 md:py-20 bg-gradient-to-br from-blue-50 to-green-50">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <Skeleton className="h-6 w-32 mx-auto mb-4" />
+            <Skeleton className="h-16 w-48 mx-auto mb-4" />
+            <Skeleton className="h-12 w-96 mx-auto mb-4" />
+            <Skeleton className="h-6 w-3/4 mx-auto" />
+          </div>
+          <Skeleton className="h-96 w-full rounded-3xl mb-8" />
+          <div className="grid grid-cols-12 gap-4 h-80">
+            <Skeleton className="col-span-8 h-full rounded-2xl" />
+            <Skeleton className="col-span-4 h-full rounded-2xl" />
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
-    <section 
-      ref={sectionRef} 
-      className="py-16 md:py-20 bg-gradient-to-br from-blue-50 to-green-50"
-    >
+    <section ref={sectionRef} className="py-16 md:py-20 bg-gradient-to-br from-blue-50 to-green-50 overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        {isVisible ? (
-          <>
-            {/* Header */}
-            <div className="text-center mb-12">
-              <div className="inline-flex items-center rounded-lg bg-green-100 px-3 py-1.5 text-sm text-green-600 font-semibold mb-4">
-                <Gift className="h-4 w-4 mr-2" />
-                Beneficios Exclusivos
-              </div>
-              
-              <div className="flex items-center justify-center mb-4">
-                <img 
-                  src="/lovable-uploads/59189700-681a-411b-9728-2ffdb738c386.png" 
-                  alt="Comfenalco Antioquia"
-                  className="h-16 md:h-20"
-                />
-              </div>
+        {/* Header */}
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center rounded-lg bg-green-100 px-3 py-1.5 text-sm text-green-600 font-semibold mb-4">
+            <Gift className="h-4 w-4 mr-2" />
+            Beneficios Exclusivos
+          </div>
+          
+          <div className="flex items-center justify-center mb-4">
+            <img 
+              src="/lovable-uploads/59189700-681a-411b-9728-2ffdb738c386.png" 
+              alt="Comfenalco Antioquia"
+              className="h-16 md:h-20"
+            />
+          </div>
 
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-                Experiencias que transforman
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Descubre los beneficios, cursos, experiencias y actividades exclusivas que 
-                <strong className="text-green-600"> Comfenalco Antioquia</strong> tiene para ti y tu familia
-              </p>
-            </div>
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            Experiencias que transforman
+          </h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Descubre los beneficios, cursos, experiencias y actividades exclusivas que 
+            <strong className="text-green-600"> Comfenalco Antioquia</strong> tiene para ti y tu familia
+          </p>
+        </div>
 
-            {/* Events Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-              {comfenalcoEventsMock.map((event, index) => (
+        {/* Hero Carousel */}
+        <div className="relative mb-12">
+          <div className="relative h-96 md:h-[500px] rounded-3xl overflow-hidden shadow-2xl">
+            {featuredEvents.map((event, index) => (
+              <div
+                key={event.id}
+                className={`absolute inset-0 transition-all duration-700 ease-in-out ${
+                  index === currentSlide 
+                    ? 'opacity-100 scale-100' 
+                    : 'opacity-0 scale-105'
+                }`}
+              >
                 <div 
-                  key={event.id}
-                  className="opacity-0 translate-y-8 animate-[fadeInUp_0.6s_ease-out_forwards]"
-                  style={{ animationDelay: `${index * 0.1}s` }}
-                >
-                  <ComfenalcoEventCard event={event} />
-                </div>
-              ))}
-            </div>
+                  className="absolute inset-0 bg-cover bg-center"
+                  style={{ backgroundImage: `url(${event.bannerImage})` }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
+                
+                {/* Content Overlay */}
+                <div className="absolute inset-0 flex items-center">
+                  <div className="container mx-auto px-8">
+                    <div className="max-w-2xl text-white">
+                      <div className="flex items-center gap-3 mb-4">
+                        {event.isNew && (
+                          <Badge className="bg-red-500 text-white font-semibold animate-pulse">
+                            ¡NUEVO!
+                          </Badge>
+                        )}
+                        <Badge className={`${getCategoryColor(event.category)} text-white`}>
+                          {getCategoryLabel(event.category)}
+                        </Badge>
+                      </div>
+                      
+                      <h3 className="text-3xl md:text-5xl font-bold mb-4">
+                        {event.title}
+                      </h3>
+                      
+                      {event.description && (
+                        <p className="text-lg md:text-xl mb-6 text-gray-200">
+                          {event.description}
+                        </p>
+                      )}
 
-            {/* Call to Action */}
-            <div className="text-center mt-12">
-              <div className="inline-flex items-center text-sm text-gray-600 bg-white px-4 py-2 rounded-full shadow-sm">
-                <Sparkles className="h-4 w-4 mr-2 text-yellow-500" />
-                ¡No te pierdas estas oportunidades únicas!
-              </div>
-            </div>
-          </>
-        ) : (
-          // Skeleton Loader
-          <>
-            <div className="text-center mb-12">
-              <Skeleton className="h-6 w-32 mx-auto mb-4" />
-              <Skeleton className="h-16 w-48 mx-auto mb-4" />
-              <Skeleton className="h-12 w-96 mx-auto mb-4" />
-              <Skeleton className="h-6 w-3/4 mx-auto" />
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-              {[...Array(6)].map((_, index) => (
-                <div key={index} className="bg-white rounded-xl shadow-lg overflow-hidden">
-                  <Skeleton className="h-48 w-full" />
-                  <div className="p-5">
-                    <Skeleton className="h-6 w-3/4 mb-2" />
-                    <Skeleton className="h-4 w-full mb-1" />
-                    <Skeleton className="h-4 w-2/3 mb-4" />
-                    <Skeleton className="h-4 w-1/2 mb-2" />
-                    <Skeleton className="h-4 w-2/3 mb-4" />
-                    <Skeleton className="h-10 w-full" />
+                      <div className="flex flex-wrap gap-4 mb-6">
+                        {event.eventDate && (
+                          <div className="flex items-center text-white/90">
+                            <Calendar className="h-5 w-5 mr-2" />
+                            <span>{formatDate(event.eventDate)}</span>
+                          </div>
+                        )}
+                        {event.registrationDeadline && (
+                          <div className="flex items-center text-white/90">
+                            <Clock className="h-5 w-5 mr-2" />
+                            <span>Hasta: {formatDate(event.registrationDeadline)}</span>
+                          </div>
+                        )}
+                      </div>
+
+                      {event.registrationLink && (
+                        <Button 
+                          size="lg"
+                          className="bg-white text-black hover:bg-gray-100 font-semibold"
+                          onClick={() => window.open(event.registrationLink, '_blank')}
+                        >
+                          <ExternalLink className="h-5 w-5 mr-2" />
+                          Más información
+                        </Button>
+                      )}
+                    </div>
                   </div>
                 </div>
+              </div>
+            ))}
+
+            {/* Navigation Arrows */}
+            <button
+              onClick={() => setCurrentSlide((prev) => (prev - 1 + featuredEvents.length) % featuredEvents.length)}
+              className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-sm text-white p-2 rounded-full hover:bg-white/30 transition-all"
+            >
+              <ChevronLeft className="h-6 w-6" />
+            </button>
+            <button
+              onClick={() => setCurrentSlide((prev) => (prev + 1) % featuredEvents.length)}
+              className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-sm text-white p-2 rounded-full hover:bg-white/30 transition-all"
+            >
+              <ChevronRight className="h-6 w-6" />
+            </button>
+
+            {/* Dots Indicator */}
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+              {featuredEvents.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentSlide(index)}
+                  className={`w-3 h-3 rounded-full transition-all ${
+                    index === currentSlide ? 'bg-white' : 'bg-white/50'
+                  }`}
+                />
               ))}
             </div>
-          </>
+          </div>
+        </div>
+
+        {/* Mosaic Grid */}
+        {mosaicEvents.length > 0 && (
+          <div className="grid grid-cols-12 gap-4 h-80 md:h-96">
+            {mosaicEvents.map((event, index) => {
+              const isLarge = index === 0;
+              const colSpan = isLarge ? 'col-span-12 md:col-span-8' : 'col-span-12 md:col-span-4';
+              const height = isLarge ? 'h-full' : index === 1 ? 'h-full md:h-1/2' : 'h-full md:h-1/2 md:mt-2';
+              
+              return (
+                <div
+                  key={event.id}
+                  className={`${colSpan} ${height} group cursor-pointer`}
+                  style={{ animationDelay: `${index * 0.2}s` }}
+                >
+                  <div className="relative h-full rounded-2xl overflow-hidden shadow-lg group-hover:shadow-2xl transition-all duration-300 group-hover:scale-[1.02]">
+                    <div 
+                      className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
+                      style={{ backgroundImage: `url(${event.bannerImage})` }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                    
+                    {/* Content */}
+                    <div className="absolute inset-0 p-4 flex flex-col justify-end text-white">
+                      <div className="flex items-center gap-2 mb-2">
+                        {event.isNew && (
+                          <Badge className="bg-red-500 text-white text-xs">
+                            ¡NUEVO!
+                          </Badge>
+                        )}
+                        <Badge className={`${getCategoryColor(event.category)} text-white text-xs`}>
+                          {getCategoryLabel(event.category)}
+                        </Badge>
+                      </div>
+                      
+                      <h4 className={`font-bold mb-2 ${isLarge ? 'text-xl md:text-2xl' : 'text-sm md:text-lg'}`}>
+                        {event.title}
+                      </h4>
+                      
+                      {event.eventDate && (
+                        <div className="flex items-center text-white/90 text-xs md:text-sm">
+                          <Calendar className="h-3 w-3 md:h-4 md:w-4 mr-1" />
+                          <span>{formatDate(event.eventDate)}</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         )}
+
+        {/* Call to Action */}
+        <div className="text-center mt-12">
+          <div className="inline-flex items-center text-sm text-gray-600 bg-white px-4 py-2 rounded-full shadow-sm">
+            <Sparkles className="h-4 w-4 mr-2 text-yellow-500" />
+            ¡No te pierdas estas oportunidades únicas!
+          </div>
+        </div>
       </div>
     </section>
   );
