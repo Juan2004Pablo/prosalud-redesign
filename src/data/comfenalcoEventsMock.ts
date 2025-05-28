@@ -81,6 +81,6 @@ export const comfenalcoEventsMock: ComfenalcoEvent[] = [
     formLink: 'https://comfenalco.com/formulario-taller-maquillaje',
     isNew: false,
     category: 'curso',
-    displaySize: 'mosaic'
+    displaySize: 'carousel'
   }
 ];
