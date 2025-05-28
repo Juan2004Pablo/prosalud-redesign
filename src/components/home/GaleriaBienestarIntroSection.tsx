@@ -14,7 +14,7 @@ const images: Image[] = [{
   alt: "Actividad recreativa ProSalud 2"
 }, {
   src: "https://prosalud.org.co/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HSJD_20241025&file=c19b7ce3-1128-4c3f-b756-ad5c180e91f3.jpg",
-  alt: "Celebración comunitaria ProSalud 3
+  alt: "Celebración comunitaria ProSalud 3"
 }, {
   src: "https://prosalud.org.co/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HLM-2024-09-19&file=2369cb6e-8b94-49a7-934a-cc9110e874d4.jpg",
   alt: "Celebración comunitaria ProSalud 3"
