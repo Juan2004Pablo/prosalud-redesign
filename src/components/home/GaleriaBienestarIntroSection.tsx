@@ -9,15 +9,14 @@ interface Image {
   src: string;
   alt: string;
 }
-
 const images: Image[] = [{
-  src: "https://www.sindicatoprosalud.com/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HLM_241203&file=087e2a05-444f-4afe-afc2-ee6169b1efbc.jpg",
-  alt: "Evento de bienestar ProSalud 1"
-}, {
   src: "https://www.sindicatoprosalud.com/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HMFS_241121&file=0e0ea685-c576-43a5-99d5-d5d0484a5cda.jpg",
   alt: "Actividad recreativa ProSalud 2"
 }, {
   src: "https://prosalud.org.co/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HSJD_20241025&file=c19b7ce3-1128-4c3f-b756-ad5c180e91f3.jpg",
+  alt: "Celebración comunitaria ProSalud 3
+}, {
+  src: "https://prosalud.org.co/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HLM-2024-09-19&file=2369cb6e-8b94-49a7-934a-cc9110e874d4.jpg",
   alt: "Celebración comunitaria ProSalud 3"
 }, {
   src: "https://www.sindicatoprosalud.com/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HLM_241203&file=38bb8889f-a94b-49f8-8b62-43a701b10758.jpg",
