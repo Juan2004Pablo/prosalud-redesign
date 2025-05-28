@@ -56,7 +56,7 @@ const GaleriaBienestarIntroSection: React.FC = () => {
       id="galeria-bienestar-intro" 
       className="shadow-xl py-8 lg:py-12 my-16 w-full text-center" // MODIFIED: Removed mx-auto, rounded-xl. Added w-full.
     >
-      <div className={`inline-flex items-center rounded-lg bg-yellow/10 px-3 py-1.5 text-sm text-yellow-500 font-semibold mb-4 transition-opacity duration-500 ease-out ${mounted && isVisible ? 'opacity-100' : 'opacity-0'}`}>
+      <div className={`inline-flex items-center rounded-lg bg-yellow-200 px-3 py-1.5 text-sm text-yellow-500 font-semibold mb-4 transition-opacity duration-500 ease-out ${mounted && isVisible ? 'opacity-100' : 'opacity-0'}`}>
         <Sparkles className="h-5 w-5 mr-2 text-yellow-500" />
         Instantes que inspiran
       </div>
