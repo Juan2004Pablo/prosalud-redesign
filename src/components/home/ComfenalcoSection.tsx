@@ -1,4 +1,3 @@
-
 import React, { useRef, useState, useEffect } from 'react';
 import { comfenalcoEventsMock } from '@/data/comfenalcoEventsMock';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
@@ -58,6 +57,10 @@ const ComfenalcoSection: React.FC = () => {
     return labels[category as keyof typeof labels] || category;
   };
 
+  const handleEventClick = (event: any) => {
+    window.open(event.formLink, '_blank');
+  };
+
   if (!isVisible) {
     return (
       <section ref={sectionRef} className="py-16 md:py-20 bg-white">
@@ -78,7 +81,7 @@ const ComfenalcoSection: React.FC = () => {
   }
 
   return (
-    <section ref={sectionRef} className="py-12 md:py-16 bg-white overflow-hidden">
+    <section ref={sectionRef} className="py-12 md:py-16 bg-gradient-to-br from-primary-prosalud/5 to-primary-prosalud/10 overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Compact Header */}
         <div className="flex flex-col md:flex-row items-center justify-between mb-8 gap-4">
@@ -88,6 +91,10 @@ const ComfenalcoSection: React.FC = () => {
                 src="/lovable-uploads/59189700-681a-411b-9728-2ffdb738c386.png" 
                 alt="Comfenalco Antioquia"
                 className="h-12 md:h-14"
+                style={{ 
+                  filter: 'drop-shadow(0 0 0 white)',
+                  mixBlendMode: 'multiply'
+                }}
               />
             </div>
             <div className="text-left">
@@ -101,7 +108,7 @@ const ComfenalcoSection: React.FC = () => {
           </div>
           
           <div className="flex items-center gap-3">
-            <Badge className="bg-green-100 text-green-700 font-semibold px-3 py-1.5">
+            <Badge className="bg-green-100 text-green-700 font-semibold px-3 py-1.5 cursor-default">
               <Gift className="h-4 w-4 mr-2" />
               Beneficios Activos
             </Badge>
@@ -118,11 +125,12 @@ const ComfenalcoSection: React.FC = () => {
             {featuredEvents.map((event, index) => (
               <div
                 key={event.id}
-                className={`absolute inset-0 transition-all duration-700 ease-in-out ${
+                className={`absolute inset-0 transition-all duration-700 ease-in-out cursor-pointer ${
                   index === currentSlide 
                     ? 'opacity-100 scale-100' 
                     : 'opacity-0 scale-105'
                 }`}
+                onClick={() => handleEventClick(event)}
               >
                 <div 
                   className="absolute inset-0 bg-cover bg-center"
@@ -170,16 +178,17 @@ const ComfenalcoSection: React.FC = () => {
                         )}
                       </div>
 
-                      {event.registrationLink && (
-                        <Button 
-                          size="lg"
-                          className="bg-white text-black hover:bg-gray-100 font-semibold"
-                          onClick={() => window.open(event.registrationLink, '_blank')}
-                        >
-                          <ExternalLink className="h-5 w-5 mr-2" />
-                          Más información
-                        </Button>
-                      )}
+                      <Button 
+                        size="lg"
+                        className="bg-white text-black hover:bg-gray-100 font-semibold"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleEventClick(event);
+                        }}
+                      >
+                        <ExternalLink className="h-5 w-5 mr-2" />
+                        Inscríbete aquí
+                      </Button>
                     </div>
                   </div>
                 </div>
@@ -228,6 +237,7 @@ const ComfenalcoSection: React.FC = () => {
                   key={event.id}
                   className={`${colSpan} ${height} group cursor-pointer`}
                   style={{ animationDelay: `${index * 0.2}s` }}
+                  onClick={() => handleEventClick(event)}
                 >
                   <div className="relative h-full rounded-2xl overflow-hidden shadow-lg group-hover:shadow-2xl transition-all duration-300 group-hover:scale-[1.02]">
                     <div 
@@ -236,7 +246,6 @@ const ComfenalcoSection: React.FC = () => {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                     
-                    {/* Content */}
                     <div className="absolute inset-0 p-4 flex flex-col justify-end text-white">
                       <div className="flex items-center gap-2 mb-2">
                         {event.isNew && (

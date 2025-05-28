@@ -11,6 +11,7 @@ export const comfenalcoEventsMock: ComfenalcoEvent[] = [
     registrationDeadline: '2024-12-30',
     eventDate: '2025-01-15',
     registrationLink: '#',
+    formLink: 'https://comfenalco.com/formulario-cata-vinos',
     isNew: true,
     category: 'experiencia'
   },
@@ -22,6 +23,7 @@ export const comfenalcoEventsMock: ComfenalcoEvent[] = [
     publishDate: '2024-12-18',
     eventDate: '2025-01-20',
     registrationLink: '#',
+    formLink: 'https://comfenalco.com/formulario-experiencias-gastronomicas',
     isNew: true,
     category: 'experiencia'
   },
@@ -32,6 +34,7 @@ export const comfenalcoEventsMock: ComfenalcoEvent[] = [
     description: 'Conoce todos los beneficios y servicios disponibles para ti y tu familia',
     publishDate: '2024-12-15',
     registrationLink: '#',
+    formLink: 'https://comfenalco.com/formulario-beneficios-exclusivos',
     isNew: false,
     category: 'beneficio'
   },
@@ -44,6 +47,7 @@ export const comfenalcoEventsMock: ComfenalcoEvent[] = [
     registrationDeadline: '2024-12-28',
     eventDate: '2025-01-05',
     registrationLink: '#',
+    formLink: 'https://comfenalco.com/formulario-cine-aire-libre',
     isNew: false,
     category: 'recreacion'
   },
@@ -56,6 +60,7 @@ export const comfenalcoEventsMock: ComfenalcoEvent[] = [
     registrationDeadline: '2025-01-05',
     eventDate: '2025-01-12',
     registrationLink: '#',
+    formLink: 'https://comfenalco.com/formulario-taller-maquillaje',
     isNew: true,
     category: 'curso'
   }
