@@ -4,7 +4,7 @@ import MainLayout from '@/components/layout/MainLayout';
 import HeroSection from '@/components/home/HeroSection';
 import QuickLinksSection from '@/components/home/QuickLinksSection';
 import GaleriaBienestarIntroSection from '@/components/home/GaleriaBienestarIntroSection';
-import ComfenalcoSection from '@/components/home/ComfenalcoSection'; // Nueva sección
+import ComfenalcoSection from '@/components/home/ComfenalcoSection';
 import ConveniosSection from '@/components/home/ConveniosSection';
 
 const Index = () => {
@@ -12,8 +12,8 @@ const Index = () => {
     <MainLayout>
       <HeroSection />
       <QuickLinksSection />
+      <ComfenalcoSection />
       <GaleriaBienestarIntroSection />
-      <ComfenalcoSection /> {/* Añadir la nueva sección aquí */}
       <ConveniosSection />
     </MainLayout>
   );
