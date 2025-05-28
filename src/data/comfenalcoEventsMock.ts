@@ -68,19 +68,5 @@ export const comfenalcoEventsMock: ComfenalcoEvent[] = [
     isNew: true,
     category: 'curso',
     displaySize: 'mosaic'
-  },
-  {
-    id: '6',
-    title: 'Prueba de otro',
-    bannerImage: 'https://www.sindicatoprosalud.com/portal/images/Comfenalco/2024/Maquillaje.jpeg',
-    description: 'Aprende técnicas profesionales de maquillaje con expertos del sector',
-    publishDate: '2024-12-22',
-    registrationDeadline: '2025-01-05',
-    eventDate: '2025-01-12',
-    registrationLink: '#',
-    formLink: 'https://comfenalco.com/formulario-taller-maquillaje',
-    isNew: false,
-    category: 'curso',
-    displaySize: 'carousel'
   }
 ];
