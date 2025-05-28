@@ -56,9 +56,9 @@ const GaleriaBienestarIntroSection: React.FC = () => {
       id="galeria-bienestar-intro" 
       className="shadow-xl py-8 lg:py-12 my-16 w-full text-center" // MODIFIED: Removed mx-auto, rounded-xl. Added w-full.
     >
-      <div className={`inline-flex items-center rounded-lg bg-primary/10 px-3 py-1.5 text-sm text-primary font-semibold mb-4 transition-opacity duration-500 ease-out ${mounted && isVisible ? 'opacity-100' : 'opacity-0'}`}>
-        <Sparkles className="h-5 w-5 mr-2 text-primary" />
-        Momentos que Inspiran
+      <div className={`inline-flex items-center rounded-lg bg-yellow/10 px-3 py-1.5 text-sm text-yellow-500 font-semibold mb-4 transition-opacity duration-500 ease-out ${mounted && isVisible ? 'opacity-100' : 'opacity-0'}`}>
+        <Sparkles className="h-5 w-5 mr-2 text-yellow-500" />
+        Instantes que inspiran
       </div>
       <h2 className={`text-5xl lg:text-6xl font-bold text-foreground transition-all duration-500 ease-out ${mounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
         Momentos que nos unen
@@ -67,7 +67,7 @@ const GaleriaBienestarIntroSection: React.FC = () => {
         Galería de Bienestar ProSalud
       </h3>
       <p className={`max-w-2xl mx-auto text-muted-foreground mt-2 mb-8 transition-all duration-500 ease-out delay-200 ${mounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-        Cada encuentro deja una historia, una risa, un recuerdo. Explora nuestra galería y revive los momentos que nos unen. <br /> Porque en ProSalud, cuidarte también es celebrar contigo.
+        Cada encuentro deja una historia, una risa, un recuerdo. <br /> Explora nuestra galería y revive los momentos que nos unen. <br /> Porque en ProSalud, cuidarte también es celebrar contigo.
       </p>
 
       {/* Galería de fotografías */}
