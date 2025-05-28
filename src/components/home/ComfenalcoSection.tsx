@@ -1,7 +1,7 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import { comfenalcoEventsMock } from '@/data/comfenalcoEventsMock';
-import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
+import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Gift, Sparkles, Calendar, Clock, ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
