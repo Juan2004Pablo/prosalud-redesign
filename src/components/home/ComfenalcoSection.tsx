@@ -78,7 +78,7 @@ const ComfenalcoSection: React.FC = () => {
   }
 
   return (
-    <section ref={sectionRef} className="py-12 md:py-16 bg-gradient-to-br from-primary-prosalud-light to-white overflow-hidden">
+    <section ref={sectionRef} className="py-12 md:py-16 bg-white overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Compact Header */}
         <div className="flex flex-col md:flex-row items-center justify-between mb-8 gap-4">
