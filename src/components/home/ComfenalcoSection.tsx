@@ -88,10 +88,6 @@ const ComfenalcoSection: React.FC = () => {
                 src="/lovable-uploads/59189700-681a-411b-9728-2ffdb738c386.png" 
                 alt="Comfenalco Antioquia"
                 className="h-12 md:h-14"
-                style={{
-                  filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1))',
-                  mixBlendMode: 'multiply'
-                }}
               />
               <div className="absolute -top-1 -right-1">
                 <div className="w-4 h-4 bg-green-500 rounded-full animate-pulse" />
