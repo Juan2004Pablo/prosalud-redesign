@@ -60,7 +60,7 @@ const ComfenalcoSection: React.FC = () => {
 
   if (!isVisible) {
     return (
-      <section ref={sectionRef} className="py-16 md:py-20 bg-gradient-to-br from-blue-50 to-green-50">
+      <section ref={sectionRef} className="py-16 md:py-20 bg-gradient-to-br from-primary-prosalud-light to-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
             <Skeleton className="h-6 w-32 mx-auto mb-3" />
@@ -78,7 +78,7 @@ const ComfenalcoSection: React.FC = () => {
   }
 
   return (
-    <section ref={sectionRef} className="py-12 md:py-16 bg-gradient-to-br from-blue-50 to-green-50 overflow-hidden">
+    <section ref={sectionRef} className="py-12 md:py-16 bg-gradient-to-br from-primary-prosalud-light to-white overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Compact Header */}
         <div className="flex flex-col md:flex-row items-center justify-between mb-8 gap-4">
@@ -88,16 +88,20 @@ const ComfenalcoSection: React.FC = () => {
                 src="/lovable-uploads/59189700-681a-411b-9728-2ffdb738c386.png" 
                 alt="Comfenalco Antioquia"
                 className="h-12 md:h-14"
+                style={{
+                  filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1))',
+                  mixBlendMode: 'multiply'
+                }}
               />
               <div className="absolute -top-1 -right-1">
                 <div className="w-4 h-4 bg-green-500 rounded-full animate-pulse" />
               </div>
             </div>
             <div className="text-left">
-              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight">
+              <h2 className="text-2xl md:text-3xl font-bold text-primary-prosalud leading-tight">
                 Experiencias que transforman
               </h2>
-              <p className="text-sm md:text-base text-gray-600 mt-1">
+              <p className="text-sm md:text-base text-primary-prosalud-dark mt-1">
                 Beneficios exclusivos para ti y tu familia
               </p>
             </div>
@@ -108,7 +112,7 @@ const ComfenalcoSection: React.FC = () => {
               <Gift className="h-4 w-4 mr-2" />
               Beneficios Activos
             </Badge>
-            <div className="hidden md:flex items-center text-sm text-gray-500">
+            <div className="hidden md:flex items-center text-sm text-primary-prosalud">
               <Sparkles className="h-4 w-4 mr-1 text-yellow-500" />
               ¡No te los pierdas!
             </div>
