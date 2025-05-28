@@ -37,7 +37,7 @@ const GaleriaBienestarIntroSection: React.FC = () => {
     setMounted(true);
   }, []);
 
-  const galleryImages = images.slice(0, 7); // Usar exactamente 7 imágenes
+  const galleryImages = images.slice(0, 5); // Usar exactamente 7 imágenes
 
   return (
     <section 
