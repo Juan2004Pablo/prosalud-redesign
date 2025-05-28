@@ -60,7 +60,7 @@ const ComfenalcoSection: React.FC = () => {
 
   if (!isVisible) {
     return (
-      <section ref={sectionRef} className="py-16 md:py-20 bg-gradient-to-br from-primary-prosalud-light to-white">
+      <section ref={sectionRef} className="py-16 md:py-20 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
             <Skeleton className="h-6 w-32 mx-auto mb-3" />

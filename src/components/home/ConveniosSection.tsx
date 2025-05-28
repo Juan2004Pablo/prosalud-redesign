@@ -38,7 +38,7 @@ const ConveniosSection: React.FC = () => {
   const isVisible = useIntersectionObserver(sectionRef, { threshold: 0.1, freezeOnceVisible: true });
 
   return (
-    <section ref={sectionRef} id="convenios" className="py-16 md:py-20 bg-white">
+    <section ref={sectionRef} id="convenios" className="py-16 md:py-20 bg-background-light">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {isVisible ? (
           <>
