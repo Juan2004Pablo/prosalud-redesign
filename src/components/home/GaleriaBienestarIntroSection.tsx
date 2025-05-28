@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -77,31 +76,27 @@ const GaleriaBienestarIntroSection: React.FC = () => {
             const angleDegrees = -30 + (60 / (galleryImages.length - 1)) * index;
             const angleRadians = angleDegrees * Math.PI / 180;
             const maxAngleRad = 30 * Math.PI / 180; 
-            const normalizedProgress = Math.abs(angleRadians) / maxAngleRad; // 0 en el centro, 1 en los bordes
+            const normalizedProgress = Math.abs(angleRadians) / maxAngleRad;
 
-            // Parámetros para el efecto cóncavo
-            const CENTER_Z_OFFSET_CONCAVE = -100; // Imagen central más atrás
-            const EDGE_Z_OFFSET_CONCAVE = 30;    // Imágenes de los bordes más adelante
-            const CENTER_SCALE_CONCAVE = 0.8;    // Imagen central más pequeña
-            const EDGE_SCALE_CONCAVE = 1.1;      // Imágenes de los bordes más grandes
+            const CENTER_Z_OFFSET_CONCAVE = -100;
+            const EDGE_Z_OFFSET_CONCAVE = 30;
+            const CENTER_SCALE_CONCAVE = 0.8;
+            const EDGE_SCALE_CONCAVE = 1.1;
 
-            // zPosition: centro atrás, bordes adelante
             const zPosition = CENTER_Z_OFFSET_CONCAVE + (EDGE_Z_OFFSET_CONCAVE - CENTER_Z_OFFSET_CONCAVE) * normalizedProgress;
-            
-            // scaleFactor: centro pequeño, bordes grandes
             const scaleFactor = CENTER_SCALE_CONCAVE + (EDGE_SCALE_CONCAVE - CENTER_SCALE_CONCAVE) * normalizedProgress;
-            
-            // zIndex: Imágenes de los bordes (más prominentes) con mayor zIndex
             const zIndexVal = Math.round(1 + normalizedProgress * (galleryImages.length -1));
+            
+            const rotationYDegrees = -angleDegrees;
 
             return (
               <div
                 key={img.src}
                 className="relative transition-transform duration-300 hover:translate-y-[-10px] hover:z-20 group"
                 style={{
-                  transform: `rotateY(${angleDegrees}deg) translateZ(${zPosition}px) scale(${scaleFactor})`,
+                  transform: `rotateY(${rotationYDegrees}deg) translateZ(${zPosition}px) scale(${scaleFactor})`,
                   transformStyle: 'preserve-3d',
-                  margin: '0 -15px', // Mantenemos el solapamiento
+                  margin: '0 -15px', 
                   zIndex: zIndexVal 
                 }}
               >
@@ -145,4 +140,3 @@ const GaleriaBienestarIntroSection: React.FC = () => {
 };
 
 export default GaleriaBienestarIntroSection;
-
