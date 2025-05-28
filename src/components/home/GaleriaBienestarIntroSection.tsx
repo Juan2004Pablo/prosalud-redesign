@@ -56,38 +56,43 @@ const GaleriaBienestarIntroSection: React.FC = () => {
         <Sparkles className="h-5 w-5 mr-2 text-primary" />
         Momentos que Inspiran
       </div>
-      <h2 className={`text-4xl lg:text-5xl font-bold text-foreground transition-all duration-500 ease-out ${mounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+      <h2 className={`text-5xl lg:text-6xl font-bold text-foreground transition-all duration-500 ease-out ${mounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
         Momentos que nos unen
       </h2>
       <h3 className={`text-xl lg:text-2xl text-muted-foreground mt-1 mb-4 transition-all duration-500 ease-out delay-100 ${mounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
         Galería de Bienestar ProSalud
       </h3>
-      <p className={`max-w-xl mx-auto text-muted-foreground mt-2 mb-8 transition-all duration-500 ease-out delay-200 ${mounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+      <p className={`max-w-md mx-auto text-muted-foreground mt-2 mb-8 transition-all duration-500 ease-out delay-200 ${mounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
         En cada encuentro hay una historia, una risa compartida, un recuerdo que permanece. Sumérgete en nuestra galería y revive los espacios donde el bienestar, la cercanía y la alegría fortalecen nuestra comunidad. <br /> Porque en ProSalud, cuidarte también es celebrar contigo.
       </p>
 
-      {/* Nueva galería de fotografías en estilo 3D */}
+      {/* Galería de fotografías en estilo 3D cóncavo */}
       <div 
         className={`relative overflow-hidden mx-auto py-16 transition-all duration-500 ease-out rounded-xl mb-8
                    ${mounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
         style={{ perspective: '1000px' }}
       >
-        <div className="flex justify-center" style={{ transformStyle: 'preserve-3d', transform: 'rotateX(5deg)' }}>
+        <div className="flex justify-center items-center" style={{ transformStyle: 'preserve-3d', transform: 'rotateX(5deg)' }}>
           {galleryImages.map((img, index) => {
             const angleDegrees = -30 + (60 / (galleryImages.length - 1)) * index;
             const angleRadians = angleDegrees * Math.PI / 180;
             const maxAngleRad = 30 * Math.PI / 180; 
-            const normalizedProgress = Math.abs(angleRadians) / maxAngleRad; 
+            const normalizedProgress = Math.abs(angleRadians) / maxAngleRad; // 0 en el centro, 1 en los bordes
 
-            const baseZOffset = -50; 
-            const centerZExtrusion = 70; 
-            const zPosition = baseZOffset + centerZExtrusion * (1 - normalizedProgress);
+            // Parámetros para el efecto cóncavo
+            const CENTER_Z_OFFSET_CONCAVE = -100; // Imagen central más atrás
+            const EDGE_Z_OFFSET_CONCAVE = 30;    // Imágenes de los bordes más adelante
+            const CENTER_SCALE_CONCAVE = 0.8;    // Imagen central más pequeña
+            const EDGE_SCALE_CONCAVE = 1.1;      // Imágenes de los bordes más grandes
 
-            const edgeScaleReduction = 0.15; 
-            const scaleFactor = 1 - normalizedProgress * edgeScaleReduction;
+            // zPosition: centro atrás, bordes adelante
+            const zPosition = CENTER_Z_OFFSET_CONCAVE + (EDGE_Z_OFFSET_CONCAVE - CENTER_Z_OFFSET_CONCAVE) * normalizedProgress;
             
-            const zIndexVal = Math.round(galleryImages.length * (1 - normalizedProgress));
-
+            // scaleFactor: centro pequeño, bordes grandes
+            const scaleFactor = CENTER_SCALE_CONCAVE + (EDGE_SCALE_CONCAVE - CENTER_SCALE_CONCAVE) * normalizedProgress;
+            
+            // zIndex: Imágenes de los bordes (más prominentes) con mayor zIndex
+            const zIndexVal = Math.round(1 + normalizedProgress * (galleryImages.length -1));
 
             return (
               <div
@@ -96,7 +101,7 @@ const GaleriaBienestarIntroSection: React.FC = () => {
                 style={{
                   transform: `rotateY(${angleDegrees}deg) translateZ(${zPosition}px) scale(${scaleFactor})`,
                   transformStyle: 'preserve-3d',
-                  margin: '0 -5px', // Ajustado para ligero solapamiento
+                  margin: '0 -15px', // Mantenemos el solapamiento
                   zIndex: zIndexVal 
                 }}
               >
@@ -104,7 +109,7 @@ const GaleriaBienestarIntroSection: React.FC = () => {
                   className="w-32 sm:w-40 md:w-48 aspect-[3/4] overflow-hidden rounded-lg shadow-xl transition-all duration-300
                            group-hover:shadow-2xl"
                   style={{ 
-                    // transform: 'rotateX(2deg)', // Opcional: se puede quitar si se prefiere más plano
+                    transform: 'rotateX(2deg)', 
                     transformStyle: 'preserve-3d',
                   }}
                 >
@@ -112,7 +117,7 @@ const GaleriaBienestarIntroSection: React.FC = () => {
                     src={img.src} 
                     alt={img.alt} 
                     className="w-full h-full object-cover rounded-md"
-                    style={{ transform: 'translateZ(1px)' }} // Ligero translateZ para evitar z-fighting si es necesario
+                    style={{ transform: 'translateZ(1px)' }}
                   />
                 </div>
                 
@@ -140,3 +145,4 @@ const GaleriaBienestarIntroSection: React.FC = () => {
 };
 
 export default GaleriaBienestarIntroSection;
+
