@@ -65,29 +65,36 @@ const GaleriaBienestarIntroSection: React.FC = () => {
         En cada encuentro hay una historia, una risa compartida, un recuerdo que permanece. Sumérgete en nuestra galería y revive los espacios donde el bienestar, la cercanía y la alegría fortalecen nuestra comunidad. <br /> Porque en ProSalud, cuidarte también es celebrar contigo.
       </p>
 
-      {/* Galería de fotografías en estilo 3D cóncavo */}
+      {/* Galería de fotografías */}
       <div 
-        className={`relative overflow-hidden mx-auto py-16 transition-all duration-500 ease-out rounded-xl mb-8
+        className={`relative overflow-hidden w-full py-16 transition-all duration-500 ease-out rounded-xl mb-8
                    ${mounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
         style={{ perspective: '1000px' }}
       >
-        <div className="flex justify-center items-center" style={{ transformStyle: 'preserve-3d', transform: 'rotateX(5deg)' }}>
+        <div className="flex justify-center items-center" style={{ transformStyle: 'preserve-3d', transform: 'rotateX(0deg)' }}>
           {galleryImages.map((img, index) => {
-            const angleDegrees = -30 + (60 / (galleryImages.length - 1)) * index;
+            const angleDegrees = -30 + (60 / (galleryImages.length - 1)) * index; // Angulo para la distribución cóncava
             const angleRadians = angleDegrees * Math.PI / 180;
             const maxAngleRad = 30 * Math.PI / 180; 
-            const normalizedProgress = Math.abs(angleRadians) / maxAngleRad;
+            const normalizedProgress = Math.abs(angleRadians) / maxAngleRad; // Progreso normalizado desde el centro (0) al borde (1)
 
-            const CENTER_Z_OFFSET_CONCAVE = -100;
-            const EDGE_Z_OFFSET_CONCAVE = 30;
-            const CENTER_SCALE_CONCAVE = 0.8;
-            const EDGE_SCALE_CONCAVE = 1.1;
+            // Ajustes para efecto cóncavo: imagen central más pequeña y atrás, bordes más grandes y adelante
+            const CENTER_Z_OFFSET_CONCAVE = 30; // Imagen central más atrás
+            const EDGE_Z_OFFSET_CONCAVE = -100;  // Imágenes de borde más adelante
+            const CENTER_SCALE_CONCAVE = 1.1;   // Imagen central más grande (corregido, era 0.8)
+            const EDGE_SCALE_CONCAVE = 0.8;   // Imágenes de borde más pequeñas (corregido, era 1.1)
 
-            const zPosition = CENTER_Z_OFFSET_CONCAVE + (EDGE_Z_OFFSET_CONCAVE - CENTER_Z_OFFSET_CONCAVE) * normalizedProgress;
-            const scaleFactor = CENTER_SCALE_CONCAVE + (EDGE_SCALE_CONCAVE - CENTER_SCALE_CONCAVE) * normalizedProgress;
-            const zIndexVal = Math.round(1 + normalizedProgress * (galleryImages.length -1));
+            // Interpolar zPosition y scaleFactor basado en normalizedProgress
+            // Si normalizedProgress es 0 (centro), zPosition = CENTER_Z_OFFSET_CONCAVE, scaleFactor = CENTER_SCALE_CONCAVE
+            // Si normalizedProgress es 1 (borde), zPosition = EDGE_Z_OFFSET_CONCAVE, scaleFactor = EDGE_SCALE_CONCAVE
+            const zPosition = EDGE_Z_OFFSET_CONCAVE + (CENTER_Z_OFFSET_CONCAVE - EDGE_Z_OFFSET_CONCAVE) * (1 - normalizedProgress);
+            const scaleFactor = EDGE_SCALE_CONCAVE + (CENTER_SCALE_CONCAVE - EDGE_SCALE_CONCAVE) * (1 - normalizedProgress);
             
-            const rotationYDegrees = -angleDegrees;
+            const zIndexVal = Math.round(1 + (1 - normalizedProgress) * (galleryImages.length -1)); // Más prominente en el centro
+            
+            // Invertir rotación para que miren hacia adentro
+            const rotationYDegrees = angleDegrees > 0 ? -Math.abs(angleDegrees) : Math.abs(angleDegrees);
+
 
             return (
               <div
@@ -96,7 +103,7 @@ const GaleriaBienestarIntroSection: React.FC = () => {
                 style={{
                   transform: `rotateY(${rotationYDegrees}deg) translateZ(${zPosition}px) scale(${scaleFactor})`,
                   transformStyle: 'preserve-3d',
-                  margin: '0 -15px', 
+                  margin: '0 4px', // 8px de separación entre imágenes (4px a cada lado)
                   zIndex: zIndexVal 
                 }}
               >
@@ -104,7 +111,7 @@ const GaleriaBienestarIntroSection: React.FC = () => {
                   className="w-32 sm:w-40 md:w-48 aspect-[3/4] overflow-hidden rounded-lg shadow-xl transition-all duration-300
                            group-hover:shadow-2xl"
                   style={{ 
-                    transform: 'rotateX(2deg)', 
+                    transform: 'rotateX(0deg)', // Sin inclinación vertical
                     transformStyle: 'preserve-3d',
                   }}
                 >
@@ -116,10 +123,11 @@ const GaleriaBienestarIntroSection: React.FC = () => {
                   />
                 </div>
                 
+                {/* Sombra ajustada para un look más plano */}
                 <div 
-                  className="absolute -bottom-4 left-1/2 w-3/4 h-2 bg-black opacity-10 blur-md rounded-full transition-all duration-300
-                           group-hover:opacity-20 group-hover:w-4/5"
-                  style={{ transform: 'translateX(-50%) rotateX(80deg)' }}
+                  className="absolute -bottom-1 left-1/2 w-11/12 h-3 bg-black/15 blur-lg rounded-full transition-all duration-300
+                           group-hover:bg-black/25 group-hover:w-full"
+                  style={{ transform: 'translateX(-50%)' }} // Sombra plana
                 />
               </div>
             );
