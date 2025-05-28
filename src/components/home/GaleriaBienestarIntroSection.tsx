@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -72,37 +71,30 @@ const GaleriaBienestarIntroSection: React.FC = () => {
                    ${mounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
         style={{ perspective: '1000px' }}
       >
-        <div className="flex justify-center items-center" style={{ transformStyle: 'preserve-3d', transform: 'rotateX(0deg)' }}>
+        <div 
+          className="flex justify-center items-center gap-2" // MODIFIED: Added gap-2 for 8px spacing
+          style={{ transformStyle: 'preserve-3d', transform: 'rotateX(0deg)' }}
+        >
           {galleryImages.map((img, index) => {
             // Distribución angular de las imágenes
             const totalImages = galleryImages.length;
-            const angleSpread = 60; // Rango angular total (ej: 60 grados)
+            const angleSpread = 60; 
             const anglePerImage = totalImages > 1 ? angleSpread / (totalImages -1) : 0;
             const angleDegrees = -angleSpread / 2 + anglePerImage * index;
 
             const angleRadians = angleDegrees * Math.PI / 180;
             const maxAngleRad = (angleSpread / 2) * Math.PI / 180; 
-            // normalizedProgress: 0 para la imagen central, 1 para las imágenes de los extremos
             const normalizedProgress = totalImages > 1 ? Math.abs(angleRadians) / maxAngleRad : 0;
 
-            // Ajustes para el efecto deseado:
-            // Imágenes de los extremos: más grandes y más "adelante"
-            // Imagen central: más pequeña y más "atrás"
-            const Z_CENTER = 50;    // Imagen central más atrás (valor Z positivo)
-            const Z_EDGE = -100;   // Imágenes de los bordes más adelante (valor Z negativo)
-            const SCALE_CENTER = 0.7; // Imagen central más pequeña
-            const SCALE_EDGE = 1.2;   // Imágenes de los bordes más grandes
+            const Z_CENTER = 50;
+            const Z_EDGE = -100;
+            const SCALE_CENTER = 0.7;
+            const SCALE_EDGE = 1.2;
 
-            // Interpolar zPosition y scaleFactor basado en normalizedProgress
-            // Si normalizedProgress es 0 (centro), zPosition = Z_CENTER, scaleFactor = SCALE_CENTER
-            // Si normalizedProgress es 1 (borde), zPosition = Z_EDGE, scaleFactor = SCALE_EDGE
             const zPosition = Z_CENTER + (Z_EDGE - Z_CENTER) * normalizedProgress;
             const scaleFactor = SCALE_CENTER + (SCALE_EDGE - SCALE_CENTER) * normalizedProgress;
             
-            // Imágenes de los bordes con mayor z-index para que se muestren al frente
             const zIndexVal = Math.round(1 + normalizedProgress * (totalImages -1)); 
-            
-            // Rotación para que todas las imágenes miren hacia el centro
             const rotationYDegrees = -angleDegrees;
 
             return (
@@ -112,7 +104,6 @@ const GaleriaBienestarIntroSection: React.FC = () => {
                 style={{
                   transform: `rotateY(${rotationYDegrees}deg) translateZ(${zPosition}px) scale(${scaleFactor})`,
                   transformStyle: 'preserve-3d',
-                  margin: '0 4px', // 8px de separación entre imágenes (4px a cada lado)
                   zIndex: zIndexVal 
                 }}
               >
@@ -120,7 +111,7 @@ const GaleriaBienestarIntroSection: React.FC = () => {
                   className="w-32 sm:w-40 md:w-48 aspect-[3/4] overflow-hidden rounded-lg shadow-xl transition-all duration-300
                            group-hover:shadow-2xl"
                   style={{ 
-                    transform: 'rotateX(0deg)', // Sin inclinación vertical, imágenes rectas
+                    transform: 'rotateX(0deg)', 
                     transformStyle: 'preserve-3d',
                   }}
                 >
@@ -128,11 +119,10 @@ const GaleriaBienestarIntroSection: React.FC = () => {
                     src={img.src} 
                     alt={img.alt} 
                     className="w-full h-full object-cover rounded-md"
-                    style={{ transform: 'translateZ(1px)' }} // Pequeño ajuste para evitar z-fighting si es necesario
+                    style={{ transform: 'translateZ(1px)' }} 
                   />
                 </div>
                 
-                {/* Sombra ajustada para un look más plano */}
                 <div 
                   className="absolute -bottom-1 left-1/2 w-11/12 h-3 bg-black/15 blur-lg rounded-full transition-all duration-300
                            group-hover:bg-black/25 group-hover:w-full"
@@ -157,4 +147,3 @@ const GaleriaBienestarIntroSection: React.FC = () => {
 };
 
 export default GaleriaBienestarIntroSection;
-
