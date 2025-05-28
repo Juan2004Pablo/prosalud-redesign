@@ -45,6 +45,11 @@ const GaleriaBienestarIntroSection: React.FC = () => {
 
   const galleryImages = images.slice(0, 7); // Usar exactamente 7 imágenes
 
+  const Z_CENTER = 100; // Más alejado (atrás)
+  const Z_EDGE = -50;   // Más cercano (adelante)
+  const SCALE_CENTER = 0.9; // Ligeramente más grande que antes (era 0.8)
+  const SCALE_EDGE = 1.3; // El más grande en los bordes
+
   return (
     <section 
       ref={sectionRef} 
@@ -72,11 +77,10 @@ const GaleriaBienestarIntroSection: React.FC = () => {
         style={{ perspective: '1000px' }}
       >
         <div 
-          className="flex justify-center items-center gap-2" // MODIFIED: Added gap-2 for 8px spacing
+          className="flex justify-center items-center gap-2"
           style={{ transformStyle: 'preserve-3d', transform: 'rotateX(0deg)' }}
         >
           {galleryImages.map((img, index) => {
-            // Distribución angular de las imágenes
             const totalImages = galleryImages.length;
             const angleSpread = 60; 
             const anglePerImage = totalImages > 1 ? angleSpread / (totalImages -1) : 0;
@@ -85,22 +89,26 @@ const GaleriaBienestarIntroSection: React.FC = () => {
             const angleRadians = angleDegrees * Math.PI / 180;
             const maxAngleRad = (angleSpread / 2) * Math.PI / 180; 
             const normalizedProgress = totalImages > 1 ? Math.abs(angleRadians) / maxAngleRad : 0;
-
-            const Z_CENTER = 50;
-            const Z_EDGE = -100;
-            const SCALE_CENTER = 0.7;
-            const SCALE_EDGE = 1.2;
-
+            
             const zPosition = Z_CENTER + (Z_EDGE - Z_CENTER) * normalizedProgress;
             const scaleFactor = SCALE_CENTER + (SCALE_EDGE - SCALE_CENTER) * normalizedProgress;
             
             const zIndexVal = Math.round(1 + normalizedProgress * (totalImages -1)); 
-            const rotationYDegrees = -angleDegrees;
+            const rotationYDegrees = angleDegrees; // Ajustado para que miren hacia adentro
+
+            let itemClasses = "relative transition-transform duration-300 hover:translate-y-[-10px] hover:z-20 group";
+            if (totalImages > 1) {
+              if (index === 0) {
+                itemClasses += " mr-4"; // 16px. Con gap-2 (8px), total 24px
+              } else if (index === totalImages - 1) {
+                itemClasses += " ml-4"; // 16px. Con gap-2 (8px), total 24px
+              }
+            }
 
             return (
               <div
                 key={img.src}
-                className="relative transition-transform duration-300 hover:translate-y-[-10px] hover:z-20 group"
+                className={itemClasses}
                 style={{
                   transform: `rotateY(${rotationYDegrees}deg) translateZ(${zPosition}px) scale(${scaleFactor})`,
                   transformStyle: 'preserve-3d',
