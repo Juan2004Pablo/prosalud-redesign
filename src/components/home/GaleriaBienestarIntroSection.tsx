@@ -24,12 +24,6 @@ const images: Image[] = [{
 }, {
   src: "https://www.sindicatoprosalud.com/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HLM_241203&file=58f0c0e1-ed25-43f4-ad1a-05b875508622.jpg",
   alt: "Ejercicio de relajación"
-}, {
-  src: "https://www.sindicatoprosalud.com/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HLM_241203&file=635aa054-c5bd-4acb-9f10-8b00530843ac.jpg",
-  alt: "Participantes en taller de bienestar"
-}, {
-  src: "https://www.sindicatoprosalud.com/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HLM_241203&file=83fa956d-0de5-4bf5-9e1d-3437cad82b14.jpg",
-  alt: "Ejercicio de relajación grupal"
 }];
 
 const GaleriaBienestarIntroSection: React.FC = () => {
