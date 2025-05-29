@@ -3,9 +3,7 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body {
-  /* overflow-x: hidden; <-- Vamos a remover esta línea */
-}
+/* Eliminar overflow-x hidden global que puede causar problemas de rendimiento */
 
 @layer base {
   :root {
@@ -39,7 +37,6 @@ html, body {
 
     --radius: 0.5rem;
 
-    /* ... keep existing sidebar variables if they are used elsewhere, or simplify */
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
@@ -51,7 +48,6 @@ html, body {
   }
 
   .dark {
-    /* ... keep existing code (dark mode variables) */
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
     --card: 222.2 84% 4.9%;
@@ -89,48 +85,37 @@ html, body {
 
   body {
     @apply bg-background-light text-text-dark font-sans antialiased;
+    /* Optimización para renderizado */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
 }
 
-/* Custom animation for fade in from bottom */
+/* Animaciones optimizadas - solo las esenciales */
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(2rem);
+    transform: translate3d(0, 2rem, 0);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0);
   }
 }
 
-/* Custom styles for category accordion triggers */
+/* Estilos para componentes críticos */
 @layer components {
+  /* Optimización de accordion triggers - simplificado */
   .category-accordion-trigger {
     position: relative;
-    /* The ::before pseudo-element will use existing padding, no extra padding needed here unless design dictates */
   }
 
-  /* Blue line style for category triggers - REMOVED */
-  /*
-  .category-accordion-trigger::before {
-    content: '';
-    position: absolute;
-    left: 0px; 
-    top: 15%; 
-    bottom: 15%;
-    width: 3px; 
-    background-color: hsl(var(--primary)); 
-    border-radius: 1.5px;
-  }
-  */
-
-  /* Hide default chevron icon from shadcn/ui AccordionTrigger for these specific category triggers */
   .category-accordion-trigger > .lucide.lucide-chevron-down {
     display: none !important;
   }
 
-  /* Manage visibility of Plus/Minus icons based on data-state */
+  /* Iconos plus/minus optimizados */
   .category-accordion-trigger .plus-minus-icon .minus-icon {
     display: none;
   }
@@ -143,5 +128,41 @@ html, body {
   }
   .category-accordion-trigger[data-state="open"] .plus-minus-icon .minus-icon {
     display: inline-block;
+  }
+
+  /* Utilidades de rendimiento */
+  .gpu-accelerated {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+  
+  .will-change-transform {
+    will-change: transform;
+  }
+  
+  .will-change-opacity {
+    will-change: opacity;
+  }
+}
+
+/* Media queries optimizadas para carga condicional */
+@media (max-width: 768px) {
+  /* Estilos específicos para móvil - cargados solo cuando sea necesario */
+  .mobile-optimized {
+    transform: none !important;
+    animation: none !important;
+  }
+}
+
+/* Reducir animaciones en dispositivos con preferencia de movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

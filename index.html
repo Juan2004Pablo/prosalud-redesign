@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -22,15 +23,129 @@
     <meta name="twitter:site" content="@ProSalud" />
     <meta name="twitter:image" content="/images/logo_prosalud.webp" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <!-- CSS Crítico inline para evitar bloqueo del renderizado -->
+    <style>
+      /* CSS crítico para el above-the-fold */
+      html, body {
+        margin: 0;
+        padding: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background-color: #f8f9fa;
+        color: #333333;
+        line-height: 1.6;
+      }
+      
+      #root {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      
+      /* Header crítico */
+      .header-critical {
+        background-color: white;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        position: sticky;
+        top: 0;
+        z-index: 50;
+      }
+      
+      /* Hero section crítico */
+      .hero-critical {
+        background: linear-gradient(135deg, #00529B, #1e40af, #1e293b);
+        color: white;
+        padding: 4rem 1rem;
+        min-height: 60vh;
+        display: flex;
+        align-items: center;
+      }
+      
+      /* Loading spinner */
+      .loading-spinner {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        border: 3px solid #f3f3f3;
+        border-top: 3px solid #00529B;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 2rem auto;
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      
+      /* Ocultar contenido hasta que esté listo */
+      .content-hidden {
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+      
+      .content-visible {
+        opacity: 1;
+      }
+    </style>
+
+    <!-- Preconnect a Google Fonts con alta prioridad -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Preload de la fuente más importante -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    
+    <!-- Fallback para navegadores que no soportan preload -->
+    <noscript>
+      <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+    </noscript>
 </head>
 
   <body>
-    <div id="root"></div>
-    <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
+    <!-- Loading inicial -->
+    <div id="initial-loader" class="loading-spinner" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999;"></div>
+    
+    <div id="root" class="content-hidden"></div>
+    
+    <!-- Script para manejar la carga inicial -->
+    <script>
+      // Optimización de carga inicial
+      (function() {
+        // Ocultar loader cuando el DOM esté listo
+        function hideLoader() {
+          const loader = document.getElementById('initial-loader');
+          const root = document.getElementById('root');
+          if (loader) {
+            loader.style.display = 'none';
+          }
+          if (root) {
+            root.classList.remove('content-hidden');
+            root.classList.add('content-visible');
+          }
+        }
+        
+        // Esperar a que el contenido principal esté listo
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(hideLoader, 100);
+          });
+        } else {
+          setTimeout(hideLoader, 100);
+        }
+      })();
+    </script>
+    
+    <!-- Scripts críticos -->
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Scripts no críticos cargados de forma diferida -->
+    <script>
+      // Cargar scripts no esenciales después del load
+      window.addEventListener('load', function() {
+        // Aquí se pueden cargar analytics, chat widgets, etc. de forma diferida
+        // Ejemplo: Google Analytics, Facebook Pixel, etc.
+      });
+    </script>
   </body>
 </html>
