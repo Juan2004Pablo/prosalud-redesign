@@ -114,13 +114,20 @@ const HeroSection: React.FC = () => {
                       alt={`Collage ProSalud imagen ${index + 1}`}
                       loading="lazy"
                       onLoad={() => handleImageLoad(index)}
-                      className={`rounded-lg aspect-square object-cover border-2 border-slate-700 transition-all duration-500 hover:scale-105 ${
+                      className={`rounded-lg aspect-square object-cover border-2 border-slate-700 transition-[transform,opacity] duration-500 will-change-transform ${
                         imagesLoaded[index] 
-                          ? 'opacity-100 translate-y-0' 
-                          : 'opacity-0 translate-y-2'
+                          ? 'opacity-100 scale-100' 
+                          : 'opacity-0 scale-95'
                       }`}
                       style={{
-                        transitionDelay: `${index * 100}ms`
+                        transitionDelay: `${index * 100}ms`,
+                        transform: imagesLoaded[index] ? 'scale(1)' : 'scale(0.95)'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = 'scale(1.05)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = 'scale(1)';
                       }}
                     />
                   </div>
