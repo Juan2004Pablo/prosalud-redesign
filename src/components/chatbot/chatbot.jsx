@@ -105,7 +105,7 @@ export default function Chatbot() {
         /** TODO: MANEJAR VARIABLE DE ENTORNO */
     })
 
-    const AVATAR_URL = '/bot_avatar.png'
+    const AVATAR_URL = '/images/bot_avatar.webp'
         // 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyKQfbFObUQu4wMCYalXLZZ_xilW1J7xriag&s'
         
 

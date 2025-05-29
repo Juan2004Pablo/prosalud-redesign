@@ -19,10 +19,10 @@ const HeroSection: React.FC = () => {
 
   // Placeholder avatars - en una aplicación real, estos vendrían de datos dinámicos o imágenes específicas.
   const avatarPlaceholders = [
-    { src: "/images/avatar_hero/avatar_3.jpeg", fallback: "P4", alt: "Profesional 4"},
-    { src: "/images/avatar_hero/avatar1_gpt.png", fallback: "P3", alt: "Profesional 3"},
-    { src: "/images/avatar_hero/avatar_2.jpeg", fallback: "P2", alt: "Profesional 2"},
-    { src: "/images/avatar_hero/avatar2_gpt.png", fallback: "P1", alt: "Profesional 1"}, 
+    { src: "/images/avatar_hero/avatar3.webp", fallback: "P4", alt: "Profesional 4"},
+    { src: "/images/avatar_hero/avatar1.webp", fallback: "P3", alt: "Profesional 3"},
+    { src: "/images/avatar_hero/avatar4.webp", fallback: "P2", alt: "Profesional 2"},
+    { src: "/images/avatar_hero/avatar2.webp", fallback: "P1", alt: "Profesional 1"}, 
   ];
 
   return (
@@ -91,10 +91,10 @@ const HeroSection: React.FC = () => {
             <div className="hidden md:block transform transition-all duration-1000 opacity-0 translate-y-8 animate-[fadeInUp_1s_ease-out_0.2s_forwards]">
               <div className="grid grid-cols-2 gap-4 p-4 bg-slate-800/30 rounded-xl shadow-xl">
                 {[
-                  "/images/collage/image_collage_1.jpg",
-                  "/images/collage/image_collage_4.png",
-                  "/images/collage/image_collage_3.jpg",
-                  "/images/collage/image_collage_2.jpg"
+                  "/images/collage/image_collage_1_.webp",
+                  "/images/collage/image_collage_4_.webp",
+                  "/images/collage/image_collage_3_.webp",
+                  "/images/collage/image_collage_2_.webp"
                 ].map((src, index) => (
                   <img
                     key={index}

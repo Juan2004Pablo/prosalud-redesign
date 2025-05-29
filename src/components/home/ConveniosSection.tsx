@@ -5,31 +5,31 @@ import { Skeleton } from '@/components/ui/skeleton';
 const conveniosData = [
   { 
     name: "E.S.E. HOSPITAL MARCO FIDEL SUÁREZ - BELLO",
-    imageUrl: "/hospital-marco-fidel-suarez.jpg"
+    imageUrl: "/images/convenios/hospital-marco-fidel-suarez.webp"
   },
   { 
     name: "E.S.E. HOSPITAL SAN JUAN DE DIOS - RIONEGRO",
-    imageUrl: "/hospital-san-juan-de-dios-rionegro.jpg"
+    imageUrl: "/images/convenios/hospital-san-juan-de-dios-rionegro.webp"
   },
   { 
     name: "PROMOTORA MÉDICA Y ODONTOLÓGICA S.A.",
-    imageUrl: "/promotora-medica-odontologica.jpg"
+    imageUrl: "/images/convenios/promotora-medica-odontologica.webp"
   },
   { 
     name: "SOCIEDAD MÉDICA RIONEGRO SOMER S.A.",
-    imageUrl: "/somer-sa.jpg"
+    imageUrl: "/images/convenios/somer-sa.webp"
   },
   { 
     name: "E.S.E. HOSPITAL VENANCIO DÍAZ DÍAZ",
-    imageUrl: "/hospital-venancio-diaz.webp"
+    imageUrl: "/images/convenios/hospital-venancio-diaz.webp"
   },
   { 
     name: "E.S.E. HOSPITAL LA MERCED - CIUDAD BOLÍVAR",
-    imageUrl: "/la-merced-ciudad-bolivar.jpeg"
+    imageUrl: "/images/convenios/hospital-la-merced-ciudad-bolivar.webp"
   },
   { 
     name: "E.S.E. HOSPITAL SANTA ELENA - FREDONIA",
-    imageUrl: "/hospital-santa-elena-fredonia.jpg"
+    imageUrl: "/images/convenios/hospital-santa-elena-fredonia.webp"
   },
 ];
 

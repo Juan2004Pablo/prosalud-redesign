@@ -9,11 +9,10 @@ interface HandWashingStep {
 }
 
 interface HigieneManosCardProps {
-  tusManosSiembreLimpiasUrl: string;
   handWashingSteps: HandWashingStep[];
 }
 
-const HigieneManosCard: React.FC<HigieneManosCardProps> = ({ tusManosSiembreLimpiasUrl, handWashingSteps }) => {
+const HigieneManosCard: React.FC<HigieneManosCardProps> = ({ handWashingSteps }) => {
   return (
     <Card className="mb-12 shadow-lg animate-[fadeInUp_0.5s_ease-out_1.2s_forwards] opacity-0">
       <CardHeader>
@@ -28,7 +27,7 @@ const HigieneManosCard: React.FC<HigieneManosCardProps> = ({ tusManosSiembreLimp
         </p>
         <div className="grid md:grid-cols-2 gap-6 items-center">
           <div>
-            <img src={tusManosSiembreLimpiasUrl} alt="Pasos para lavarse las manos" className="rounded-lg shadow-md w-full h-auto" />
+            <img src={"/images/sst/image_manos.webp"} alt="Pasos para lavarse las manos" className="rounded-lg shadow-md w-full h-auto" />
           </div>
           <ol className="space-y-3 text-muted-foreground">
             {handWashingSteps.map(step => (

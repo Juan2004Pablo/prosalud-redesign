@@ -21,9 +21,6 @@ import {
 } from 'lucide-react';
 
 const SstPage: React.FC = () => {
-  // Data definitions remain here
-  const tusManosSiembreLimpiasUrl = "/lovable-uploads/a1e97d0b-a5c4-4af9-b62d-e9afc323a614.png";
-
   const emergencyTypes: EmergencyType[] = [
     {
       id: "atraco",
@@ -133,8 +130,7 @@ const SstPage: React.FC = () => {
           toggleCollapsible={toggleCollapsible}
           setSelectedImage={setSelectedImage}
         />
-        <HigieneManosCard 
-          tusManosSiembreLimpiasUrl={tusManosSiembreLimpiasUrl}
+        <HigieneManosCard
           handWashingSteps={handWashingSteps}
         />
         <TiposEmergenciasSection 
