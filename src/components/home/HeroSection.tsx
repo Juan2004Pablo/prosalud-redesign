@@ -103,19 +103,27 @@ const HeroSection: React.FC = () => {
             {/* Right Column: Image Collage */}
             <div className="hidden md:block">
               <div className="grid grid-cols-2 gap-4 p-4 bg-slate-800/30 rounded-xl shadow-xl">
-                {[
-                  "/images/collage/image_collage_1_.webp",
-                  "/images/collage/image_collage_4_.webp",
-                  "/images/collage/image_collage_3_.webp",
-                  "/images/collage/image_collage_2_.webp"
-                ].map((src, index) => (
-                  <img
-                    key={index}
-                    src={src}
-                    alt={`Collage ProSalud imagen ${index + 1}`}
-                    loading="lazy"
-                    className="rounded-lg aspect-square object-cover border-2 border-slate-700 hover:scale-105 transition-transform duration-300"
-                  />
+                {collageImages.map((src, index) => (
+                  <div key={index} className="relative">
+                    {/* Skeleton loader mientras carga la imagen */}
+                    {!imagesLoaded[index] && (
+                      <Skeleton className="absolute inset-0 rounded-lg aspect-square" />
+                    )}
+                    <img
+                      src={src}
+                      alt={`Collage ProSalud imagen ${index + 1}`}
+                      loading="lazy"
+                      onLoad={() => handleImageLoad(index)}
+                      className={`rounded-lg aspect-square object-cover border-2 border-slate-700 transition-all duration-500 hover:scale-105 ${
+                        imagesLoaded[index] 
+                          ? 'opacity-100 translate-y-0' 
+                          : 'opacity-0 translate-y-2'
+                      }`}
+                      style={{
+                        transitionDelay: `${index * 100}ms`
+                      }}
+                    />
+                  </div>
                 ))}
               </div>
             </div>
