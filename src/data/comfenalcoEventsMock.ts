@@ -5,7 +5,7 @@ export const comfenalcoEventsMock: ComfenalcoEvent[] = [
   {
     id: '1',
     title: 'Cata de Vinos Premium',
-    bannerImage: 'https://www.sindicatoprosalud.com/portal/images/Comfenalco/2024/CatadeVinos.jpeg',
+    bannerImage: '/images/comfenalcoSection/banner1.webp',
     description: 'Disfruta de una experiencia única degustando los mejores vinos con expertos sommeliers',
     publishDate: '2024-12-20',
     registrationDeadline: '2024-12-30',
@@ -19,7 +19,7 @@ export const comfenalcoEventsMock: ComfenalcoEvent[] = [
   {
     id: '2',
     title: 'Experiencias Gastronómicas',
-    bannerImage: 'https://www.sindicatoprosalud.com/portal/images/Comfenalco/2024/bf23c5cd-9f24-4aa8-9448-20e6b52a793f.jpeg',
+    bannerImage: '/images/comfenalcoSection/banner2.webp',
     description: 'Vive momentos únicos con nuestras experiencias culinarias especiales',
     publishDate: '2024-12-18',
     eventDate: '2025-01-20',
@@ -32,7 +32,7 @@ export const comfenalcoEventsMock: ComfenalcoEvent[] = [
   {
     id: '3',
     title: 'Beneficios Exclusivos Comfenalco',
-    bannerImage: 'https://www.sindicatoprosalud.com/portal/images/Comfenalco/Comfenalco_03.jpg',
+    bannerImage: '/images/comfenalcoSection/banner3.webp',
     description: 'Conoce todos los beneficios y servicios disponibles para ti y tu familia',
     publishDate: '2024-12-15',
     registrationLink: '#',
@@ -44,7 +44,7 @@ export const comfenalcoEventsMock: ComfenalcoEvent[] = [
   {
     id: '4',
     title: 'Cine al Aire Libre',
-    bannerImage: 'https://www.sindicatoprosalud.com/portal/images/Comfenalco/2024/Cineacien.jpeg',
+    bannerImage: '/images/comfenalcoSection/banner4.webp',
     description: 'Disfruta de las mejores películas bajo las estrellas con toda la familia',
     publishDate: '2024-12-10',
     registrationDeadline: '2024-12-28',
@@ -58,7 +58,7 @@ export const comfenalcoEventsMock: ComfenalcoEvent[] = [
   {
     id: '5',
     title: 'Taller de Maquillaje Profesional',
-    bannerImage: 'https://www.sindicatoprosalud.com/portal/images/Comfenalco/2024/Maquillaje.jpeg',
+    bannerImage: '/images/comfenalcoSection/banner5.webp',
     description: 'Aprende técnicas profesionales de maquillaje con expertos del sector',
     publishDate: '2024-12-22',
     registrationDeadline: '2025-01-05',

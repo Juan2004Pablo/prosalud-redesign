@@ -22,7 +22,7 @@ const images: Image[] = [{
   src: "https://www.sindicatoprosalud.com/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HLM_241203&file=635aa054-c5bd-4acb-9f10-8b00530843ac.jpg",
   alt: "Participantes en taller de bienestar"
 }, {
-  src: "https://prosalud.org.co/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HLM-2024-09-19&file=2369cb6e-8b94-49a7-934a-cc9110e874d4.jpg",
+  src: "https://prosalud.org.co/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HSJD_20241025&file=c19b7ce3-1128-4c3f-b756-ad5c180e91f3.jpg",
   alt: "Celebración comunitaria ProSalud 3"
 }, {
   src: "https://prosalud.org.co/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HSJD_20241025&file=c19b7ce3-1128-4c3f-b756-ad5c180e91f3.jpg",
@@ -74,7 +74,7 @@ const GaleriaBienestarIntroSection: React.FC = () => {
       {/* Galería de fotografías */}
       <div 
         className={`relative overflow-hidden w-full py-16 transition-all duration-500 ease-out rounded-xl mb-8
-                   ${mounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+          ${mounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
         style={{ perspective: '1000px' }}
       >
         <div 
@@ -112,7 +112,7 @@ const GaleriaBienestarIntroSection: React.FC = () => {
               >
                 <div 
                   className="w-32 sm:w-40 md:w-48 aspect-[3/4] overflow-hidden rounded-lg shadow-xl transition-all duration-300
-                           group-hover:shadow-2xl"
+                    group-hover:shadow-2xl"
                   style={{ 
                     transform: 'rotateX(0deg)', 
                     transformStyle: 'preserve-3d',
@@ -121,6 +121,7 @@ const GaleriaBienestarIntroSection: React.FC = () => {
                   <img 
                     src={img.src} 
                     alt={img.alt} 
+                    loading="lazy"
                     className="w-full h-full object-cover rounded-md"
                     style={{ transform: 'translateZ(1px)' }} 
                   />
@@ -128,7 +129,7 @@ const GaleriaBienestarIntroSection: React.FC = () => {
                 
                 <div 
                   className="absolute -bottom-1 left-1/2 w-11/12 h-3 bg-black/15 blur-lg rounded-full transition-all duration-300
-                           group-hover:bg-black/25 group-hover:w-full"
+                    group-hover:bg-black/25 group-hover:w-full"
                   style={{ transform: 'translateX(-50%)' }}
                 />
               </div>

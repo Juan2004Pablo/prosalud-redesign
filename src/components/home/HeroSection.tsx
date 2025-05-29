@@ -100,7 +100,6 @@ const HeroSection: React.FC = () => {
                     key={index}
                     src={src}
                     alt={`Collage ProSalud imagen ${index + 1}`}
-                    loading="lazy"
                     className="rounded-lg aspect-square object-cover border-2 border-slate-700 hover:scale-105 transition-transform duration-300"
                   />
                 ))}
