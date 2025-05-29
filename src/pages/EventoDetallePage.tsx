@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import MainLayout from '@/components/layout/MainLayout';
@@ -14,9 +15,8 @@ import {
   CarouselPrevious,
   type CarouselApi
 } from "@/components/ui/carousel";
-import Autoplay from "embla-carousel-autoplay";
 import ImagePreviewDialog from '@/components/sst/ImagePreviewDialog';
-import { Button } from '@/components/ui/button'; // Import Button for styling links
+import { Button } from '@/components/ui/button';
 
 const EventoDetallePage: React.FC = () => {
   const { eventId } = useParams<{ eventId: string }>();
@@ -25,11 +25,6 @@ const EventoDetallePage: React.FC = () => {
 
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [selectedImageAlt, setSelectedImageAlt] = useState<string | undefined>(undefined);
-
-  // Referencia para el plugin de autoplay
-  const autoplayPlugin = useRef(
-    Autoplay({ delay: 4000, stopOnInteraction: true, stopOnMouseEnter: true })
-  );
 
   const [api, setApi] = React.useState<CarouselApi>()
   const [current, setCurrent] = React.useState(0)
@@ -51,6 +46,21 @@ const EventoDetallePage: React.FC = () => {
     // Scroll to top when eventId changes
     window.scrollTo(0, 0);
   }, [eventId]);
+
+  // Auto-scroll functionality
+  useEffect(() => {
+    if (!api) return;
+
+    const autoScroll = setInterval(() => {
+      if (api.canScrollNext()) {
+        api.scrollNext();
+      } else {
+        api.scrollTo(0);
+      }
+    }, 4000);
+
+    return () => clearInterval(autoScroll);
+  }, [api]);
 
   if (!event) {
     return (
@@ -77,7 +87,6 @@ const EventoDetallePage: React.FC = () => {
   const handleThumbnailClick = (index: number) => {
     if (api) {
       api.scrollTo(index);
-      autoplayPlugin.current.stop();
     }
   };
 
@@ -152,10 +161,7 @@ const EventoDetallePage: React.FC = () => {
                   <Carousel 
                     setApi={setApi}
                     className="w-full relative" 
-                    opts={{ loop: true }} 
-                    plugins={[autoplayPlugin.current]}
-                    onMouseEnter={() => autoplayPlugin.current.stop()}
-                    onMouseLeave={() => autoplayPlugin.current.play()}
+                    opts={{ loop: true }}
                   >
                     <CarouselContent className="h-[400px] sm:h-[450px] md:h-[500px]">
                       {allImages.map((image, index) => (
