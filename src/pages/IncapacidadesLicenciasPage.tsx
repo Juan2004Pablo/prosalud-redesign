@@ -8,8 +8,6 @@ import CopyToClipboardButton from '@/components/ui/copyToClipboardButton';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 
 const IncapacidadesLicenciasPage: React.FC = () => {
-  const proSaludLogoUrl = "/lovable-uploads/2bf2da56-4967-4a17-8849-9efab8759375.png";
-
   return (
     <MainLayout>
       <div className="container mx-auto pt-6 pb-2 px-4 md:px-6 lg:px-8">

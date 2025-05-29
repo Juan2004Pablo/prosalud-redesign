@@ -52,8 +52,7 @@ Puede solicitar que el certificado incluya la siguiente información:
 
 **Tipos de archivo permitidos**:
 - PDF (.pdf)
-- Excel (.xlsx, .xls)
-- Imágenes (.jpg, .jpeg, .png, .gif)
+- Imágenes (.jpg, .jpeg, .png)
 
 **Restricciones**:
 - Tamaño máximo: 4 MB por archivo

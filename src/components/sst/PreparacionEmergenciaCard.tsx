@@ -24,7 +24,7 @@ const PreparacionEmergenciaCard: React.FC<PreparacionEmergenciaCardProps> = ({
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
-         <div className="md:flex md:items-start md:gap-6">
+          <div className="md:flex md:items-start md:gap-6">
             <div className="md:w-1/3 mb-6 md:mb-0">
               <div 
                 className="relative group cursor-pointer"

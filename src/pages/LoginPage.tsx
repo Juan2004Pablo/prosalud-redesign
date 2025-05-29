@@ -23,7 +23,7 @@ const LoginPage: React.FC = () => {
           <div className="flex justify-center">
             <Link to="/">
               <img
-                src="/lovable-uploads/2bf2da56-4967-4a17-8849-9efab8759375.png"
+                src="/images/logo_prosalud.webp"
                 alt="ProSalud Logo"
                 className="h-16 w-auto"
               />
