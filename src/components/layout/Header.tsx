@@ -18,7 +18,7 @@ const Header: React.FC = () => {
         <div className="flex items-center justify-between h-20">
           {/* Logo (Left) */}
           <Link to="/" className="flex items-center flex-shrink-0">
-            <img src="/lovable-uploads/2bf2da56-4967-4a17-8849-9efab8759375.png" alt="ProSalud Logo" className="h-12 w-auto" />
+            <img src="/images/logo_prosalud.webp" alt="ProSalud Logo" className="h-12 w-auto" />
           </Link>
 
           {/* Desktop Navigation (Center) */}

@@ -88,7 +88,7 @@ const ComfenalcoSection: React.FC = () => {
           <div className="flex items-center gap-4">
             <div className="relative">
               <img 
-                src="/lovable-uploads/59189700-681a-411b-9728-2ffdb738c386.png" 
+                src="/images/logo_comfenalco.webp" 
                 alt="Comfenalco Antioquia"
                 className="h-12 md:h-14"
                 style={{ 

@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Facebook, Twitter, Instagram, Linkedin } from 'lucide-react'; // Placeholder icons
+import { Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
 
 const Footer: React.FC = () => {
-  const logoUrl = "/lovable-uploads/2bf2da56-4967-4a17-8849-9efab8759375.png"; // Path to your logo
-  const minsaludLogoUrl = "/lovable-uploads/ae428eb9-0bc1-40b2-93b5-0a4126a7ba23.png"; // Path to Minsalud logo
+  const logoUrl = "/images/logo_prosalud.webp";
+  const minsaludLogoUrl = "/images/minsalud.webp";
 
   return (
     <footer className="bg-slate-900 text-slate-300 py-12">

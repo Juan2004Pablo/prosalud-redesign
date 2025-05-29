@@ -9,7 +9,7 @@ const LoginPage: React.FC = () => {
       {/* Columna Izquierda: Ilustración - Oculta en móvil, visible en md y superior */}
       <div className="hidden md:flex md:w-3/5 relative overflow-hidden group"> {/* Contenedor de la imagen */}
         <img
-          src="/lovable-uploads/138161d3-ff19-4e89-a637-ef145b62113b.png"
+          src="/images/foto_login.webp"
           alt="Ilustración de servicios de salud con estetoscopio y símbolos médicos"
           className="w-full h-full object-cover animate-fade-in transition-transform duration-500 ease-in-out group-hover:scale-105"
         />
