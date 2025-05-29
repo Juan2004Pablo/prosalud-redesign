@@ -16,7 +16,6 @@ const ImagePreviewDialog: React.FC<ImagePreviewDialogProps> = ({ selectedImage, 
       <DialogContent className="sm:max-w-[90vw] md:max-w-[80vw] lg:max-w-[70vw] xl:max-w-[60vw] max-h-[90vh] p-2 bg-white flex items-center justify-center">
         {selectedImage && (
           <img 
-            loading="lazy"
             src={selectedImage} 
             alt={imageAlt} 
             className="w-auto h-auto max-w-full max-h-[calc(90vh-4rem)] object-contain rounded-md"

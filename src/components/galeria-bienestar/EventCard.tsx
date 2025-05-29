@@ -17,7 +17,6 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
         <img 
           src={event.mainImage.src} 
           alt={event.mainImage.alt} 
-          loading="lazy"
           className="w-full h-48 object-cover" 
         />
       </CardHeader>

@@ -27,7 +27,7 @@ const HigieneManosCard: React.FC<HigieneManosCardProps> = ({ handWashingSteps })
         </p>
         <div className="grid md:grid-cols-2 gap-6 items-center">
           <div>
-            <img src={"/images/sst/image_manos.webp"} loading="lazy" alt="Pasos para lavarse las manos" className="rounded-lg shadow-md w-full h-auto" />
+            <img src={"/images/sst/image_manos.webp"} alt="Pasos para lavarse las manos" className="rounded-lg shadow-md w-full h-auto" />
           </div>
           <ol className="space-y-3 text-muted-foreground">
             {handWashingSteps.map(step => (

@@ -31,10 +31,10 @@ const ProtocoloAccidenteTrabajoCard: React.FC<ProtocoloAccidenteTrabajoCardProps
           <div className="md:w-1/3 mt-6 md:mt-0">
             <div 
               className="relative group cursor-pointer"
-              onClick={() => setSelectedImage("/images/sst/referencia_visual_protocolo.webp")}
+              onClick={() => setSelectedImage("/images/sst/referencia_visual_protocolo.png")}
             >
               <img 
-                src="/images/sst/referencia_visual_protocolo.webp" 
+                src="/images/sst/referencia_visual_protocolo.png" 
                 alt="Protocolo accidente de trabajo" 
                 className="rounded-lg shadow-md bg-gray-200 aspect-video object-contain w-full h-auto" 
               />

@@ -2,7 +2,7 @@
 import React from 'react';
 import { Control, FieldValues } from 'react-hook-form';
 import { UploadCloud } from 'lucide-react';
-import FileUploadField from './FileUploadField';
+import FileUploadField from './FileUploadField'; // Assuming FormValues type is defined elsewhere
 
 interface ArchivoAdicionalSectionProps<TFieldValues extends FieldValues> {
   control: Control<TFieldValues>;
@@ -19,8 +19,8 @@ const ArchivoAdicionalSection = <TFieldValues extends FieldValues>({
       <FileUploadField
         control={control}
         name={"adjuntarArchivoAdicional" as any}
-        label="Seleccione un archivo (PDF o imagen, máx. 4MB)"
-        accept=".pdf,.jpg,.jpeg,.png"
+        label="Seleccione un archivo (PDF, Excel o imagen, máx. 4MB)"
+        accept=".pdf,.xls,.xlsx,.jpg,.jpeg,.png,.gif,.webp"
         description="Si necesita adjuntar algún documento adicional, puede hacerlo aquí."
       />
     </section>

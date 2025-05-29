@@ -28,10 +28,10 @@ const PreparacionEmergenciaCard: React.FC<PreparacionEmergenciaCardProps> = ({
             <div className="md:w-1/3 mb-6 md:mb-0">
               <div 
                 className="relative group cursor-pointer"
-                onClick={() => setSelectedImage("/images/sst/infografia_de_preparacion.webp")}
+                onClick={() => setSelectedImage("/images/sst/infografia_de_preparacion.png")}
               >
                 <img 
-                  src="/images/sst/infografia_de_preparacion.webp" 
+                  src="/images/sst/infografia_de_preparacion.png" 
                   alt="Preparación para emergencias" 
                   className="rounded-lg shadow-md bg-gray-200 aspect-[3/4] object-contain w-full h-auto" 
                 />
