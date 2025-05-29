@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -93,9 +94,9 @@ const App = () => (
           <Route path="/terminos" element={<PlaceholderPage title="Términos y Condiciones" />} />
           <Route path="/privacidad" element={<PlaceholderPage title="Política de Privacidad" />} />
 
-          {/* Service Routes - Fixed to match exactly with the links in ServiceList */}
+          {/* Service Routes - Updated to match the new sindical terminology */}
           <Route path="/servicios/certificado-convenio" element={<SolicitudCertificadoConvenioPage />} />
-          <Route path="/servicios/descanso-laboral" element={<SolicitudDescansoLaboralPage />} />
+          <Route path="/servicios/descanso-sindical" element={<SolicitudDescansoLaboralPage />} />
           <Route path="/servicios/compensacion-anual" element={<SolicitudAnualDiferidaPage />} />
           <Route path="/servicios/consulta-pagos" element={<VerificacionPagosPage />} />
           <Route path="/servicios/certificado-seguridad-social" element={<CertificadoSeguridadSocialPage />} />
