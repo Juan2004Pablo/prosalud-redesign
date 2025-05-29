@@ -10,25 +10,25 @@ interface Image {
   alt: string;
 }
 const images: Image[] = [{
-  src: "https://www.sindicatoprosalud.com/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HMFS_241121&file=0e0ea685-c576-43a5-99d5-d5d0484a5cda.jpg",
+  src: "/images/galeria_bienestar/image1.webp",
   alt: "Actividad recreativa ProSalud 2"
 }, {
-  src: "https://prosalud.org.co/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=hmfs_20241031&file=0a5b012b-3862-4506-82f3-60adbce73c86.jpg",
+  src: "/images/galeria_bienestar/image2.webp",
   alt: "Participantes en taller de bienestar"
 }, {
-  src: "https://prosalud.org.co/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HLM_20241017&file=26c976e6-3f87-4623-b05e-b00c39b531d9.jpg",
+  src: "/images/galeria_bienestar/image3.webp",
   alt: "Ejercicio de relajación"
 }, {
-  src: "https://www.sindicatoprosalud.com/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HLM_241203&file=635aa054-c5bd-4acb-9f10-8b00530843ac.jpg",
+  src: "/images/galeria_bienestar/image4.webp",
   alt: "Participantes en taller de bienestar"
 }, {
-  src: "https://prosalud.org.co/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HLM-2024-09-19&file=2369cb6e-8b94-49a7-934a-cc9110e874d4.jpg",
+  src: "/images/galeria_bienestar/image5.webp",
   alt: "Celebración comunitaria ProSalud 3"
 }, {
-  src: "https://prosalud.org.co/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HSJD_20241025&file=c19b7ce3-1128-4c3f-b756-ad5c180e91f3.jpg",
+  src: "/images/galeria_bienestar/image6.webp",
   alt: "Celebración comunitaria ProSalud 3"
 }, {
-  src: "https://prosalud.org.co/portal/components/com_eventgallery/helpers/image.php?&width=1600&folder=HMFS_241203_2&file=5fac6112-6971-4ba4-b082-9a5d99984788.jpg",
+  src: "/images/galeria_bienestar/image7.webp",
   alt: "Ejercicio de relajación grupal"
 }];
 
