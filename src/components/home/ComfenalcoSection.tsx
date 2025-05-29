@@ -92,7 +92,7 @@ const ComfenalcoSection: React.FC = () => {
                 src="/images/logo_comfenalco.webp" 
                 alt="Comfenalco Antioquia"
                 className="h-12 md:h-14"
-                width={56}
+                width={120}
                 height={56}
                 style={{ 
                   filter: 'drop-shadow(0 0 0 white)',
