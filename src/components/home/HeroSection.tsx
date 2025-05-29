@@ -1,4 +1,5 @@
-import React, { useRef } from 'react';
+
+import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, HeartPulse } from 'lucide-react';
@@ -9,6 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 const HeroSection: React.FC = () => {
   const sectionRef = useRef<HTMLDivElement | null>(null);
   const isVisible = useIntersectionObserver(sectionRef, { threshold: 0.1, freezeOnceVisible: true });
+  const [imagesLoaded, setImagesLoaded] = useState<{ [key: number]: boolean }>({});
 
   const handleScrollToQuickLinks = () => {
     const quickLinksSection = document.getElementById('quick-links');
@@ -17,12 +19,23 @@ const HeroSection: React.FC = () => {
     }
   };
 
+  const handleImageLoad = (index: number) => {
+    setImagesLoaded(prev => ({ ...prev, [index]: true }));
+  };
+
   // Placeholder avatars - en una aplicación real, estos vendrían de datos dinámicos o imágenes específicas.
   const avatarPlaceholders = [
     { src: "/images/avatar_hero/avatar3.webp", fallback: "P4", alt: "Profesional 4"},
     { src: "/images/avatar_hero/avatar1.webp", fallback: "P3", alt: "Profesional 3"},
     { src: "/images/avatar_hero/avatar4.webp", fallback: "P2", alt: "Profesional 2"},
     { src: "/images/avatar_hero/avatar2.webp", fallback: "P1", alt: "Profesional 1"}, 
+  ];
+
+  const collageImages = [
+    "/images/collage/image_collage_1_.webp",
+    "/images/collage/image_collage_4_.webp",
+    "/images/collage/image_collage_3_.webp",
+    "/images/collage/image_collage_2_.webp"
   ];
 
   return (
@@ -88,7 +101,7 @@ const HeroSection: React.FC = () => {
             </div>
 
             {/* Right Column: Image Collage */}
-            <div className="hidden md:block transform transition-all duration-1000 opacity-0 translate-y-8 animate-[fadeInUp_1s_ease-out_0.2s_forwards]">
+            <div className="hidden md:block">
               <div className="grid grid-cols-2 gap-4 p-4 bg-slate-800/30 rounded-xl shadow-xl">
                 {[
                   "/images/collage/image_collage_1_.webp",
@@ -100,6 +113,7 @@ const HeroSection: React.FC = () => {
                     key={index}
                     src={src}
                     alt={`Collage ProSalud imagen ${index + 1}`}
+                    loading="lazy"
                     className="rounded-lg aspect-square object-cover border-2 border-slate-700 hover:scale-105 transition-transform duration-300"
                   />
                 ))}

@@ -54,16 +54,29 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ onClose, activeLinkClass, inact
                                 <AccordionContent>
                                   <div className="ml-4 space-y-1 py-1">
                                     {subItem.submenu.map((nestedItem) => (
-                                      <NavLink
-                                        key={nestedItem.name}
-                                        to={nestedItem.path || "#"}
-                                        onClick={onClose}
-                                        className={({ isActive }) =>
-                                          `${isActive ? activeLinkClass : inactiveLinkClass} block px-2 py-2 rounded-md text-sm`
-                                        }
-                                      >
-                                        {nestedItem.name}
-                                      </NavLink>
+                                      nestedItem.external ? (
+                                        <a
+                                          key={nestedItem.name}
+                                          href={nestedItem.url}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          onClick={onClose}
+                                          className={`${inactiveLinkClass} block px-2 py-2 rounded-md text-sm`}
+                                        >
+                                          {nestedItem.name}
+                                        </a>
+                                      ) : (
+                                        <NavLink
+                                          key={nestedItem.name}
+                                          to={nestedItem.path || "#"}
+                                          onClick={onClose}
+                                          className={({ isActive }) =>
+                                            `${isActive ? activeLinkClass : inactiveLinkClass} block px-2 py-2 rounded-md text-sm`
+                                          }
+                                        >
+                                          {nestedItem.name}
+                                        </NavLink>
+                                      )
                                     ))}
                                   </div>
                                 </AccordionContent>
@@ -71,8 +84,19 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ onClose, activeLinkClass, inact
                             </Accordion>
                           );
                         } else {
-                          // Regular direct link subItem
-                          return (
+                          // Regular direct link subItem - handle external links
+                          return subItem.external ? (
+                            <a
+                              key={subItem.name}
+                              href={subItem.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={onClose}
+                              className={`${inactiveLinkClass} block px-2 py-2 rounded-md text-sm`}
+                            >
+                              {subItem.name}
+                            </a>
+                          ) : (
                             <NavLink
                               key={subItem.name}
                               to={subItem.path || "#"}
