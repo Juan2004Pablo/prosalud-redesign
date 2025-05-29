@@ -17,7 +17,7 @@ const Footer: React.FC = () => {
                 <img src={minsaludLogoUrl} alt="Minsalud Logo" className="h-14 w-auto" />
               </Link>
               <Link to="/" className="inline-block">
-                <img src={logoUrl} alt="ProSalud Logo" className="h-14 w-auto" />
+                <img src={logoUrl} alt="ProSalud Logo" className="h-14 w-auto" width={120} height={48} />
               </Link>
             </div>
             <p className="text-sm text-slate-400">
