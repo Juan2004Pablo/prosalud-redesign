@@ -6,13 +6,15 @@ import { cn } from "@/lib/utils";
 export const HeaderListItem = React.forwardRef<
   React.ElementRef<"a">,
   React.ComponentPropsWithoutRef<"a"> & { title: string }
->(({ className, title, children, href, ...props }, ref) => {
+>(({ className, title, children, href, target, rel, ...props }, ref) => {
   return (
     <li>
       <NavigationMenuLink asChild>
         <a
           ref={ref}
-          href={href} // href will be used here
+          href={href}
+          target={target}
+          rel={rel}
           className={cn(
             "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors focus:bg-accent focus:text-accent-foreground transform transition-transform duration-150 ease-in-out hover:bg-accent hover:text-accent-foreground hover:-translate-y-px",
             className
@@ -29,4 +31,3 @@ export const HeaderListItem = React.forwardRef<
   );
 });
 HeaderListItem.displayName = "HeaderListItem";
-

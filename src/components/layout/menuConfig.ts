@@ -94,9 +94,9 @@ export const menuItems: MenuItemType[] = [
     name: 'Recursos',
     icon: Briefcase,
     submenu: [
-      { name: 'Video ProSanet (YouTube)', path: 'https://www.youtube.com', external: true, url: 'https://www.youtube.com' },
-      { name: 'Acceso a ProSanet', path: '/recursos/acceso-prosanet' },
-      { name: 'Bienestar', path: '/recursos/bienestar' },
+      { name: 'Video ProSanet (YouTube)', external: true, url: 'https://www.youtube.com/watch?v=GnaElswl7SI&feature=youtu.be' },
+      { name: 'Acceso a ProSanet', external: true, url: 'https://www.prosanet.com/#/shifts-employees/index' },
+      { name: 'Bienestar', path: '/servicios/galeria-bienestar' },
     ]
   },
 ];
@@ -124,4 +124,3 @@ export const mobileNavItems = menuItems.map(item => {
     icon: item.icon
   };
 });
-
