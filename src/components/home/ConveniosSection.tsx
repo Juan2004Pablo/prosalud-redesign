@@ -1,3 +1,4 @@
+
 import React, { useRef } from 'react';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -51,10 +52,8 @@ const ConveniosSection: React.FC = () => {
               {conveniosData.map((convenio, index) => (
                 <li 
                   key={index} 
-                  // Removed hover/focus interactive classes, kept base and animation styles
                   className="bg-card p-6 rounded-lg shadow-md border border-prosalud-border flex items-center animate-fade-in"
                   style={{ animationDelay: `${index * 100}ms` }}
-                  // Removed tabIndex={0}
                 >
                   <div className="h-12 w-12 rounded-full overflow-hidden mr-4 shrink-0">
                     <img 
@@ -62,6 +61,8 @@ const ConveniosSection: React.FC = () => {
                       alt={convenio.name} 
                       loading="lazy"
                       className="h-full w-full object-cover"
+                      width={48}
+                      height={48}
                     />
                   </div>
                   <p className="text-md font-medium text-text-dark">{convenio.name}</p>

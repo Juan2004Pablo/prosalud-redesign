@@ -1,3 +1,4 @@
+
 import React, { useRef, useState, useEffect } from 'react';
 import { comfenalcoEventsMock } from '@/data/comfenalcoEventsMock';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
@@ -91,6 +92,8 @@ const ComfenalcoSection: React.FC = () => {
                 src="/images/logo_comfenalco.webp" 
                 alt="Comfenalco Antioquia"
                 className="h-12 md:h-14"
+                width={56}
+                height={56}
                 style={{ 
                   filter: 'drop-shadow(0 0 0 white)',
                   mixBlendMode: 'multiply'
@@ -238,6 +241,10 @@ const ComfenalcoSection: React.FC = () => {
               const colSpan = isLarge ? 'col-span-12 md:col-span-8' : 'col-span-12 md:col-span-4';
               const height = isLarge ? 'h-full' : index === 1 ? 'h-3/4' : 'h-3/4 md:mt-2';
               
+              // Dimensiones para las imágenes de fondo
+              const imgWidth = isLarge ? 800 : 400;
+              const imgHeight = isLarge ? 600 : 300;
+              
               return (
                 <div
                   key={event.id}
@@ -249,6 +256,10 @@ const ComfenalcoSection: React.FC = () => {
                     <div 
                       className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
                       style={{ backgroundImage: `url(${event.bannerImage})` }}
+                      role="img"
+                      aria-label={event.title}
+                      data-width={imgWidth}
+                      data-height={imgHeight}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                     

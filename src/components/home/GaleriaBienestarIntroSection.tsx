@@ -95,9 +95,12 @@ const GaleriaBienestarIntroSection: React.FC = () => {
             const scaleFactor = SCALE_CENTER + (SCALE_EDGE - SCALE_CENTER) * normalizedProgress;
             
             const zIndexVal = Math.round(1 + normalizedProgress * (totalImages -1)); 
-            const rotationYDegrees = -angleDegrees; // MODIFIED: Inverted angle for inward rotation
+            const rotationYDegrees = -angleDegrees;
 
-            // MODIFIED: Removed conditional margins (mr-4, ml-4)
+            // Tamaños específicos para las imágenes
+            const imageWidth = 192; // 48px * 4 (w-48)
+            const imageHeight = 256; // aspect-[3/4] para w-48
+
             const itemClasses = "relative transition-transform duration-300 hover:translate-y-[-10px] hover:z-20 group";
 
             return (
@@ -122,6 +125,8 @@ const GaleriaBienestarIntroSection: React.FC = () => {
                     src={img.src} 
                     alt={img.alt} 
                     className="w-full h-full object-cover rounded-md"
+                    width={imageWidth}
+                    height={imageHeight}
                     style={{ transform: 'translateZ(1px)' }} 
                   />
                 </div>
@@ -150,4 +155,3 @@ const GaleriaBienestarIntroSection: React.FC = () => {
 };
 
 export default GaleriaBienestarIntroSection;
-

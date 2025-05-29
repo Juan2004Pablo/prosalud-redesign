@@ -49,6 +49,8 @@ const ComfenalcoEventCard: React.FC<ComfenalcoEventCardProps> = ({ event }) => {
           alt={event.title}
           className="w-full h-48 object-cover"
           loading="lazy"
+          width={400}
+          height={192}
         />
         <div className="absolute top-3 left-3 flex gap-2">
           {event.isNew && (

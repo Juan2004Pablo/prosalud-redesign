@@ -89,7 +89,13 @@ const HeroSection: React.FC = () => {
                 <div className="flex -space-x-3">
                   {avatarPlaceholders.map((avatar, index) => (
                     <Avatar key={index} className="h-10 w-10 border-2 border-white">
-                      <AvatarImage src={avatar.src} alt={avatar.alt} className="object-cover" />
+                      <AvatarImage 
+                        src={avatar.src} 
+                        alt={avatar.alt} 
+                        className="object-cover"
+                        width={40}
+                        height={40}
+                      />
                       <AvatarFallback className="bg-secondary-prosaludgreen text-white">{avatar.fallback}</AvatarFallback>
                     </Avatar>
                   ))}
@@ -114,10 +120,12 @@ const HeroSection: React.FC = () => {
                       alt={`Collage ProSalud imagen ${index + 1}`}
                       loading="lazy"
                       onLoad={() => handleImageLoad(index)}
+                      width={300}
+                      height={300}
                       className={`rounded-lg aspect-square object-cover border-2 border-slate-700 transition-all duration-500 hover:scale-105 ${
                         imagesLoaded[index] 
-                          ? 'opacity-100 translate-y-0' 
-                          : 'opacity-0 translate-y-2'
+                          ? 'opacity-100 transform-gpu will-change-transform' 
+                          : 'opacity-0 transform-gpu will-change-transform translate-y-2'
                       }`}
                       style={{
                         transitionDelay: `${index * 100}ms`

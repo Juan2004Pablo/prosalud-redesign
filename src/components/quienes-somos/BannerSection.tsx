@@ -9,6 +9,8 @@ const BannerSection: React.FC = () => {
           src="/images/Prosalud_Banner.webp"
           alt="Banner ProSalud ¿Quiénes somos?"
           className="w-full h-auto object-contain rounded-lg sm:rounded-xl shadow-md sm:shadow-lg"
+          width={1200}
+          height={400}
         />
       </div>
     </section>
