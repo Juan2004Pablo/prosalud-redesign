@@ -12,7 +12,7 @@ const AnualDiferidaHeader: React.FC = () => {
         </h1>
       </div>
       <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-        Complete el formulario para solicitar su compensación anual diferida.
+        Complete el formulario para solicitar su compensación anual diferida del contrato sindical.
       </p>
     </div>
   );

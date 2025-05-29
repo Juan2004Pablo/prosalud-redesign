@@ -25,7 +25,7 @@ const InformacionProcesoCuentaSection = <TFieldValues extends FieldValues>({
   return (
     <section className="p-6 border rounded-lg shadow-sm bg-white">
       <h2 className="text-xl font-semibold mb-6 text-primary-prosalud-dark flex items-center">
-        <Briefcase className="mr-2 h-6 w-6" /> Información Laboral
+        <Briefcase className="mr-2 h-6 w-6" /> Información del Proceso
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <FormField

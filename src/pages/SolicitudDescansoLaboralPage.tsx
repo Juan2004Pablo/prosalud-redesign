@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -52,7 +51,7 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-const SolicitudDescansoLaboralPage: React.FC = () => {
+const SolicitudDescansoSindicalPage: React.FC = () => {
   const navigate = useNavigate();
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -74,7 +73,7 @@ const SolicitudDescansoLaboralPage: React.FC = () => {
   });
 
   const onSubmit = (data: FormValues) => {
-    console.log('Formulario de solicitud de descanso laboral enviado:', data);
+    console.log('Formulario de solicitud de descanso sindical enviado:', data);
     toast.success('Solicitud de descanso enviada con éxito', {
       description: (
         <>
@@ -130,7 +129,7 @@ const SolicitudDescansoLaboralPage: React.FC = () => {
             <BreadcrumbItem>
               <BreadcrumbPage className="flex items-center gap-1 font-medium text-foreground">
                 <FileText className="h-4 w-4" />
-                Solicitud de Descanso Laboral
+                Solicitud de Descanso Sindical
               </BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
@@ -147,7 +146,7 @@ const SolicitudDescansoLaboralPage: React.FC = () => {
             <DatosPersonalesDescansoSection control={form.control} idTypes={idTypes} />
             <InformacionDescansoSection control={form.control} />
             <AnexoDescansoSection control={form.control} />
-            <ConfirmacionCorreoSection /> {/* Removed control prop */}
+            <ConfirmacionCorreoSection />
             <AutorizacionDatosSection />
             
             <div className="flex justify-center mt-10">
@@ -163,4 +162,4 @@ const SolicitudDescansoLaboralPage: React.FC = () => {
   );
 };
 
-export default SolicitudDescansoLaboralPage;
+export default SolicitudDescansoSindicalPage;
