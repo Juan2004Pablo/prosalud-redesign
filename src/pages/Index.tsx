@@ -11,8 +11,8 @@ const Index = () => {
   return (
     <MainLayout>
       <HeroSection />
-      <QuickLinksSection />
       <ComfenalcoSection />
+      <QuickLinksSection />
       <GaleriaBienestarIntroSection />
       <ConveniosSection />
     </MainLayout>

@@ -12,7 +12,7 @@ const DescansoHeader: React.FC = () => {
         </h1>
       </div>
       <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-        Complete el formulario para solicitar su compensación por descanso laboral
+        Complete el formulario para solicitar su compensación por descanso
       </p>
     </div>
   );

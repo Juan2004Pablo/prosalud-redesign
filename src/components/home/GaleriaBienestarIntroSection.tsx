@@ -1,36 +1,9 @@
-
+'use client'
 import React, { useState, useEffect } from 'react';
+import { Button } from '@/components/ui/button'
+import { ArrowRight, Sparkles } from 'lucide-react'
 import { Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { ArrowRight, Sparkles } from 'lucide-react';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
-
-interface Image {
-  src: string;
-  alt: string;
-}
-const images: Image[] = [{
-  src: "/images/galeria_bienestar/image1.webp",
-  alt: "Actividad recreativa ProSalud 2"
-}, {
-  src: "/images/galeria_bienestar/image2.webp",
-  alt: "Participantes en taller de bienestar"
-}, {
-  src: "/images/galeria_bienestar/image3.webp",
-  alt: "Ejercicio de relajación"
-}, {
-  src: "/images/galeria_bienestar/image4.webp",
-  alt: "Participantes en taller de bienestar"
-}, {
-  src: "/images/galeria_bienestar/image5.webp",
-  alt: "Celebración comunitaria ProSalud 3"
-}, {
-  src: "/images/galeria_bienestar/image6.webp",
-  alt: "Celebración comunitaria ProSalud 3"
-}, {
-  src: "/images/galeria_bienestar/image7.webp",
-  alt: "Ejercicio de relajación grupal"
-}];
 
 const GaleriaBienestarIntroSection: React.FC = () => {
   const sectionRef = React.useRef<HTMLDivElement | null>(null);
@@ -43,115 +16,61 @@ const GaleriaBienestarIntroSection: React.FC = () => {
     setMounted(true);
   }, []);
 
-  const galleryImages = images.slice(0, 7); // Usar exactamente 7 imágenes
-
-  const Z_CENTER = 100; // Más alejado (atrás)
-  const Z_EDGE = -50;   // Más cercano (adelante)
-  const SCALE_CENTER = 0.9; // Ligeramente más grande
-  const SCALE_EDGE = 1.3; // El más grande en los bordes
-
   return (
-    <section 
-      ref={sectionRef} 
-      id="galeria-bienestar-intro" 
-      className="py-10 lg:py-12  w-full text-center"
-      style={{ backgroundColor: '#e8f2f7' }}
-    >
-      <div className={`inline-flex items-center rounded-lg bg-yellow-100 px-3 py-1.5 text-sm text-yellow-500 font-semibold mb-4 transition-opacity duration-500 ease-out ${mounted && isVisible ? 'opacity-100' : 'opacity-0'}`}>
-        <Sparkles className="h-5 w-5 mr-2 text-yellow-500" />
-        Instantes que inspiran
-      </div>
-      <h2 className={`text-5xl lg:text-6xl font-bold text-foreground transition-all duration-500 ease-out ${mounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-        Momentos que nos unen
-      </h2>
-      <h3 className={`text-xl lg:text-2xl text-muted-foreground mt-1 mb-4 transition-all duration-500 ease-out delay-100 ${mounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-        Galería de Bienestar ProSalud
-      </h3>
-      <p className={`max-w-4xl mx-auto text-gray-500 mt-2 mb-8 transition-all duration-500 ease-out delay-200 ${mounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-        Cada encuentro deja una historia, una risa, un recuerdo. Explora nuestra galería y revive los momentos que nos unen. <br /> Porque en ProSalud, cuidarte también es celebrar contigo.
-      </p>
-
-      {/* Galería de fotografías */}
-      <div 
-        className={`relative overflow-hidden w-full py-16 transition-all duration-500 ease-out rounded-xl mb-8
-                   ${mounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
-        style={{ perspective: '1000px' }}
+    <>
+      <section
+        ref={sectionRef}
+        id="galeria-bienestar-intro"
+        className="py-20 lg:pb-10 bg-white w-full text-center"
       >
-        <div 
-          className="flex justify-center items-center gap-2"
-          style={{ transformStyle: 'preserve-3d', transform: 'rotateX(0deg)' }}
-        >
-          {galleryImages.map((img, index) => {
-            const totalImages = galleryImages.length;
-            const angleSpread = 60; 
-            const anglePerImage = totalImages > 1 ? angleSpread / (totalImages -1) : 0;
-            const angleDegrees = -angleSpread / 2 + anglePerImage * index;
-
-            const angleRadians = angleDegrees * Math.PI / 180;
-            const maxAngleRad = (angleSpread / 2) * Math.PI / 180; 
-            const normalizedProgress = totalImages > 1 ? Math.abs(angleRadians) / maxAngleRad : 0;
-            
-            const zPosition = Z_CENTER + (Z_EDGE - Z_CENTER) * normalizedProgress;
-            const scaleFactor = SCALE_CENTER + (SCALE_EDGE - SCALE_CENTER) * normalizedProgress;
-            
-            const zIndexVal = Math.round(1 + normalizedProgress * (totalImages -1)); 
-            const rotationYDegrees = -angleDegrees;
-
-            // Tamaños específicos para las imágenes
-            const imageWidth = 192; // 48px * 4 (w-48)
-            const imageHeight = 256; // aspect-[3/4] para w-48
-
-            const itemClasses = "relative transition-transform duration-300 hover:translate-y-[-10px] hover:z-20 group";
-
-            return (
+        <div className="relative mx-auto max-w-7xl px-6 lg:pb-28 lg:py-20">
+          <div className="lg:flex lg:items-center lg:gap-12 lg:mb-32">
+            <div className="relative z-10 mx-auto max-w-2xl text-center lg:ml-0 lg:w-2/3 lg:text-left">
               <div
-                key={img.src}
-                className={itemClasses}
-                style={{
-                  transform: `rotateY(${rotationYDegrees}deg) translateZ(${zPosition}px) scale(${scaleFactor})`,
-                  transformStyle: 'preserve-3d',
-                  zIndex: zIndexVal 
-                }}
-              >
-                <div 
-                  className="w-32 sm:w-40 md:w-48 aspect-[3/4] overflow-hidden rounded-lg shadow-xl transition-all duration-300
-                           group-hover:shadow-2xl"
-                  style={{ 
-                    transform: 'rotateX(0deg)', 
-                    transformStyle: 'preserve-3d',
-                  }}
-                >
-                  <img 
-                    src={img.src} 
-                    alt={img.alt} 
-                    className="w-full h-full object-cover rounded-md"
-                    width={imageWidth}
-                    height={imageHeight}
-                    style={{ transform: 'translateZ(1px)' }} 
-                  />
-                </div>
-                
-                <div 
-                  className="absolute -bottom-1 left-1/2 w-11/12 h-3 bg-black/15 blur-lg rounded-full transition-all duration-300
-                           group-hover:bg-black/25 group-hover:w-full"
-                  style={{ transform: 'translateX(-50%)' }}
-                />
+                className="bg-yellow-50 rounded-lg border border-yellow-200 mx-auto flex w-fit items-center gap-2 border p-1 pr-3 lg:ml-0">
+                <Sparkles className="h-5 w-5 mr-1 text-yellow-500" />
+                <span className="text-sm mr-1 text-yellow-500">Instantes que inspiran</span>
               </div>
-            );
-          })}
-        </div>
-      </div>
 
-      <div className={`transition-all duration-500 ease-out delay-400 ${mounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-        <Link to="/servicios/galeria-bienestar" aria-label="Explorar Galería de Bienestar ProSalud">
-          <Button size="lg" className="rounded-full group bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 shadow-md hover:shadow-lg transform transition-transform hover:-translate-y-0.5">
-            Explorar Galería
-            <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-          </Button>
-        </Link>
-      </div>
-    </section>
-  );
-};
+              <h2 className="mt-10 text-balance text-4xl font-bold md:text-5xl xl:text-5xl">Momentos que nos unen</h2>
+              <h3 className={`text-xl lg:text-2xl mt-1 mb-4 transition-all duration-500 ease-out delay-100 ${mounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+                Galería de Bienestar ProSalud
+              </h3>
+              <p className="mt-8">Cada encuentro deja una historia, una risa, un recuerdo. Explora nuestra galería y revive los momentos que nos unen. <br /> Porque en ProSalud, cuidarte también es celebrar contigo.</p>
+
+              <div className="md:pr-1.5 lg:pr-0 my-10">
+                <div className={`transition-all duration-500 ease-out delay-400 ${mounted && isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+                  <Link to="/servicios/galeria-bienestar" aria-label="Explorar Galería de Bienestar ProSalud">
+                    <Button size="lg" className="rounded-full group bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 shadow-md hover:shadow-lg transform transition-transform hover:-translate-y-0.5">
+                      Explorar Galería
+                      <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+              <ul className="list-inside list-disc space-y-2">
+                <li>Celebramos en equipo</li>
+                <li>Recuerdos que inspiran</li>
+                <li>Historias que nos unen</li>
+              </ul>
+            </div>
+          </div>
+          <div className="absolute inset-0 mx-0 lg:-mx-4 rounded-3xl lg:col-span-3 overflow-hidden">
+            <div aria-hidden className="absolute z-[1] inset-0 bg-gradient-to-r from-white from-35%" />
+            <div className="relative">
+              <img
+                src="/images/galeria_bienestar/fondo_galeria_bienestar.webp"
+                alt="Imagen de fondo galeria de fotos"
+                width={1586}
+                height={908}
+                className="w-full h-auto object-cover"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
+  )
+}
 
 export default GaleriaBienestarIntroSection;

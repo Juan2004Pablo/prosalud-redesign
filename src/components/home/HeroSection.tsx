@@ -25,22 +25,21 @@ const HeroSection: React.FC = () => {
 
   // Placeholder avatars - en una aplicación real, estos vendrían de datos dinámicos o imágenes específicas.
   const avatarPlaceholders = [
-    { src: "/images/avatar_hero/avatar3.webp", fallback: "P4", alt: "Profesional 4"},
-    { src: "/images/avatar_hero/avatar1.webp", fallback: "P3", alt: "Profesional 3"},
-    { src: "/images/avatar_hero/avatar4.webp", fallback: "P2", alt: "Profesional 2"},
-    { src: "/images/avatar_hero/avatar2.webp", fallback: "P1", alt: "Profesional 1"}, 
+    { src: "/images/avatar_hero/avatar3.webp", fallback: "P4", alt: "Profesional 4" },
+    { src: "/images/avatar_hero/avatar1.webp", fallback: "P3", alt: "Profesional 3" },
+    { src: "/images/avatar_hero/avatar4.webp", fallback: "P2", alt: "Profesional 2" },
+    { src: "/images/avatar_hero/avatar2.webp", fallback: "P1", alt: "Profesional 1" },
   ];
 
   const collageImages = [
     "/images/collage/image_collage_1_.webp",
-    "/images/collage/image_collage_4_.webp",
     "/images/collage/image_collage_3_.webp",
-    "/images/collage/image_collage_2_.webp"
+    "/images/collage/image_collage_2_.webp",
   ];
 
   return (
-    <section 
-      ref={sectionRef} 
+    <section
+      ref={sectionRef}
       className="bg-gradient-to-br from-primary-prosalud via-primary-prosalud-dark to-slate-900 text-text-light py-16 md:py-20 lg:py-24"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -50,8 +49,8 @@ const HeroSection: React.FC = () => {
             <div className="md:text-left text-center transform transition-all duration-4000 opacity-0 translate-y-8 animate-[fadeInUp_0.8s_ease-out_forwards]">
               <h1 className="font-bold mb-8">
                 <span className="inline-flex items-center gap-2 bg-secondary-prosaludgreen/20 text-secondary-prosaludgreen px-3 py-1 text-sm font-medium rounded-full mb-4">
-                    <HeartPulse className="h-4 w-4" />
-                    Tu Bienestar, Nuestra Prioridad
+                  <HeartPulse className="h-4 w-4" />
+                  Tu Bienestar, Nuestra Prioridad
                 </span>
                 <span className="block text-5xl md:text-6xl lg:text-7xl leading-tight">
                   <span className="text-prosalud-pro">Pro</span><span className="text-prosalud-salud">Salud</span>
@@ -65,14 +64,14 @@ const HeroSection: React.FC = () => {
                 Tu portal de autogestión para acceder a servicios, trámites y beneficios de manera ágil y segura. Simplificamos tu día a día.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 md:justify-start justify-center">
-                <Button 
-                size="lg" 
-                className="bg-secondary-prosaludgreen hover:bg-secondary-prosaludgreen/90 text-white text-base shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 px-8 py-6"
-                onClick={handleScrollToQuickLinks}
-              >
-                Trámites Rápidos
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
+                <Button
+                  size="lg"
+                  className="bg-secondary-prosaludgreen hover:bg-secondary-prosaludgreen/90 text-white text-base shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 px-8 py-6"
+                  onClick={handleScrollToQuickLinks}
+                >
+                  Trámites Rápidos
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
                 <Link to="/nosotros/quienes-somos" aria-label="Conocer más sobre ProSalud">
                   <Button
                     variant="outline"
@@ -89,9 +88,9 @@ const HeroSection: React.FC = () => {
                 <div className="flex -space-x-3">
                   {avatarPlaceholders.map((avatar, index) => (
                     <Avatar key={index} className="h-10 w-10 border-2 border-white">
-                      <AvatarImage 
-                        src={avatar.src} 
-                        alt={avatar.alt} 
+                      <AvatarImage
+                        src={avatar.src}
+                        alt={avatar.alt}
                         className="object-cover"
                         width={40}
                         height={40}
@@ -108,31 +107,54 @@ const HeroSection: React.FC = () => {
 
             {/* Right Column: Image Collage */}
             <div className="hidden md:block">
-              <div className="grid grid-cols-2 gap-4 p-4 bg-slate-800/30 rounded-xl shadow-xl">
-                {collageImages.map((src, index) => (
-                  <div key={index} className="relative">
-                    {/* Skeleton loader mientras carga la imagen */}
-                    {!imagesLoaded[index] && (
-                      <Skeleton className="absolute inset-0 rounded-lg aspect-square" />
-                    )}
-                    <img
-                      src={src}
-                      alt={`Collage ProSalud imagen ${index + 1}`}
-                      loading="lazy"
-                      onLoad={() => handleImageLoad(index)}
-                      width={300}
-                      height={300}
-                      className={`rounded-lg aspect-square object-cover border-2 border-slate-700 transition-all duration-500 hover:scale-105 ${
-                        imagesLoaded[index] 
-                          ? 'opacity-100 transform-gpu will-change-transform' 
-                          : 'opacity-0 transform-gpu will-change-transform translate-y-2'
-                      }`}
-                      style={{
-                        transitionDelay: `${index * 100}ms`
-                      }}
-                    />
-                  </div>
-                ))}
+              <div className="grid grid-cols-2 gap-8 p-4 bg-slate-800/30 rounded-xl shadow-xl">
+                {/* Imagen superior izquierda */}
+                <div className="relative bg-muted rounded-md aspect-square overflow-hidden">
+                  {!imagesLoaded[0] && (
+                    <Skeleton className="absolute inset-0 rounded-md aspect-square" />
+                  )}
+                  <img
+                    src={collageImages[0]}
+                    alt="Collage ProSalud imagen 1"
+                    loading="lazy"
+                    onLoad={() => handleImageLoad(0)}
+                    className={`w-full h-full object-cover transition-transform duration-500 ${imagesLoaded[0] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
+                      } hover:scale-105`}
+                    style={{ transitionDelay: '0ms' }}
+                  />
+                </div>
+
+                {/* Imagen derecha ocupando 2 filas */}
+                <div className="relative bg-muted rounded-md row-span-2 overflow-hidden">
+                  {!imagesLoaded[2] && (
+                    <Skeleton className="absolute inset-0 rounded-md aspect-square" />
+                  )}
+                  <img
+                    src={collageImages[2]}
+                    alt="Collage ProSalud imagen 3"
+                    loading="lazy"
+                    onLoad={() => handleImageLoad(2)}
+                    className={`w-full h-full object-cover transition-transform duration-500 ${imagesLoaded[2] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
+                      } hover:scale-105`}
+                    style={{ transitionDelay: '200ms' }}
+                  />
+                </div>
+
+                {/* Imagen inferior izquierda */}
+                <div className="relative bg-muted rounded-md aspect-square overflow-hidden">
+                  {!imagesLoaded[1] && (
+                    <Skeleton className="absolute inset-0 rounded-md aspect-square" />
+                  )}
+                  <img
+                    src={collageImages[1]}
+                    alt="Collage ProSalud imagen 2"
+                    loading="lazy"
+                    onLoad={() => handleImageLoad(1)}
+                    className={`w-full h-full object-cover transition-transform duration-500 ${imagesLoaded[1] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
+                      } hover:scale-105`}
+                    style={{ transitionDelay: '100ms' }}
+                  />
+                </div>
               </div>
             </div>
           </div>

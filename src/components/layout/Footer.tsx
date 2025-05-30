@@ -21,7 +21,7 @@ const Footer: React.FC = () => {
               </Link>
             </div>
             <p className="text-sm text-slate-400">
-              Sindicato de Profesionales de la Salud comprometidos con tu bienestar y derechos laborales.
+              Sindicato de Profesionales de la Salud comprometidos con tu bienestar y derechos.
             </p>
           </div>
 
