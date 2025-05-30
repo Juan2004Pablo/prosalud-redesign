@@ -14,27 +14,46 @@ export const useEventsData = () => {
     return ['all', ...Array.from(categories).sort((a, b) => a.localeCompare(b))];
   }, []);
 
+  // Función de ordenamiento mejorada
+  const sortEvents = useMemo(() => {
+    return (events: typeof mockEvents, order: 'date-desc' | 'date-asc') => {
+      console.log('Sorting events with order:', order);
+      console.log('Events to sort:', events.length);
+      
+      return [...events].sort((a, b) => {
+        const dateA = new Date(a.date).getTime();
+        const dateB = new Date(b.date).getTime();
+        
+        if (order === 'date-desc') {
+          return dateB - dateA; // Más recientes primero
+        } else {
+          return dateA - dateB; // Más antiguos primero
+        }
+      });
+    };
+  }, []);
+
   const processedEvents = useMemo(() => {
-    // Crear una copia del array original para evitar mutaciones
-    let events = [...mockEvents];
+    console.log('Processing events - Sort:', sortOrder, 'Filter:', filterCategory);
+    
+    // Siempre empezar con una copia fresca del array original
+    let filteredEvents = [...mockEvents];
 
-    // Filtrar por categoría
+    // Aplicar filtro de categoría
     if (filterCategory !== 'all') {
-      events = events.filter(event => event.category === filterCategory);
+      filteredEvents = filteredEvents.filter(event => event.category === filterCategory);
+      console.log('After filtering by category:', filteredEvents.length);
     }
 
-    // Ordenar - crear una nueva copia para el ordenamiento
-    const sortedEvents = [...events];
-    if (sortOrder === 'date-desc') {
-      sortedEvents.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-    } else if (sortOrder === 'date-asc') {
-      sortedEvents.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-    }
+    // Aplicar ordenamiento
+    const sortedEvents = sortEvents(filteredEvents, sortOrder);
+    console.log('After sorting:', sortedEvents.length, 'First event date:', sortedEvents[0]?.date);
     
     return sortedEvents;
-  }, [sortOrder, filterCategory]);
+  }, [sortOrder, filterCategory, sortEvents]);
 
   useEffect(() => {
+    console.log('Filters changed, resetting to page 1');
     setCurrentPage(1);
     window.scrollTo(0, 0); 
   }, [sortOrder, filterCategory]);
@@ -50,10 +69,16 @@ export const useEventsData = () => {
     window.scrollTo(0, 0);
   };
 
+  // Función para cambiar el orden con logs para debugging
+  const handleSortOrderChange = (newOrder: 'date-desc' | 'date-asc') => {
+    console.log('Changing sort order from', sortOrder, 'to', newOrder);
+    setSortOrder(newOrder);
+  };
+
   return {
     currentPage,
     sortOrder,
-    setSortOrder,
+    setSortOrder: handleSortOrderChange,
     filterCategory,
     setFilterCategory,
     uniqueCategories,

@@ -19,6 +19,16 @@ const EventFilters: React.FC<EventFiltersProps> = ({
   setFilterCategory,
   uniqueCategories
 }) => {
+  const handleSortChange = (value: string) => {
+    console.log('Sort filter changed to:', value);
+    setSortOrder(value as 'date-desc' | 'date-asc');
+  };
+
+  const handleCategoryChange = (value: string) => {
+    console.log('Category filter changed to:', value);
+    setFilterCategory(value);
+  };
+
   return (
     <div className="flex flex-col sm:flex-row gap-4 mb-8 justify-center sm:justify-start items-center">
       <div className="flex flex-col items-start gap-1.5 w-full sm:w-auto">
@@ -28,7 +38,7 @@ const EventFilters: React.FC<EventFiltersProps> = ({
         </Label>
         <Select 
           value={sortOrder} 
-          onValueChange={(value) => setSortOrder(value as 'date-desc' | 'date-asc')}
+          onValueChange={handleSortChange}
         >
           <SelectTrigger id="sort-order" className="w-full sm:w-[180px] bg-background">
             <SelectValue placeholder="Seleccionar orden..." />
@@ -45,7 +55,7 @@ const EventFilters: React.FC<EventFiltersProps> = ({
           <FilterIcon className="h-4 w-4 mr-2" />
           Filtrar por categoría
         </Label>
-        <Select value={filterCategory} onValueChange={(value) => setFilterCategory(value)}>
+        <Select value={filterCategory} onValueChange={handleCategoryChange}>
           <SelectTrigger id="filter-category" className="w-full sm:w-[220px] bg-background">
             <SelectValue placeholder="Seleccionar categoría..." />
           </SelectTrigger>
