@@ -37,6 +37,7 @@ const GaleriaBienestarPage: React.FC = () => {
   }, []);
 
   const processedEvents = useMemo(() => {
+    // Crear una copia del array original para evitar mutaciones
     let events = [...mockEvents];
 
     // Filtrar por categoría
@@ -44,13 +45,15 @@ const GaleriaBienestarPage: React.FC = () => {
       events = events.filter(event => event.category === filterCategory);
     }
 
-    // Ordenar
+    // Ordenar - crear una nueva copia para el ordenamiento
+    const sortedEvents = [...events];
     if (sortOrder === 'date-desc') {
-      events.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+      sortedEvents.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
     } else if (sortOrder === 'date-asc') {
-      events.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+      sortedEvents.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
     }
-    return events;
+    
+    return sortedEvents;
   }, [sortOrder, filterCategory]);
 
   useEffect(() => {
