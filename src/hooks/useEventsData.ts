@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { mockEvents } from '@/data/eventosMock';
 
 const ITEMS_PER_PAGE = 12;
@@ -8,61 +8,56 @@ export const useEventsData = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOrder, setSortOrder] = useState<'date-desc' | 'date-asc'>('date-desc');
   const [filterCategory, setFilterCategory] = useState<string>('all');
-  const [processedEvents, setProcessedEvents] = useState<typeof mockEvents>([]);
 
   // Generar categorías únicas
   const uniqueCategories = ['all', ...Array.from(new Set(mockEvents.map(event => event.category).filter(Boolean) as string[])).sort((a, b) => a.localeCompare(b))];
 
-  // Función para procesar y ordenar eventos
-  const processEvents = (category: string, order: 'date-desc' | 'date-asc') => {
-    console.log('Processing events with category:', category, 'and order:', order);
+  // Procesar eventos usando useMemo para evitar cálculos innecesarios
+  const processedEvents = useMemo(() => {
+    console.log('Processing events - Category:', filterCategory, 'Sort:', sortOrder);
+    
+    // Siempre empezar con una copia fresca de los eventos originales
+    const originalEvents = [...mockEvents];
     
     // Paso 1: Filtrar por categoría
-    let filtered = mockEvents.filter(event => 
-      category === 'all' || event.category === category
+    const filtered = originalEvents.filter(event => 
+      filterCategory === 'all' || event.category === filterCategory
     );
     
-    console.log('Filtered events:', filtered.length);
+    console.log('Filtered events count:', filtered.length);
     
-    // Paso 2: Ordenar los eventos filtrados
+    // Paso 2: Ordenar según el criterio seleccionado
     const sorted = filtered.sort((a, b) => {
       const dateA = new Date(a.date).getTime();
       const dateB = new Date(b.date).getTime();
       
-      if (order === 'date-desc') {
+      if (sortOrder === 'date-desc') {
         return dateB - dateA; // Más recientes primero
       } else {
         return dateA - dateB; // Más antiguos primero
       }
     });
     
-    console.log('Sorted events:', sorted.length, 'First event:', sorted[0]?.title, sorted[0]?.date);
+    console.log('Sorted events - First event:', sorted[0]?.title, 'Date:', sorted[0]?.date);
+    console.log('Sorted events - Last event:', sorted[sorted.length - 1]?.title, 'Date:', sorted[sorted.length - 1]?.date);
     
     return sorted;
-  };
-
-  // Efecto para procesar eventos cuando cambian los filtros
-  useEffect(() => {
-    console.log('Filters changed - Category:', filterCategory, 'Sort:', sortOrder);
-    const newProcessedEvents = processEvents(filterCategory, sortOrder);
-    setProcessedEvents(newProcessedEvents);
-    setCurrentPage(1);
-    window.scrollTo(0, 0);
   }, [filterCategory, sortOrder]);
 
-  // Inicializar eventos al montar el componente
-  useEffect(() => {
-    console.log('Initializing events...');
-    const initialEvents = processEvents('all', 'date-desc');
-    setProcessedEvents(initialEvents);
-  }, []);
+  // Calcular eventos para mostrar en la página actual
+  const eventsToDisplay = useMemo(() => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const endIndex = startIndex + ITEMS_PER_PAGE;
+    const pageEvents = processedEvents.slice(startIndex, endIndex);
+    
+    console.log('Events to display on page', currentPage, ':', pageEvents.length);
+    return pageEvents;
+  }, [processedEvents, currentPage]);
 
   const totalPages = Math.ceil(processedEvents.length / ITEMS_PER_PAGE);
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const endIndex = startIndex + ITEMS_PER_PAGE;
-  const eventsToDisplay = processedEvents.slice(startIndex, endIndex);
 
   const handlePageChange = (page: number) => {
+    console.log('Changing to page:', page);
     setCurrentPage(page);
     window.scrollTo(0, 0);
   };
@@ -70,11 +65,15 @@ export const useEventsData = () => {
   const handleSortOrderChange = (newOrder: 'date-desc' | 'date-asc') => {
     console.log('Changing sort order from', sortOrder, 'to', newOrder);
     setSortOrder(newOrder);
+    setCurrentPage(1); // Reset a la primera página
+    window.scrollTo(0, 0);
   };
 
   const handleCategoryChange = (newCategory: string) => {
     console.log('Changing category from', filterCategory, 'to', newCategory);
     setFilterCategory(newCategory);
+    setCurrentPage(1); // Reset a la primera página
+    window.scrollTo(0, 0);
   };
 
   return {
