@@ -74,7 +74,7 @@ const OrganizationalStructureSection: React.FC = () => {
                 { title: "Nómina", icon: FileText, description: "Gestión de pagos y compensaciones." },
                 { title: "Sistemas", icon: Laptop, description: "Infraestructura tecnológica y soporte." },
                 { title: "Recursos Humanos", icon: Users, description: "Gestión del talento humano y bienestar." },
-                { title: "S.S.T.", icon: Shield, subTitle: "(Salud y Seguridad en el Trabajo)", description: "Promoción de un entorno laboral seguro y saludable." },
+                { title: "S.S.T.", icon: Shield, subTitle: "(Salud y Seguridad en el Trabajo)", description: "Promoción de un entorno seguro y saludable." },
               ].map((item, index) => (
                 <Card key={index} className="shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-lg p-6 text-center animate-scale-in" style={{ animationDelay: `${index * 100 + 800}ms` }}>
                   <item.icon size={36} className="mx-auto mb-3 text-primary-prosalud" />
