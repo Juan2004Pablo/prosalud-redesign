@@ -64,11 +64,11 @@ export const searchData: SearchItem[] = [
   },
   {
     id: "descanso-sindical",
-    title: "Solicitud de Descanso Sindical",
+    title: "Solicitud de Descanso",
     description: "Tramita tu solicitud de descanso",
     path: "/servicios/descanso-sindical",
     category: "Servicios",
-    keywords: ["descanso", "sindical", "laboral", "vacaciones", "permiso"]
+    keywords: ["descanso", "sindical", "vacaciones", "permiso"]
   },
   {
     id: "compensacion-anual",
