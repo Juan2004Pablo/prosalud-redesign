@@ -87,7 +87,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ className = '' }) => {
       >
         <Search size={16} className="mr-2 text-gray-500" />
         <span className="hidden sm:inline text-sm">Buscar en el sitio...</span>
-        <span className="sm:hidden text-sm">Buscar...</span>
+        <span className="sm:hidden text-sm">Buscar en el sitio...</span>
         <kbd className="hidden lg:inline-flex ml-auto pointer-events-none h-5 select-none items-center gap-1 rounded border bg-gray-100 px-1.5 font-mono text-[10px] font-medium text-gray-600">
           <span className="text-xs">⌘</span>K
         </kbd>
