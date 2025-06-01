@@ -9,7 +9,6 @@ export interface SearchItem {
 }
 
 export const searchData: SearchItem[] = [
-  // Páginas principales
   {
     id: "home",
     title: "Inicio",
@@ -26,8 +25,6 @@ export const searchData: SearchItem[] = [
     category: "Cuenta",
     keywords: ["login", "ingresar", "sesion", "cuenta", "acceder"]
   },
-
-  // Quiénes Somos
   {
     id: "quienes-somos",
     title: "¿Quiénes Somos?",
@@ -52,8 +49,6 @@ export const searchData: SearchItem[] = [
     category: "Nosotros",
     keywords: ["contrato", "sindical", "acuerdo", "laboral", "convenio"]
   },
-
-  // Servicios
   {
     id: "certificado-convenio",
     title: "Certificado de Convenio",
@@ -150,8 +145,6 @@ export const searchData: SearchItem[] = [
     category: "Servicios",
     keywords: ["retiro", "sindical", "salida", "desvinculacion"]
   },
-
-  // Convenios - ahora redirige a la sección en el home
   {
     id: "convenios",
     title: "Convenios",
@@ -159,5 +152,13 @@ export const searchData: SearchItem[] = [
     path: "/#convenios",
     category: "Información",
     keywords: ["convenios", "alianzas", "acuerdos", "beneficios", "entidades", "antioquia"]
+  },
+  {
+    id: "servicios",
+    title: "servicios",
+    description: "Accede al listado de servicios y trámites disponibles",
+    path: "/",
+    category: "Información",
+    keywords: ["servicios", "tramites", "solicitudes", "consultas", "peticiones"]
   }
 ];
