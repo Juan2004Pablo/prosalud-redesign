@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Menu, X, LogIn } from 'lucide-react';
 import DesktopMenu from './DesktopMenu';
 import MobileMenu from './MobileMenu';
+import GlobalSearch from './GlobalSearch';
 import { Button } from '@/components/ui/button';
 
 const Header: React.FC = () => {
@@ -32,8 +33,13 @@ const Header: React.FC = () => {
             <DesktopMenu inactiveLinkClass={inactiveLinkClass} />
           </div>
 
-          {/* Login Button & Mobile Menu Toggle (Right) */}
+          {/* Search, Login Button & Mobile Menu Toggle (Right) */}
           <div className="flex items-center space-x-3 sm:space-x-4 flex-shrink-0">
+            {/* Global Search */}
+            <div className="hidden sm:block">
+              <GlobalSearch />
+            </div>
+
             <Link to="/login">
               <Button
                 variant="outline"
@@ -41,7 +47,7 @@ const Header: React.FC = () => {
                 className="border-primary-prosalud text-primary-prosalud hover:bg-primary-prosalud-light hover:text-primary-prosalud focus:ring-primary-prosalud flex items-center gap-2"
               >
                 <LogIn size={16} />
-                Acceder
+                <span className="hidden sm:inline">Acceder</span>
               </Button>
             </Link>
 
@@ -56,6 +62,11 @@ const Header: React.FC = () => {
               </button>
             </div>
           </div>
+        </div>
+        
+        {/* Mobile Search Bar - Below header on mobile */}
+        <div className="sm:hidden pb-3">
+          <GlobalSearch />
         </div>
       </div>
 
