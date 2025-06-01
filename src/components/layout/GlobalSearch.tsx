@@ -83,68 +83,79 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ className = '' }) => {
         variant="outline"
         size="sm"
         onClick={() => setIsOpen(true)}
-        className="w-full sm:w-64 justify-start text-muted-foreground border-prosalud-border hover:bg-primary-prosalud-light"
+        className="w-full max-w-xs lg:max-w-sm xl:max-w-md justify-start text-text-gray border-gray-300 bg-white hover:bg-gray-50 hover:border-primary-prosalud transition-all duration-200"
       >
-        <Search size={16} className="mr-2" />
-        <span className="hidden sm:inline">Buscar en el sitio...</span>
-        <span className="sm:hidden">Buscar...</span>
-        <kbd className="hidden sm:inline-flex ml-auto pointer-events-none h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
+        <Search size={16} className="mr-2 text-gray-500" />
+        <span className="hidden sm:inline text-sm">Buscar en el sitio...</span>
+        <span className="sm:hidden text-sm">Buscar...</span>
+        <kbd className="hidden lg:inline-flex ml-auto pointer-events-none h-5 select-none items-center gap-1 rounded border bg-gray-100 px-1.5 font-mono text-[10px] font-medium text-gray-600">
           <span className="text-xs">⌘</span>K
         </kbd>
       </Button>
 
       {/* Search Modal */}
       {isOpen && (
-        <div className="fixed inset-0 z-50 bg-black/50 flex items-start justify-center pt-[10vh]">
-          <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl mx-4 max-h-[70vh] overflow-hidden">
-            <Command shouldFilter={false} className="rounded-lg border shadow-md">
-              <div className="flex items-center border-b px-3">
-                <Search className="mr-2 h-4 w-4 shrink-0 opacity-50" />
+        <div className="fixed inset-0 z-50 bg-black/60 flex items-start justify-center pt-[8vh] px-4">
+          <div className="bg-white rounded-xl shadow-2xl w-full max-w-3xl mx-auto max-h-[75vh] overflow-hidden border border-gray-200">
+            <Command shouldFilter={false} className="rounded-xl">
+              <div className="flex items-center border-b border-gray-200 px-4 py-3">
+                <Search className="mr-3 h-5 w-5 shrink-0 text-gray-400" />
                 <CommandInput
                   placeholder="Buscar páginas, servicios o información..."
                   value={searchQuery}
                   onValueChange={setSearchQuery}
-                  className="flex h-11 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50"
+                  className="flex h-12 w-full rounded-md bg-transparent text-base outline-none placeholder:text-gray-500 disabled:cursor-not-allowed disabled:opacity-50"
                 />
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={handleClose}
-                  className="ml-2 h-8 w-8 p-0"
+                  className="ml-3 h-8 w-8 p-0 hover:bg-gray-100 text-gray-500 hover:text-gray-700"
                 >
-                  <X size={16} />
+                  <X size={18} />
                 </Button>
               </div>
-              <CommandList className="max-h-[50vh] overflow-y-auto">
+              <CommandList className="max-h-[55vh] overflow-y-auto">
                 {searchQuery.trim() === '' ? (
-                  <div className="py-6 text-center text-sm text-muted-foreground">
-                    Escribe para buscar páginas y servicios...
+                  <div className="py-12 text-center text-gray-500">
+                    <Search className="mx-auto h-12 w-12 text-gray-300 mb-4" />
+                    <p className="text-lg font-medium mb-2">Buscar en ProSalud</p>
+                    <p className="text-sm">Escribe para buscar páginas, servicios e información</p>
                   </div>
                 ) : filteredResults.length === 0 ? (
-                  <CommandEmpty className="py-6 text-center text-sm">
-                    No se encontraron resultados para "{searchQuery}"
+                  <CommandEmpty className="py-12 text-center">
+                    <div className="text-gray-500">
+                      <Search className="mx-auto h-12 w-12 text-gray-300 mb-4" />
+                      <p className="text-lg font-medium mb-2">Sin resultados</p>
+                      <p className="text-sm">No se encontraron resultados para "<span className="font-medium text-gray-700">{searchQuery}</span>"</p>
+                    </div>
                   </CommandEmpty>
                 ) : (
-                  <CommandGroup heading="Resultados">
-                    {filteredResults.map((item) => (
-                      <CommandItem
-                        key={item.id}
-                        onSelect={() => handleSelect(item)}
-                        className="cursor-pointer"
-                      >
-                        <div className="flex flex-col">
-                          <div className="flex items-center">
-                            <span className="font-medium">{item.title}</span>
-                            <span className="ml-auto text-xs text-muted-foreground bg-muted px-2 py-1 rounded">
-                              {item.category}
+                  <CommandGroup>
+                    <div className="px-2 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-b border-gray-100 bg-gray-50">
+                      Resultados ({filteredResults.length})
+                    </div>
+                    <div className="p-2">
+                      {filteredResults.map((item) => (
+                        <CommandItem
+                          key={item.id}
+                          onSelect={() => handleSelect(item)}
+                          className="cursor-pointer rounded-lg p-3 hover:bg-blue-50 border border-transparent hover:border-blue-200 transition-all duration-200 mb-2"
+                        >
+                          <div className="flex flex-col w-full">
+                            <div className="flex items-center justify-between mb-1">
+                              <span className="font-semibold text-gray-900 text-base">{item.title}</span>
+                              <span className="text-xs font-medium text-white bg-primary-prosalud px-2 py-1 rounded-full">
+                                {item.category}
+                              </span>
+                            </div>
+                            <span className="text-sm text-gray-600 leading-relaxed">
+                              {item.description}
                             </span>
                           </div>
-                          <span className="text-sm text-muted-foreground mt-1">
-                            {item.description}
-                          </span>
-                        </div>
-                      </CommandItem>
-                    ))}
+                        </CommandItem>
+                      ))}
+                    </div>
                   </CommandGroup>
                 )}
               </CommandList>

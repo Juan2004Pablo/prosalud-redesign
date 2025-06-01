@@ -29,22 +29,22 @@ const Header: React.FC = () => {
           </Link>
 
           {/* Desktop Navigation (Center) */}
-          <div className="hidden md:flex flex-grow justify-center">
+          <div className="hidden lg:flex flex-grow justify-center">
             <DesktopMenu inactiveLinkClass={inactiveLinkClass} />
           </div>
 
           {/* Search, Login Button & Mobile Menu Toggle (Right) */}
-          <div className="flex items-center space-x-3 sm:space-x-4 flex-shrink-0">
-            {/* Global Search */}
-            <div className="hidden sm:block">
+          <div className="flex items-center space-x-2 sm:space-x-3 flex-shrink-0 min-w-0">
+            {/* Global Search - Hidden on small screens, shown on medium+ */}
+            <div className="hidden md:block flex-shrink-0 max-w-[200px] lg:max-w-[250px] xl:max-w-[300px]">
               <GlobalSearch />
             </div>
 
-            <Link to="/login">
+            <Link to="/login" className="flex-shrink-0">
               <Button
                 variant="outline"
                 size="sm"
-                className="border-primary-prosalud text-primary-prosalud hover:bg-primary-prosalud-light hover:text-primary-prosalud focus:ring-primary-prosalud flex items-center gap-2"
+                className="border-primary-prosalud text-primary-prosalud hover:bg-primary-prosalud hover:text-white focus:ring-primary-prosalud flex items-center gap-2 transition-all duration-200"
               >
                 <LogIn size={16} />
                 <span className="hidden sm:inline">Acceder</span>
@@ -52,10 +52,10 @@ const Header: React.FC = () => {
             </Link>
 
             {/* Mobile Menu Button */}
-            <div className="md:hidden">
+            <div className="lg:hidden flex-shrink-0">
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="text-text-dark hover:text-primary-prosalud focus:outline-none p-2 -mr-2"
+                className="text-text-dark hover:text-primary-prosalud focus:outline-none p-2"
                 aria-label={isMobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
               >
                 {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
@@ -64,8 +64,8 @@ const Header: React.FC = () => {
           </div>
         </div>
         
-        {/* Mobile Search Bar - Below header on mobile */}
-        <div className="sm:hidden pb-3">
+        {/* Mobile Search Bar - Below header on mobile/tablet */}
+        <div className="md:hidden pb-4 pt-2">
           <GlobalSearch />
         </div>
       </div>
