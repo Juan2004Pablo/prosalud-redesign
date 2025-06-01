@@ -18,7 +18,7 @@ interface MobileMenuProps {
 
 const MobileMenu: React.FC<MobileMenuProps> = ({ onClose, activeLinkClass, inactiveLinkClass }) => {
   return (
-    <div className="md:hidden absolute top-20 left-0 right-0 bg-white shadow-lg z-40 max-h-[80vh] overflow-y-auto">
+    <div className="xl:hidden absolute top-20 left-0 right-0 bg-white shadow-lg z-40 max-h-[80vh] overflow-y-auto">
       <nav className="flex flex-col px-4 py-3">
         {/* Changed type to "single" for the main accordion */}
         <Accordion type="single" collapsible className="w-full">

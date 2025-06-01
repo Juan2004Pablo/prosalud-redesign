@@ -70,7 +70,7 @@ const Header: React.FC = () => {
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu - Show on screens smaller than xl when open */}
       {isMobileMenuOpen && (
         <MobileMenu
           onClose={() => setIsMobileMenuOpen(false)}
