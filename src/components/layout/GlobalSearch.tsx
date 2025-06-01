@@ -83,7 +83,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ className = '' }) => {
         variant="outline"
         size="sm"
         onClick={() => setIsOpen(true)}
-        className="w-full max-w-xs lg:max-w-sm xl:max-w-md justify-start text-text-gray border-gray-300 bg-white hover:bg-gray-50 hover:border-primary-prosalud transition-all duration-200"
+        className="w-full max-w-xs lg:max-w-sm xl:max-w-md justify-start text-text-gray border-gray-300 bg-white hover:bg-gray-50 hover:border-primary-prosalud hover:text-gray-500 transition-all duration-200"
       >
         <Search size={16} className="mr-2 text-gray-500" />
         <span className="hidden sm:inline text-sm">Buscar en el sitio...</span>
@@ -104,7 +104,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ className = '' }) => {
                   placeholder="Buscar páginas, servicios o información..."
                   value={searchQuery}
                   onValueChange={setSearchQuery}
-                  className="flex h-12 w-full rounded-md bg-transparent text-base outline-none placeholder:text-gray-500 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="flex h-12 max-w-2xl w-full rounded-md bg-transparent text-base outline-none placeholder:text-gray-500 disabled:cursor-not-allowed disabled:opacity-50"
                 />
                 <Button
                   variant="ghost"

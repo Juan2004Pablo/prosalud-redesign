@@ -50,7 +50,7 @@ export const searchData: SearchItem[] = [
     description: "Información sobre el contrato sindical",
     path: "/nosotros/contrato-sindical",
     category: "Nosotros",
-    keywords: ["contrato", "sindical", "acuerdo", "convenio"]
+    keywords: ["contrato", "sindical", "acuerdo", "laboral", "convenio"]
   },
 
   // Servicios
@@ -65,7 +65,7 @@ export const searchData: SearchItem[] = [
   {
     id: "descanso-sindical",
     title: "Solicitud de Descanso Sindical",
-    description: "Tramita tu solicitud de descanso laboral",
+    description: "Tramita tu solicitud de descanso",
     path: "/servicios/descanso-sindical",
     category: "Servicios",
     keywords: ["descanso", "sindical", "laboral", "vacaciones", "permiso"]
@@ -121,7 +121,7 @@ export const searchData: SearchItem[] = [
   {
     id: "galeria-bienestar",
     title: "Galería de Bienestar",
-    description: "Eventos y actividades de bienestar laboral",
+    description: "Eventos y actividades de bienestar",
     path: "/servicios/galeria-bienestar",
     category: "Servicios",
     keywords: ["galeria", "bienestar", "eventos", "actividades", "fotos"]
