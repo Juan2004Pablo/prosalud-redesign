@@ -1,4 +1,3 @@
-
 import { Briefcase, Home, Users, FileText, FolderArchive, Shield, LucideIcon } from 'lucide-react';
 
 // Define types for menu items
@@ -18,14 +17,22 @@ export interface BaseMenuItem {
 export interface TopLevelMenuItemWithSubmenu extends BaseMenuItem {
   submenu: MenuSubItem[];
   path?: undefined; 
+  url?: undefined;
 }
 
 export interface TopLevelMenuItemDirectLink extends BaseMenuItem {
   path: string;
   submenu?: undefined; 
+  url?: undefined;
 }
 
-export type MenuItemType = TopLevelMenuItemWithSubmenu | TopLevelMenuItemDirectLink;
+export interface TopLevelMenuItemExternalLink extends BaseMenuItem {
+  url: string;
+  submenu?: undefined;
+  path?: undefined;
+}
+
+export type MenuItemType = TopLevelMenuItemWithSubmenu | TopLevelMenuItemDirectLink | TopLevelMenuItemExternalLink;
 
 // Define menu structure for dropdown navigation
 export const menuItems: MenuItemType[] = [

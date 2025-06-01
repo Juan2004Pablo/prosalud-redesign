@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { cn } from "@/lib/utils";
@@ -67,6 +66,16 @@ const DesktopMenu: React.FC<DesktopMenuProps> = ({ inactiveLinkClass }) => {
                   </ul>
                 </NavigationMenuContent>
               </>
+            ) : item.url ? (
+              // Handle external URL
+              <a
+                href={item.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`text-sm font-medium py-2 px-3 block ${inactiveLinkClass} hover:bg-gray-50 rounded-md`}
+              >
+                {item.name}
+              </a>
             ) : ( 
               <Link
                 to={item.path!}
@@ -124,4 +133,3 @@ const HeaderListItemWrapper: React.FC<{ subItem: MenuSubItem }> = ({ subItem }) 
 
 
 export default DesktopMenu;
-

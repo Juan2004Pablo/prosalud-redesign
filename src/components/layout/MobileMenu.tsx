@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { menuItems } from './menuConfig';
@@ -113,6 +112,21 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ onClose, activeLinkClass, inact
                     </div>
                   </AccordionContent>
                 </AccordionItem>
+              );
+            } else if (item.url) {
+              // Handle external URL for mobile
+              return (
+                <a
+                  key={item.name}
+                  href={item.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={onClose}
+                  className={`${inactiveLinkClass} flex items-center space-x-2 px-2 py-3 rounded-md text-base font-medium border-b`}
+                >
+                  <item.icon size={20} className="text-primary-prosalud" />
+                  <span>{item.name}</span>
+                </a>
               );
             } else {
               // For direct links without submenu
