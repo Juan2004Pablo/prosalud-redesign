@@ -159,13 +159,5 @@ export const searchData: SearchItem[] = [
     path: "/convenios",
     category: "Información",
     keywords: ["convenios", "alianzas", "acuerdos", "beneficios"]
-  },
-  {
-    id: "sgsst",
-    title: "S.G.S.S.T.",
-    description: "Sistema de Gestión de Seguridad y Salud en el Trabajo",
-    path: "/sgsst",
-    category: "Información",
-    keywords: ["sgsst", "sistema", "gestion", "seguridad", "salud"]
   }
 ];

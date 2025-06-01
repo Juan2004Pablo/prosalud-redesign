@@ -113,7 +113,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ className = '' }) => {
                   placeholder="Buscar páginas, servicios o información..."
                   value={searchQuery}
                   onValueChange={setSearchQuery}
-                  className="flex h-12 w-full rounded-md bg-transparent text-base outline-none placeholder:text-gray-500 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="flex h-12 w-full min-w-[500px] rounded-md bg-transparent text-base outline-none placeholder:text-gray-500 disabled:cursor-not-allowed disabled:opacity-50"
                 />
               </div>
               <CommandList className="max-h-[55vh] overflow-y-auto">
