@@ -47,7 +47,7 @@ const Header: React.FC = () => {
                 className="border-primary-prosalud text-primary-prosalud hover:bg-primary-prosalud hover:text-white focus:ring-primary-prosalud flex items-center gap-2 transition-all duration-200"
               >
                 <LogIn size={16} />
-                <span className="hidden sm:inline">Acceder</span>
+                <span>Acceder</span>
               </Button>
             </Link>
 
