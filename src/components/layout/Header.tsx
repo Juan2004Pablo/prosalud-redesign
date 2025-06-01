@@ -28,8 +28,8 @@ const Header: React.FC = () => {
             />
           </Link>
 
-          {/* Desktop Navigation (Center) */}
-          <div className="hidden lg:flex flex-grow justify-center">
+          {/* Desktop Navigation (Center) - Only show on xl screens and above */}
+          <div className="hidden xl:flex flex-grow justify-center">
             <DesktopMenu inactiveLinkClass={inactiveLinkClass} />
           </div>
 
@@ -51,8 +51,8 @@ const Header: React.FC = () => {
               </Button>
             </Link>
 
-            {/* Mobile Menu Button */}
-            <div className="lg:hidden flex-shrink-0">
+            {/* Mobile Menu Button - Show on screens smaller than xl */}
+            <div className="xl:hidden flex-shrink-0">
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className="text-text-dark hover:text-primary-prosalud focus:outline-none p-2"
