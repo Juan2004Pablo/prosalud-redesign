@@ -155,7 +155,7 @@ export const searchData: SearchItem[] = [
   },
   {
     id: "servicios",
-    title: "servicios",
+    title: "Servicios",
     description: "Accede al listado de servicios y trámites disponibles",
     path: "/",
     category: "Información",
