@@ -151,13 +151,13 @@ export const searchData: SearchItem[] = [
     keywords: ["retiro", "sindical", "salida", "desvinculacion"]
   },
 
-  // Otros
+  // Convenios - ahora redirige a la sección en el home
   {
     id: "convenios",
     title: "Convenios",
-    description: "Convenios y alianzas estratégicas",
-    path: "/convenios",
+    description: "Convenios y alianzas estratégicas con entidades en Antioquia",
+    path: "/#convenios",
     category: "Información",
-    keywords: ["convenios", "alianzas", "acuerdos", "beneficios"]
+    keywords: ["convenios", "alianzas", "acuerdos", "beneficios", "entidades", "antioquia"]
   }
 ];

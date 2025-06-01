@@ -85,7 +85,6 @@ const App = () => (
           <Route path="/recursos/acceso-prosanet" element={<PlaceholderPage title="Acceso a ProSanet" />} />
           <Route path="/recursos/bienestar" element={<PlaceholderPage title="Bienestar" />} />
 
-          <Route path="/convenios" element={<PlaceholderPage title="Convenios" />} />
           <Route path="/sgsst" element={<PlaceholderPage title="S.G.S.S.T." />} />
           <Route path="/documentos" element={<PlaceholderPage title="Documentos Públicos Generales" />} />
           <Route path="/archivo" element={<PlaceholderPage title="Archivo Digital General" />} />
