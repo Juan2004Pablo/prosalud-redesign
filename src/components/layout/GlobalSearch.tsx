@@ -109,7 +109,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ className = '' }) => {
             
             <Command shouldFilter={false} className="rounded-xl">
               <div className="flex items-center border-b border-gray-200 px-4 py-3 pr-14">
-                <Search className="mr-3 h-5 w-5 shrink-0 text-gray-400" />
+                
                 <CommandInput
                   placeholder="Buscar páginas, servicios o información..."
                   value={searchQuery}
