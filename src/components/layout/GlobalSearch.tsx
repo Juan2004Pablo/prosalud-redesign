@@ -96,24 +96,26 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ className = '' }) => {
       {/* Search Modal */}
       {isOpen && (
         <div className="fixed inset-0 z-50 bg-black/60 flex items-start justify-center pt-[8vh] px-4">
-          <div className="bg-white rounded-xl shadow-2xl w-full max-w-3xl mx-auto max-h-[75vh] overflow-hidden border border-gray-200">
+          <div className="bg-white rounded-xl shadow-2xl w-full max-w-3xl mx-auto max-h-[75vh] overflow-hidden border border-gray-200 relative">
+            {/* Close button in top right corner */}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleClose}
+              className="absolute top-3 right-3 z-10 h-8 w-8 p-0 hover:bg-gray-100 text-gray-500 hover:text-gray-700"
+            >
+              <X size={18} />
+            </Button>
+            
             <Command shouldFilter={false} className="rounded-xl">
-              <div className="flex items-center border-b border-gray-200 px-4 py-3">
+              <div className="flex items-center border-b border-gray-200 px-4 py-3 pr-14">
                 <Search className="mr-3 h-5 w-5 shrink-0 text-gray-400" />
                 <CommandInput
                   placeholder="Buscar páginas, servicios o información..."
                   value={searchQuery}
                   onValueChange={setSearchQuery}
-                  className="flex h-12 max-w-2xl w-full rounded-md bg-transparent text-base outline-none placeholder:text-gray-500 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="flex h-12 w-full rounded-md bg-transparent text-base outline-none placeholder:text-gray-500 disabled:cursor-not-allowed disabled:opacity-50"
                 />
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleClose}
-                  className="ml-3 h-8 w-8 p-0 hover:bg-gray-100 text-gray-500 hover:text-gray-700"
-                >
-                  <X size={18} />
-                </Button>
               </div>
               <CommandList className="max-h-[55vh] overflow-y-auto">
                 {searchQuery.trim() === '' ? (
