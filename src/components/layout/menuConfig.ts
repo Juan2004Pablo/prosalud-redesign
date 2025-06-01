@@ -86,9 +86,7 @@ export const menuItems: MenuItemType[] = [
   {
     name: 'Archivo Digital',
     icon: FolderArchive,
-    submenu: [
-      { name: 'Artículos de interés', path: '/archivo-digital/articulos-interes' },
-    ]
+    url: 'http://orgs.ddns.net:8091/'
   },
   {
     name: 'Recursos',
