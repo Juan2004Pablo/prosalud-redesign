@@ -83,12 +83,11 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ className = '' }) => {
         variant="outline"
         size="sm"
         onClick={() => setIsOpen(true)}
-        className="w-full max-w-xs lg:max-w-sm xl:max-w-md justify-start text-text-gray border-gray-300 bg-white hover:bg-gray-50 hover:border-primary-prosalud hover:text-gray-500 transition-all duration-200"
+        className="w-full min-w-[400px] max-w-xs lg:max-w-sm xl:max-w-md justify-start text-text-gray border-gray-300 bg-white hover:bg-gray-50 hover:border-primary-prosalud hover:text-gray-500 transition-all duration-200"
       >
         <Search size={16} className="mr-2 text-gray-500" />
-        <span className="hidden sm:inline text-sm">Buscar en el sitio...</span>
-        <span className="sm:hidden text-sm">Buscar en el sitio...</span>
-        <kbd className="hidden lg:inline-flex ml-auto pointer-events-none h-5 select-none items-center gap-1 rounded border bg-gray-100 px-1.5 font-mono text-[10px] font-medium text-gray-600">
+        <span className="sm:inline text-sm">Buscar en el sitio...</span>
+        <kbd className="lg:inline-flex ml-auto pointer-events-none h-5 select-none items-center gap-1 rounded border bg-gray-100 px-1.5 font-mono text-[10px] font-medium text-gray-600">
           <span className="text-xs">⌘</span>K
         </kbd>
       </Button>
