@@ -83,7 +83,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ className = '' }) => {
         variant="outline"
         size="sm"
         onClick={() => setIsOpen(true)}
-        className="w-full min-w-[400px] max-w-xs lg:max-w-sm xl:max-w-md justify-start text-text-gray border-gray-300 bg-white hover:bg-gray-50 hover:border-primary-prosalud hover:text-gray-500 transition-all duration-200"
+        className="w-full max-w-xs lg:max-w-sm xl:max-w-md justify-start text-text-gray border-gray-300 bg-white hover:bg-gray-50 hover:border-primary-prosalud hover:text-gray-500 transition-all duration-200"
       >
         <Search size={16} className="mr-2 text-gray-500" />
         <span className="sm:inline text-sm">Buscar en el sitio...</span>
