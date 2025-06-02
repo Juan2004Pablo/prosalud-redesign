@@ -16,7 +16,6 @@ El Certificado de Convenio Sindical es un documento oficial que certifica la par
 **Tipo de Identificación (Obligatorio)**:
 - Cédula de Ciudadanía (CC)
 - Cédula de Extranjería (CE)
-- Tarjeta de Identidad (TI)
 - Pasaporte (PP)
 - Permiso por protección temporal (PT)
 

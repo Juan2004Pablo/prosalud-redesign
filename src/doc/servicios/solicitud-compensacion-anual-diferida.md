@@ -17,7 +17,6 @@ Este formulario permite a los afiliados solicitar la compensación anual diferid
 - **Tipo de identificación:** (Obligatorio) Selección entre:
     - Cédula de Ciudadanía (CC)
     - Cédula de Extranjería (CE)
-    - Tarjeta de Identidad (TI)
     - Pasaporte (PP)
     - Permiso por protección temporal (PT)
 - **Número de identificación:** (Obligatorio) Mínimo 5 dígitos, solo números.

@@ -19,9 +19,7 @@ Este formulario permite a los afiliados de ProSalud realizar una solicitud infor
 - **Tipo de identificación:** (Obligatorio) Selección entre:
     - Cédula de Ciudadanía (CC)
     - Cédula de Extranjería (CE)
-    - NIT
     - Pasaporte (PP)
-    - Tarjeta de Identidad (TI)
 - **Número de identificación:** (Obligatorio) Mínimo 5 caracteres.
 - **Nombres:** (Obligatorio) Mínimo 2 caracteres.
 - **Apellidos:** (Obligatorio) Mínimo 2 caracteres.

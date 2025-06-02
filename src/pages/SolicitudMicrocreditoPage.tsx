@@ -20,11 +20,10 @@ import ConfirmacionCorreoSection from '@/components/solicitud-certificado/Confir
 import AutorizacionDatosSection from '@/components/solicitud-certificado/AutorizacionDatosSection';
 
 const idTypes = [
-  { value: 'CC', label: 'Cédula de Ciudadanía' },
-  { value: 'CE', label: 'Cédula de Extranjería' },
-  { value: 'NIT', label: 'NIT' },
-  { value: 'PASAPORTE', label: 'Pasaporte' },
-  { value: 'TI', label: 'Tarjeta de Identidad' },
+    { value: "CC", label: "Cédula de Ciudadanía (CC)" },
+    { value: "CE", label: "Cédula de Extranjería (CE)" },
+    { value: "PP", label: "Pasaporte (PP)" },
+    { value: "PT", label: "Permiso por protección temporal (PT)" },
 ];
 
 const sedesOptions = [

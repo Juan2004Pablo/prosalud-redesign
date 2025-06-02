@@ -20,7 +20,6 @@ La página también incluye una sección de "Requisitos para el Descanso Laboral
 - **Tipo de identificación:** (Obligatorio) Selección entre:
     - Cédula de Ciudadanía (CC)
     - Cédula de Extranjería (CE)
-    - Tarjeta de Identidad (TI)
     - Pasaporte (PP)
     - Permiso por protección temporal (PT)
 - **Número de identificación:** (Obligatorio) Mínimo 5 dígitos, solo números.
