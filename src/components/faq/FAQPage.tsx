@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react';
 import { Search, ChevronDown, ChevronUp, ExternalLink, Sparkles, Info, FileText, Users, Gift, Settings } from 'lucide-react';
 import { Input } from '@/components/ui/input';
@@ -202,7 +201,7 @@ const FAQPage: React.FC = () => {
                       </div>
                     )}
 
-                    <Accordion type="multiple" className="space-y-6">
+                    <Accordion type="single" collapsible className="space-y-6">
                       {items.map((faq, index) => (
                         <AccordionItem
                           key={faq.id}
