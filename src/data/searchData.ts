@@ -26,6 +26,14 @@ export const searchData: SearchItem[] = [
     keywords: ["login", "ingresar", "sesion", "cuenta", "acceder"]
   },
   {
+    id: "faq",
+    title: "Preguntas Frecuentes",
+    description: "Encuentra respuestas a las consultas más comunes sobre ProSalud",
+    path: "/faq",
+    category: "Ayuda",
+    keywords: ["faq", "preguntas", "frecuentes", "ayuda", "consultas", "respuestas", "dudas"]
+  },
+  {
     id: "quienes-somos",
     title: "¿Quiénes Somos?",
     description: "Conoce la historia, misión y visión de ProSalud",

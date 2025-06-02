@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -26,6 +25,7 @@ import ScrollToTop from "./components/utils/ScrollToTop";
 import SstPage from "./pages/SstPage";
 import GaleriaBienestarPage from "./pages/GaleriaBienestarPage";
 import EventoDetallePage from "./pages/EventoDetallePage";
+import FAQPageContainer from "./pages/FAQPage";
 
 const queryClient = new QueryClient();
 
@@ -87,7 +87,7 @@ const AppWithTracking = () => {
       <Route path="/sgsst" element={<PlaceholderPage title="S.G.S.S.T." />} />
       <Route path="/documentos" element={<PlaceholderPage title="Documentos Públicos Generales" />} />
       <Route path="/archivo" element={<PlaceholderPage title="Archivo Digital General" />} />
-      <Route path="/faq" element={<PlaceholderPage title="Preguntas Frecuentes" />} />
+      <Route path="/faq" element={<FAQPageContainer />} />
       <Route path="/contacto" element={<PlaceholderPage title="Contacto" />} />
       <Route path="/terminos" element={<PlaceholderPage title="Términos y Condiciones" />} />
       <Route path="/privacidad" element={<PlaceholderPage title="Política de Privacidad" />} />
