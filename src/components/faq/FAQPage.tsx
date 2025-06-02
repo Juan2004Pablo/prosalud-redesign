@@ -20,7 +20,6 @@ const categoryIcons = {
 const FAQPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [expandedItems, setExpandedItems] = useState<string[]>([]);
 
   // Filter FAQ items based on search query and category
   const filteredFAQs = useMemo(() => {
@@ -65,14 +64,6 @@ const FAQPage: React.FC = () => {
 
     return groups;
   }, [filteredFAQs, selectedCategory]);
-
-  const handleAccordionChange = (value: string) => {
-    setExpandedItems(prev => 
-      prev.includes(value) 
-        ? prev.filter(item => item !== value)
-        : [...prev, value]
-    );
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
@@ -220,11 +211,9 @@ const FAQPage: React.FC = () => {
                           style={{ animationDelay: `${index * 100}ms` }}
                         >
                           <AccordionTrigger className="px-8 py-6 text-left hover:no-underline group-hover:bg-gradient-to-r group-hover:from-blue-50 group-hover:to-indigo-50 transition-all duration-300">
-                            <div className="flex items-start justify-between w-full">
-                              <h3 className="text-lg font-semibold text-gray-800 pr-4 leading-relaxed">
-                                {faq.question}
-                              </h3>
-                            </div>
+                            <h3 className="text-lg font-semibold text-gray-800 pr-4 leading-relaxed">
+                              {faq.question}
+                            </h3>
                           </AccordionTrigger>
                           <AccordionContent className="px-8 pb-6">
                             <div className="bg-gradient-to-r from-gray-50 to-blue-50 rounded-xl p-6 mb-6">
