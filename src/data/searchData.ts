@@ -15,7 +15,7 @@ export const searchData: SearchItem[] = [
     description: "Página principal de ProSalud con servicios y novedades",
     path: "/",
     category: "Principal",
-    keywords: ["inicio", "home", "principal", "bienvenida"]
+    keywords: ["inicio", "home", "principal", "bienvenida", "portada", "proSalud", "inicio pagina"]
   },
   {
     id: "login",
@@ -23,7 +23,7 @@ export const searchData: SearchItem[] = [
     description: "Accede a tu cuenta de ProSalud",
     path: "/login",
     category: "Cuenta",
-    keywords: ["login", "ingresar", "sesion", "cuenta", "acceder"]
+    keywords: ["login", "ingresar", "sesion", "cuenta", "acceder", "iniciar", "autenticarse"]
   },
   {
     id: "faq",
@@ -31,7 +31,7 @@ export const searchData: SearchItem[] = [
     description: "Encuentra respuestas a las consultas más comunes sobre ProSalud",
     path: "/faq",
     category: "Ayuda",
-    keywords: ["faq", "preguntas", "frecuentes", "ayuda", "consultas", "respuestas", "dudas"]
+    keywords: ["faq", "preguntas", "frecuentes", "ayuda", "consultas", "respuestas", "dudas", "soporte", "proSalud"]
   },
   {
     id: "quienes-somos",
@@ -39,7 +39,7 @@ export const searchData: SearchItem[] = [
     description: "Conoce la historia, misión y visión de ProSalud",
     path: "/nosotros/quienes-somos",
     category: "Nosotros",
-    keywords: ["quienes", "somos", "historia", "mision", "vision", "nosotros", "organizacion"]
+    keywords: ["quienes", "somos", "historia", "mision", "vision", "nosotros", "organizacion", "sobre nosotros"]
   },
   {
     id: "estatutos",
@@ -47,7 +47,7 @@ export const searchData: SearchItem[] = [
     description: "Normativas y beneficios sindicales de ProSalud",
     path: "/nosotros/estatutos",
     category: "Nosotros",
-    keywords: ["estatutos", "beneficios", "normativas", "reglamento", "sindical"]
+    keywords: ["estatutos", "beneficios", "normativas", "reglamento", "sindical", "derechos", "reglas"]
   },
   {
     id: "contrato-sindical",
@@ -55,7 +55,7 @@ export const searchData: SearchItem[] = [
     description: "Información sobre el contrato sindical",
     path: "/nosotros/contrato-sindical",
     category: "Nosotros",
-    keywords: ["contrato", "sindical", "acuerdo", "laboral", "convenio"]
+    keywords: ["contrato", "sindical", "acuerdo", "laboral", "convenio", "trabajo", "negociacion"]
   },
   {
     id: "certificado-convenio",
@@ -63,7 +63,7 @@ export const searchData: SearchItem[] = [
     description: "Solicita tu certificado de convenio sindical",
     path: "/servicios/certificado-convenio",
     category: "Servicios",
-    keywords: ["certificado", "convenio", "solicitud", "documento"]
+    keywords: ["certificado", "convenio", "solicitud", "documento", "descargar", "constancia"]
   },
   {
     id: "descanso-sindical",
@@ -71,7 +71,7 @@ export const searchData: SearchItem[] = [
     description: "Tramita tu solicitud de descanso",
     path: "/servicios/descanso-sindical",
     category: "Servicios",
-    keywords: ["descanso", "sindical", "vacaciones", "permiso"]
+    keywords: ["descanso", "sindical", "vacaciones", "permiso", "receso", "tiempo libre"]
   },
   {
     id: "compensacion-anual",
@@ -79,7 +79,7 @@ export const searchData: SearchItem[] = [
     description: "Solicita tu compensación anual diferida",
     path: "/servicios/compensacion-anual",
     category: "Servicios",
-    keywords: ["compensacion", "anual", "diferida", "prima", "pago"]
+    keywords: ["compensacion", "anual", "diferida", "prima", "pago", "bono", "beneficio"]
   },
   {
     id: "consulta-pagos",
@@ -87,7 +87,7 @@ export const searchData: SearchItem[] = [
     description: "Consulta y verifica el estado de tus pagos",
     path: "/servicios/consulta-pagos",
     category: "Servicios",
-    keywords: ["pagos", "verificacion", "consulta", "estado", "salario"]
+    keywords: ["pagos", "verificacion", "consulta", "estado", "salario", "comprobante", "recibo"]
   },
   {
     id: "certificado-seguridad-social",
@@ -95,7 +95,7 @@ export const searchData: SearchItem[] = [
     description: "Obtén tu certificado de seguridad social",
     path: "/servicios/certificado-seguridad-social",
     category: "Servicios",
-    keywords: ["seguridad", "social", "certificado", "salud", "pensiones"]
+    keywords: ["seguridad", "social", "certificado", "salud", "pensiones", "afiliacion"]
   },
   {
     id: "actualizar-cuenta",
@@ -103,7 +103,7 @@ export const searchData: SearchItem[] = [
     description: "Actualiza la información de tu cuenta bancaria",
     path: "/servicios/actualizar-cuenta",
     category: "Servicios",
-    keywords: ["cuenta", "bancaria", "actualizar", "banco", "datos"]
+    keywords: ["cuenta", "bancaria", "actualizar", "banco", "datos", "informacion", "numero"]
   },
   {
     id: "incapacidad-maternidad",
@@ -111,7 +111,7 @@ export const searchData: SearchItem[] = [
     description: "Gestiona incapacidades y licencias de maternidad",
     path: "/servicios/incapacidad-maternidad",
     category: "Servicios",
-    keywords: ["incapacidad", "maternidad", "licencia", "salud", "ausencia"]
+    keywords: ["incapacidad", "maternidad", "licencia", "salud", "ausencia", "permiso", "reposo"]
   },
   {
     id: "sst",
@@ -119,7 +119,7 @@ export const searchData: SearchItem[] = [
     description: "Información sobre SST y prevención de riesgos",
     path: "/servicios/sst",
     category: "Servicios",
-    keywords: ["sst", "salud", "seguridad", "trabajo", "riesgos", "prevencion"]
+    keywords: ["sst", "salud", "seguridad", "trabajo", "riesgos", "prevencion", "bienestar laboral", "accidente", "incidente"]
   },
   {
     id: "galeria-bienestar",
@@ -127,7 +127,7 @@ export const searchData: SearchItem[] = [
     description: "Eventos y actividades de bienestar",
     path: "/servicios/galeria-bienestar",
     category: "Servicios",
-    keywords: ["galeria", "bienestar", "eventos", "actividades", "fotos"]
+    keywords: ["galeria", "bienestar", "eventos", "actividades", "fotos", "imagenes", "memorias"]
   },
   {
     id: "permisos-turnos",
@@ -135,7 +135,7 @@ export const searchData: SearchItem[] = [
     description: "Solicita permisos y cambios de turno",
     path: "/servicios/permisos-turnos",
     category: "Servicios",
-    keywords: ["permisos", "turnos", "cambio", "horario", "trabajo"]
+    keywords: ["permisos", "turnos", "cambio", "horario", "trabajo", "ajuste", "turno laboral"]
   },
   {
     id: "microcredito",
@@ -143,7 +143,7 @@ export const searchData: SearchItem[] = [
     description: "Información sobre microcréditos disponibles",
     path: "/servicios/microcredito",
     category: "Servicios",
-    keywords: ["microcredito", "prestamo", "credito", "financiacion"]
+    keywords: ["microcredito", "prestamo", "credito", "financiacion", "dinero", "ayuda financiera"]
   },
   {
     id: "retiro-sindical",
@@ -151,7 +151,7 @@ export const searchData: SearchItem[] = [
     description: "Proceso de retiro del sindicato",
     path: "/servicios/retiro-sindical",
     category: "Servicios",
-    keywords: ["retiro", "sindical", "salida", "desvinculacion"]
+    keywords: ["retiro", "sindical", "salida", "desvinculacion", "renuncia", "abandono"]
   },
   {
     id: "convenios",
@@ -159,7 +159,7 @@ export const searchData: SearchItem[] = [
     description: "Convenios y alianzas estratégicas con entidades en Antioquia",
     path: "/#convenios",
     category: "Información",
-    keywords: ["convenios", "alianzas", "acuerdos", "beneficios", "entidades", "antioquia"]
+    keywords: ["convenios", "alianzas", "acuerdos", "entidades", "antioquia", "instituciones", "hospitales", "centros"]
   },
   {
     id: "servicios",
@@ -167,9 +167,9 @@ export const searchData: SearchItem[] = [
     description: "Accede al listado de servicios y trámites disponibles",
     path: "/",
     category: "Información",
-    keywords: ["servicios", "tramites", "solicitudes", "consultas", "peticiones"]
+    keywords: ["servicios", "tramites", "solicitudes", "consultas", "peticiones", "gestiones", "opciones"]
   },
-    {
+  {
     id: "comfenalco",
     title: "Comfenalco",
     description: "Servicios y experiencias de bienestar con la caja de compensación Comfenalco",
