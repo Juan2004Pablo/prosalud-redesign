@@ -31,7 +31,7 @@ const MissionVisionSection: React.FC = () => {
               </CardHeader>
               <CardContent className="pt-6 sm:pt-8 p-4 sm:p-6 text-text-gray">
                 <p className="text-base sm:text-lg leading-relaxed">
-                  "En el 2018 nuestro Sindicato de Oficio será líder en el departamento de Antioquia, reconocida por el fortalecimiento en la modalidad de contrato colectivo laboral en beneficio de los afiliados y las empresas contractuales."
+                  "En el 2030 nuestro Sindicato de Oficio será líder en el departamento de Antioquia, reconocida por el fortalecimiento en la modalidad de contrato colectivo laboral en beneficio de los afiliados y las empresas contractuales."
                 </p>
               </CardContent>
             </Card>
