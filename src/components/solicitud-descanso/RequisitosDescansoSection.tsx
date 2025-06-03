@@ -11,7 +11,7 @@ const RequisitosDescansoSection: React.FC = () => {
   return (
     <section className="p-6 border rounded-lg shadow-sm bg-white mb-8">
       <h2 className="text-xl font-semibold mb-4 text-primary-prosalud-dark flex items-center">
-        <FileText className="mr-2 h-6 w-6" /> Documentos de Requisitos
+        <FileText className="mr-2 h-6 w-6" /> Formato de solicitud
       </h2>
       <div className="grid grid-cols-1">
         { /* <Button
