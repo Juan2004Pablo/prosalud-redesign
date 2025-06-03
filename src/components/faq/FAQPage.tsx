@@ -112,13 +112,13 @@ const FAQPage: React.FC = () => {
             {/* Enhanced Category Filters */}
             <div className="flex flex-wrap gap-3 justify-center">
               <Button
-                variant={selectedCategory === 'all' ? 'secondary' : 'outline'}
+                variant="outline"
                 onClick={() => setSelectedCategory('all')}
                 className={`${
                   selectedCategory === 'all' 
-                    ? 'bg-white text-primary-prosalud hover:bg-white/90' 
-                    : 'text-xs bg-blue-50 text-blue-700 hover:bg-blue-100'
-                } rounded-full px-6 py-2 transition-all font-medium`}
+                    ? 'bg-white border-white text-blue-500' 
+                    : 'bg-white border-white text-blue-500 hover:bg-gray-100'
+                } rounded-full px-6 py-2 transition-all font-medium cursor-pointer`}
                 size="sm"
               >
                 Todas las categorías
@@ -128,13 +128,13 @@ const FAQPage: React.FC = () => {
                 return (
                   <Button
                     key={category.id}
-                    variant={selectedCategory === category.id ? 'secondary' : 'outline'}
+                    variant="outline"
                     onClick={() => setSelectedCategory(category.id)}
                     className={`${
                       selectedCategory === category.id 
-                        ? 'bg-white/90 text-primary-prosalud' 
-                        : 'text-xs bg-blue-50 text-blue-700 hover:bg-blue-100'
-                    } text-blue-500 rounded-full px-4 py-2 transition-all font-medium`}
+                        ? 'bg-white border-white text-blue-500' 
+                        : 'bg-white border-white text-blue-500 hover:bg-gray-100'
+                    } rounded-full px-4 py-2 transition-all font-medium cursor-pointer`}
                     size="sm"
                   >
                     <IconComponent className="h-4 w-4 mr-2" />
