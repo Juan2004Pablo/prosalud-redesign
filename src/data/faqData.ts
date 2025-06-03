@@ -5,6 +5,8 @@ export interface FAQItem {
   answer: string;
   category: string;
   keywords: string[];
+  redirectUrl?: string;
+  redirectText?: string;
 }
 
 export interface FAQCategory {
@@ -54,58 +56,74 @@ export const faqData: FAQItem[] = [
     question: "¿Qué es ProSalud?",
     answer: "ProSalud es el Sindicato de Profesionales de la Salud, un sindicato de gremio que funciona de conformidad con la Constitución Nacional. Está orientado al bienestar de los afiliados de manera autogestionaria y autónoma, con más de 10 años de experiencia y aproximadamente 1500 afiliados.",
     category: "general",
-    keywords: ["prosalud", "sindicato", "profesionales", "salud", "que es"]
+    keywords: ["prosalud", "sindicato", "profesionales", "salud", "que es"],
+    redirectUrl: "/nosotros/quienes-somos",
+    redirectText: "Conoce más sobre nosotros"
   },
   {
     id: "mision-prosalud",
     question: "¿Cuál es la misión de ProSalud?",
     answer: "Nuestra misión es representar y fortalecer el oficio de los Profesionales de la Salud generando bienestar laboral y económico a todos sus afiliados partícipes, buscando así el mejoramiento en los estándares de calidad en la prestación de los servicios de las Instituciones contractuales.",
     category: "general",
-    keywords: ["mision", "objetivo", "proposito"]
+    keywords: ["mision", "objetivo", "proposito"],
+    redirectUrl: "/nosotros/quienes-somos",
+    redirectText: "Ver misión y visión completa"
   },
   {
     id: "convenios-disponibles",
     question: "¿Con qué instituciones tiene convenios ProSalud?",
     answer: "ProSalud mantiene convenios con 7 entidades en Antioquia, incluyendo hospitales como Hospital Marco Fidel Suárez, Hospital San Juan de Dios - Rionegro, Hospital Santa Elena - Fredonia, Hospital Venancio Díaz, Hospital La Merced - Ciudad Bolívar, Promotora Médica Odontológica y SOMER S.A. También tenemos convenio con Comfenalco Antioquia para servicios de recreación, educación y salud.",
     category: "general",
-    keywords: ["convenios", "hospitales", "instituciones", "comfenalco"]
+    keywords: ["convenios", "hospitales", "instituciones", "comfenalco"],
+    redirectUrl: "/#convenios",
+    redirectText: "Ver todos los convenios"
   },
 
   // Servicios y Trámites
   {
     id: "certificado-convenio",
     question: "¿Cómo solicitar un certificado de convenio sindical?",
-    answer: "Puede solicitar su certificado de convenio sindical a través del formulario en línea en nuestro portal web (/servicios/certificado-convenio). Necesitará proporcionar sus datos personales, tipo de identificación, y especificar qué información requiere incluir en el certificado. El certificado será enviado a su correo electrónico en los próximos días hábiles.",
+    answer: "Puede solicitar su certificado de convenio sindical a través del formulario en línea en nuestro portal web. Necesitará proporcionar sus datos personales, tipo de identificación, y especificar qué información requiere incluir en el certificado. El certificado será enviado a su correo electrónico en los próximos días hábiles.",
     category: "servicios",
-    keywords: ["certificado", "convenio", "solicitud", "tramite"]
+    keywords: ["certificado", "convenio", "solicitud", "tramite"],
+    redirectUrl: "/servicios/certificado-convenio",
+    redirectText: "Solicitar certificado ahora"
   },
   {
     id: "verificacion-pagos",
     question: "¿Cómo verificar el estado de mis pagos?",
-    answer: "Para verificar sus pagos, acceda al servicio de Verificación de Pagos en nuestro portal (/servicios/consulta-pagos). Deberá completar el formulario con sus datos personales y describir la novedad o consulta específica sobre sus pagos. También puede adjuntar documentos de soporte si es necesario.",
+    answer: "Para verificar sus pagos, acceda al servicio de Verificación de Pagos en nuestro portal. Deberá completar el formulario con sus datos personales y describir la novedad o consulta específica sobre sus pagos. También puede adjuntar documentos de soporte si es necesario.",
     category: "servicios",
-    keywords: ["pagos", "verificacion", "consulta", "salarios"]
+    keywords: ["pagos", "verificacion", "consulta", "salarios"],
+    redirectUrl: "/servicios/consulta-pagos",
+    redirectText: "Verificar pagos"
   },
   {
     id: "descanso-sindical",
     question: "¿Cómo solicitar descanso sindical?",
-    answer: "El descanso sindical se solicita a través del formulario en línea (/servicios/descanso-sindical). Debe completar sus datos personales, información del proceso donde labora, fechas del descanso solicitado y adjuntar el formato diligenciado correspondiente. La solicitud será procesada según los requisitos establecidos.",
+    answer: "El descanso sindical se solicita a través del formulario en línea. Debe completar sus datos personales, información del proceso donde labora, fechas del descanso solicitado y adjuntar el formato diligenciado correspondiente. La solicitud será procesada según los requisitos establecidos.",
     category: "servicios",
-    keywords: ["descanso", "sindical", "vacaciones", "permisos"]
+    keywords: ["descanso", "sindical", "vacaciones", "permisos"],
+    redirectUrl: "/servicios/descanso-sindical",
+    redirectText: "Solicitar descanso sindical"
   },
   {
     id: "compensacion-anual",
     question: "¿Qué es la compensación anual diferida y cómo solicitarla?",
-    answer: "La compensación anual diferida es un beneficio que requiere el cumplimiento de ciertos requisitos. Para solicitarla, acceda al formulario en (/servicios/compensacion-anual), complete sus datos personales, información del proceso, motivo de la solicitud y adjunte obligatoriamente el formato diligenciado y la evidencia de soporte.",
+    answer: "La compensación anual diferida es un beneficio que requiere el cumplimiento de ciertos requisitos. Para solicitarla, acceda al formulario correspondiente, complete sus datos personales, información del proceso, motivo de la solicitud y adjunte obligatoriamente el formato diligenciado y la evidencia de soporte.",
     category: "servicios",
-    keywords: ["compensacion", "anual", "diferida", "beneficio"]
+    keywords: ["compensacion", "anual", "diferida", "beneficio"],
+    redirectUrl: "/servicios/compensacion-anual",
+    redirectText: "Solicitar compensación"
   },
   {
     id: "seguridad-social",
     question: "¿Cómo obtener el certificado de seguridad social?",
-    answer: "El certificado de aportes a la seguridad social se obtiene de manera autónoma a través del portal de ARUS SUAPORTE. En nuestra página (/servicios/certificado-seguridad-social) encontrará el enlace directo y las instrucciones para acceder al sistema externo donde podrá generar su certificado.",
+    answer: "El certificado de aportes a la seguridad social se obtiene de manera autónoma a través del portal de ARUS SUAPORTE. En nuestra página encontrará el enlace directo y las instrucciones para acceder al sistema externo donde podrá generar su certificado.",
     category: "servicios",
-    keywords: ["seguridad", "social", "aportes", "certificado", "arus"]
+    keywords: ["seguridad", "social", "aportes", "certificado", "arus"],
+    redirectUrl: "/servicios/certificado-seguridad-social",
+    redirectText: "Acceder al servicio"
   },
 
   // Afiliación
@@ -119,9 +137,11 @@ export const faqData: FAQItem[] = [
   {
     id: "retiro-sindical",
     question: "¿Cómo solicitar el retiro del sindicato?",
-    answer: "Para solicitar el retiro sindical, debe descargar el formato específico desde nuestra página (/servicios/retiro-sindical), diligenciarlo completamente y enviarlo según las instrucciones proporcionadas. El proceso requiere documentación específica y seguir los procedimientos establecidos en los estatutos.",
+    answer: "Para solicitar el retiro sindical, debe descargar el formato específico desde nuestra página, diligenciarlo completamente y enviarlo según las instrucciones proporcionadas. El proceso requiere documentación específica y seguir los procedimientos establecidos en los estatutos.",
     category: "afiliacion",
-    keywords: ["retiro", "salida", "desvinculacion", "sindical"]
+    keywords: ["retiro", "salida", "desvinculacion", "sindical"],
+    redirectUrl: "/servicios/retiro-sindical",
+    redirectText: "Iniciar proceso de retiro"
   },
 
   // Beneficios y Compensaciones
@@ -130,14 +150,18 @@ export const faqData: FAQItem[] = [
     question: "¿Qué es un contrato sindical?",
     answer: "El contrato sindical es el que celebran uno o varios sindicatos de trabajadores con uno o varios empleadores para la prestación de servicios o ejecución de una obra por medio de sus afiliados. Es de naturaleza colectiva laboral y los afiliados partícipes tienen derecho a compensaciones por su participación.",
     category: "beneficios",
-    keywords: ["contrato", "sindical", "definicion", "naturaleza"]
+    keywords: ["contrato", "sindical", "definicion", "naturaleza"],
+    redirectUrl: "/nosotros/contrato-sindical",
+    redirectText: "Ver información completa"
   },
   {
     id: "compensaciones-beneficios",
     question: "¿Qué compensaciones y beneficios ofrece ProSalud?",
     answer: "ProSalud establece compensaciones, auxilios y beneficios según la asamblea, el reglamento o contrato sindical. Los afiliados partícipes en contratos sindicales tienen derecho a reconocimiento económico denominado compensación. Los detalles específicos están en nuestros estatutos disponibles en el sitio web.",
     category: "beneficios",
-    keywords: ["compensaciones", "beneficios", "auxilios", "economico"]
+    keywords: ["compensaciones", "beneficios", "auxilios", "economico"],
+    redirectUrl: "/nosotros/estatutos",
+    redirectText: "Ver estatutos y beneficios"
   },
 
   // Soporte Técnico
