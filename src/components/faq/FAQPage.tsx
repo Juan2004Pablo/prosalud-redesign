@@ -161,6 +161,13 @@ const FAQPage: React.FC = () => {
                   </p>
                 </CardContent>
               </Card>
+              {selectedCategory !== 'all' && (
+                <div className="mb-8 text-center">
+                  <Badge variant="default" className="bg-primary-prosalud text-white px-4 py-2 text-base rounded-full">
+                    {faqCategories.find(cat => cat.id === selectedCategory)?.name}
+                  </Badge>
+                </div>
+              )}
             </div>
           )}
 
