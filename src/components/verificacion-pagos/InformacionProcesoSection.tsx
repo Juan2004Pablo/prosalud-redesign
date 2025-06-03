@@ -44,13 +44,13 @@ const InformacionProcesoSection = <TFieldValues extends FieldValues>({
 
   const tiposSolicitud = [
     "COMPENSACIÓN. MENSUAL",
-    "COMPENSACIÓN. FINAL (LIQUIDACIÓN)",
-    "COMPENSACIÓN DIFERIDA Y/O DESCANSO",
     "COMPENSACIÓN SEMESTRAL",
+    "COMPENSACIÓN ANUAL DIFERIDA Y/O DESCANSO",
     "INCAPACIDADES",
-    "VIATICOS",
     "SUBSIDIOS",
+    "VIATICOS",
     "DUPLICADO COLILLAS"
+    "COMPENSACIÓN. FINAL (LIQUIDACIÓN)",
   ];
 
   return (
