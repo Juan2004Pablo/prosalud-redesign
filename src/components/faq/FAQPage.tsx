@@ -83,8 +83,8 @@ const FAQPage: React.FC = () => {
                 <h1 className="text-5xl font-bold mb-2 bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
                   Preguntas Frecuentes
                 </h1>
-                <div className="flex items-center text-blue-100">
-                  <Sparkles className="h-4 w-4 mr-2" />
+                <div className="flex items-center text-yellow-500">
+                  <Sparkles className="h-4 w-4 mr-2 text-yellow-500" />
                   <span className="text-lg text-yellow-500">Centro de Ayuda ProSalud</span>
                 </div>
               </div>
@@ -98,13 +98,13 @@ const FAQPage: React.FC = () => {
             {/* Enhanced Search Bar */}
             <div className="relative mb-8 max-w-2xl mx-auto">
               <div className="relative group">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 group-hover:text-primary-prosalud transition-colors" size={22} />
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500" size={22} />
                 <Input
                   type="text"
                   placeholder="¿Qué necesitas saber? Busca aquí..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-12 pr-6 py-4 text-lg rounded-2xl border-0 shadow-xl bg-white/95 backdrop-blur-sm focus:ring-2 focus:ring-white/50 transition-all"
+                  className="pl-12 pr-6 py-4 text-gray-500 text-lg rounded-2xl border-0 shadow-xl bg-white/95 backdrop-blur-sm focus:ring-2 focus:ring-white/50 transition-all"
                 />
               </div>
             </div>
