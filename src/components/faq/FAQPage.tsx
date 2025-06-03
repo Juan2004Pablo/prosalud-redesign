@@ -183,13 +183,6 @@ const FAQPage: React.FC = () => {
               const IconComponent = iconMap[category.icon as keyof typeof iconMap];
 
               return (
-                {selectedCategory !== 'all' && (
-                <div className="mb-8 text-center">
-                  <Badge variant="default" className="bg-primary-prosalud text-white px-4 py-2 text-base rounded-full">
-                    {faqCategories.find(cat => cat.id === selectedCategory)?.name}
-                  </Badge>
-                </div>
-              )}
                 <div key={categoryId} className="mb-12">
                   {selectedCategory === 'all' && (
                     <div className="mb-6">
