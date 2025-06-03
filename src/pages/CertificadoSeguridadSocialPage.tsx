@@ -58,9 +58,18 @@ const CertificadoSeguridadSocialPage: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             {/* Opción para aportes hasta Agosto 2022 */}
             <section className="p-6 border rounded-lg bg-orange-50 border-orange-200">
-              <div className="flex items-center gap-2 mb-4">
-                <Clock className="h-5 w-5 text-orange-600" />
-                <h2 className="text-xl font-semibold text-orange-800">Hasta Agosto 2022</h2>
+              <div className="flex items-center gap-3 mb-4">
+                <img 
+                  src="/images/logos/aportes-en-linea.png" 
+                  alt="Aportes en Línea" 
+                  className="h-8 w-auto"
+                />
+                <div>
+                  <div className="flex items-center gap-2">
+                    <Clock className="h-5 w-5 text-orange-600" />
+                    <h2 className="text-xl font-semibold text-orange-800">Hasta Agosto 2022</h2>
+                  </div>
+                </div>
               </div>
               <p className="text-orange-700 mb-4">
                 Para consultar aportes realizados hasta agosto de 2022, utiliza el portal de Aportes en Línea.
@@ -79,9 +88,18 @@ const CertificadoSeguridadSocialPage: React.FC = () => {
 
             {/* Opción para aportes desde Septiembre 2022 */}
             <section className="p-6 border rounded-lg bg-green-50 border-green-200">
-              <div className="flex items-center gap-2 mb-4">
-                <Calendar className="h-5 w-5 text-green-600" />
-                <h2 className="text-xl font-semibold text-green-800">Desde Septiembre 2022</h2>
+              <div className="flex items-center gap-3 mb-4">
+                <img 
+                  src="/images/logos/arus-suaporte.png" 
+                  alt="ARUS SUAPORTE" 
+                  className="h-8 w-auto"
+                />
+                <div>
+                  <div className="flex items-center gap-2">
+                    <Calendar className="h-5 w-5 text-green-600" />
+                    <h2 className="text-xl font-semibold text-green-800">Desde Septiembre 2022</h2>
+                  </div>
+                </div>
               </div>
               <p className="text-green-700 mb-4">
                 Para consultar aportes realizados desde septiembre de 2022 en adelante, utiliza el portal de ARUS SUAPORTE.
