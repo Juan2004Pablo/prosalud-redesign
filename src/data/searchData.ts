@@ -168,5 +168,13 @@ export const searchData: SearchItem[] = [
     path: "/",
     category: "Información",
     keywords: ["servicios", "tramites", "solicitudes", "consultas", "peticiones"]
-  }
+  },
+    {
+    id: "comfenalco",
+    title: "Comfenalco",
+    description: "Servicios y experiencias de bienestar con la caja de compensación Comfenalco",
+    path: "/#convenios",
+    category: "Principal",
+    keywords: ["comfenalco", "servicios", "experiencias", "bienestar", "beneficios", "caja", "antioquia", "compensacion"]
+  },
 ];
