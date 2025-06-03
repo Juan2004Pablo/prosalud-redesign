@@ -28,7 +28,7 @@ const AnexosAnualDiferidaSection = <TFieldValues extends FieldValues>({
       </div>
       <div>
         <h2 className="text-xl font-semibold mb-4 text-primary-prosalud-dark flex items-center">
-          <Paperclip className="mr-2 h-6 w-6" /> Anexo: Evidencia de la Solicitud (Requerido)
+          <Paperclip className="mr-2 h-6 w-6" /> Anexo: Evidencia que respalda la Solicitud (Requerido)
         </h2>
         <FileUploadField
           control={control}
