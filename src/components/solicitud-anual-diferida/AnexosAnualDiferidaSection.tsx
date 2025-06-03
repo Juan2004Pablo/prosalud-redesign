@@ -35,7 +35,7 @@ const AnexosAnualDiferidaSection = <TFieldValues extends FieldValues>({
           name={"anexoEvidenciaSolicitud" as any}
           label="Seleccione la evidencia de la solicitud (PDF o imagen, máx. 4MB)"
           accept=".pdf,.jpg,.jpeg,.png"
-          description="Adjunte la evidencia que soporta su solicitud (varía según el motivo, ver requisitos). Este archivo es obligatorio."
+          description="Adjunte un documento que respalde su solicitud. Dependiendo del motivo, puede ser una factura, cotización, matrícula, certificado u otro soporte correspondiente. Consulte los requisitos específicos antes de continuar. Este archivo es obligatorio."
           isRequired={true}
         />
       </div>
