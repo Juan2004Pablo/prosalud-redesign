@@ -58,7 +58,7 @@ const CertificadoSeguridadSocialPage: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             {/* Opción para aportes hasta Agosto 2022 */}
             <section className="p-6 border rounded-lg bg-orange-50 border-orange-200">
-              <div className="flex items-center gap-3 mb-4">
+              <div className="flex justify-between gap-3 mb-4">
                 <div>
                   <div className="flex items-center gap-2">
                     <Clock className="h-5 w-5 text-orange-600" />
