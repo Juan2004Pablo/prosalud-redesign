@@ -189,7 +189,7 @@ const ContratoSindicalPage: React.FC = () => {
             <h4 className="font-semibold text-amber-800 mb-2">Principios que rigen la relación:</h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
               {["Democráticos", "Autogestión", "Colaboración", "Autorregulación"].map((principle, index) => (
-                <Badge key={index} variant="secondary" className="bg-amber-100 text-amber-800">
+                <Badge key={index} className="bg-amber-100 text-amber-800">
                   {principle}
                 </Badge>
               ))}
@@ -309,7 +309,7 @@ const ContratoSindicalPage: React.FC = () => {
           </div>
 
           {/* Documents Section */}
-          <Card className="bg-gradient-to-r from-primary-prosalud to-blue-700 text-white shadow-2xl overflow-hidden relative">
+          { /* <Card className="bg-gradient-to-r from-primary-prosalud to-blue-700 text-white shadow-2xl overflow-hidden relative">
             <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48Y2lyY2xlIGN4PSIzMCIgY3k9IjMwIiByPSI0Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-20"></div>
             <CardHeader className="relative">
               <div className="flex items-center mb-4">
@@ -342,9 +342,9 @@ const ContratoSindicalPage: React.FC = () => {
                     </a>
                   </Button>
                   <Button 
-                    variant="default" 
+                    variant="outline" 
                     size="lg"
-                    className="bg-primary-prosalud text-white border-2 border-white hover:bg-white hover:text-primary-prosalud font-semibold rounded-xl transition-all"
+                    className="text-white border-white/50 hover:bg-white/10 font-semibold rounded-xl transition-all"
                     asChild
                   >
                     <Link to="/nosotros/estatutos">
@@ -355,7 +355,7 @@ const ContratoSindicalPage: React.FC = () => {
                 </div>
               </div>
             </CardContent>
-          </Card>
+          </Card>*/ }
         </div>
       </div>
     </MainLayout>
