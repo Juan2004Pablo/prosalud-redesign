@@ -121,7 +121,7 @@ const SstPage: React.FC = () => {
 
       <div className="container mx-auto py-10 px-4 sm:px-6 lg:px-8">
         <SstPageHeader />
-        <ProtocoloIncapacidadesCard />
+        { /* <ProtocoloIncapacidadesCard /> */ }
         <DefinicionesClaveSection />
         <IdentificandoRiesgosSection />
         <ProtocoloAccidenteTrabajoCard setSelectedImage={setSelectedImage} />
