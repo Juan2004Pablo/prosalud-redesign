@@ -60,7 +60,7 @@ const CertificadoSeguridadSocialPage: React.FC = () => {
             <section className="p-6 border rounded-lg bg-orange-50 border-orange-200">
               <div className="flex items-center gap-3 mb-4">
                 <img 
-                  src="/images/logos/aportes-en-linea.png" 
+                  src="/images/logos/logo_aportes_en_linea.webp" 
                   alt="Aportes en Línea" 
                   className="h-8 w-auto"
                 />
@@ -90,7 +90,7 @@ const CertificadoSeguridadSocialPage: React.FC = () => {
             <section className="p-6 border rounded-lg bg-green-50 border-green-200">
               <div className="flex items-center gap-3 mb-4">
                 <img 
-                  src="/images/logos/arus-suaporte.png" 
+                  src="/images/logos/logo_arus_suaporte.webp" 
                   alt="ARUS SUAPORTE" 
                   className="h-8 w-auto"
                 />
