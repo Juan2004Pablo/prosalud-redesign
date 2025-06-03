@@ -117,7 +117,7 @@ const FAQPage: React.FC = () => {
                 className={`${
                   selectedCategory === 'all' 
                     ? 'bg-white border-white text-blue-500' 
-                    : 'bg-white border-white text-blue-500 hover:bg-gray-100'
+                    : 'bg-white border-white text-blue-500 hover:bg-gray-100 hover:text-blue-700'
                 } rounded-full px-6 py-2 transition-all font-medium cursor-pointer`}
                 size="sm"
               >
