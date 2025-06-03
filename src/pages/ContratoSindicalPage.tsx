@@ -342,9 +342,9 @@ const ContratoSindicalPage: React.FC = () => {
                     </a>
                   </Button>
                   <Button 
-                    variant="outline" 
+                    variant="default" 
                     size="lg"
-                    className="text-white border-white/50 hover:bg-white/10 font-semibold rounded-xl transition-all"
+                    className="bg-primary-prosalud text-white border-2 border-white hover:bg-white hover:text-primary-prosalud font-semibold rounded-xl transition-all"
                     asChild
                   >
                     <Link to="/nosotros/estatutos">
