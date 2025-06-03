@@ -128,7 +128,7 @@ const SolicitudDescansoSindicalPage: React.FC = () => {
             <BreadcrumbItem>
               <BreadcrumbPage className="flex items-center gap-1 font-medium text-foreground">
                 <FileText className="h-4 w-4" />
-                Solicitud de Descanso Sindical
+                Solicitud de Descanso
               </BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>

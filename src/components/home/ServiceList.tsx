@@ -45,7 +45,7 @@ interface Service {
 
 const newServices: Service[] = [
   { icon: Certificate, title: 'Certificado de convenio sindical', description: 'Descarga tu constancia de afiliación al convenio sindical.', linkTo: '/servicios/certificado-convenio', category: 'Certificados y Documentos' },
-  { icon: CalendarCheck, title: 'Solicitud de descanso sindical', description: 'Solicita días de descanso según tus condiciones actuales.', linkTo: '/servicios/descanso-sindical', category: 'Gestión Personal y Sindical' },
+  { icon: CalendarCheck, title: 'Solicitud de descanso', description: 'Solicita días de descanso según tus condiciones actuales.', linkTo: '/servicios/descanso-sindical', category: 'Gestión Personal y Sindical' },
   { icon: DollarSign, title: 'Compensación anual diferida', description: 'Gestiona el pago correspondiente a tu compensación anual.', linkTo: '/servicios/compensacion-anual', category: 'Pagos' },
   { icon: SearchIconLucide, title: 'Consulta de pagos', description: 'Verifica los pagos realizados por concepto sindical.', linkTo: '/servicios/consulta-pagos', category: 'Pagos' }, 
   { icon: ShieldCheck, title: 'Certificado de seguridad social', description: 'Genera tu certificado de aportes a la seguridad social.', linkTo: '/servicios/certificado-seguridad-social', category: 'Certificados y Documentos' },
