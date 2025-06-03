@@ -133,7 +133,7 @@ const FAQPage: React.FC = () => {
                     className={`${
                       selectedCategory === category.id 
                         ? 'bg-white border-white text-blue-500' 
-                        : 'bg-white border-white text-blue-500 hover:bg-gray-100'
+                        : 'bg-white border-white text-blue-500 hover:bg-gray-100 hover:text-blue-700'
                     } rounded-full px-4 py-2 transition-all font-medium cursor-pointer`}
                     size="sm"
                   >
@@ -293,7 +293,7 @@ const FAQPage: React.FC = () => {
                     <Button 
                       variant="outline" 
                       size="lg"
-                      className="text-white border-white/50 hover:border-white font-semibold rounded-lg transition-all scale-105"
+                      className="text-white border-white/50 bg-primary-prosalud font-semibold rounded-lg transition-all"
                     >
                       <FileText className="h-5 w-5 mr-2" />
                       Ver Servicios
