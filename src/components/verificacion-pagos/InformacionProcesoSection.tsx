@@ -49,7 +49,7 @@ const InformacionProcesoSection = <TFieldValues extends FieldValues>({
     "INCAPACIDADES",
     "SUBSIDIOS",
     "VIATICOS",
-    "DUPLICADO COLILLAS"
+    "DUPLICADO COLILLAS",
     "COMPENSACIÓN. FINAL (LIQUIDACIÓN)",
   ];
 
