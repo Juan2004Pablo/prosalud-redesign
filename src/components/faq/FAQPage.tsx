@@ -85,7 +85,7 @@ const FAQPage: React.FC = () => {
                 </h1>
                 <div className="flex items-center text-blue-100">
                   <Sparkles className="h-4 w-4 mr-2" />
-                  <span className="text-lg">Centro de Ayuda ProSalud</span>
+                  <span className="text-lg text-yellow-500">Centro de Ayuda ProSalud</span>
                 </div>
               </div>
             </div>
@@ -117,7 +117,7 @@ const FAQPage: React.FC = () => {
                 className={`${
                   selectedCategory === 'all' 
                     ? 'bg-white text-primary-prosalud hover:bg-white/90' 
-                    : 'border-white/30 text-white hover:bg-white/10 hover:border-white/50'
+                    : 'text-xs bg-blue-50 text-blue-700 hover:bg-blue-100'
                 } rounded-full px-6 py-2 transition-all font-medium`}
                 size="sm"
               >
