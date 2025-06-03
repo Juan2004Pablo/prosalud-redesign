@@ -116,7 +116,7 @@ const FAQPage: React.FC = () => {
                 onClick={() => setSelectedCategory('all')}
                 className={`${
                   selectedCategory === 'all' 
-                    ? 'bg-white border-white text-blue-500' 
+                    ? 'bg-blue-600 border-blue-600 text-white shadow-lg' 
                     : 'bg-white border-white text-blue-500 hover:bg-gray-100 hover:text-blue-700'
                 } rounded-full px-6 py-2 transition-all font-medium cursor-pointer`}
                 size="sm"
@@ -132,7 +132,7 @@ const FAQPage: React.FC = () => {
                     onClick={() => setSelectedCategory(category.id)}
                     className={`${
                       selectedCategory === category.id 
-                        ? 'bg-white border-white text-blue-500' 
+                        ? 'bg-blue-600 border-blue-600 text-white shadow-lg' 
                         : 'bg-white border-white text-blue-500 hover:bg-gray-100 hover:text-blue-700'
                     } rounded-full px-4 py-2 transition-all font-medium cursor-pointer`}
                     size="sm"
