@@ -2,15 +2,15 @@
 # Verificación de Pagos - ProSalud
 
 ## Descripción del Servicio
-Este formulario permite a los afiliados solicitar la verificación de pagos o novedades relacionadas con sus compensaciones, seguridad social u otros aspectos financieros vinculados a su contrato sindical.
+Este formulario permite a los afiliados realizar consultas sobre el estado de sus pagos, compensaciones y otros aspectos relacionados con sus beneficios económicos.
 
 **Enlace al formulario en el sitio web:** [`/verificacion-pagos`](/verificacion-pagos)
 
 ## Información Importante
-- Este canal es para verificar pagos, novedades o aclarar dudas financieras.
-- La consulta será remitida al área encargada.
-- Tiempo estimado de respuesta: Hasta 15 días hábiles para la revisión del caso.
-- Es importante revisar la sección "Información Importante" en la página para detalles sobre el proceso y recomendaciones para el envío de correos.
+- Las consultas serán remitidas al área encargada para su revisión.
+- El tiempo estimado de respuesta es de hasta 15 días hábiles.
+- Solo se contactará al solicitante para dar respuesta a su consulta.
+- Para evitar que los correos lleguen a SPAM, se sugiere agregar el correo institucional a la lista de contactos.
 
 ## Datos del Formulario
 
@@ -29,31 +29,36 @@ Este formulario permite a los afiliados solicitar la verificación de pagos o no
 ### Información del Proceso
 - **Proceso:** (Obligatorio) Cargo o área del solicitante.
 - **Donde realiza el proceso:** (Obligatorio) Ubicación donde labora.
-- **Mes y Año de la novedad:** (Obligatorio) Periodo al que corresponde la consulta.
-- **Su solicitud está relacionada con:** (Obligatorio) Motivo principal de la consulta (ej: pago de compensación, seguridad social, etc.).
+- **Mes y año de la novedad:** (Obligatorio) Período al que se refiere la consulta.
+- **Su solicitud está relacionada con:** (Obligatorio) Tipo de consulta o novedad a reportar.
 
 ### Detalle de la Novedad
-- **Detalle de la novedad:** (Obligatorio) Descripción clara y concisa de la consulta o inconsistencia. Mínimo 10 caracteres, máximo 800.
+- **Detalle de la novedad:** (Obligatorio) Descripción detallada de la consulta o problema.
+    - Mínimo 10 caracteres.
+    - Máximo 800 caracteres.
 
 ### Archivo Anexo (Opcional)
-- **Archivo Anexo:** (Opcional) Archivo adjunto que soporte la consulta.
-    - Tipos permitidos: PDF, Imágenes (jpg, jpeg, png).
-    - Tamaño máximo: Generalmente 4MB (verificar `MAX_FILE_SIZE`).
+- **Archivo Anexo:** (Opcional) Archivo adjunto de soporte.
+    - Descripción: Documento que ayude a clarificar o soportar la consulta.
+    - Tipos permitidos: PDF o Word (doc, docx).
+    - Tamaño máximo: 4MB.
 
-### Confirmación de Envío
-- **Confirmación de envío:** (Obligatorio) Casilla de verificación. En la página actual, este campo está como `confirmacionEnvio` en el schema Zod, y la página usa un componente `ConfirmacionCorreoSection`. Se asume que es una confirmación de que la información es correcta y se autoriza el envío, o una confirmación para la recepción de correos. Es importante verificar el texto exacto en la página.
+### Confirmación de Correo
+- **Confirmación de envío de correo:** (Obligatorio) Casilla de verificación para confirmar que se ha agregado el correo institucional a la lista de contactos.
 
 ### Autorización de Tratamiento de Datos
 - Incluye una sección estándar para la autorización del tratamiento de datos personales.
 
 ## Preguntas Frecuentes (FAQ)
 
-**P: ¿Cuánto tiempo tardan en responder mi solicitud de verificación?**
-R: El tiempo estimado es de hasta 15 días hábiles para la revisión de su caso.
+**P: ¿Cuánto tiempo toma obtener respuesta a mi consulta?**
+R: El tiempo estimado de respuesta es de hasta 15 días hábiles para la revisión de su caso.
 
-**P: ¿Puedo adjuntar archivos a mi solicitud?**
-R: Sí, puede adjuntar un archivo (PDF, Excel, imagen) de forma opcional para soportar su consulta.
+**P: ¿Es obligatorio adjuntar un archivo?**
+R: No, el archivo anexo es opcional. Solo adjúntelo si considera que ayudará a aclarar su consulta.
 
-**P: ¿Qué tipo de consultas puedo realizar a través de este formulario?**
-R: Puede realizar consultas sobre pagos de compensaciones, novedades en seguridad social, o cualquier otra duda financiera relacionada con su contrato sindical.
+**P: ¿Qué tipos de archivos puedo adjuntar?**
+R: Solo se permiten archivos PDF o Word (doc, docx) con un tamaño máximo de 4MB.
 
+**P: ¿Cómo evito que los correos lleguen a SPAM?**
+R: Agregue el correo institucional de ProSalud a su lista de contactos según se indica en el formulario.

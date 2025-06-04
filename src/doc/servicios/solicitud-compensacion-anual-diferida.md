@@ -33,12 +33,12 @@ Este formulario permite a los afiliados solicitar la compensación anual diferid
 ### Anexos (Requeridos)
 - **Anexo Formato Diligenciado:** (Obligatorio) Archivo adjunto.
     - Descripción: Formato específico de solicitud de compensación anual diferida, debidamente diligenciado.
-    - Tipos permitidos: PDF o Imágenes.
-    - Tamaño máximo: Generalmente 4MB (verificar `MAX_FILE_SIZE` en la página).
+    - Tipos permitidos: PDF o Word (doc, docx).
+    - Tamaño máximo: 4MB.
 - **Anexo Evidencia de la Solicitud:** (Obligatorio) Archivo adjunto.
     - Descripción: Documento que soporta o evidencia el motivo de la solicitud.
-    - Tipos permitidos: PDF o Imágenes.
-    - Tamaño máximo: Generalmente 4MB.
+    - Tipos permitidos: PDF o Word (doc, docx).
+    - Tamaño máximo: 4MB.
 
 ### Confirmación de Correo
 - **Confirmación de envío de correo:** (Obligatorio) Casilla de verificación para confirmar que se ha agregado `portal@prosalud.org.co` (o el correo indicado en la página) a la lista de contactos.
@@ -49,11 +49,10 @@ Este formulario permite a los afiliados solicitar la compensación anual diferid
 ## Preguntas Frecuentes (FAQ)
 
 **P: ¿Qué documentos debo adjuntar obligatoriamente?**
-R: Debe adjuntar el formato de solicitud de compensación anual diferida diligenciado y la evidencia o soporte de su solicitud. Ambos son requeridos.
+R: Debe adjuntar el formato de solicitud de compensación anual diferida diligenciado y la evidencia o soporte de su solicitud. Ambos son requeridos y solo se permiten archivos PDF o Word.
 
 **P: ¿Cómo sé si mi solicitud fue aprobada?**
 R: Su solicitud será revisada y procesada. Solo lo contactaremos si hay alguna inconsistencia.
 
 **P: ¿Dónde encuentro los requisitos detallados para esta solicitud?**
 R: La página web de "Solicitud Compensación Anual Diferida" contiene una sección específica con todos los requisitos.
-

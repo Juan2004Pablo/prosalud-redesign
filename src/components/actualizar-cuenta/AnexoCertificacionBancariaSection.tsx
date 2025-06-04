@@ -20,9 +20,9 @@ const AnexoCertificacionBancariaSection = <TFieldValues extends FieldValues>({
         <FileUploadField
           control={control}
           name={"certificacionBancaria" as any}
-          label="Seleccione la certificación bancaria (PDF o imagen, máx. 4MB)"
-          accept=".pdf,.jpg,.jpeg,.png"
-          description="Debe adjuntar la certificación bancaria de la nueva cuenta. Esta debe estar a nombre del titular (afiliado) y ser legible."
+          label="Seleccione la certificación bancaria (PDF o Word, máx. 4MB)"
+          accept=".pdf,.doc,.docx"
+          description="Debe adjuntar la certificación bancaria de la nueva cuenta. Esta debe estar a nombre del titular (afiliado) y ser legible. Solo se permiten archivos PDF o Word."
           isRequired={true}
         />
       </div>

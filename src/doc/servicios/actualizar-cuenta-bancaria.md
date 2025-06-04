@@ -2,49 +2,62 @@
 # Actualización de Cuenta Bancaria - ProSalud
 
 ## Descripción del Servicio
-Este servicio permite a los afiliados de ProSalud notificar un cambio en su cuenta bancaria para asegurar la correcta recepción de pagos y compensaciones.
+Este formulario permite a los afiliados actualizar la información de su cuenta bancaria para el pago de compensaciones y otros beneficios económicos del sindicato.
 
-**Enlace al formulario en el sitio web:** [`/servicios/actualizar-cuenta`](/servicios/actualizar-cuenta)
+**Enlace al formulario en el sitio web:** [`/actualizar-cuenta-bancaria`](/actualizar-cuenta-bancaria)
 
-## Objetivo del Formulario
-El objetivo principal es que el afiliado proporcione de manera formal y segura los datos de su nueva cuenta bancaria, adjuntando la documentación de respaldo necesaria.
+## Información Importante
+- La actualización será procesada en el siguiente período de pagos.
+- La cuenta debe estar a nombre del titular (afiliado).
+- Se requiere la certificación bancaria como documento obligatorio.
+- Solo se contactará al solicitante en caso de inconsistencias.
 
-## Información Requerida en el Formulario (Campos Típicos)
+## Datos del Formulario
 
 ### Datos Personales del Solicitante
-- **Tipo de identificación:** (Obligatorio) Cédula de Ciudadanía, Cédula de Extranjería, etc.
-- **Número de identificación:** (Obligatorio)
-- **Nombres completos:** (Obligatorio)
-- **Apellidos completos:** (Obligatorio)
-- **Correo electrónico de contacto:** (Obligatorio)
-- **Número de celular de contacto:** (Obligatorio)
+- **Tipo de identificación:** (Obligatorio) Selección entre:
+    - Cédula de Ciudadanía (CC)
+    - Cédula de Extranjería (CE)
+    - Pasaporte (PP)
+    - Permiso por protección temporal (PT)
+- **Número de identificación:** (Obligatorio) Mínimo 5 dígitos, solo números.
+- **Nombres:** (Obligatorio) Mínimo 2 caracteres.
+- **Apellidos:** (Obligatorio) Mínimo 2 caracteres.
+- **Correo electrónico:** (Obligatorio) Formato de correo válido.
+- **Número de celular:** (Obligatorio) Mínimo 7 dígitos, solo números.
 
-### Información de la Nueva Cuenta Bancaria
-- **Entidad Bancaria (Banco):** (Obligatorio) Nombre del banco.
-- **Tipo de Cuenta:** (Obligatorio) Ahorros, Corriente.
-- **Número de Cuenta:** (Obligatorio) Número completo de la nueva cuenta.
+### Información del Proceso
+- **Proceso:** (Obligatorio) Cargo o área del solicitante.
+- **Donde realiza el proceso:** (Obligatorio) Ubicación donde labora.
 
-### Anexo de Certificación Bancaria
-- **Archivo Adjunto:** (Obligatorio) Se debe adjuntar una certificación bancaria de la nueva cuenta.
-    - **Tipos de archivo permitidos:** Generalmente PDF, JPG, PNG.
-    - **Vigencia:** La certificación no debe tener una antigüedad mayor a 30 o 90 días (verificar detalles en el formulario).
+### Información de la Nueva Cuenta
+- **Banco:** (Obligatorio) Entidad bancaria de la nueva cuenta.
+- **Tipo de cuenta:** (Obligatorio) Selección entre Ahorros o Corriente.
+- **Número de cuenta:** (Obligatorio) Número de la cuenta bancaria.
 
-## Consideraciones Importantes
-- Es fundamental que la información proporcionada sea precisa y coincida con los datos del titular de la cuenta.
-- La certificación bancaria debe ser legible y completa.
-- El cambio se hará efectivo una vez ProSalud procese y valide la solicitud.
+### Anexo: Certificación Bancaria (Requerido)
+- **Certificación Bancaria:** (Obligatorio) Archivo adjunto.
+    - Descripción: Certificación bancaria de la nueva cuenta a nombre del titular.
+    - Tipos permitidos: PDF o Word (doc, docx).
+    - Tamaño máximo: 4MB.
+    - Requisitos: Debe estar a nombre del afiliado y ser legible.
+
+### Confirmación de Correo
+- **Confirmación de envío de correo:** (Obligatorio) Casilla de verificación para confirmar que se ha agregado el correo institucional a la lista de contactos.
+
+### Autorización de Tratamiento de Datos
+- Incluye una sección estándar para la autorización del tratamiento de datos personales.
 
 ## Preguntas Frecuentes (FAQ)
 
-**P: ¿Por qué necesito actualizar mi cuenta bancaria?**
-R: Para asegurar que sus pagos (compensaciones, etc.) sean depositados correctamente en su cuenta activa.
+**P: ¿Qué documento debo adjuntar obligatoriamente?**
+R: Debe adjuntar la certificación bancaria de la nueva cuenta. Solo se permiten archivos PDF o Word.
 
-**P: ¿Qué documento debo adjuntar?**
-R: Una certificación bancaria reciente (no mayor a X días, según se indique en el formulario) que confirme la titularidad y los datos de su nueva cuenta.
+**P: ¿La cuenta puede estar a nombre de otra persona?**
+R: No, la cuenta bancaria debe estar únicamente a nombre del titular (afiliado).
 
-**P: ¿Cuánto tiempo tarda en hacerse efectivo el cambio?**
-R: El tiempo de procesamiento puede variar. ProSalud le informará una vez el cambio haya sido aplicado, o puede consultar el estado si el formulario lo permite.
+**P: ¿Cuándo se hará efectivo el cambio?**
+R: La actualización será procesada en el siguiente período de pagos después de la aprobación.
 
-**P: ¿Puedo actualizar la cuenta de un tercero?**
-R: Generalmente, la cuenta bancaria debe estar a nombre del afiliado. Verifique las políticas específicas de ProSalud en el formulario o contactando al sindicato.
-
+**P: ¿Qué tipos de archivos puedo adjuntar?**
+R: Solo se permiten archivos PDF o Word (doc, docx) con un tamaño máximo de 4MB.
