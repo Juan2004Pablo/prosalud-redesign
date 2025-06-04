@@ -40,7 +40,7 @@ Puede solicitar que el certificado incluya la siguiente información:
 6. **Dirigido a Fondo de Pensiones**
 7. **Adicionar Actividades (PDF)**
 8. **Dirigido a Tránsito (Pico y Placa)**
-   - Requiere: Tipo de Vehículo y Placa del Vehículo
+   - Requiere: Tipo de Vehículo (Automóvil, Motocicleta, Ambulancia) y Placa del Vehículo
 9. **Dirigido a Bancolombia**
 10. **Otros (Especificar)**
     - Campo obligatorio: Descripción detallada del requerimiento
@@ -51,7 +51,7 @@ Puede solicitar que el certificado incluya la siguiente información:
 
 **Tipos de archivo permitidos**:
 - PDF (.pdf)
-- Imágenes (.jpg, .jpeg, .png)
+- Word (.doc, .docx)
 
 **Restricciones**:
 - Tamaño máximo: 4 MB por archivo

@@ -1,10 +1,10 @@
-
 import React from 'react';
 import { Control, UseFormWatch, FieldValues } from 'react-hook-form';
 import { FormField, FormItem, FormLabel, FormControl, FormMessage, FormDescription } from '@/components/ui/form';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import FileUploadField from './FileUploadField'; // Assuming FormValues type is defined elsewhere or passed
 
 interface InformacionCertificadoSectionProps<TFieldValues extends FieldValues> {
@@ -89,7 +89,18 @@ const InformacionCertificadoSection = <TFieldValues extends FieldValues>({
                 <FormField control={control} name={"tipoVehiculo" as any} render={({ field }) => (
                     <FormItem>
                         <FormLabel>Tipo de vehículo *</FormLabel>
-                        <FormControl><Input placeholder="Ej: Automóvil, Motocicleta" {...field} /></FormControl>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <FormControl>
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Seleccione el tipo de vehículo" />
+                                </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                                <SelectItem value="Automóvil">Automóvil</SelectItem>
+                                <SelectItem value="Motocicleta">Motocicleta</SelectItem>
+                                <SelectItem value="Ambulancia">Ambulancia</SelectItem>
+                            </SelectContent>
+                        </Select>
                         <FormMessage />
                     </FormItem>
                 )}/>

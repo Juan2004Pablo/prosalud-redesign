@@ -20,9 +20,9 @@ const AnexosAnualDiferidaSection = <TFieldValues extends FieldValues>({
         <FileUploadField
           control={control}
           name={"anexoFormatoDiligenciado" as any}
-          label="Seleccione el formato diligenciado (PDF o Word, máx. 4MB)"
-          accept=".pdf,.doc,.docx"
-          description="Debe adjuntar el formato de solicitud debidamente diligenciado. Solo se permiten archivos PDF o Word. Este archivo es obligatorio."
+          label="Seleccione el formato diligenciado (PDF, Word o imagen, máx. 4MB)"
+          accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
+          description="Debe adjuntar el formato de solicitud debidamente diligenciado. Se permiten archivos PDF, Word o imágenes (PNG, JPG, JPEG). Este archivo es obligatorio."
           isRequired={true}
         />
       </div>
@@ -33,9 +33,9 @@ const AnexosAnualDiferidaSection = <TFieldValues extends FieldValues>({
         <FileUploadField
           control={control}
           name={"anexoEvidenciaSolicitud" as any}
-          label="Seleccione la evidencia de la solicitud (PDF o Word, máx. 4MB)"
-          accept=".pdf,.doc,.docx"
-          description="Adjunte un documento que respalde su solicitud. Dependiendo del motivo, puede ser una factura, cotización, matrícula, certificado u otro soporte correspondiente. Solo se permiten archivos PDF o Word. Consulte los requisitos específicos antes de continuar. Este archivo es obligatorio."
+          label="Seleccione la evidencia de la solicitud (PDF, Word o imagen, máx. 4MB)"
+          accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
+          description="Adjunte un documento que respalde su solicitud. Dependiendo del motivo, puede ser una factura, cotización, matrícula, certificado u otro soporte correspondiente. Se permiten archivos PDF, Word o imágenes (PNG, JPG, JPEG). Consulte los requisitos específicos antes de continuar. Este archivo es obligatorio."
           isRequired={true}
         />
       </div>
