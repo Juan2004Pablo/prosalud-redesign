@@ -4,6 +4,7 @@ import { Control, FieldValues, FieldPath } from 'react-hook-form';
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { DatePicker } from '@/components/ui/date-picker';
 import { Briefcase } from 'lucide-react';
 
 interface InformacionDescansoSectionProps<TFieldValues extends FieldValues> {
@@ -114,7 +115,12 @@ const InformacionDescansoSection = <TFieldValues extends FieldValues>({
             <FormItem>
               <FormLabel>Fecha de inicio descanso *</FormLabel>
               <FormControl>
-                <Input type="date" {...field} />
+                <DatePicker
+                  value={field.value ? new Date(field.value) : undefined}
+                  onChange={(date) => field.onChange(date ? date.toISOString().split('T')[0] : '')}
+                  placeholder="Seleccionar fecha de inicio"
+                  minDate={new Date()}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -127,7 +133,12 @@ const InformacionDescansoSection = <TFieldValues extends FieldValues>({
             <FormItem>
               <FormLabel>Fecha de finalización descanso *</FormLabel>
               <FormControl>
-                <Input type="date" {...field} />
+                <DatePicker
+                  value={field.value ? new Date(field.value) : undefined}
+                  onChange={(date) => field.onChange(date ? date.toISOString().split('T')[0] : '')}
+                  placeholder="Seleccionar fecha de finalización"
+                  minDate={new Date()}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

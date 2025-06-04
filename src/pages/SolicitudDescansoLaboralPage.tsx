@@ -31,8 +31,14 @@ const formSchema = z.object({
   proceso: z.string().min(1, "Este campo es requerido."),
   dondeRealizaProceso: z.string().min(1, "Este campo es requerido."),
   coordinadorVoBo: z.string().min(2, "Este campo es requerido."),
-  fechaInicioDescanso: z.string().min(1, "Este campo es requerido."),
-  fechaFinalizacionDescanso: z.string().min(1, "Este campo es requerido."),
+  fechaInicioDescanso: z.string().min(1, "Este campo es requerido.").refine((val) => {
+    const date = new Date(val);
+    return !isNaN(date.getTime()) && date >= new Date(new Date().setHours(0, 0, 0, 0));
+  }, "La fecha de inicio debe ser hoy o posterior."),
+  fechaFinalizacionDescanso: z.string().min(1, "Este campo es requerido.").refine((val) => {
+    const date = new Date(val);
+    return !isNaN(date.getTime()) && date >= new Date(new Date().setHours(0, 0, 0, 0));
+  }, "La fecha de finalización debe ser hoy o posterior."),
 
   anexoDescanso: z.any().refine(files => {
     return files && files.length > 0;
@@ -47,6 +53,13 @@ const formSchema = z.object({
   }, 'Tipo de archivo no permitido. Use PDF, Excel o imágenes.'),
   
   confirmacionCorreo: z.boolean().default(false),
+}).refine((data) => {
+  const fechaInicio = new Date(data.fechaInicioDescanso);
+  const fechaFin = new Date(data.fechaFinalizacionDescanso);
+  return fechaFin >= fechaInicio;
+}, {
+  message: "La fecha de finalización debe ser posterior o igual a la fecha de inicio.",
+  path: ["fechaFinalizacionDescanso"],
 });
 
 type FormValues = z.infer<typeof formSchema>;
