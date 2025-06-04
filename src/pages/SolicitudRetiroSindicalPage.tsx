@@ -143,6 +143,7 @@ const SolicitudRetiroSindicalPage: React.FC = () => {
             <AnexoRetiroSection control={form.control} />
             <ConfirmacionCorreoSection />
             <AutorizacionDatosSection />
+            <MensajeDespedidaRetiroSection />
             
             <div className="flex justify-center mt-10">
               <Button type="submit" size="lg" className="w-full md:w-auto bg-secondary-prosaludgreen hover:bg-secondary-prosaludgreen/90 text-white flex items-center gap-2">
@@ -152,8 +153,6 @@ const SolicitudRetiroSindicalPage: React.FC = () => {
             </div>
           </form>
         </Form>
-
-        <MensajeDespedidaRetiroSection />
       </div>
     </MainLayout>
   );
