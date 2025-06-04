@@ -19,8 +19,8 @@ const AnexoDescansoSection = <TFieldValues extends FieldValues>({
       <FileUploadField
         control={control}
         name={"anexoDescanso" as any}
-        label="Seleccione un archivo (PDF o imagen, máx. 4MB)"
-        accept=".pdf,.jpg,.jpeg,.png"
+        label="Seleccione un archivo (PDF, Word o imagen, máx. 4MB)"
+        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
         description="Debe adjuntar el documento con el V°B° del coordinador. Este archivo es obligatorio."
         isRequired={true}
       />
