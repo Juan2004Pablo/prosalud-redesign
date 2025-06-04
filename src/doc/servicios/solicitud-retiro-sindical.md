@@ -2,25 +2,63 @@
 # Solicitud de Retiro Sindical - ProSalud
 
 ## Descripción del Servicio
-Este proceso guía a los afiliados partícipes independientes agremiados (código 53) sobre cómo notificar su retiro del sindicato ProSalud. Es un trámite obligatorio con implicaciones administrativas, contables, de seguridad social y de SST.
+Este formulario permite a los afiliados partícipes independientes agremiados (código 53) gestionar su retiro del sindicato ProSalud de manera digital. Es un trámite obligatorio con implicaciones administrativas, contables, de seguridad social y de SST.
 
 **Enlace al formulario/proceso en el sitio web:** [`/solicitud-retiro-sindical`](/solicitud-retiro-sindical)
 
 ## Información General
-Al pertenecer al sindicato como **AFILIADO PARTÍCIPE INDEPENDIENTE AGREMIADO CODIGO (53)**, es crucial seguir el proceso de notificación de retiro. Este instructivo detalla los pasos a seguir.
+Al pertenecer al sindicato como **AFILIADO PARTÍCIPE INDEPENDIENTE AGREMIADO CODIGO (53)**, es crucial seguir el proceso de notificación de retiro. Este formulario digital facilita el proceso y garantiza que se capture toda la información necesaria.
 
 ## Proceso de Solicitud
 
-### 1. Descargar el Formato de Retiro
-Es necesario descargar el formato oficial de solicitud de retiro y liquidación.
-- **Enlace de descarga directa del formato PDF:** [Formato Retiro y Liquidación](http://orgs.ddns.net:8091/DocPublicos/Modelo%20de%20Plantillas/Solicitud%20de%20Retiro/Formato%20Retiro%20y%20liquidacion.pdf)
-- El formato debe ser diligenciado completamente.
+### 1. Datos Personales del Solicitante
+Complete la información personal requerida:
+- Tipo de identificación
+- Número de identificación
+- Nombres y apellidos completos
+- Correo electrónico
+- Número de celular
 
-### 2. Instrucciones de Envío
-La página incluye una sección con instrucciones detalladas sobre cómo y dónde enviar el formato diligenciado y cualquier otro documento requerido. (Nota: Los detalles específicos de envío se encuentran en la página web).
+### 2. Información del Proceso
+Proporcione detalles sobre su trabajo actual:
+- Proceso que realiza
+- Ubicación donde realiza el proceso
 
-### 3. Mensaje de Despedida
-Una vez completado el proceso, la página proporciona un mensaje de despedida y agradecimiento por el tiempo de afiliación.
+### 3. Descargar y Diligenciar el Formato
+- Descargue el formato oficial de retiro y liquidación desde el formulario
+- Diligencie completamente el formato
+- Firme el documento según corresponda
+
+### 4. Adjuntar Formato Diligenciado
+- Suba el formato debidamente diligenciado y firmado
+- Formatos permitidos: PDF o Word
+- Tamaño máximo: 4MB
+
+### 5. Confirmación y Envío
+- Revise toda la información proporcionada
+- Confirme que acepta el tratamiento de datos personales
+- Envíe la solicitud
+
+## Documentos Requeridos
+
+- **Formato de Retiro y Liquidación (Obligatorio):** Debe ser descargado desde el formulario, diligenciado completamente y adjuntado al envío.
+
+## Tipos de Archivo Permitidos
+
+- **Formato diligenciado:** PDF o Microsoft Word (.pdf, .doc, .docx)
+- **Tamaño máximo:** 4MB por archivo
+
+## Validaciones del Sistema
+
+- Todos los campos marcados con (*) son obligatorios
+- El número de identificación debe tener al menos 5 dígitos
+- El correo electrónico debe tener un formato válido
+- El número de celular debe tener al menos 7 dígitos
+- Es obligatorio adjuntar el formato de retiro diligenciado
+
+## Confirmación de Recepción
+
+Una vez enviada la solicitud, recibirá una confirmación automática en el correo electrónico proporcionado. Esta confirmación incluye un resumen de la información enviada.
 
 ## Preguntas Frecuentes (FAQ)
 
@@ -28,8 +66,13 @@ Una vez completado el proceso, la página proporciona un mensaje de despedida y 
 R: Sí, la notificación de retiro como Afiliado Partícipe es de carácter obligatorio.
 
 **P: ¿Dónde encuentro el formato de retiro?**
-R: Puede descargar el formato PDF directamente desde la página de Solicitud de Retiro Sindical, o usando este enlace: [Descargar Formato PDF](http://orgs.ddns.net:8091/DocPublicos/Modelo%20de%20Plantillas/Solicitud%20de%20Retiro/Formato%20Retiro%20y%20liquidacion.pdf).
+R: Puede descargar el formato PDF directamente desde el formulario de solicitud, en la sección "Descargar Formato de Retiro".
+
+**P: ¿Qué pasa si no tengo el formato diligenciado al momento de llenar el formulario?**
+R: Puede descargar el formato desde el formulario, diligenciarlo, y luego regresar para completar y enviar la solicitud.
 
 **P: ¿Afecta a mis procesos administrativos no notificar el retiro?**
 R: Sí, la correcta notificación es importante para varios procesos administrativos, contables, de seguridad social y de SST.
 
+**P: ¿Recibiré alguna confirmación de mi solicitud?**
+R: Sí, recibirá una confirmación automática por correo electrónico una vez que su solicitud sea enviada exitosamente.
