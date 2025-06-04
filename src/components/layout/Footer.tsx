@@ -50,7 +50,7 @@ const Footer: React.FC = () => {
           {/* Column 4: Síguenos */}
           <div>
             <h3 className="text-md font-semibold text-white mb-4 uppercase tracking-wider">Síguenos</h3>
-            <div className="flex space-x-4">
+            { /* <div className="flex space-x-4">
               <a href="#" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-secondary-prosaludgreen transition-colors" aria-label="Facebook">
                 <Facebook size={22} />
               </a>
@@ -63,7 +63,7 @@ const Footer: React.FC = () => {
               <a href="#" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-secondary-prosaludgreen transition-colors" aria-label="LinkedIn">
                 <Linkedin size={22} />
               </a>
-            </div>
+            </div> */ }
             <p className="text-xs text-slate-500 mt-4">
               Mantente al día con nuestras novedades y actividades.
             </p>
