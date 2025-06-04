@@ -205,13 +205,6 @@ const DatosPersonalesSection = <TFieldValues extends FieldValues>({
           )}
         />
       </div>
-      
-      {/* Security Notice */}
-      <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-md">
-        <p className="text-sm text-blue-800">
-          <strong>Protección de datos:</strong> Sus datos personales son tratados de acuerdo con nuestra política de privacidad y están protegidos bajo los estándares de seguridad más altos.
-        </p>
-      </div>
     </section>
   );
 };
