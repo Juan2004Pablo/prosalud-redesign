@@ -238,32 +238,8 @@ const AdminBienestarPage: React.FC = () => {
                             <p>{event.attendees} asistentes</p>
                           )}
                         </div>
-                        { /* <div className="flex justify-between items-center mt-4 pt-4 border-t">
-                          <div className="flex gap-2">
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => handleEdit(event)}
-                            >
-                              <Pencil className="h-4 w-4 mr-1" />
-                              Editar
-                            </Button>
-                          </div>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => toggleVisibilityMutation.mutate(event)}
-                            disabled={toggleVisibilityMutation.isPending}
-                          >
-                            {event.isVisible ? (
-                              <Eye className="h-4 w-4" />
-                            ) : (
-                              <EyeOff className="h-4 w-4" />
-                            )}
-                          </Button>
-                        </div> */ }
 
-                        <div className="space-y-3 mt-auto">
+                        <div className="space-y-3 mt-4">
                           {/* Visibility Toggle */}
                           <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
                             <div className="flex items-center gap-2">
