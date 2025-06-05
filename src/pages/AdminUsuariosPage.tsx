@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
@@ -32,26 +33,14 @@ const AdminUsuariosPage: React.FC = () => {
     }
   }, [searchParams, setSearchParams]);
 
-  const { data: users = [], isLoading, error } = useQuery({
-    queryKey: ['users'],
-    queryFn: usersApi.getUsers,
+  const { data: usersResponse, isLoading, error } = useQuery({
+    queryKey: ['users', currentPage, searchTerm, statusFilter],
+    queryFn: () => usersApi.getUsers(currentPage, itemsPerPage, searchTerm, statusFilter)
   });
 
-  const filteredUsers = users.filter(user => {
-    const matchesSearch = user.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         user.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         user.email.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = statusFilter === 'all' || 
-                         (statusFilter === 'active' && user.isActive) ||
-                         (statusFilter === 'inactive' && !user.isActive);
-    return matchesSearch && matchesStatus;
-  });
-
-  const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
-  const paginatedUsers = filteredUsers.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  // Extract users array from the paginated response
+  const users = usersResponse?.data || [];
+  const totalPages = usersResponse?.totalPages || 1;
 
   const handleCreate = () => {
     setSelectedUser(null);
@@ -140,7 +129,7 @@ const AdminUsuariosPage: React.FC = () => {
           {/* Users List */}
           <Card className="bg-white border shadow-sm">
             <CardHeader>
-              <CardTitle>Usuarios ({filteredUsers.length})</CardTitle>
+              <CardTitle>Usuarios ({usersResponse?.total || 0})</CardTitle>
               <CardDescription>
                 Lista de todos los usuarios registrados en el sistema
               </CardDescription>
@@ -156,7 +145,7 @@ const AdminUsuariosPage: React.FC = () => {
                 </div>
               ) : (
                 <div className="space-y-4">
-                  {paginatedUsers.map((user) => (
+                  {users.map((user) => (
                     <div key={user.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-slate-50 transition-colors">
                       <div className="flex-1">
                         <div className="flex items-center gap-3">

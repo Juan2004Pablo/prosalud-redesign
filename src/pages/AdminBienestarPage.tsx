@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Plus, Search, Filter, Eye, EyeOff, Pencil, Calendar } from 'lucide-react';
@@ -21,6 +21,9 @@ const AdminBienestarPage: React.FC = () => {
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
+  
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
 
   // Check if we should open the create form based on URL params
   useEffect(() => {
@@ -101,7 +104,7 @@ const AdminBienestarPage: React.FC = () => {
 
   return (
     <AdminLayout>
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-primary-prosalud-light/10">
+      <div className="min-h-screen bg-slate-50">
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -110,11 +113,10 @@ const AdminBienestarPage: React.FC = () => {
         >
           {/* Header */}
           <motion.div variants={itemVariants} className="relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-primary-prosalud/5 to-secondary-prosaludgreen/5 rounded-3xl blur-3xl"></div>
-            <div className="relative bg-white/80 backdrop-blur-sm rounded-3xl p-8 border border-primary-prosalud/10 shadow-xl">
+            <div className="bg-white rounded-xl p-8 border shadow-sm">
               <div className="flex items-center justify-between">
                 <div>
-                  <h1 className="text-4xl font-bold bg-gradient-to-r from-primary-prosalud to-secondary-prosaludgreen bg-clip-text text-transparent mb-4">
+                  <h1 className="text-4xl font-bold text-primary-prosalud mb-4">
                     Galería de Bienestar
                   </h1>
                   <p className="text-lg text-text-gray max-w-2xl">
@@ -123,7 +125,7 @@ const AdminBienestarPage: React.FC = () => {
                 </div>
                 <Button
                   onClick={() => setShowForm(true)}
-                  className="bg-gradient-to-r from-primary-prosalud to-primary-prosalud-dark hover:from-primary-prosalud-dark hover:to-primary-prosalud shadow-lg"
+                  className="bg-primary-prosalud hover:bg-primary-prosalud-dark"
                   size="lg"
                 >
                   <Plus className="h-5 w-5 mr-2" />
@@ -135,7 +137,7 @@ const AdminBienestarPage: React.FC = () => {
 
           {/* Filters */}
           <motion.div variants={itemVariants}>
-            <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm">
+            <Card className="border shadow-sm bg-white">
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
                   <Filter className="h-5 w-5 text-primary-prosalud" />
@@ -184,7 +186,7 @@ const AdminBienestarPage: React.FC = () => {
                 ))}
               </div>
             ) : filteredEvents.length === 0 ? (
-              <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm">
+              <Card className="border shadow-sm bg-white">
                 <CardContent className="text-center py-12">
                   <Calendar className="h-16 w-16 text-gray-400 mx-auto mb-4" />
                   <p className="text-lg text-gray-600">
@@ -205,7 +207,7 @@ const AdminBienestarPage: React.FC = () => {
                     animate="visible"
                     transition={{ delay: index * 0.1 }}
                   >
-                    <Card className="group relative overflow-hidden border-0 shadow-xl hover:shadow-2xl transition-all duration-500 bg-white/80 backdrop-blur-sm">
+                    <Card className="group relative overflow-hidden border shadow-sm hover:shadow-lg transition-all duration-300 bg-white">
                       <div className="relative h-48 overflow-hidden">
                         <img
                           src={event.images.find(img => img.isMain)?.url || event.images[0]?.url || '/placeholder.svg'}
