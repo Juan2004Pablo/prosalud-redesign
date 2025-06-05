@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
+import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/hooks/use-toast';
 import { bienestarApi } from '@/services/adminApi';
 import { BienestarEvent } from '@/types/admin';
@@ -48,15 +49,7 @@ const AdminBienestarPage: React.FC = () => {
       queryClient.invalidateQueries({ queryKey: ['bienestar-events'] });
       toast({
         title: "Estado actualizado",
-        description: "La visibilidad del evento ha sido actualizada.",
-        variant: "success"
-      });
-    },
-    onError: () => {
-      toast({
-        title: "Error",
-        description: "No se pudo actualizar el estado. Inténtalo de nuevo.",
-        variant: "destructive"
+        description: "La visibilidad del evento ha sido actualizada."
       });
     }
   });
@@ -229,7 +222,6 @@ const AdminBienestarPage: React.FC = () => {
                           <Badge variant="outline">{event.category}</Badge>
                         </div>
                       </div>
-                      
                       <CardContent className="p-4">
                         <h3 className="font-semibold text-lg text-text-dark mb-2 line-clamp-2">
                           {event.title}
@@ -246,35 +238,28 @@ const AdminBienestarPage: React.FC = () => {
                             <p>{event.attendees} asistentes</p>
                           )}
                         </div>
-                        
-                        <div className="space-y-3 mt-4">
-                          {/* Visibility Toggle - Same as Comfenalco */}
-                          <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
-                            <div className="flex items-center gap-2">
-                              {event.isVisible ? (
-                                <Eye className="h-4 w-4 text-green-600" />
-                              ) : (
-                                <EyeOff className="h-4 w-4 text-gray-400" />
-                              )}
-                              <span className="text-sm font-medium">
-                                {event.isVisible ? 'Visible en web' : 'Oculto en web'}
-                              </span>
-                            </div>
-                            <Switch
-                              checked={event.isVisible}
-                              onCheckedChange={() => toggleVisibilityMutation.mutate(event)}
-                              disabled={toggleVisibilityMutation.isPending}
-                            />
+                        <div className="flex justify-between items-center mt-4 pt-4 border-t">
+                          <div className="flex gap-2">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleEdit(event)}
+                            >
+                              <Pencil className="h-4 w-4 mr-1" />
+                              Editar
+                            </Button>
                           </div>
-
-                          {/* Edit Button */}
                           <Button
-                            variant="outline"
-                            onClick={() => handleEdit(event)}
-                            className="w-full"
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => toggleVisibilityMutation.mutate(event)}
+                            disabled={toggleVisibilityMutation.isPending}
                           >
-                            <Pencil className="h-4 w-4 mr-2" />
-                            Editar Evento
+                            {event.isVisible ? (
+                              <Eye className="h-4 w-4" />
+                            ) : (
+                              <EyeOff className="h-4 w-4" />
+                            )}
                           </Button>
                         </div>
                       </CardContent>
