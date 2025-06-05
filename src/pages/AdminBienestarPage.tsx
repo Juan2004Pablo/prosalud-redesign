@@ -238,7 +238,7 @@ const AdminBienestarPage: React.FC = () => {
                             <p>{event.attendees} asistentes</p>
                           )}
                         </div>
-                        <div className="flex justify-between items-center mt-4 pt-4 border-t">
+                        { /* <div className="flex justify-between items-center mt-4 pt-4 border-t">
                           <div className="flex gap-2">
                             <Button
                               variant="outline"
@@ -260,6 +260,37 @@ const AdminBienestarPage: React.FC = () => {
                             ) : (
                               <EyeOff className="h-4 w-4" />
                             )}
+                          </Button>
+                        </div> */ }
+
+                        <div className="space-y-3 mt-auto">
+                          {/* Visibility Toggle */}
+                          <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+                            <div className="flex items-center gap-2">
+                              {event.isVisible ? (
+                                <Eye className="h-4 w-4 text-green-600" />
+                              ) : (
+                                <EyeOff className="h-4 w-4 text-gray-400" />
+                              )}
+                              <span className="text-sm font-medium">
+                                {event.isVisible ? 'Visible en web' : 'Oculto en web'}
+                              </span>
+                            </div>
+                            <Switch
+                              checked={event.isVisible}
+                              onCheckedChange={() => toggleVisibilityMutation.mutate(event)}
+                              disabled={toggleVisibilityMutation.isPending}
+                            />
+                          </div>
+
+                          {/* Edit Button */}
+                          <Button
+                            variant="outline"
+                            onClick={() => handleEdit(event)}
+                            className="w-full"
+                          >
+                            <Edit className="h-4 w-4 mr-2" />
+                            Editar
                           </Button>
                         </div>
                       </CardContent>
