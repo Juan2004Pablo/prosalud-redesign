@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -5,17 +6,12 @@ import { Toaster } from '@/components/ui/toaster';
 import ScrollToTop from '@/components/utils/ScrollToTop';
 
 // Public Pages
-import HomePage from '@/pages/HomePage';
-import AboutUsPage from '@/pages/AboutUsPage';
-import ContactPage from '@/pages/ContactPage';
-import BlogPage from '@/pages/BlogPage';
-import BlogDetailPage from '@/pages/BlogDetailPage';
+import Index from '@/pages/Index';
+import QuienesSomos from '@/pages/QuienesSomos';
+import FAQPage from '@/pages/FAQPage';
 import LoginPage from '@/pages/LoginPage';
-import RegisterPage from '@/pages/RegisterPage';
-import NotFoundPage from '@/pages/NotFoundPage';
-import BienestarPage from '@/pages/BienestarPage';
-import ConveniosPage from '@/pages/ConveniosPage';
-import ComfenalcoPage from '@/pages/ComfenalcoPage';
+import NotFound from '@/pages/NotFound';
+import GaleriaBienestarPage from '@/pages/GaleriaBienestarPage';
 
 // Admin Pages
 import AdminDashboard from '@/pages/AdminDashboard';
@@ -35,17 +31,12 @@ function App() {
         <ScrollToTop />
         <Routes>
           {/* Public Routes */}
-          <Route path="/" element={<HomePage />} />
-          <Route path="/nosotros" element={<AboutUsPage />} />
-          <Route path="/contacto" element={<ContactPage />} />
-          <Route path="/blog" element={<BlogPage />} />
-          <Route path="/blog/:id" element={<BlogDetailPage />} />
+          <Route path="/" element={<Index />} />
+          <Route path="/nosotros" element={<QuienesSomos />} />
+          <Route path="/faq" element={<FAQPage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/bienestar" element={<BienestarPage />} />
-          <Route path="/convenios" element={<ConveniosPage />} />
-          <Route path="/comfenalco" element={<ComfenalcoPage />} />
-          <Route path="*" element={<NotFoundPage />} />
+          <Route path="/bienestar" element={<GaleriaBienestarPage />} />
+          <Route path="*" element={<NotFound />} />
           
           {/* Admin Routes */}
           <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
