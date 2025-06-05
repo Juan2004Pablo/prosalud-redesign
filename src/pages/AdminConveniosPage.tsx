@@ -50,7 +50,8 @@ const AdminConveniosPage: React.FC = () => {
       queryClient.invalidateQueries({ queryKey: ['convenios'] });
       toast({
         title: "Estado actualizado",
-        description: "La visibilidad del convenio ha sido actualizada."
+        description: "La visibilidad del convenio ha sido actualizada.",
+        variant: "success"
       });
     },
     onError: () => {

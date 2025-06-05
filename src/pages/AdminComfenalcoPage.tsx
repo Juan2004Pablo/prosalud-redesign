@@ -36,7 +36,8 @@ const AdminComfenalcoPage: React.FC = () => {
       queryClient.invalidateQueries({ queryKey: ['comfenalco-events'] });
       toast({
         title: "Estado actualizado",
-        description: "La visibilidad de la experiencia ha sido actualizada."
+        description: "La visibilidad de la experiencia ha sido actualizada.",
+        variant: "success"
       });
     },
     onError: () => {
