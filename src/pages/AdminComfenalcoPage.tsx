@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
@@ -96,24 +97,24 @@ const AdminComfenalcoPage: React.FC = () => {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="p-6 space-y-8"
+          className="p-4 sm:p-6 space-y-6 sm:space-y-8 max-w-7xl mx-auto"
         >
           {/* Header */}
           <motion.div variants={itemVariants} className="relative">
-            <div className="bg-white rounded-xl p-8 border shadow-sm">
-              <div className="flex items-center justify-between mb-4">
-                <h1 className="text-4xl font-bold text-primary-prosalud">
+            <div className="bg-white rounded-xl p-6 sm:p-8 border shadow-sm">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-4">
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary-prosalud">
                   Experiencias Comfenalco
                 </h1>
                 <Button
                   onClick={handleCreate}
-                  className="bg-primary-prosalud hover:bg-primary-prosalud-dark"
+                  className="bg-primary-prosalud hover:bg-primary-prosalud-dark w-full sm:w-auto"
                 >
                   <Plus className="h-4 w-4 mr-2" />
                   Nueva Experiencia
                 </Button>
               </div>
-              <p className="text-lg text-text-gray">
+              <p className="text-base sm:text-lg text-text-gray">
                 Gestiona las experiencias y servicios de Comfenalco disponibles para los afiliados
               </p>
             </div>
@@ -129,7 +130,7 @@ const AdminComfenalcoPage: React.FC = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="flex gap-4">
+                <div className="flex flex-col sm:flex-row gap-4">
                   <div className="flex-1">
                     <div className="relative">
                       <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
@@ -144,7 +145,7 @@ const AdminComfenalcoPage: React.FC = () => {
                   <select
                     value={categoryFilter}
                     onChange={(e) => setCategoryFilter(e.target.value)}
-                    className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-prosalud"
+                    className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-prosalud w-full sm:w-auto"
                   >
                     <option value="">Todas las categorías</option>
                     {categories.map(category => (
@@ -159,13 +160,13 @@ const AdminComfenalcoPage: React.FC = () => {
           {/* Events Grid */}
           <motion.div variants={itemVariants}>
             {isLoading ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
                 {[...Array(6)].map((_, i) => (
                   <div key={i} className="h-64 bg-gray-200 rounded-xl animate-pulse"></div>
                 ))}
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
                 {filteredEvents.map((event) => (
                   <motion.div
                     key={event.id}
@@ -173,7 +174,7 @@ const AdminComfenalcoPage: React.FC = () => {
                     whileHover={{ y: -5 }}
                     className="group"
                   >
-                    <Card className="border shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden bg-white">
+                    <Card className="border shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden bg-white h-full flex flex-col">
                       <div className="relative h-48">
                         <img
                           src={event.bannerImage}
@@ -196,12 +197,12 @@ const AdminComfenalcoPage: React.FC = () => {
                         </div>
                       </div>
                       
-                      <CardContent className="p-6">
+                      <CardContent className="p-6 flex-1 flex flex-col">
                         <h3 className="font-bold text-lg mb-2 text-text-dark">
                           {event.title}
                         </h3>
                         
-                        <div className="space-y-2 text-sm text-gray-600 mb-4">
+                        <div className="space-y-2 text-sm text-gray-600 mb-4 flex-1">
                           <p><strong>Categoría:</strong> {event.category}</p>
                           <p><strong>Publicado:</strong> {event.publishDate}</p>
                           {event.registrationDeadline && (
@@ -209,7 +210,7 @@ const AdminComfenalcoPage: React.FC = () => {
                           )}
                         </div>
 
-                        <div className="space-y-3">
+                        <div className="space-y-3 mt-auto">
                           {/* Visibility Toggle */}
                           <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
                             <div className="flex items-center gap-2">

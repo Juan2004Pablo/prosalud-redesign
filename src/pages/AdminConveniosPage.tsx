@@ -106,24 +106,24 @@ const AdminConveniosPage: React.FC = () => {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="p-6 space-y-8"
+          className="p-4 sm:p-6 space-y-6 sm:space-y-8 max-w-7xl mx-auto"
         >
           {/* Header */}
           <motion.div variants={itemVariants} className="relative">
-            <div className="bg-white rounded-xl p-8 border shadow-sm">
-              <div className="flex items-center justify-between mb-4">
-                <h1 className="text-4xl font-bold text-primary-prosalud">
+            <div className="bg-white rounded-xl p-6 sm:p-8 border shadow-sm">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-4">
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary-prosalud">
                   Gestión de Convenios
                 </h1>
                 <Button
                   onClick={handleCreate}
-                  className="bg-primary-prosalud hover:bg-primary-prosalud-dark"
+                  className="bg-primary-prosalud hover:bg-primary-prosalud-dark w-full sm:w-auto"
                 >
                   <Plus className="h-4 w-4 mr-2" />
                   Nuevo Convenio
                 </Button>
               </div>
-              <p className="text-lg text-text-gray">
+              <p className="text-base sm:text-lg text-text-gray">
                 Administra los convenios y alianzas estratégicas de ProSalud
               </p>
             </div>
@@ -155,13 +155,13 @@ const AdminConveniosPage: React.FC = () => {
           {/* Convenios Grid */}
           <motion.div variants={itemVariants}>
             {isLoading ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
                 {[...Array(6)].map((_, i) => (
                   <div key={i} className="h-80 bg-gray-200 rounded-xl animate-pulse"></div>
                 ))}
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
                 {filteredConvenios.map((convenio) => (
                   <motion.div
                     key={convenio.id}
@@ -169,7 +169,7 @@ const AdminConveniosPage: React.FC = () => {
                     whileHover={{ y: -5 }}
                     className="group"
                   >
-                    <Card className="border shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden bg-white">
+                    <Card className="border shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden bg-white h-full flex flex-col">
                       <div className="relative h-48">
                         <img
                           src={convenio.image}
@@ -189,8 +189,8 @@ const AdminConveniosPage: React.FC = () => {
                         </div>
                       </div>
                       
-                      <CardContent className="p-6">
-                        <div className="space-y-2 text-sm text-gray-600 mb-4">
+                      <CardContent className="p-6 flex-1 flex flex-col">
+                        <div className="space-y-2 text-sm text-gray-600 mb-4 flex-1">
                           <p><strong>Creado:</strong> {convenio.createdAt}</p>
                           <p><strong>Estado:</strong> 
                             <span className={`ml-1 ${convenio.isVisible ? 'text-green-600' : 'text-red-600'}`}>
@@ -199,7 +199,7 @@ const AdminConveniosPage: React.FC = () => {
                           </p>
                         </div>
 
-                        <div className="space-y-3">
+                        <div className="space-y-3 mt-auto">
                           {/* Visibility Toggle */}
                           <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
                             <div className="flex items-center gap-2">

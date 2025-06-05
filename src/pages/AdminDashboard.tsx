@@ -93,15 +93,15 @@ const AdminDashboard: React.FC = () => {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="p-6 space-y-8"
+          className="p-4 sm:p-6 space-y-6 sm:space-y-8 max-w-7xl mx-auto"
         >
           {/* Header */}
           <motion.div variants={itemVariants} className="relative">
-            <div className="bg-white rounded-xl p-8 border shadow-sm">
-              <h1 className="text-4xl font-bold text-primary-prosalud mb-4">
+            <div className="bg-white rounded-xl p-6 sm:p-8 border shadow-sm">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary-prosalud mb-4">
                 Panel Administrativo
               </h1>
-              <p className="text-lg text-text-gray max-w-2xl">
+              <p className="text-base sm:text-lg text-text-gray max-w-2xl">
                 Gestiona usuarios, contenidos y métricas de la plataforma ProSalud desde un solo lugar.
               </p>
             </div>
@@ -110,7 +110,7 @@ const AdminDashboard: React.FC = () => {
           {/* Stats Grid */}
           <motion.div
             variants={containerVariants}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6"
           >
             {stats.map((stat, index) => (
               <motion.div key={stat.title} variants={itemVariants}>
@@ -169,7 +169,7 @@ const AdminDashboard: React.FC = () => {
                   </CardHeader>
                   <CardContent>
                     <div className="flex items-baseline space-x-2">
-                      <span className="text-3xl font-bold text-text-dark">
+                      <span className="text-2xl sm:text-3xl font-bold text-text-dark">
                         {stat.value}
                       </span>
                       <span className="text-sm font-medium text-secondary-prosaludgreen">
@@ -195,7 +195,7 @@ const AdminDashboard: React.FC = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   {[
                     { title: "Crear Usuario", icon: Users, href: "/admin/usuarios?action=create" },
                     { title: "Nuevo Evento", icon: Calendar, href: "/admin/bienestar?action=create" },
@@ -208,7 +208,7 @@ const AdminDashboard: React.FC = () => {
                       whileTap={{ scale: 0.98 }}
                       className="flex items-center space-x-3 p-4 rounded-lg bg-slate-50 hover:bg-slate-100 transition-colors duration-300 border border-slate-200"
                     >
-                      <action.icon className="h-8 w-8 text-primary-prosalud" />
+                      <action.icon className="h-8 w-8 text-primary-prosalud flex-shrink-0" />
                       <span className="font-medium text-text-dark">{action.title}</span>
                     </motion.a>
                   ))}

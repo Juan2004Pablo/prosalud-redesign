@@ -72,23 +72,26 @@ const AdminUsuariosPage: React.FC = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="p-6 space-y-8"
+          className="p-4 sm:p-6 space-y-6 sm:space-y-8 max-w-7xl mx-auto"
         >
           {/* Header */}
-          <div className="bg-white rounded-xl p-8 border shadow-sm">
-            <div className="flex items-center justify-between mb-4">
+          <div className="bg-white rounded-xl p-6 sm:p-8 border shadow-sm">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-4">
               <div className="flex items-center gap-3">
                 <Users className="h-8 w-8 text-primary-prosalud" />
-                <h1 className="text-3xl font-bold text-primary-prosalud">
+                <h1 className="text-2xl sm:text-3xl font-bold text-primary-prosalud">
                   Gestión de Usuarios
                 </h1>
               </div>
-              <Button onClick={handleCreate} className="bg-primary-prosalud hover:bg-primary-prosalud-dark">
+              <Button 
+                onClick={handleCreate} 
+                className="bg-primary-prosalud hover:bg-primary-prosalud-dark w-full sm:w-auto"
+              >
                 <Plus className="h-5 w-5 mr-2" />
                 Nuevo Usuario
               </Button>
             </div>
-            <p className="text-lg text-text-gray">
+            <p className="text-base sm:text-lg text-text-gray">
               Administra los usuarios del panel administrativo
             </p>
           </div>
@@ -146,9 +149,9 @@ const AdminUsuariosPage: React.FC = () => {
               ) : (
                 <div className="space-y-4">
                   {users.map((user) => (
-                    <div key={user.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-slate-50 transition-colors">
+                    <div key={user.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 border rounded-lg hover:bg-slate-50 transition-colors gap-4">
                       <div className="flex-1">
-                        <div className="flex items-center gap-3">
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
                           <h3 className="font-semibold text-text-dark">
                             {user.firstName} {user.lastName}
                           </h3>
@@ -161,18 +164,19 @@ const AdminUsuariosPage: React.FC = () => {
                           Creado: {new Date(user.createdAt).toLocaleDateString()}
                         </p>
                       </div>
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 w-full sm:w-auto">
                         <Button
                           variant="ghost"
                           size="sm"
                           onClick={() => handleEdit(user)}
+                          className="flex-1 sm:flex-none"
                         >
                           <Edit className="h-4 w-4" />
                         </Button>
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="text-red-600 hover:text-red-700"
+                          className="text-red-600 hover:text-red-700 flex-1 sm:flex-none"
                         >
                           <Trash2 className="h-4 w-4" />
                         </Button>
@@ -186,11 +190,12 @@ const AdminUsuariosPage: React.FC = () => {
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="flex justify-center gap-2">
+            <div className="flex flex-col sm:flex-row justify-center items-center gap-2">
               <Button
                 variant="outline"
                 disabled={currentPage === 1}
                 onClick={() => setCurrentPage(currentPage - 1)}
+                className="w-full sm:w-auto"
               >
                 Anterior
               </Button>
@@ -201,6 +206,7 @@ const AdminUsuariosPage: React.FC = () => {
                 variant="outline"
                 disabled={currentPage === totalPages}
                 onClick={() => setCurrentPage(currentPage + 1)}
+                className="w-full sm:w-auto"
               >
                 Siguiente
               </Button>
