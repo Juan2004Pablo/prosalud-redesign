@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -32,6 +31,9 @@ import FAQPageContainer from "./pages/FAQPage";
 import ProtectedRoute from "./components/admin/ProtectedRoute";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminBienestarPage from "./pages/AdminBienestarPage";
+import AdminComfenalcoPage from "./pages/AdminComfenalcoPage";
+import AdminConveniosPage from "./pages/AdminConveniosPage";
+import AdminUsuariosPage from "./pages/AdminUsuariosPage";
 
 const queryClient = new QueryClient();
 
@@ -60,9 +62,24 @@ const AppWithTracking = () => {
           <AdminDashboard />
         </ProtectedRoute>
       } />
+      <Route path="/admin/usuarios" element={
+        <ProtectedRoute>
+          <AdminUsuariosPage />
+        </ProtectedRoute>
+      } />
+      <Route path="/admin/convenios" element={
+        <ProtectedRoute>
+          <AdminConveniosPage />
+        </ProtectedRoute>
+      } />
       <Route path="/admin/bienestar" element={
         <ProtectedRoute>
           <AdminBienestarPage />
+        </ProtectedRoute>
+      } />
+      <Route path="/admin/comfenalco" element={
+        <ProtectedRoute>
+          <AdminComfenalcoPage />
         </ProtectedRoute>
       } />
       <Route path="/admin/*" element={
