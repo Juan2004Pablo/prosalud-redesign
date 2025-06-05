@@ -1,5 +1,6 @@
+
 import React, { useState, useEffect } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Plus, Search, Edit, Eye, EyeOff } from 'lucide-react';
@@ -7,6 +8,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
+import { Switch } from '@/components/ui/switch';
+import { useToast } from '@/hooks/use-toast';
 import AdminLayout from '@/components/admin/AdminLayout';
 import ConvenioForm from '@/components/admin/convenios/ConvenioForm';
 import { conveniosApi } from '@/services/adminApi';
@@ -21,6 +24,9 @@ const AdminConveniosPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
 
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+
   // Check if we should open the create form based on URL params
   useEffect(() => {
     if (searchParams.get('action') === 'create') {
@@ -34,6 +40,26 @@ const AdminConveniosPage: React.FC = () => {
   const { data: convenios = [], isLoading, refetch } = useQuery({
     queryKey: ['convenios'],
     queryFn: conveniosApi.getConvenios
+  });
+
+  const toggleVisibilityMutation = useMutation({
+    mutationFn: async (convenio: Convenio) => {
+      return conveniosApi.updateConvenio(convenio.id, { isVisible: !convenio.isVisible });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['convenios'] });
+      toast({
+        title: "Estado actualizado",
+        description: "La visibilidad del convenio ha sido actualizada."
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "No se pudo actualizar el estado. Inténtalo de nuevo.",
+        variant: "destructive"
+      });
+    }
   });
 
   const filteredConvenios = convenios.filter(convenio =>
@@ -75,7 +101,7 @@ const AdminConveniosPage: React.FC = () => {
 
   return (
     <AdminLayout>
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-secondary-prosaludgreen/10">
+      <div className="min-h-screen bg-slate-50">
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -84,15 +110,14 @@ const AdminConveniosPage: React.FC = () => {
         >
           {/* Header */}
           <motion.div variants={itemVariants} className="relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-secondary-prosaludgreen/5 to-accent-prosaludteal/5 rounded-3xl blur-3xl"></div>
-            <div className="relative bg-white/80 backdrop-blur-sm rounded-3xl p-8 border border-secondary-prosaludgreen/10 shadow-xl">
+            <div className="bg-white rounded-xl p-8 border shadow-sm">
               <div className="flex items-center justify-between mb-4">
-                <h1 className="text-4xl font-bold bg-gradient-to-r from-secondary-prosaludgreen to-accent-prosaludteal bg-clip-text text-transparent">
+                <h1 className="text-4xl font-bold text-primary-prosalud">
                   Gestión de Convenios
                 </h1>
                 <Button
                   onClick={handleCreate}
-                  className="bg-gradient-to-r from-secondary-prosaludgreen to-accent-prosaludteal hover:from-secondary-prosaludgreen/90 hover:to-accent-prosaludteal/90"
+                  className="bg-primary-prosalud hover:bg-primary-prosalud-dark"
                 >
                   <Plus className="h-4 w-4 mr-2" />
                   Nuevo Convenio
@@ -106,7 +131,7 @@ const AdminConveniosPage: React.FC = () => {
 
           {/* Search */}
           <motion.div variants={itemVariants}>
-            <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm">
+            <Card className="bg-white border shadow-sm">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Search className="h-5 w-5" />
@@ -144,7 +169,7 @@ const AdminConveniosPage: React.FC = () => {
                     whileHover={{ y: -5 }}
                     className="group"
                   >
-                    <Card className="border-0 shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden">
+                    <Card className="border shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden bg-white">
                       <div className="relative h-48">
                         <img
                           src={convenio.image}
@@ -153,7 +178,7 @@ const AdminConveniosPage: React.FC = () => {
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                         <div className="absolute top-4 left-4">
-                          <Badge variant={convenio.isVisible ? "default" : "destructive"}>
+                          <Badge variant={convenio.isVisible ? "default" : "secondary"}>
                             {convenio.isVisible ? 'Visible' : 'Oculto'}
                           </Badge>
                         </div>
@@ -174,22 +199,34 @@ const AdminConveniosPage: React.FC = () => {
                           </p>
                         </div>
 
-                        <div className="flex gap-2">
+                        <div className="space-y-3">
+                          {/* Visibility Toggle */}
+                          <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+                            <div className="flex items-center gap-2">
+                              {convenio.isVisible ? (
+                                <Eye className="h-4 w-4 text-green-600" />
+                              ) : (
+                                <EyeOff className="h-4 w-4 text-gray-400" />
+                              )}
+                              <span className="text-sm font-medium">
+                                {convenio.isVisible ? 'Visible en web' : 'Oculto en web'}
+                              </span>
+                            </div>
+                            <Switch
+                              checked={convenio.isVisible}
+                              onCheckedChange={() => toggleVisibilityMutation.mutate(convenio)}
+                              disabled={toggleVisibilityMutation.isPending}
+                            />
+                          </div>
+
+                          {/* Edit Button */}
                           <Button
                             variant="outline"
-                            size="sm"
                             onClick={() => handleEdit(convenio)}
-                            className="flex-1"
+                            className="w-full"
                           >
-                            <Edit className="h-4 w-4 mr-1" />
-                            Editar
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="px-3"
-                          >
-                            {convenio.isVisible ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
+                            <Edit className="h-4 w-4 mr-2" />
+                            Editar Convenio
                           </Button>
                         </div>
                       </CardContent>
@@ -200,7 +237,7 @@ const AdminConveniosPage: React.FC = () => {
             )}
 
             {filteredConvenios.length === 0 && !isLoading && (
-              <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm">
+              <Card className="bg-white border shadow-sm">
                 <CardContent className="p-12 text-center">
                   <p className="text-lg text-gray-500 mb-4">
                     {searchTerm ? 'No se encontraron convenios que coincidan con la búsqueda' : 'No hay convenios registrados'}

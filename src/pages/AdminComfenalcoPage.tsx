@@ -1,12 +1,13 @@
-
 import React, { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import { Plus, Search, Filter, Edit, Trash2, Eye, EyeOff } from 'lucide-react';
+import { Plus, Search, Filter, Edit, Eye, EyeOff } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
+import { Switch } from '@/components/ui/switch';
+import { useToast } from '@/hooks/use-toast';
 import AdminLayout from '@/components/admin/AdminLayout';
 import ComfenalcoEventForm from '@/components/admin/comfenalco/ComfenalcoEventForm';
 import { comfenalcoApi } from '@/services/adminApi';
@@ -18,9 +19,32 @@ const AdminComfenalcoPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
 
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+
   const { data: events = [], isLoading, refetch } = useQuery({
     queryKey: ['comfenalco-events'],
     queryFn: comfenalcoApi.getEvents
+  });
+
+  const toggleVisibilityMutation = useMutation({
+    mutationFn: async (event: ComfenalcoEvent) => {
+      return comfenalcoApi.updateEvent(event.id, { isVisible: !event.isVisible });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['comfenalco-events'] });
+      toast({
+        title: "Estado actualizado",
+        description: "La visibilidad de la experiencia ha sido actualizada."
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "No se pudo actualizar el estado. Inténtalo de nuevo.",
+        variant: "destructive"
+      });
+    }
   });
 
   const filteredEvents = events.filter(event => {
@@ -67,7 +91,7 @@ const AdminComfenalcoPage: React.FC = () => {
 
   return (
     <AdminLayout>
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-primary-prosalud-light/10">
+      <div className="min-h-screen bg-slate-50">
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -76,15 +100,14 @@ const AdminComfenalcoPage: React.FC = () => {
         >
           {/* Header */}
           <motion.div variants={itemVariants} className="relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-orange-500/5 to-red-500/5 rounded-3xl blur-3xl"></div>
-            <div className="relative bg-white/80 backdrop-blur-sm rounded-3xl p-8 border border-orange-500/10 shadow-xl">
+            <div className="bg-white rounded-xl p-8 border shadow-sm">
               <div className="flex items-center justify-between mb-4">
-                <h1 className="text-4xl font-bold bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">
+                <h1 className="text-4xl font-bold text-primary-prosalud">
                   Experiencias Comfenalco
                 </h1>
                 <Button
                   onClick={handleCreate}
-                  className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600"
+                  className="bg-primary-prosalud hover:bg-primary-prosalud-dark"
                 >
                   <Plus className="h-4 w-4 mr-2" />
                   Nueva Experiencia
@@ -98,7 +121,7 @@ const AdminComfenalcoPage: React.FC = () => {
 
           {/* Filters */}
           <motion.div variants={itemVariants}>
-            <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm">
+            <Card className="bg-white border shadow-sm">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Filter className="h-5 w-5" />
@@ -121,7 +144,7 @@ const AdminComfenalcoPage: React.FC = () => {
                   <select
                     value={categoryFilter}
                     onChange={(e) => setCategoryFilter(e.target.value)}
-                    className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-prosalud"
                   >
                     <option value="">Todas las categorías</option>
                     {categories.map(category => (
@@ -150,7 +173,7 @@ const AdminComfenalcoPage: React.FC = () => {
                     whileHover={{ y: -5 }}
                     className="group"
                   >
-                    <Card className="border-0 shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden">
+                    <Card className="border shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden bg-white">
                       <div className="relative h-48">
                         <img
                           src={event.bannerImage}
@@ -159,7 +182,7 @@ const AdminComfenalcoPage: React.FC = () => {
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                         <div className="absolute top-4 left-4">
-                          <Badge variant={event.isVisible ? "default" : "destructive"}>
+                          <Badge variant={event.isVisible ? "default" : "secondary"}>
                             {event.isVisible ? 'Visible' : 'Oculto'}
                           </Badge>
                         </div>
@@ -174,7 +197,7 @@ const AdminComfenalcoPage: React.FC = () => {
                       </div>
                       
                       <CardContent className="p-6">
-                        <h3 className="font-bold text-lg mb-2 group-hover:text-orange-500 transition-colors">
+                        <h3 className="font-bold text-lg mb-2 text-text-dark">
                           {event.title}
                         </h3>
                         
@@ -186,22 +209,34 @@ const AdminComfenalcoPage: React.FC = () => {
                           )}
                         </div>
 
-                        <div className="flex gap-2">
+                        <div className="space-y-3">
+                          {/* Visibility Toggle */}
+                          <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+                            <div className="flex items-center gap-2">
+                              {event.isVisible ? (
+                                <Eye className="h-4 w-4 text-green-600" />
+                              ) : (
+                                <EyeOff className="h-4 w-4 text-gray-400" />
+                              )}
+                              <span className="text-sm font-medium">
+                                {event.isVisible ? 'Visible en web' : 'Oculto en web'}
+                              </span>
+                            </div>
+                            <Switch
+                              checked={event.isVisible}
+                              onCheckedChange={() => toggleVisibilityMutation.mutate(event)}
+                              disabled={toggleVisibilityMutation.isPending}
+                            />
+                          </div>
+
+                          {/* Edit Button */}
                           <Button
                             variant="outline"
-                            size="sm"
                             onClick={() => handleEdit(event)}
-                            className="flex-1"
+                            className="w-full"
                           >
-                            <Edit className="h-4 w-4 mr-1" />
-                            Editar
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="px-3"
-                          >
-                            {event.isVisible ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
+                            <Edit className="h-4 w-4 mr-2" />
+                            Editar Experiencia
                           </Button>
                         </div>
                       </CardContent>
@@ -212,7 +247,7 @@ const AdminComfenalcoPage: React.FC = () => {
             )}
 
             {filteredEvents.length === 0 && !isLoading && (
-              <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm">
+              <Card className="bg-white border shadow-sm">
                 <CardContent className="p-12 text-center">
                   <p className="text-lg text-gray-500 mb-4">No se encontraron experiencias</p>
                   <Button onClick={handleCreate}>
