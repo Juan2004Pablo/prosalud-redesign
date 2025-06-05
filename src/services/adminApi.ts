@@ -184,7 +184,7 @@ export const conveniosApi = {
     const newConvenio: Convenio = {
       id: String(mockConvenios.length + 1),
       name: data.name,
-      image: URL.createObjectURL(data.image), // Simulate image upload
+      image: URL.createObjectURL(data.image),
       isVisible: true,
       createdAt: new Date().toISOString().split('T')[0]
     };
@@ -197,11 +197,12 @@ export const conveniosApi = {
     const convenioIndex = mockConvenios.findIndex(convenio => convenio.id === id);
     if (convenioIndex === -1) throw new Error('Convenio no encontrado');
     
-    if (data.image) {
-      data.image = URL.createObjectURL(data.image as File) as any;
+    const updatedData: any = { ...data };
+    if (data.image && data.image instanceof File) {
+      updatedData.image = URL.createObjectURL(data.image);
     }
     
-    mockConvenios[convenioIndex] = { ...mockConvenios[convenioIndex], ...data };
+    mockConvenios[convenioIndex] = { ...mockConvenios[convenioIndex], ...updatedData };
     return mockConvenios[convenioIndex];
   }
 };
@@ -238,6 +239,24 @@ export const bienestarApi = {
     
     mockBienestarEvents.push(newEvent);
     return newEvent;
+  },
+
+  async updateEvent(id: string, data: Partial<CreateBienestarEventData & { isVisible: boolean }>): Promise<BienestarEvent> {
+    await delay(800);
+    const eventIndex = mockBienestarEvents.findIndex(event => event.id === id);
+    if (eventIndex === -1) throw new Error('Evento no encontrado');
+    
+    const updatedData: any = { ...data };
+    if (data.images) {
+      updatedData.images = data.images.map((file, index) => ({
+        url: URL.createObjectURL(file),
+        alt: `Imagen ${index + 1}`,
+        isMain: index === data.mainImageIndex
+      }));
+    }
+    
+    mockBienestarEvents[eventIndex] = { ...mockBienestarEvents[eventIndex], ...updatedData };
+    return mockBienestarEvents[eventIndex];
   }
 };
 
@@ -268,6 +287,20 @@ export const comfenalcoApi = {
     
     mockComfenalcoEvents.push(newEvent);
     return newEvent;
+  },
+
+  async updateEvent(id: string, data: Partial<CreateComfenalcoEventData & { isVisible: boolean }>): Promise<ComfenalcoEvent> {
+    await delay(800);
+    const eventIndex = mockComfenalcoEvents.findIndex(event => event.id === id);
+    if (eventIndex === -1) throw new Error('Evento no encontrado');
+    
+    const updatedData: any = { ...data };
+    if (data.bannerImage && data.bannerImage instanceof File) {
+      updatedData.bannerImage = URL.createObjectURL(data.bannerImage);
+    }
+    
+    mockComfenalcoEvents[eventIndex] = { ...mockComfenalcoEvents[eventIndex], ...updatedData };
+    return mockComfenalcoEvents[eventIndex];
   }
 };
 
