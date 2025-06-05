@@ -141,9 +141,15 @@ const BienestarEventForm: React.FC<BienestarEventFormProps> = ({ event, onClose 
       return;
     }
 
+    // Ensure required fields are present and properly typed
     const eventData: CreateBienestarEventData = {
-      ...data,
-      attendees: data.attendees || undefined,
+      title: data.title,
+      date: data.date,
+      category: data.category,
+      description: data.description,
+      location: data.location,
+      attendees: data.attendees,
+      gift: data.gift,
       provider: data.provider || 'ProSalud',
       images,
       mainImageIndex
