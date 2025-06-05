@@ -8,8 +8,9 @@ import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Eye, EyeOff } from "lucide-react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate, useLocation } from "react-router-dom"
 import { motion } from "framer-motion"
+import { useToast } from "@/hooks/use-toast"
 
 // Enhanced validation schema with stronger security requirements
 const formSchema = z.object({
@@ -42,6 +43,10 @@ const LoginForm: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = React.useState(false)
   const [loginAttempts, setLoginAttempts] = React.useState(0)
   const maxLoginAttempts = 3
+  
+  const navigate = useNavigate()
+  const location = useLocation()
+  const { toast } = useToast()
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(formSchema),
@@ -52,7 +57,6 @@ const LoginForm: React.FC = () => {
   })
 
   const onSubmit = async (values: LoginFormValues) => {
-    // Security: Rate limiting for login attempts
     if (loginAttempts >= maxLoginAttempts) {
       form.setError("root", {
         message: "Demasiados intentos fallidos. Intenta de nuevo más tarde.",
@@ -63,21 +67,36 @@ const LoginForm: React.FC = () => {
     setIsSubmitting(true)
 
     try {
-      // Security: Simulate secure login process
-      // TODO: Implement actual authentication with Supabase
-      console.log("Secure login attempt for:", values.emailOrUser)
+      // Simulación de autenticación
+      console.log("Intento de login para:", values.emailOrUser)
 
-      // Simulate API call delay
+      // Credenciales de prueba para acceso administrativo
+      const adminCredentials = {
+        email: "admin@prosalud.com",
+        password: "ProSalud2024"
+      }
+
       await new Promise((resolve) => setTimeout(resolve, 1000))
 
-      // For now, just show that authentication should be implemented
-      form.setError("root", {
-        message: "Autenticación pendiente de implementación. Contacta con soporte.",
-      })
+      if (values.emailOrUser === adminCredentials.email && values.password === adminCredentials.password) {
+        // Login exitoso
+        localStorage.setItem('prosalud_admin_token', 'mock_admin_token_12345')
+        
+        toast({
+          title: "¡Bienvenido!",
+          description: "Has iniciado sesión correctamente en el panel administrativo.",
+        })
 
-      setLoginAttempts((prev) => prev + 1)
+        // Redirigir al panel administrativo o a la página que intentaba acceder
+        const from = location.state?.from?.pathname || '/admin'
+        navigate(from, { replace: true })
+      } else {
+        form.setError("root", {
+          message: "Credenciales incorrectas. Usa admin@prosalud.com / ProSalud2024",
+        })
+        setLoginAttempts((prev) => prev + 1)
+      }
     } catch (error) {
-      // Security: Don't expose internal error details
       form.setError("root", {
         message: "Error en el servidor. Intenta de nuevo más tarde.",
       })
@@ -132,6 +151,9 @@ const LoginForm: React.FC = () => {
       <motion.div variants={itemVariants} className="text-center mb-8">
         <h1 className="text-3xl font-bold text-primary-prosalud">Inicia sesión</h1>
         <p className="text-muted-foreground mt-2">Bienvenido, ingresa tus datos para continuar.</p>
+        <p className="text-xs text-slate-500 mt-2">
+          Demo: admin@prosalud.com / ProSalud2024
+        </p>
       </motion.div>
       <Form {...form}>
         <motion.form variants={formVariants} onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">

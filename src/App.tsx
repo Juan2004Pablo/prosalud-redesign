@@ -27,6 +27,10 @@ import GaleriaBienestarPage from "./pages/GaleriaBienestarPage";
 import EventoDetallePage from "./pages/EventoDetallePage";
 import FAQPageContainer from "./pages/FAQPage";
 
+// Admin imports
+import ProtectedRoute from "./components/admin/ProtectedRoute";
+import AdminDashboard from "./pages/AdminDashboard";
+
 const queryClient = new QueryClient();
 
 // Placeholder pages for navigation items
@@ -47,6 +51,18 @@ const AppWithTracking = () => {
     <Routes>
       <Route path="/" element={<Index />} />
       <Route path="/login" element={<LoginPage />} />
+      
+      {/* Admin Routes - Protected */}
+      <Route path="/admin" element={
+        <ProtectedRoute>
+          <AdminDashboard />
+        </ProtectedRoute>
+      } />
+      <Route path="/admin/*" element={
+        <ProtectedRoute>
+          <PlaceholderPage title="Módulo Administrativo" />
+        </ProtectedRoute>
+      } />
       
       {/* Adding placeholder routes for nav items */}
       <Route path="/prosalud" element={<PlaceholderPage title="ProSalud" />} />
