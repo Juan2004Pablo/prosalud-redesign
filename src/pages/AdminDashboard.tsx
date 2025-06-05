@@ -1,41 +1,70 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Users, FileText, Calendar, Trophy, BarChart3, Settings } from 'lucide-react';
+import { Users, FileText, Calendar, Trophy, BarChart3, Settings, Edit } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Label } from '@/components/ui/label';
 import AdminLayout from '@/components/admin/AdminLayout';
 
 const AdminDashboard: React.FC = () => {
-  const stats = [
+  const [stats, setStats] = useState([
     {
       title: "Usuarios Activos",
       value: "1,234",
       change: "+12%",
       icon: Users,
-      color: "from-primary-prosalud to-primary-prosalud-dark"
+      color: "text-primary-prosalud"
     },
     {
       title: "Convenios Activos",
       value: "7",
       change: "+2",
       icon: Trophy,
-      color: "from-secondary-prosaludgreen to-accent-prosaludteal"
+      color: "text-secondary-prosaludgreen"
     },
     {
       title: "Eventos de Bienestar",
       value: "45",
       change: "+8",
       icon: Calendar,
-      color: "from-prosalud-salud to-prosalud-pro"
+      color: "text-accent-prosaludteal"
     },
     {
       title: "Experiencias Comfenalco",
       value: "12",
       change: "+3",
       icon: FileText,
-      color: "from-orange-500 to-red-500"
+      color: "text-orange-600"
     }
-  ];
+  ]);
+
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const [editValue, setEditValue] = useState("");
+  const [editChange, setEditChange] = useState("");
+
+  const handleEditStat = (index: number) => {
+    setEditingIndex(index);
+    setEditValue(stats[index].value);
+    setEditChange(stats[index].change);
+  };
+
+  const handleSaveStat = () => {
+    if (editingIndex !== null) {
+      const newStats = [...stats];
+      newStats[editingIndex] = {
+        ...newStats[editingIndex],
+        value: editValue,
+        change: editChange
+      };
+      setStats(newStats);
+      setEditingIndex(null);
+      setEditValue("");
+      setEditChange("");
+    }
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -59,7 +88,7 @@ const AdminDashboard: React.FC = () => {
 
   return (
     <AdminLayout>
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-primary-prosalud-light/10">
+      <div className="min-h-screen bg-slate-50">
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -68,9 +97,8 @@ const AdminDashboard: React.FC = () => {
         >
           {/* Header */}
           <motion.div variants={itemVariants} className="relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-primary-prosalud/5 to-secondary-prosaludgreen/5 rounded-3xl blur-3xl"></div>
-            <div className="relative bg-white/80 backdrop-blur-sm rounded-3xl p-8 border border-primary-prosalud/10 shadow-xl">
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-primary-prosalud to-secondary-prosaludgreen bg-clip-text text-transparent mb-4">
+            <div className="bg-white rounded-xl p-8 border shadow-sm">
+              <h1 className="text-4xl font-bold text-primary-prosalud mb-4">
                 Panel Administrativo
               </h1>
               <p className="text-lg text-text-gray max-w-2xl">
@@ -86,22 +114,60 @@ const AdminDashboard: React.FC = () => {
           >
             {stats.map((stat, index) => (
               <motion.div key={stat.title} variants={itemVariants}>
-                <Card className="relative overflow-hidden border-0 shadow-xl hover:shadow-2xl transition-all duration-500 group cursor-pointer">
-                  <div className={`absolute inset-0 bg-gradient-to-br ${stat.color} opacity-5 group-hover:opacity-10 transition-opacity`}></div>
-                  <CardHeader className="relative pb-2">
+                <Card className="bg-white border shadow-sm hover:shadow-md transition-shadow duration-300">
+                  <CardHeader className="pb-2">
                     <div className="flex items-center justify-between">
                       <CardTitle className="text-sm font-medium text-text-gray">
                         {stat.title}
                       </CardTitle>
-                      <motion.div
-                        whileHover={{ scale: 1.1, rotate: 5 }}
-                        className={`p-2 rounded-xl bg-gradient-to-br ${stat.color} shadow-lg`}
-                      >
-                        <stat.icon className="h-4 w-4 text-white" />
-                      </motion.div>
+                      <div className="flex items-center gap-2">
+                        <div className={`p-2 rounded-lg bg-slate-100 ${stat.color}`}>
+                          <stat.icon className="h-4 w-4" />
+                        </div>
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleEditStat(index)}
+                              className="h-8 w-8 p-0 hover:bg-slate-100"
+                            >
+                              <Edit className="h-3 w-3" />
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent className="sm:max-w-md">
+                            <DialogHeader>
+                              <DialogTitle>Editar {stat.title}</DialogTitle>
+                            </DialogHeader>
+                            <div className="space-y-4">
+                              <div>
+                                <Label htmlFor="value">Valor</Label>
+                                <Input
+                                  id="value"
+                                  value={editValue}
+                                  onChange={(e) => setEditValue(e.target.value)}
+                                  placeholder="Ej: 1,234"
+                                />
+                              </div>
+                              <div>
+                                <Label htmlFor="change">Cambio</Label>
+                                <Input
+                                  id="change"
+                                  value={editChange}
+                                  onChange={(e) => setEditChange(e.target.value)}
+                                  placeholder="Ej: +12%"
+                                />
+                              </div>
+                              <Button onClick={handleSaveStat} className="w-full">
+                                Guardar
+                              </Button>
+                            </div>
+                          </DialogContent>
+                        </Dialog>
+                      </div>
                     </div>
                   </CardHeader>
-                  <CardContent className="relative">
+                  <CardContent>
                     <div className="flex items-baseline space-x-2">
                       <span className="text-3xl font-bold text-text-dark">
                         {stat.value}
@@ -118,7 +184,7 @@ const AdminDashboard: React.FC = () => {
 
           {/* Quick Actions */}
           <motion.div variants={itemVariants}>
-            <Card className="border-0 shadow-xl bg-gradient-to-r from-white via-white to-primary-prosalud-light/5">
+            <Card className="bg-white border shadow-sm">
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2 text-xl">
                   <Settings className="h-6 w-6 text-primary-prosalud" />
@@ -131,16 +197,16 @@ const AdminDashboard: React.FC = () => {
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {[
-                    { title: "Crear Usuario", icon: Users, href: "/admin/usuarios/crear" },
-                    { title: "Nuevo Evento", icon: Calendar, href: "/admin/bienestar/crear" },
-                    { title: "Agregar Convenio", icon: Trophy, href: "/admin/convenios/crear" }
+                    { title: "Crear Usuario", icon: Users, href: "/admin/usuarios?action=create" },
+                    { title: "Nuevo Evento", icon: Calendar, href: "/admin/bienestar?action=create" },
+                    { title: "Agregar Convenio", icon: Trophy, href: "/admin/convenios?action=create" }
                   ].map((action) => (
                     <motion.a
                       key={action.title}
                       href={action.href}
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      className="flex items-center space-x-3 p-4 rounded-xl bg-gradient-to-r from-primary-prosalud-light/20 to-secondary-prosaludgreen/10 hover:from-primary-prosalud-light/30 hover:to-secondary-prosaludgreen/20 transition-all duration-300 border border-primary-prosalud/10"
+                      className="flex items-center space-x-3 p-4 rounded-lg bg-slate-50 hover:bg-slate-100 transition-colors duration-300 border border-slate-200"
                     >
                       <action.icon className="h-8 w-8 text-primary-prosalud" />
                       <span className="font-medium text-text-dark">{action.title}</span>

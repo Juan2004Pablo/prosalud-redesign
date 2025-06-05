@@ -1,6 +1,6 @@
-
-import React, { useState } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import React, { useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Plus, Search, Filter, Eye, EyeOff, Pencil, Calendar } from 'lucide-react';
 import AdminLayout from '@/components/admin/AdminLayout';
@@ -14,12 +14,23 @@ import { BienestarEvent } from '@/types/admin';
 import BienestarEventForm from '@/components/admin/bienestar/BienestarEventForm';
 
 const AdminBienestarPage: React.FC = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [searchParams, setSearchParams] = useSearchParams();
   const [showForm, setShowForm] = useState(false);
-  const [editingEvent, setEditingEvent] = useState<BienestarEvent | null>(null);
-  const { toast } = useToast();
-  const queryClient = useQueryClient();
+  const [selectedEvent, setSelectedEvent] = useState<BienestarEvent | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('all');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 9;
+
+  // Check if we should open the create form based on URL params
+  useEffect(() => {
+    if (searchParams.get('action') === 'create') {
+      setShowForm(true);
+      setSelectedEvent(null);
+      // Remove the action param after opening the form
+      setSearchParams({});
+    }
+  }, [searchParams, setSearchParams]);
 
   const { data: events = [], isLoading } = useQuery({
     queryKey: ['bienestar-events'],
@@ -42,20 +53,20 @@ const AdminBienestarPage: React.FC = () => {
   const filteredEvents = events.filter(event => {
     const matchesSearch = event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          event.category.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === 'all' || event.category === selectedCategory;
+    const matchesCategory = categoryFilter === 'all' || event.category === categoryFilter;
     return matchesSearch && matchesCategory;
   });
 
   const categories = ['all', ...new Set(events.map(event => event.category))];
 
   const handleEdit = (event: BienestarEvent) => {
-    setEditingEvent(event);
+    setSelectedEvent(event);
     setShowForm(true);
   };
 
   const handleFormClose = () => {
     setShowForm(false);
-    setEditingEvent(null);
+    setSelectedEvent(null);
   };
 
   const containerVariants = {
@@ -81,7 +92,7 @@ const AdminBienestarPage: React.FC = () => {
     return (
       <AdminLayout>
         <BienestarEventForm
-          event={editingEvent}
+          event={selectedEvent}
           onClose={handleFormClose}
         />
       </AdminLayout>
@@ -143,8 +154,8 @@ const AdminBienestarPage: React.FC = () => {
                     />
                   </div>
                   <select
-                    value={selectedCategory}
-                    onChange={(e) => setSelectedCategory(e.target.value)}
+                    value={categoryFilter}
+                    onChange={(e) => setCategoryFilter(e.target.value)}
                     className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-prosalud"
                   >
                     {categories.map(category => (
@@ -177,7 +188,7 @@ const AdminBienestarPage: React.FC = () => {
                 <CardContent className="text-center py-12">
                   <Calendar className="h-16 w-16 text-gray-400 mx-auto mb-4" />
                   <p className="text-lg text-gray-600">
-                    {searchTerm || selectedCategory !== 'all' 
+                    {searchTerm || categoryFilter !== 'all' 
                       ? 'No se encontraron eventos con los filtros aplicados'
                       : 'No hay eventos creados aún'
                     }

@@ -1,6 +1,6 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Plus, Search, Edit, Eye, EyeOff } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -13,9 +13,23 @@ import { conveniosApi } from '@/services/adminApi';
 import { Convenio } from '@/types/admin';
 
 const AdminConveniosPage: React.FC = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [showForm, setShowForm] = useState(false);
-  const [editingConvenio, setEditingConvenio] = useState<Convenio | null>(null);
+  const [selectedConvenio, setSelectedConvenio] = useState<Convenio | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('all');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 9;
+
+  // Check if we should open the create form based on URL params
+  useEffect(() => {
+    if (searchParams.get('action') === 'create') {
+      setShowForm(true);
+      setSelectedConvenio(null);
+      // Remove the action param after opening the form
+      setSearchParams({});
+    }
+  }, [searchParams, setSearchParams]);
 
   const { data: convenios = [], isLoading, refetch } = useQuery({
     queryKey: ['convenios'],
@@ -27,23 +41,23 @@ const AdminConveniosPage: React.FC = () => {
   );
 
   const handleEdit = (convenio: Convenio) => {
-    setEditingConvenio(convenio);
+    setSelectedConvenio(convenio);
     setShowForm(true);
   };
 
   const handleCreate = () => {
-    setEditingConvenio(null);
+    setSelectedConvenio(null);
     setShowForm(true);
   };
 
   const handleCloseForm = () => {
     setShowForm(false);
-    setEditingConvenio(null);
+    setSelectedConvenio(null);
     refetch();
   };
 
   if (showForm) {
-    return <ConvenioForm convenio={editingConvenio} onClose={handleCloseForm} />;
+    return <ConvenioForm convenio={selectedConvenio} onClose={handleCloseForm} />;
   }
 
   const containerVariants = {
