@@ -73,7 +73,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                 alt="ProSalud"
                 className="h-8 w-auto"
               />
-              <span className="font-bold text-primary-prosalud">Admin</span>
+              { /* <span className="font-bold text-primary-prosalud">Admin</span> */ }
             </Link>
           </div>
 
