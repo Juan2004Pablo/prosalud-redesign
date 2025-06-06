@@ -124,9 +124,9 @@ const UpdateProfileDialog: React.FC<UpdateProfileDialogProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md bg-white border border-gray-200 shadow-xl">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
+          <DialogTitle className="flex items-center gap-2 text-gray-900">
             <UserIcon className="h-5 w-5 text-primary-prosalud" />
             Actualizar Perfil
           </DialogTitle>
@@ -139,7 +139,7 @@ const UpdateProfileDialog: React.FC<UpdateProfileDialogProps> = ({
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="firstName" className="flex items-center gap-2">
+              <Label htmlFor="firstName" className="flex items-center gap-2 text-gray-700 font-medium">
                 <Users className="h-4 w-4" />
                 Nombre
               </Label>
@@ -150,11 +150,12 @@ const UpdateProfileDialog: React.FC<UpdateProfileDialogProps> = ({
                 onChange={(e) => handleInputChange('firstName', e.target.value)}
                 required
                 placeholder="Ingresa tu nombre"
+                className="bg-white border-gray-300 text-gray-900 focus:border-primary-prosalud focus:ring-primary-prosalud"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="lastName" className="flex items-center gap-2">
+              <Label htmlFor="lastName" className="flex items-center gap-2 text-gray-700 font-medium">
                 <Users className="h-4 w-4" />
                 Apellido
               </Label>
@@ -165,11 +166,12 @@ const UpdateProfileDialog: React.FC<UpdateProfileDialogProps> = ({
                 onChange={(e) => handleInputChange('lastName', e.target.value)}
                 required
                 placeholder="Ingresa tu apellido"
+                className="bg-white border-gray-300 text-gray-900 focus:border-primary-prosalud focus:ring-primary-prosalud"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="email" className="flex items-center gap-2">
+              <Label htmlFor="email" className="flex items-center gap-2 text-gray-700 font-medium">
                 <Mail className="h-4 w-4" />
                 Correo Electrónico
               </Label>
@@ -180,6 +182,7 @@ const UpdateProfileDialog: React.FC<UpdateProfileDialogProps> = ({
                 onChange={(e) => handleInputChange('email', e.target.value)}
                 required
                 placeholder="correo@ejemplo.com"
+                className="bg-white border-gray-300 text-gray-900 focus:border-primary-prosalud focus:ring-primary-prosalud"
               />
             </div>
 
@@ -188,13 +191,14 @@ const UpdateProfileDialog: React.FC<UpdateProfileDialogProps> = ({
                 type="button"
                 variant="outline"
                 onClick={() => onOpenChange(false)}
+                className="border-gray-300 text-gray-700 hover:bg-gray-50"
               >
                 Cancelar
               </Button>
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="bg-primary-prosalud hover:bg-primary-prosalud-dark"
+                className="bg-primary-prosalud hover:bg-primary-prosalud-dark text-white"
               >
                 {isLoading ? "Actualizando..." : "Actualizar Perfil"}
               </Button>

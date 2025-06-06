@@ -104,16 +104,16 @@ const ChangePasswordDialog: React.FC<ChangePasswordDialogProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md bg-white border border-gray-200 shadow-xl">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
+          <DialogTitle className="flex items-center gap-2 text-gray-900">
             <Key className="h-5 w-5 text-primary-prosalud" />
             Cambiar Contraseña
           </DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="currentPassword">Contraseña Actual</Label>
+            <Label htmlFor="currentPassword" className="text-gray-700 font-medium">Contraseña Actual</Label>
             <div className="relative">
               <Input
                 id="currentPassword"
@@ -121,13 +121,13 @@ const ChangePasswordDialog: React.FC<ChangePasswordDialogProps> = ({
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
                 required
-                className="pr-10"
+                className="pr-10 bg-white border-gray-300 text-gray-900 focus:border-primary-prosalud focus:ring-primary-prosalud"
               />
               <Button
                 type="button"
                 variant="ghost"
                 size="sm"
-                className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-gray-100 text-gray-600 hover:text-gray-800"
                 onClick={() => togglePasswordVisibility('current')}
               >
                 {showCurrentPassword ? (
@@ -140,7 +140,7 @@ const ChangePasswordDialog: React.FC<ChangePasswordDialogProps> = ({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="newPassword">Nueva Contraseña</Label>
+            <Label htmlFor="newPassword" className="text-gray-700 font-medium">Nueva Contraseña</Label>
             <div className="relative">
               <Input
                 id="newPassword"
@@ -149,13 +149,13 @@ const ChangePasswordDialog: React.FC<ChangePasswordDialogProps> = ({
                 onChange={(e) => setNewPassword(e.target.value)}
                 required
                 minLength={6}
-                className="pr-10"
+                className="pr-10 bg-white border-gray-300 text-gray-900 focus:border-primary-prosalud focus:ring-primary-prosalud"
               />
               <Button
                 type="button"
                 variant="ghost"
                 size="sm"
-                className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-gray-100 text-gray-600 hover:text-gray-800"
                 onClick={() => togglePasswordVisibility('new')}
               >
                 {showNewPassword ? (
@@ -168,7 +168,7 @@ const ChangePasswordDialog: React.FC<ChangePasswordDialogProps> = ({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="confirmPassword">Confirmar Nueva Contraseña</Label>
+            <Label htmlFor="confirmPassword" className="text-gray-700 font-medium">Confirmar Nueva Contraseña</Label>
             <div className="relative">
               <Input
                 id="confirmPassword"
@@ -177,13 +177,13 @@ const ChangePasswordDialog: React.FC<ChangePasswordDialogProps> = ({
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
                 minLength={6}
-                className="pr-10"
+                className="pr-10 bg-white border-gray-300 text-gray-900 focus:border-primary-prosalud focus:ring-primary-prosalud"
               />
               <Button
                 type="button"
                 variant="ghost"
                 size="sm"
-                className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-gray-100 text-gray-600 hover:text-gray-800"
                 onClick={() => togglePasswordVisibility('confirm')}
               >
                 {showConfirmPassword ? (
@@ -200,13 +200,14 @@ const ChangePasswordDialog: React.FC<ChangePasswordDialogProps> = ({
               type="button"
               variant="outline"
               onClick={() => onOpenChange(false)}
+              className="border-gray-300 text-gray-700 hover:bg-gray-50"
             >
               Cancelar
             </Button>
             <Button
               type="submit"
               disabled={isLoading}
-              className="bg-primary-prosalud hover:bg-primary-prosalud-dark"
+              className="bg-primary-prosalud hover:bg-primary-prosalud-dark text-white"
             >
               {isLoading ? "Actualizando..." : "Cambiar Contraseña"}
             </Button>
