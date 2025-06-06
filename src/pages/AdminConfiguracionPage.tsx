@@ -319,13 +319,6 @@ const AdminConfiguracionPage: React.FC = () => {
                         <Save className="h-4 w-4 mr-2" />
                         {updateAboutMutation.isPending ? 'Guardando...' : 'Guardar Cambios'}
                       </Button>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={() => setIsEditingAbout(false)}
-                      >
-                        Cancelar
-                      </Button>
                     </div>
                   </form>
                 ) : (
