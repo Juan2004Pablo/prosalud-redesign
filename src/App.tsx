@@ -1,4 +1,5 @@
 
+
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -14,6 +15,19 @@ import ForgotPasswordPage from '@/pages/ForgotPasswordPage';
 import ResetPasswordPage from '@/pages/ResetPasswordPage';
 import NotFound from '@/pages/NotFound';
 import GaleriaBienestarPage from '@/pages/GaleriaBienestarPage';
+
+// Service Pages
+import SolicitudCertificadoConvenioPage from '@/pages/SolicitudCertificadoConvenioPage';
+import SolicitudDescansoLaboralPage from '@/pages/SolicitudDescansoLaboralPage';
+import SolicitudAnualDiferidaPage from '@/pages/SolicitudAnualDiferidaPage';
+import VerificacionPagosPage from '@/pages/VerificacionPagosPage';
+import CertificadoSeguridadSocialPage from '@/pages/CertificadoSeguridadSocialPage';
+import ActualizarCuentaBancariaPage from '@/pages/ActualizarCuentaBancariaPage';
+import IncapacidadesLicenciasPage from '@/pages/IncapacidadesLicenciasPage';
+import SstPage from '@/pages/SstPage';
+import SolicitudPermisosCambioTurnosPage from '@/pages/SolicitudPermisosCambioTurnosPage';
+import SolicitudMicrocreditoPage from '@/pages/SolicitudMicrocreditoPage';
+import SolicitudRetiroSindicalPage from '@/pages/SolicitudRetiroSindicalPage';
 
 // Admin Pages
 import AdminDashboard from '@/pages/AdminDashboard';
@@ -40,6 +54,22 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/bienestar" element={<GaleriaBienestarPage />} />
+          
+          {/* Service Routes */}
+          <Route path="/servicios/certificado-convenio" element={<SolicitudCertificadoConvenioPage />} />
+          <Route path="/servicios/descanso-sindical" element={<SolicitudDescansoLaboralPage />} />
+          <Route path="/servicios/compensacion-anual" element={<SolicitudAnualDiferidaPage />} />
+          <Route path="/servicios/consulta-pagos" element={<VerificacionPagosPage />} />
+          <Route path="/servicios/certificado-seguridad-social" element={<CertificadoSeguridadSocialPage />} />
+          <Route path="/servicios/actualizar-cuenta" element={<ActualizarCuentaBancariaPage />} />
+          <Route path="/servicios/incapacidad-maternidad" element={<IncapacidadesLicenciasPage />} />
+          <Route path="/servicios/sst" element={<SstPage />} />
+          <Route path="/servicios/galeria-bienestar" element={<GaleriaBienestarPage />} />
+          <Route path="/servicios/permisos-turnos" element={<SolicitudPermisosCambioTurnosPage />} />
+          <Route path="/servicios/microcredito" element={<SolicitudMicrocreditoPage />} />
+          <Route path="/servicios/retiro-sindical" element={<SolicitudRetiroSindicalPage />} />
+          
+          {/* 404 Route */}
           <Route path="*" element={<NotFound />} />
           
           {/* Admin Routes */}
@@ -57,3 +87,4 @@ function App() {
 }
 
 export default App;
+
