@@ -10,6 +10,8 @@ import Index from '@/pages/Index';
 import QuienesSomos from '@/pages/QuienesSomos';
 import FAQPage from '@/pages/FAQPage';
 import LoginPage from '@/pages/LoginPage';
+import ForgotPasswordPage from '@/pages/ForgotPasswordPage';
+import ResetPasswordPage from '@/pages/ResetPasswordPage';
 import NotFound from '@/pages/NotFound';
 import GaleriaBienestarPage from '@/pages/GaleriaBienestarPage';
 
@@ -35,6 +37,8 @@ function App() {
           <Route path="/nosotros" element={<QuienesSomos />} />
           <Route path="/faq" element={<FAQPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/bienestar" element={<GaleriaBienestarPage />} />
           <Route path="*" element={<NotFound />} />
           

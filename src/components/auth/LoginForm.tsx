@@ -1,3 +1,4 @@
+
 "use client"
 
 import * as React from "react"
@@ -235,7 +236,7 @@ const LoginForm: React.FC = () => {
           )}
 
           <motion.div variants={itemVariants} className="text-left">
-            <Link to="/recuperar-contrasena" className="text-sm text-primary-prosalud hover:underline">
+            <Link to="/forgot-password" className="text-sm text-primary-prosalud hover:underline">
               ¿Olvidaste tu contraseña?
             </Link>
           </motion.div>
