@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { Users, FileText, Calendar, Trophy, BarChart3, Settings, Edit } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,6 +9,8 @@ import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import AdminLayout from '@/components/admin/AdminLayout';
+import MetricsCards from '@/components/admin/MetricsCards';
+import { configApi } from '@/services/adminApi';
 
 const AdminDashboard: React.FC = () => {
   const [stats, setStats] = useState([
@@ -44,6 +47,11 @@ const AdminDashboard: React.FC = () => {
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [editValue, setEditValue] = useState("");
   const [editChange, setEditChange] = useState("");
+
+  const { data: metrics, isLoading: loadingMetrics } = useQuery({
+    queryKey: ['site-metrics'],
+    queryFn: configApi.getMetrics
+  });
 
   const handleEditStat = (index: number) => {
     setEditingIndex(index);
@@ -105,6 +113,23 @@ const AdminDashboard: React.FC = () => {
                 Gestiona usuarios, contenidos y métricas de la plataforma ProSalud desde un solo lugar.
               </p>
             </div>
+          </motion.div>
+
+          {/* Main Metrics Section */}
+          <motion.div variants={itemVariants}>
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">Métricas Principales</h2>
+              <p className="text-gray-600">Estadísticas principales de la organización</p>
+            </div>
+            {loadingMetrics ? (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {[...Array(3)].map((_, i) => (
+                  <div key={i} className="h-40 bg-gray-200 rounded animate-pulse"></div>
+                ))}
+              </div>
+            ) : (
+              <MetricsCards metrics={metrics || { yearsExperience: 0, conventionsCount: 0, affiliatesCount: 0 }} />
+            )}
           </motion.div>
 
           {/* Stats Grid */}
