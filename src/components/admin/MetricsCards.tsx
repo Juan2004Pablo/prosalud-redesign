@@ -105,6 +105,38 @@ const MetricsCards: React.FC<MetricsCardsProps> = ({ metrics }) => {
       <motion.div variants={itemVariants}>
         <Card className="bg-gradient-to-br from-green-50 to-emerald-100 border-green-200 hover:shadow-lg transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium text-purple-700">
+              Total Afiliados
+            </CardTitle>
+            <Users className="h-4 w-4 text-purple-600" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold text-purple-900 mb-2">
+              {metrics?.affiliatesCount?.toLocaleString()}
+            </div>
+            <ChartContainer config={chartConfig} className="h-[60px] w-full">
+              <LineChart data={affiliatesData}>
+                <Line 
+                  type="monotone" 
+                  dataKey="count" 
+                  stroke="#7c3aed" 
+                  strokeWidth={2}
+                  dot={{ fill: '#7c3aed', strokeWidth: 2, r: 3 }}
+                />
+              </LineChart>
+            </ChartContainer>
+            <p className="text-xs text-purple-600 mt-2">
+              <Target className="h-3 w-3 inline mr-1" />
+              +12% vs año anterior
+            </p>
+          </CardContent>
+        </Card>
+      </motion.div>
+
+      {/* Affiliates Count Card */}
+      <motion.div variants={itemVariants}>
+        <Card className="bg-gradient-to-br from-purple-50 to-violet-100 border-purple-200 hover:shadow-lg transition-shadow">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-green-700">
               Convenios Activos
             </CardTitle>
@@ -142,38 +174,6 @@ const MetricsCards: React.FC<MetricsCardsProps> = ({ metrics }) => {
                 15% Pendientes
               </span>
             </div>
-          </CardContent>
-        </Card>
-      </motion.div>
-
-      {/* Affiliates Count Card */}
-      <motion.div variants={itemVariants}>
-        <Card className="bg-gradient-to-br from-purple-50 to-violet-100 border-purple-200 hover:shadow-lg transition-shadow">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-purple-700">
-              Total Afiliados
-            </CardTitle>
-            <Users className="h-4 w-4 text-purple-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold text-purple-900 mb-2">
-              {metrics?.affiliatesCount?.toLocaleString()}
-            </div>
-            <ChartContainer config={chartConfig} className="h-[60px] w-full">
-              <LineChart data={affiliatesData}>
-                <Line 
-                  type="monotone" 
-                  dataKey="count" 
-                  stroke="#7c3aed" 
-                  strokeWidth={2}
-                  dot={{ fill: '#7c3aed', strokeWidth: 2, r: 3 }}
-                />
-              </LineChart>
-            </ChartContainer>
-            <p className="text-xs text-purple-600 mt-2">
-              <Target className="h-3 w-3 inline mr-1" />
-              +12% vs año anterior
-            </p>
           </CardContent>
         </Card>
       </motion.div>
