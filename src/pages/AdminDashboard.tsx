@@ -133,7 +133,7 @@ const AdminDashboard: React.FC = () => {
           </motion.div>
 
           {/* Stats Grid */}
-          <motion.div
+          { /* <motion.div
             variants={containerVariants}
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6"
           >
@@ -205,7 +205,7 @@ const AdminDashboard: React.FC = () => {
                 </Card>
               </motion.div>
             ))}
-          </motion.div>
+          </motion.div> */ }
 
           {/* Quick Actions */}
           <motion.div variants={itemVariants}>
