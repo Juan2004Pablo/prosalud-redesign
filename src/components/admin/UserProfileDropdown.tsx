@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, User, Key, Settings } from 'lucide-react';
+import { LogOut, User, Key } from 'lucide-react';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -14,6 +14,9 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useToast } from '@/hooks/use-toast';
 import { getInitialsFromEmail } from '@/utils/avatarUtils';
+import { supabase } from '@/integrations/supabase/client';
+import ChangePasswordDialog from './ChangePasswordDialog';
+import UpdateProfileDialog from './UpdateProfileDialog';
 
 interface UserProfileDropdownProps {
   userEmail?: string;
@@ -27,76 +30,100 @@ const UserProfileDropdown: React.FC<UserProfileDropdownProps> = ({
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
+  const [showChangePassword, setShowChangePassword] = useState(false);
+  const [showUpdateProfile, setShowUpdateProfile] = useState(false);
 
   const initials = userEmail ? getInitialsFromEmail(userEmail) : 'AD';
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     setIsOpen(false);
-    toast({
-      title: "Sesión cerrada",
-      description: "Has cerrado sesión exitosamente.",
-      variant: "default"
-    });
-    navigate('/login');
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        toast({
+          title: "Error",
+          description: "No se pudo cerrar la sesión",
+          variant: "destructive"
+        });
+      } else {
+        toast({
+          title: "Sesión cerrada",
+          description: "Has cerrado sesión exitosamente.",
+          variant: "default",
+          className: "border-green-200 bg-green-50 text-green-800"
+        });
+        navigate('/login');
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Ocurrió un error inesperado",
+        variant: "destructive"
+      });
+    }
   };
 
   const handleChangePassword = () => {
     setIsOpen(false);
-    toast({
-      title: "Cambiar contraseña",
-      description: "Función de cambio de contraseña próximamente.",
-      variant: "default"
-    });
+    setShowChangePassword(true);
   };
 
   const handleUpdateProfile = () => {
     setIsOpen(false);
-    toast({
-      title: "Actualizar perfil",
-      description: "Función de actualización de perfil próximamente.",
-      variant: "default"
-    });
+    setShowUpdateProfile(true);
   };
 
   return (
-    <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-10 w-10 rounded-full">
-          <Avatar className="h-10 w-10">
-            <AvatarFallback className="bg-primary-prosalud text-white font-semibold">
-              {initials}
-            </AvatarFallback>
-          </Avatar>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56" align="end" forceMount>
-        <DropdownMenuLabel className="font-normal">
-          <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">{userName}</p>
-            <p className="text-xs leading-none text-muted-foreground">
-              {userEmail}
-            </p>
-          </div>
-        </DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={handleUpdateProfile} className="cursor-pointer">
-          <User className="mr-2 h-4 w-4" />
-          <span>Actualizar perfil</span>
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={handleChangePassword} className="cursor-pointer">
-          <Key className="mr-2 h-4 w-4" />
-          <span>Cambiar contraseña</span>
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem 
-          onClick={handleLogout} 
-          className="cursor-pointer text-red-600 focus:text-red-600 focus:bg-red-50"
-        >
-          <LogOut className="mr-2 h-4 w-4" />
-          <span>Cerrar sesión</span>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <>
+      <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+            <Avatar className="h-10 w-10">
+              <AvatarFallback className="bg-primary-prosalud text-white font-semibold">
+                {initials}
+              </AvatarFallback>
+            </Avatar>
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="w-56" align="end" forceMount>
+          <DropdownMenuLabel className="font-normal">
+            <div className="flex flex-col space-y-1">
+              <p className="text-sm font-medium leading-none">{userName}</p>
+              <p className="text-xs leading-none text-muted-foreground">
+                {userEmail}
+              </p>
+            </div>
+          </DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={handleUpdateProfile} className="cursor-pointer">
+            <User className="mr-2 h-4 w-4" />
+            <span>Actualizar perfil</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={handleChangePassword} className="cursor-pointer">
+            <Key className="mr-2 h-4 w-4" />
+            <span>Cambiar contraseña</span>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem 
+            onClick={handleLogout} 
+            className="cursor-pointer text-red-600 focus:text-red-600 focus:bg-red-50"
+          >
+            <LogOut className="mr-2 h-4 w-4" />
+            <span>Cerrar sesión</span>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      <ChangePasswordDialog
+        open={showChangePassword}
+        onOpenChange={setShowChangePassword}
+      />
+
+      <UpdateProfileDialog
+        open={showUpdateProfile}
+        onOpenChange={setShowUpdateProfile}
+      />
+    </>
   );
 };
 
