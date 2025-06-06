@@ -227,13 +227,6 @@ const AdminConfiguracionPage: React.FC = () => {
                         <Save className="h-4 w-4 mr-2" />
                         {updateMetricsMutation.isPending ? 'Guardando...' : 'Guardar Cambios'}
                       </Button>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={() => setIsEditingMetrics(false)}
-                      >
-                        Cancelar
-                      </Button>
                     </div>
                   </form>
                 ) : (

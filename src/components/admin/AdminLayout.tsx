@@ -214,7 +214,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
             <div className="flex items-center space-x-4">
               <div className="hidden sm:flex items-center space-x-4">
                 <div className="text-sm text-slate-600">
-                  Bienvenido, <span className="font-medium text-primary-prosalud"></span>
+                  Bienvenido <span className="font-medium text-primary-prosalud"></span>
                 </div>
               </div>
               <UserProfileDropdown />
