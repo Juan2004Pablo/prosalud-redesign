@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge';
 import AdminLayout from '@/components/admin/AdminLayout';
 import UserForm from '@/components/admin/usuarios/UserForm';
+import UserAvatar from '@/components/admin/UserAvatar';
 import { usersApi } from '@/services/adminApi';
 import { User } from '@/types/admin';
 
@@ -150,19 +151,26 @@ const AdminUsuariosPage: React.FC = () => {
                 <div className="space-y-4">
                   {users.map((user) => (
                     <div key={user.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 border rounded-lg hover:bg-slate-50 transition-colors gap-4">
-                      <div className="flex-1">
-                        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
-                          <h3 className="font-semibold text-text-dark">
-                            {user.firstName} {user.lastName}
-                          </h3>
-                          <Badge variant={user.isActive ? "default" : "secondary"}>
-                            {user.isActive ? "Activo" : "Inactivo"}
-                          </Badge>
+                      <div className="flex items-center gap-3 flex-1">
+                        <UserAvatar 
+                          firstName={user.firstName} 
+                          lastName={user.lastName} 
+                          size="md"
+                        />
+                        <div className="flex-1">
+                          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
+                            <h3 className="font-semibold text-text-dark">
+                              {user.firstName} {user.lastName}
+                            </h3>
+                            <Badge variant={user.isActive ? "default" : "secondary"}>
+                              {user.isActive ? "Activo" : "Inactivo"}
+                            </Badge>
+                          </div>
+                          <p className="text-text-gray text-sm">{user.email}</p>
+                          <p className="text-xs text-gray-500">
+                            Creado: {new Date(user.createdAt).toLocaleDateString()}
+                          </p>
                         </div>
-                        <p className="text-text-gray text-sm">{user.email}</p>
-                        <p className="text-xs text-gray-500">
-                          Creado: {new Date(user.createdAt).toLocaleDateString()}
-                        </p>
                       </div>
                       <div className="flex items-center gap-2 w-full sm:w-auto">
                         <Button

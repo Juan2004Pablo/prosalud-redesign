@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
+import UserProfileDropdown from './UserProfileDropdown';
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -31,7 +32,8 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   const handleLogout = () => {
     toast({
       title: "Sesión cerrada",
-      description: "Has cerrado sesión exitosamente."
+      description: "Has cerrado sesión exitosamente.",
+      variant: "default"
     });
     navigate('/login');
   };
@@ -225,10 +227,13 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
               </span>
             </div>
 
-            <div className="hidden sm:flex items-center space-x-4">
-              <div className="text-sm text-slate-600">
-                Bienvenido, <span className="font-medium text-primary-prosalud">Administrador</span>
+            <div className="flex items-center space-x-4">
+              <div className="hidden sm:flex items-center space-x-4">
+                <div className="text-sm text-slate-600">
+                  Bienvenido, <span className="font-medium text-primary-prosalud">Administrador</span>
+                </div>
               </div>
+              <UserProfileDropdown />
             </div>
           </div>
         </div>
