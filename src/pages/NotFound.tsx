@@ -23,18 +23,19 @@ const NotFound = () => {
     <div className="min-h-screen bg-gradient-to-br from-primary-prosalud via-primary-prosalud-dark to-slate-900 flex items-center justify-center px-4">
       <div className="max-w-4xl mx-auto text-center">
         {/* Animated 404 Number */}
-        <div className={`transform transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
+        { /* <div className={`transform transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
           <div className="relative mb-8">
             <h1 className="text-8xl md:text-9xl lg:text-[12rem] font-black text-white/10 select-none">
               404
             </h1>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="relative">
-                <Compass className="h-24 w-24 md:h-32 md:w-32 text-secondary-prosaludgreen animate-[spin_8s_linear_infinite]" />
-                <MapPin className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-8 w-8 md:h-12 md:w-12 text-white animate-pulse" />
-              </div>
-            </div>
           </div>
+        </div> */ }
+
+        <div className="relative mb-8">
+          <h1 className="text-8xl md:text-9xl lg:text-[12rem] font-black text-transparent bg-clip-text animate-bounce">
+            404
+          </h1>
+          <div className="absolute inset-0 lg:text-[12rem] text-8xl md:text-9xl font-black text-blue-200/20 animate-pulse">404</div>
         </div>
 
         {/* Content */}
