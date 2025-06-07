@@ -137,9 +137,9 @@ const SolicitudRetiroSindicalPage: React.FC = () => {
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit, handleError)} className="space-y-8">
+            <DescargarFormatoRetiroSection />
             <DatosPersonalesRetiroSection control={form.control} idTypes={idTypes} />
             <InformacionProcesoRetiroSection control={form.control} />
-            <DescargarFormatoRetiroSection />
             <AnexoRetiroSection control={form.control} />
             <ConfirmacionCorreoSection />
             <AutorizacionDatosSection />
