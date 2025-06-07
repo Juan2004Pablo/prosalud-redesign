@@ -16,7 +16,7 @@ const AdminDashboard: React.FC = () => {
   const [stats, setStats] = useState([
     {
       title: "Usuarios Activos",
-      value: "1,234",
+      value: "1.500",
       change: "+12%",
       icon: Users,
       color: "text-primary-prosalud"
@@ -30,7 +30,7 @@ const AdminDashboard: React.FC = () => {
     },
     {
       title: "Eventos de Bienestar",
-      value: "45",
+      value: "72",
       change: "+8",
       icon: Calendar,
       color: "text-accent-prosaludteal"
@@ -115,98 +115,6 @@ const AdminDashboard: React.FC = () => {
             </div>
           </motion.div>
 
-          {/* Main Metrics Section */}
-          <motion.div variants={itemVariants}>
-            <div className="mb-6">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Métricas Principales</h2>
-              <p className="text-gray-600">Estadísticas principales de la organización</p>
-            </div>
-            {loadingMetrics ? (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {[...Array(3)].map((_, i) => (
-                  <div key={i} className="h-40 bg-gray-200 rounded animate-pulse"></div>
-                ))}
-              </div>
-            ) : (
-              <MetricsCards metrics={metrics || { yearsExperience: 0, conventionsCount: 0, affiliatesCount: 0 }} />
-            )}
-          </motion.div>
-
-          {/* Stats Grid */}
-          { /* <motion.div
-            variants={containerVariants}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6"
-          >
-            {stats.map((stat, index) => (
-              <motion.div key={stat.title} variants={itemVariants}>
-                <Card className="bg-white border shadow-sm hover:shadow-md transition-shadow duration-300">
-                  <CardHeader className="pb-2">
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="text-sm font-medium text-text-gray">
-                        {stat.title}
-                      </CardTitle>
-                      <div className="flex items-center gap-2">
-                        <div className={`p-2 rounded-lg bg-slate-100 ${stat.color}`}>
-                          <stat.icon className="h-4 w-4" />
-                        </div>
-                        <Dialog>
-                          <DialogTrigger asChild>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => handleEditStat(index)}
-                              className="h-8 w-8 p-0 hover:bg-slate-100"
-                            >
-                              <Edit className="h-3 w-3" />
-                            </Button>
-                          </DialogTrigger>
-                          <DialogContent className="sm:max-w-md">
-                            <DialogHeader>
-                              <DialogTitle>Editar {stat.title}</DialogTitle>
-                            </DialogHeader>
-                            <div className="space-y-4">
-                              <div>
-                                <Label htmlFor="value">Valor</Label>
-                                <Input
-                                  id="value"
-                                  value={editValue}
-                                  onChange={(e) => setEditValue(e.target.value)}
-                                  placeholder="Ej: 1,234"
-                                />
-                              </div>
-                              <div>
-                                <Label htmlFor="change">Cambio</Label>
-                                <Input
-                                  id="change"
-                                  value={editChange}
-                                  onChange={(e) => setEditChange(e.target.value)}
-                                  placeholder="Ej: +12%"
-                                />
-                              </div>
-                              <Button onClick={handleSaveStat} className="w-full">
-                                Guardar
-                              </Button>
-                            </div>
-                          </DialogContent>
-                        </Dialog>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex items-baseline space-x-2">
-                      <span className="text-2xl sm:text-3xl font-bold text-text-dark">
-                        {stat.value}
-                      </span>
-                      <span className="text-sm font-medium text-secondary-prosaludgreen">
-                        {stat.change}
-                      </span>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </motion.div> */ }
-
           {/* Quick Actions */}
           <motion.div variants={itemVariants}>
             <Card className="bg-white border shadow-sm">
@@ -240,6 +148,23 @@ const AdminDashboard: React.FC = () => {
                 </div>
               </CardContent>
             </Card>
+          </motion.div>
+
+          {/* Main Metrics Section */}
+          <motion.div variants={itemVariants}>
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">Métricas Principales</h2>
+              <p className="text-gray-600">Estadísticas principales de la organización</p>
+            </div>
+            {loadingMetrics ? (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {[...Array(3)].map((_, i) => (
+                  <div key={i} className="h-40 bg-gray-200 rounded animate-pulse"></div>
+                ))}
+              </div>
+            ) : (
+              <MetricsCards metrics={metrics || { yearsExperience: 0, conventionsCount: 0, affiliatesCount: 0 }} />
+            )}
           </motion.div>
         </motion.div>
       </div>
