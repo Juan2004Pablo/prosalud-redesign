@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -14,18 +13,20 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { bienestarApi } from '@/services/adminApi';
 import { BienestarEvent, CreateBienestarEventData } from '@/types/admin';
-import { nameValidation, textValidation, categoryValidation, numberValidation } from '@/hooks/useFormValidation';
+import { baseNameValidation, baseTextValidation, baseCategoryValidation, numberValidation } from '@/hooks/useFormValidation';
 
 const formSchema = z.object({
-  title: nameValidation.min(5, 'El título debe tener al menos 5 caracteres'),
+  title: baseNameValidation.min(5, 'El título debe tener al menos 5 caracteres'),
   date: z.string().min(1, 'La fecha es requerida'),
-  category: categoryValidation,
-  description: textValidation.optional(),
+  category: baseCategoryValidation,
+  description: baseTextValidation.optional(),
   location: z.string().max(100, 'Máximo 100 caracteres').optional(),
   attendees: numberValidation(1, 10000).optional(),
   gift: z.string().max(100, 'Máximo 100 caracteres').optional(),
   provider: z.string().max(50, 'Máximo 50 caracteres').optional(),
 });
+
+type FormData = z.infer<typeof formSchema>;
 
 interface BienestarEventFormProps {
   event?: BienestarEvent | null;
@@ -39,7 +40,7 @@ const BienestarEventForm: React.FC<BienestarEventFormProps> = ({ event, onClose 
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: event?.title || '',
@@ -154,7 +155,7 @@ const BienestarEventForm: React.FC<BienestarEventFormProps> = ({ event, onClose 
     }
   };
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
+  const onSubmit = (data: FormData) => {
     if (!event && images.length === 0) {
       toast({
         title: "Imágenes requeridas",
@@ -165,14 +166,14 @@ const BienestarEventForm: React.FC<BienestarEventFormProps> = ({ event, onClose 
     }
 
     const eventData: CreateBienestarEventData = {
-      title: data.title.trim(),
+      title: data.title,
       date: data.date,
       category: data.category,
-      description: data.description?.trim(),
-      location: data.location?.trim(),
-      attendees: data.attendees,
-      gift: data.gift?.trim(),
-      provider: data.provider?.trim() || 'ProSalud',
+      description: data.description || undefined,
+      location: data.location || undefined,
+      attendees: data.attendees || undefined,
+      gift: data.gift || undefined,
+      provider: data.provider || 'ProSalud',
       images,
       mainImageIndex
     };

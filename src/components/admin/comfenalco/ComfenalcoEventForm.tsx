@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -14,18 +13,20 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { comfenalcoApi } from '@/services/adminApi';
 import { ComfenalcoEvent, CreateComfenalcoEventData } from '@/types/admin';
-import { nameValidation, textValidation, urlValidation, categoryValidation } from '@/hooks/useFormValidation';
+import { baseNameValidation, baseTextValidation, baseUrlValidation, baseCategoryValidation } from '@/hooks/useFormValidation';
 
 const formSchema = z.object({
-  title: nameValidation.min(5, 'El título debe tener al menos 5 caracteres'),
-  registrationLink: urlValidation,
-  formLink: urlValidation,
-  category: categoryValidation,
+  title: baseNameValidation.min(5, 'El título debe tener al menos 5 caracteres'),
+  registrationLink: baseUrlValidation,
+  formLink: baseUrlValidation,
+  category: baseCategoryValidation,
   displaySize: z.enum(['carousel', 'mosaic']),
-  description: textValidation.optional(),
+  description: baseTextValidation.optional(),
   registrationDeadline: z.string().optional(),
   eventDate: z.string().optional(),
 });
+
+type FormData = z.infer<typeof formSchema>;
 
 interface ComfenalcoEventFormProps {
   event?: ComfenalcoEvent | null;
@@ -38,7 +39,7 @@ const ComfenalcoEventForm: React.FC<ComfenalcoEventFormProps> = ({ event, onClos
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: event?.title || '',
@@ -134,7 +135,7 @@ const ComfenalcoEventForm: React.FC<ComfenalcoEventFormProps> = ({ event, onClos
     setImagePreview('');
   };
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
+  const onSubmit = (data: FormData) => {
     if (!event && !bannerImage) {
       toast({
         title: "Imagen requerida",
@@ -145,11 +146,11 @@ const ComfenalcoEventForm: React.FC<ComfenalcoEventFormProps> = ({ event, onClos
     }
 
     const eventData: CreateComfenalcoEventData = {
-      title: data.title.trim(),
+      title: data.title,
       bannerImage: bannerImage!,
-      description: data.description?.trim(),
-      registrationDeadline: data.registrationDeadline,
-      eventDate: data.eventDate,
+      description: data.description || undefined,
+      registrationDeadline: data.registrationDeadline || undefined,
+      eventDate: data.eventDate || undefined,
       registrationLink: data.registrationLink,
       formLink: data.formLink,
       category: data.category,
