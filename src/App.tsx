@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -15,6 +13,8 @@ import ForgotPasswordPage from '@/pages/ForgotPasswordPage';
 import ResetPasswordPage from '@/pages/ResetPasswordPage';
 import NotFound from '@/pages/NotFound';
 import GaleriaBienestarPage from '@/pages/GaleriaBienestarPage';
+import EstatutosBeneficiosPage from '@/pages/EstatutosBeneficiosPage';
+import ContratoSindicalPage from '@/pages/ContratoSindicalPage';
 
 // Service Pages
 import SolicitudCertificadoConvenioPage from '@/pages/SolicitudCertificadoConvenioPage';
@@ -49,6 +49,8 @@ function App() {
           {/* Public Routes */}
           <Route path="/" element={<Index />} />
           <Route path="/nosotros" element={<QuienesSomos />} />
+          <Route path="/nosotros/estatutos" element={<EstatutosBeneficiosPage />} />
+          <Route path="/nosotros/contrato-sindical" element={<ContratoSindicalPage />} />
           <Route path="/faq" element={<FAQPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
@@ -69,9 +71,6 @@ function App() {
           <Route path="/servicios/microcredito" element={<SolicitudMicrocreditoPage />} />
           <Route path="/servicios/retiro-sindical" element={<SolicitudRetiroSindicalPage />} />
           
-          {/* 404 Route */}
-          <Route path="*" element={<NotFound />} />
-          
           {/* Admin Routes */}
           <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
           <Route path="/admin/usuarios" element={<ProtectedRoute><AdminUsuariosPage /></ProtectedRoute>} />
@@ -79,6 +78,9 @@ function App() {
           <Route path="/admin/comfenalco" element={<ProtectedRoute><AdminComfenalcoPage /></ProtectedRoute>} />
           <Route path="/admin/convenios" element={<ProtectedRoute><AdminConveniosPage /></ProtectedRoute>} />
           <Route path="/admin/configuracion" element={<ProtectedRoute><AdminConfiguracionPage /></ProtectedRoute>} />
+          
+          {/* 404 Route */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
       <Toaster />
@@ -87,4 +89,3 @@ function App() {
 }
 
 export default App;
-

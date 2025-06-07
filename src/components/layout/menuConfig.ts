@@ -1,3 +1,4 @@
+
 import { Briefcase, Home, Users, FileText, FolderArchive, Shield, LucideIcon } from 'lucide-react';
 
 // Define types for menu items
@@ -45,11 +46,8 @@ export const menuItems: MenuItemType[] = [
     name: 'Nosotros',
     icon: Users,
     submenu: [
-      { name: '¿Quiénes somos?', path: '/nosotros/quienes-somos' },
-      // { name: 'Estructura organizacional', path: '/nosotros/estructura-organizacional' },
+      { name: '¿Quiénes somos?', path: '/nosotros' },
       { name: 'Estatutos y beneficios sindicales', path: '/nosotros/estatutos' },
-      // { name: 'Rol económico', path: '/nosotros/rol-economico' },
-      // { name: 'Compensaciones y beneficios', path: '/nosotros/compensaciones-beneficios' },
       { name: 'Contrato sindical', path: '/nosotros/contrato-sindical' },
     ]
   },
@@ -58,9 +56,9 @@ export const menuItems: MenuItemType[] = [
     icon: Shield,
     submenu: [
       {
-        name: 'Campañas', // This MenuSubItem acts as a header, path is not needed
+        name: 'Campañas',
         submenu: [
-          { name: 'Estilo de Vida y Trabajo Saludable', path: '/servicios/sst' }, // Updated path
+          { name: 'Estilo de Vida y Trabajo Saludable', path: '/servicios/sst' },
         ]
       },
     ]
@@ -70,7 +68,7 @@ export const menuItems: MenuItemType[] = [
     icon: FileText,
     submenu: [
       {
-        name: 'Documentos públicos', // This MenuSubItem acts as a header
+        name: 'Documentos públicos',
         submenu: [
           { name: 'Formatos de dotación', path: '/documentos-formatos/documentos-publicos/formatos-dotacion' },
           { name: 'Listados de asistencia', path: '/documentos-formatos/documentos-publicos/listados-asistencia' },
@@ -79,13 +77,13 @@ export const menuItems: MenuItemType[] = [
         ]
       },
       {
-        name: 'Solicitudes de afiliados', // This MenuSubItem acts as a header
+        name: 'Solicitudes de afiliados',
         submenu: [
-          { name: 'Verificación de pagos', path: '/documentos-formatos/solicitudes-afiliados/verificacion-pagos' },
+          { name: 'Verificación de pagos', path: '/servicios/consulta-pagos' },
           { name: 'Certificado de Convenio', path: '/servicios/certificado-convenio' }, 
-          { name: 'Descanso', path: '/documentos-formatos/solicitudes-afiliados/descanso' },
-          { name: 'Solicitud anual diferida', path: '/documentos-formatos/solicitudes-afiliados/solicitud-anual-diferida' },
-          { name: 'Solicitud de Retiro Sindical', path: '/servicios/retiro-sindical' }, // Nueva opción de menú
+          { name: 'Descanso', path: '/servicios/descanso-sindical' },
+          { name: 'Solicitud anual diferida', path: '/servicios/compensacion-anual' },
+          { name: 'Solicitud de Retiro Sindical', path: '/servicios/retiro-sindical' },
         ]
       },
     ]
