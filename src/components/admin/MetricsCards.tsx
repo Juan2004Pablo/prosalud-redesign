@@ -31,11 +31,11 @@ const MetricsCards: React.FC<MetricsCardsProps> = ({ metrics }) => {
   ];
 
   const affiliatesData = [
-    { year: '2020', count: 1200 },
-    { year: '2021', count: 1450 },
-    { year: '2022', count: 1680 },
-    { year: '2023', count: 1890 },
-    { year: '2024', count: metrics?.affiliatesCount || 2100 },
+    { year: '2020', count: 200 },
+    { year: '2021', count: 400 },
+    { year: '2022', count: 500 },
+    { year: '2023', count: 900 },
+    { year: '2024', count: metrics?.affiliatesCount || 1500 },
   ];
 
   const chartConfig = {

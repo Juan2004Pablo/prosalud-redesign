@@ -163,7 +163,7 @@ const AdminDashboard: React.FC = () => {
                 ))}
               </div>
             ) : (
-              <MetricsCards metrics={metrics || { yearsExperience: 0, conventionsCount: 0, affiliatesCount: 0 }} />
+              <MetricsCards metrics={metrics || { yearsExperience: 0, affiliatesCount: 0, conventionsCount: 0 }} />
             )}
           </motion.div>
         </motion.div>
