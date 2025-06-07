@@ -36,9 +36,6 @@ const NotFound = () => {
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
               ¡Oops! Página no encontrada
             </h2>
-            <p className="text-lg md:text-xl text-primary-prosalud-light/90 mb-2">
-              Parece que te has perdido en el camino.
-            </p>
             <p className="text-base md:text-lg text-primary-prosalud-light/75 mb-8">
               La página que buscas no existe o ha sido movida.
             </p>
@@ -53,6 +50,15 @@ const NotFound = () => {
 
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <Button
+                variant="outline"
+                size="lg"
+                onClick={() => window.history.back()}
+                className="text-white border-white/70 bg-white/10 px-8 py-6 transition-all duration-300 transform hover:scale-105"
+              >
+                <ArrowLeft className="mr-2 h-5 w-5" />
+                Página Anterior
+              </Button>
               <Link to="/">
                 <Button
                   size="lg"
@@ -62,16 +68,6 @@ const NotFound = () => {
                   Volver al Inicio
                 </Button>
               </Link>
-              
-              <Button
-                variant="outline"
-                size="lg"
-                onClick={() => window.history.back()}
-                className="text-white border-white/70 hover:bg-white/10 px-8 py-6 transition-all duration-300 transform hover:scale-105"
-              >
-                <ArrowLeft className="mr-2 h-5 w-5" />
-                Página Anterior
-              </Button>
             </div>
           </div>
         </div>
