@@ -37,7 +37,7 @@ export const searchData: SearchItem[] = [
     id: "quienes-somos",
     title: "¿Quiénes Somos?",
     description: "Conoce la historia, misión y visión de ProSalud",
-    path: "/nosotros/quienes-somos",
+    path: "/nosotros",
     category: "Nosotros",
     keywords: ["quienes", "somos", "historia", "mision", "vision", "nosotros", "organizacion", "sobre nosotros"]
   },
