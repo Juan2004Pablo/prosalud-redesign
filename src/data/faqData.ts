@@ -57,7 +57,7 @@ export const faqData: FAQItem[] = [
     answer: "ProSalud es el Sindicato de Profesionales de la Salud, un sindicato de gremio que funciona de conformidad con la Constitución Nacional. Está orientado al bienestar de los afiliados de manera autogestionaria y autónoma, con más de 10 años de experiencia y aproximadamente 1500 afiliados.",
     category: "general",
     keywords: ["prosalud", "sindicato", "profesionales", "salud", "que es"],
-    redirectUrl: "/nosotros/quienes-somos",
+    redirectUrl: "/nosotros",
     redirectText: "Conoce más sobre nosotros"
   },
   {
@@ -66,7 +66,7 @@ export const faqData: FAQItem[] = [
     answer: "Nuestra misión es representar y fortalecer el oficio de los Profesionales de la Salud generando bienestar laboral y económico a todos sus afiliados partícipes, buscando así el mejoramiento en los estándares de calidad en la prestación de los servicios de las Instituciones contractuales.",
     category: "general",
     keywords: ["mision", "objetivo", "proposito"],
-    redirectUrl: "/nosotros/quienes-somos",
+    redirectUrl: "/nosotros",
     redirectText: "Ver misión y visión completa"
   },
   {
