@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -189,271 +190,300 @@ const BienestarEventForm: React.FC<BienestarEventFormProps> = ({ event, onClose 
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100">
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <div className="container mx-auto px-4 py-8 max-w-5xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="space-y-8"
         >
-          {/* Header mejorado */}
-          <div className="text-center space-y-4">
-            <div className="flex items-center justify-center gap-4 mb-6">
-              <Button
-                variant="ghost"
-                onClick={onClose}
-                className="rounded-full h-12 w-12"
-              >
-                <ArrowLeft className="h-6 w-6" />
-              </Button>
-              <div className="flex-1">
-                <h1 className="text-4xl font-bold bg-gradient-to-r from-primary-prosalud to-secondary-prosaludgreen bg-clip-text text-transparent">
-                  {event ? 'Editar Evento' : 'Nuevo Evento'} de Bienestar
-                </h1>
-                <p className="text-lg text-muted-foreground mt-2">
-                  {event ? 'Modifica los detalles del evento' : 'Crea un nuevo evento para la galería de bienestar'}
-                </p>
-              </div>
+          {/* Header compacto */}
+          <div className="flex items-center gap-6 mb-8">
+            <Button
+              variant="ghost"
+              onClick={onClose}
+              className="rounded-full h-12 w-12 shrink-0"
+            >
+              <ArrowLeft className="h-6 w-6" />
+            </Button>
+            <div>
+              <h1 className="text-3xl font-bold text-slate-800">
+                {event ? 'Editar Evento' : 'Nuevo Evento'} de Bienestar
+              </h1>
+              <p className="text-slate-600 mt-1">
+                {event ? 'Modifica los detalles del evento' : 'Crea un nuevo evento para la galería de bienestar'}
+              </p>
             </div>
           </div>
 
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            {/* Información Básica */}
-            <Card className="border-0 shadow-lg bg-white/80 backdrop-blur-sm">
-              <CardHeader className="text-center pb-6">
-                <div className="mx-auto w-16 h-16 bg-gradient-to-r from-primary-prosalud to-secondary-prosaludgreen rounded-full flex items-center justify-center mb-4">
-                  <Star className="h-8 w-8 text-white" />
-                </div>
-                <CardTitle className="text-2xl">Información Básica</CardTitle>
-                <CardDescription>Datos principales del evento de bienestar</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Columna izquierda */}
+            <div className="space-y-6">
+              {/* Información Básica */}
+              <Card className="border shadow-sm bg-white">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                      <Star className="h-5 w-5 text-blue-600" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-lg">Información Básica</CardTitle>
+                      <CardDescription>Datos principales del evento</CardDescription>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="title" className="text-sm font-semibold">
+                    <Label htmlFor="title" className="text-sm font-medium">
                       Título del Evento *
                     </Label>
                     <Input
                       id="title"
                       {...form.register('title')}
-                      className="h-12"
+                      className="h-10"
                       placeholder="Ej: Jornada de Vacunación 2024"
                     />
                     {form.formState.errors.title && (
                       <p className="text-destructive text-sm">{form.formState.errors.title.message}</p>
                     )}
                   </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="date" className="text-sm font-medium">
+                        Fecha *
+                      </Label>
+                      <Input
+                        id="date"
+                        type="date"
+                        {...form.register('date')}
+                        className="h-10"
+                      />
+                      {form.formState.errors.date && (
+                        <p className="text-destructive text-sm">{form.formState.errors.date.message}</p>
+                      )}
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="category" className="text-sm font-medium">
+                        Categoría *
+                      </Label>
+                      <select
+                        id="category"
+                        {...form.register('category')}
+                        className="w-full h-10 px-3 py-2 border border-input rounded-md bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                      >
+                        <option value="">Seleccionar</option>
+                        {categories.map(category => (
+                          <option key={category} value={category}>{category}</option>
+                        ))}
+                      </select>
+                      {form.formState.errors.category && (
+                        <p className="text-destructive text-sm">{form.formState.errors.category.message}</p>
+                      )}
+                    </div>
+                  </div>
+
                   <div className="space-y-2">
-                    <Label htmlFor="date" className="text-sm font-semibold">
-                      Fecha del Evento *
+                    <Label htmlFor="description" className="text-sm font-medium">
+                      Descripción
                     </Label>
-                    <Input
-                      id="date"
-                      type="date"
-                      {...form.register('date')}
-                      className="h-12"
+                    <Textarea
+                      id="description"
+                      {...form.register('description')}
+                      rows={3}
+                      className="resize-none text-sm"
+                      placeholder="Describe los detalles del evento..."
                     />
-                    {form.formState.errors.date && (
-                      <p className="text-destructive text-sm">{form.formState.errors.date.message}</p>
+                    {form.formState.errors.description && (
+                      <p className="text-destructive text-sm">{form.formState.errors.description.message}</p>
                     )}
                   </div>
-                </div>
+                </CardContent>
+              </Card>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="category" className="text-sm font-semibold">
-                      Categoría *
-                    </Label>
-                    <select
-                      id="category"
-                      {...form.register('category')}
-                      className="w-full h-12 px-3 py-2 border border-input rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-ring"
-                    >
-                      <option value="">Seleccionar categoría</option>
-                      {categories.map(category => (
-                        <option key={category} value={category}>{category}</option>
-                      ))}
-                    </select>
-                    {form.formState.errors.category && (
-                      <p className="text-destructive text-sm">{form.formState.errors.category.message}</p>
-                    )}
+              {/* Detalles Adicionales */}
+              <Card className="border shadow-sm bg-white">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                      <MapPin className="h-5 w-5 text-green-600" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-lg">Detalles Adicionales</CardTitle>
+                      <CardDescription>Información complementaria</CardDescription>
+                    </div>
                   </div>
+                </CardHeader>
+                <CardContent className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="provider" className="text-sm font-semibold">
-                      Proveedor/Organizador
-                    </Label>
-                    <Input
-                      id="provider"
-                      {...form.register('provider')}
-                      placeholder="ProSalud"
-                      className="h-12"
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="description" className="text-sm font-semibold">
-                    Descripción del Evento
-                  </Label>
-                  <Textarea
-                    id="description"
-                    {...form.register('description')}
-                    rows={4}
-                    className="resize-none"
-                    placeholder="Describe los detalles del evento de bienestar..."
-                  />
-                  {form.formState.errors.description && (
-                    <p className="text-destructive text-sm">{form.formState.errors.description.message}</p>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Detalles Adicionales */}
-            <Card className="border-0 shadow-lg bg-white/80 backdrop-blur-sm">
-              <CardHeader className="text-center pb-6">
-                <div className="mx-auto w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center mb-4">
-                  <MapPin className="h-8 w-8 text-white" />
-                </div>
-                <CardTitle className="text-2xl">Detalles Adicionales</CardTitle>
-                <CardDescription>Información complementaria del evento</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="location" className="text-sm font-semibold flex items-center gap-2">
-                      <MapPin className="h-4 w-4" />
+                    <Label htmlFor="location" className="text-sm font-medium">
                       Ubicación
                     </Label>
                     <Input
                       id="location"
                       {...form.register('location')}
-                      className="h-12"
+                      className="h-10"
                       placeholder="Ej: Sede Principal"
                     />
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="attendees" className="text-sm font-semibold flex items-center gap-2">
-                      <Users className="h-4 w-4" />
-                      Asistentes
-                    </Label>
-                    <Input
-                      id="attendees"
-                      type="number"
-                      min="1"
-                      max="10000"
-                      {...form.register('attendees', { valueAsNumber: true })}
-                      className="h-12"
-                      placeholder="150"
-                    />
-                    {form.formState.errors.attendees && (
-                      <p className="text-destructive text-sm">{form.formState.errors.attendees.message}</p>
-                    )}
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="attendees" className="text-sm font-medium">
+                        Asistentes
+                      </Label>
+                      <Input
+                        id="attendees"
+                        type="number"
+                        min="1"
+                        max="10000"
+                        {...form.register('attendees', { valueAsNumber: true })}
+                        className="h-10"
+                        placeholder="150"
+                      />
+                      {form.formState.errors.attendees && (
+                        <p className="text-destructive text-sm">{form.formState.errors.attendees.message}</p>
+                      )}
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="provider" className="text-sm font-medium">
+                        Organizador
+                      </Label>
+                      <Input
+                        id="provider"
+                        {...form.register('provider')}
+                        placeholder="ProSalud"
+                        className="h-10"
+                      />
+                    </div>
                   </div>
+
                   <div className="space-y-2">
-                    <Label htmlFor="gift" className="text-sm font-semibold flex items-center gap-2">
-                      <Gift className="h-4 w-4" />
+                    <Label htmlFor="gift" className="text-sm font-medium">
                       Obsequio
                     </Label>
                     <Input
                       id="gift"
                       {...form.register('gift')}
-                      className="h-12"
+                      className="h-10"
                       placeholder="Ej: Kit de bienestar"
                     />
                   </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </div>
 
-            {/* Imágenes */}
-            <Card className="border-0 shadow-lg bg-white/80 backdrop-blur-sm">
-              <CardHeader className="text-center pb-6">
-                <div className="mx-auto w-16 h-16 bg-gradient-to-r from-green-500 to-teal-500 rounded-full flex items-center justify-center mb-4">
-                  <ImageIcon className="h-8 w-8 text-white" />
-                </div>
-                <CardTitle className="text-2xl">Imágenes del Evento</CardTitle>
-                <CardDescription>Sube entre 1 y 20 imágenes. Marca una como principal (máximo 5MB cada una)</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-6">
-                  <div className="border-2 border-dashed border-gray-300 rounded-xl p-12 text-center hover:border-gray-400 transition-colors">
-                    <input
-                      type="file"
-                      multiple
-                      accept="image/jpeg,image/png,image/webp"
-                      onChange={handleImageUpload}
-                      className="hidden"
-                      id="image-upload"
-                    />
-                    <label htmlFor="image-upload" className="cursor-pointer">
-                      <Upload className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-                      <p className="text-xl font-medium text-gray-600 mb-2">Seleccionar imágenes</p>
-                      <p className="text-sm text-gray-500">Máximo 20 imágenes, formatos JPG, PNG o WebP</p>
-                    </label>
-                  </div>
-
-                  {imagePreviews.length > 0 && (
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                      {imagePreviews.map((preview, index) => (
-                        <div key={index} className="relative group">
-                          <img
-                            src={preview}
-                            alt={`Preview ${index + 1}`}
-                            className="w-full h-32 object-cover rounded-lg"
-                          />
-                          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center gap-2">
-                            <Button
-                              type="button"
-                              size="sm"
-                              variant={mainImageIndex === index ? "default" : "outline"}
-                              onClick={() => setMainImageIndex(index)}
-                              className="h-8 w-8 p-0"
-                            >
-                              <Star className={`h-4 w-4 ${mainImageIndex === index ? 'fill-current' : ''}`} />
-                            </Button>
-                            <Button
-                              type="button"
-                              size="sm"
-                              variant="destructive"
-                              onClick={() => removeImage(index)}
-                              className="h-8 w-8 p-0"
-                            >
-                              <X className="h-4 w-4" />
-                            </Button>
-                          </div>
-                          {mainImageIndex === index && (
-                            <div className="absolute top-2 left-2 bg-primary-prosalud text-white text-xs px-2 py-1 rounded">
-                              Principal
-                            </div>
-                          )}
-                        </div>
-                      ))}
+            {/* Columna derecha */}
+            <div className="space-y-6">
+              {/* Imágenes */}
+              <Card className="border shadow-sm bg-white">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                      <ImageIcon className="h-5 w-5 text-purple-600" />
                     </div>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
+                    <div>
+                      <CardTitle className="text-lg">Imágenes del Evento</CardTitle>
+                      <CardDescription>Sube hasta 20 imágenes (máx. 5MB cada una)</CardDescription>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {!imagePreviews.length ? (
+                      <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-gray-400 transition-colors">
+                        <input
+                          type="file"
+                          multiple
+                          accept="image/jpeg,image/png,image/webp"
+                          onChange={handleImageUpload}
+                          className="hidden"
+                          id="image-upload"
+                        />
+                        <label htmlFor="image-upload" className="cursor-pointer">
+                          <Upload className="h-12 w-12 text-gray-400 mx-auto mb-3" />
+                          <p className="text-lg font-medium text-gray-600 mb-1">Seleccionar imágenes</p>
+                          <p className="text-sm text-gray-500">JPG, PNG o WebP</p>
+                        </label>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="grid grid-cols-2 gap-3">
+                          {imagePreviews.map((preview, index) => (
+                            <div key={index} className="relative group">
+                              <img
+                                src={preview}
+                                alt={`Preview ${index + 1}`}
+                                className="w-full h-24 object-cover rounded-lg"
+                              />
+                              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center gap-1">
+                                <Button
+                                  type="button"
+                                  size="sm"
+                                  variant={mainImageIndex === index ? "default" : "outline"}
+                                  onClick={() => setMainImageIndex(index)}
+                                  className="h-7 w-7 p-0"
+                                >
+                                  <Star className={`h-3 w-3 ${mainImageIndex === index ? 'fill-current' : ''}`} />
+                                </Button>
+                                <Button
+                                  type="button"
+                                  size="sm"
+                                  variant="destructive"
+                                  onClick={() => removeImage(index)}
+                                  className="h-7 w-7 p-0"
+                                >
+                                  <X className="h-3 w-3" />
+                                </Button>
+                              </div>
+                              {mainImageIndex === index && (
+                                <div className="absolute top-1 left-1 bg-yellow-500 text-white text-xs px-1.5 py-0.5 rounded">
+                                  Principal
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                        <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
+                          <input
+                            type="file"
+                            multiple
+                            accept="image/jpeg,image/png,image/webp"
+                            onChange={handleImageUpload}
+                            className="hidden"
+                            id="image-upload-more"
+                          />
+                          <label htmlFor="image-upload-more" className="cursor-pointer">
+                            <Plus className="h-8 w-8 text-gray-400 mx-auto mb-2" />
+                            <p className="text-sm text-gray-600">Agregar más imágenes</p>
+                          </label>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
 
-            {/* Botones de acción */}
-            <div className="flex flex-col sm:flex-row justify-center gap-4 pt-6">
-              <Button 
-                type="button" 
-                variant="outline" 
-                onClick={onClose}
-                className="h-12 px-8"
-              >
-                Cancelar
-              </Button>
-              <Button
-                type="submit"
-                disabled={createMutation.isPending || updateMutation.isPending}
-                className="h-12 px-8 bg-gradient-to-r from-primary-prosalud to-primary-prosalud-dark"
-              >
-                {createMutation.isPending || updateMutation.isPending
-                  ? 'Guardando...'
-                  : event ? 'Actualizar Evento' : 'Crear Evento'
-                }
-              </Button>
+              {/* Botones de acción */}
+              <div className="flex flex-col gap-3">
+                <Button
+                  type="submit"
+                  disabled={createMutation.isPending || updateMutation.isPending}
+                  className="h-12 bg-primary-prosalud hover:bg-primary-prosalud-dark"
+                >
+                  {createMutation.isPending || updateMutation.isPending
+                    ? 'Guardando...'
+                    : event ? 'Actualizar Evento' : 'Crear Evento'
+                  }
+                </Button>
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  onClick={onClose}
+                  className="h-12"
+                >
+                  Cancelar
+                </Button>
+              </div>
             </div>
           </form>
         </motion.div>

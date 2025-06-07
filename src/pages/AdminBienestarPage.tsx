@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
@@ -94,12 +95,10 @@ const AdminBienestarPage: React.FC = () => {
 
   if (showForm) {
     return (
-      <AdminLayout>
-        <BienestarEventForm
-          event={selectedEvent}
-          onClose={handleFormClose}
-        />
-      </AdminLayout>
+      <BienestarEventForm
+        event={selectedEvent}
+        onClose={handleFormClose}
+      />
     );
   }
 
