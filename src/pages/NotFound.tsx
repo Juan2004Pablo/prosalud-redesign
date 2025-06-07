@@ -54,7 +54,7 @@ const NotFound = () => {
                 variant="outline"
                 size="lg"
                 onClick={() => window.history.back()}
-                className="text-white border-white/70 hover:bg-white/10 bg-white/10 px-8 py-6 transition-all duration-300 transform hover:scale-105"
+                className="text-white border-white/70 bg-white/10 px-8 py-6 transition-all duration-300 transform hover:scale-105"
               >
                 <ArrowLeft className="mr-2 h-5 w-5" />
                 Página Anterior
@@ -77,6 +77,16 @@ const NotFound = () => {
           <div className="mt-8 text-center">
             <p className="text-primary-prosalud-light/75 mb-4">¿Quizás estabas buscando?</p>
             <div className="flex flex-wrap gap-3 justify-center">
+              <Link to="/faq">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-primary-prosalud-light hover:text-white hover:bg-white/10 transition-colors"
+                >
+                  <Search className="mr-1 h-4 w-4" />
+                  FAQ
+                </Button>
+              </Link>
               <Link to="/servicios/certificado-convenio">
                 <Button
                   variant="ghost"
@@ -102,16 +112,6 @@ const NotFound = () => {
                   className="text-primary-prosalud-light hover:text-white hover:bg-white/10 transition-colors"
                 >
                   Bienestar
-                </Button>
-              </Link>
-              <Link to="/faq">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-primary-prosalud-light hover:text-white hover:bg-white/10 transition-colors"
-                >
-                  <Search className="mr-1 h-4 w-4" />
-                  FAQ
                 </Button>
               </Link>
             </div>

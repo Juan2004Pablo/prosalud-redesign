@@ -72,7 +72,7 @@ const HeroSection: React.FC = () => {
                   Trámites Rápidos
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
-                <Link to="/nosotros/yes" aria-label="Conocer más sobre ProSalud">
+                <Link to="/nosotros" aria-label="Conocer más sobre ProSalud">
                   <Button
                     variant="outline"
                     size="lg"
