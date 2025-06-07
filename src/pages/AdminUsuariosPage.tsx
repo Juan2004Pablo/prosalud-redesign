@@ -36,7 +36,10 @@ const AdminUsuariosPage: React.FC = () => {
 
   const { data: usersResponse, isLoading, error } = useQuery({
     queryKey: ['users', currentPage, searchTerm, statusFilter],
-    queryFn: () => usersApi.getUsers(currentPage, itemsPerPage, searchTerm, statusFilter)
+    queryFn: () => {
+      const status = statusFilter === 'all' ? undefined : statusFilter;
+      return usersApi.getUsers(currentPage, itemsPerPage, searchTerm, status);
+    }
   });
 
   // Extract users array from the paginated response
@@ -60,7 +63,7 @@ const AdminUsuariosPage: React.FC = () => {
 
   if (showForm) {
     return (
-      <UserForm 
+      <UserForm
         user={selectedUser}
         onClose={handleCloseForm}
       />
@@ -84,8 +87,8 @@ const AdminUsuariosPage: React.FC = () => {
                   Gestión de Usuarios
                 </h1>
               </div>
-              <Button 
-                onClick={handleCreate} 
+              <Button
+                onClick={handleCreate}
                 className="bg-primary-prosalud hover:bg-primary-prosalud-dark w-full sm:w-auto"
               >
                 <Plus className="h-5 w-5 mr-2" />
@@ -152,9 +155,9 @@ const AdminUsuariosPage: React.FC = () => {
                   {users.map((user) => (
                     <div key={user.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 border rounded-lg hover:bg-slate-50 transition-colors gap-4">
                       <div className="flex items-center gap-3 flex-1">
-                        <UserAvatar 
-                          firstName={user.firstName} 
-                          lastName={user.lastName} 
+                        <UserAvatar
+                          firstName={user.firstName}
+                          lastName={user.lastName}
                           size="md"
                         />
                         <div className="flex-1">
