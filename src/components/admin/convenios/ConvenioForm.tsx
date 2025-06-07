@@ -163,7 +163,7 @@ const ConvenioForm: React.FC<ConvenioFormProps> = ({ convenio, onClose }) => {
                 <ArrowLeft className="h-6 w-6" />
               </Button>
               <div className="flex-1">
-                <h1 className="text-4xl font-bold bg-gradient-to-r from-secondary-prosaludgreen to-accent-prosaludteal bg-clip-text text-transparent">
+                <h1 className="text-4xl font-bold text-secondary-prosaludgreen">
                   {convenio ? 'Editar Convenio' : 'Nuevo Convenio'}
                 </h1>
                 <p className="text-lg text-muted-foreground mt-2">
@@ -177,8 +177,8 @@ const ConvenioForm: React.FC<ConvenioFormProps> = ({ convenio, onClose }) => {
             {/* Información Básica */}
             <Card className="border-0 shadow-lg bg-white/80 backdrop-blur-sm">
               <CardHeader className="text-center pb-6">
-                <div className="mx-auto w-16 h-16 bg-gradient-to-r from-secondary-prosaludgreen to-accent-prosaludteal rounded-full flex items-center justify-center mb-4">
-                  <Building className="h-8 w-8 text-white" />
+                <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
+                  <Building className="h-8 w-8 text-green-600" />
                 </div>
                 <CardTitle className="text-2xl">Información del Convenio</CardTitle>
                 <CardDescription>Datos básicos del convenio o alianza estratégica</CardDescription>
@@ -204,8 +204,8 @@ const ConvenioForm: React.FC<ConvenioFormProps> = ({ convenio, onClose }) => {
             {/* Imagen del Convenio */}
             <Card className="border-0 shadow-lg bg-white/80 backdrop-blur-sm">
               <CardHeader className="text-center pb-6">
-                <div className="mx-auto w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center mb-4">
-                  <ImageIcon className="h-8 w-8 text-white" />
+                <div className="mx-auto w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mb-4">
+                  <ImageIcon className="h-8 w-8 text-purple-600" />
                 </div>
                 <CardTitle className="text-2xl">Imagen del Convenio</CardTitle>
                 <CardDescription>Logo o imagen representativa del convenio (máximo 5MB)</CardDescription>
@@ -262,7 +262,7 @@ const ConvenioForm: React.FC<ConvenioFormProps> = ({ convenio, onClose }) => {
               <Button
                 type="submit"
                 disabled={createMutation.isPending || updateMutation.isPending}
-                className="h-12 px-8 bg-gradient-to-r from-secondary-prosaludgreen to-accent-prosaludteal"
+                className="h-12 px-8 bg-secondary-prosaludgreen hover:bg-secondary-prosaludgreen-dark"
               >
                 {createMutation.isPending || updateMutation.isPending
                   ? 'Guardando...'

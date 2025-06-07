@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -146,14 +147,14 @@ const ComfenalcoEventForm: React.FC<ComfenalcoEventFormProps> = ({ event, onClos
     }
 
     const eventData: CreateComfenalcoEventData = {
-      title: data.title,
+      title: data.title.trim(),
       bannerImage: bannerImage!,
-      description: data.description || undefined,
+      description: data.description?.trim() || undefined,
       registrationDeadline: data.registrationDeadline || undefined,
       eventDate: data.eventDate || undefined,
-      registrationLink: data.registrationLink,
-      formLink: data.formLink,
-      category: data.category,
+      registrationLink: data.registrationLink.trim(),
+      formLink: data.formLink.trim(),
+      category: data.category.trim(),
       displaySize: data.displaySize
     };
 
@@ -185,7 +186,7 @@ const ComfenalcoEventForm: React.FC<ComfenalcoEventFormProps> = ({ event, onClos
                 <ArrowLeft className="h-6 w-6" />
               </Button>
               <div className="flex-1">
-                <h1 className="text-4xl font-bold bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">
+                <h1 className="text-4xl font-bold text-orange-600">
                   {event ? 'Editar Experiencia' : 'Nueva Experiencia'} Comfenalco
                 </h1>
                 <p className="text-lg text-muted-foreground mt-2">
@@ -199,8 +200,8 @@ const ComfenalcoEventForm: React.FC<ComfenalcoEventFormProps> = ({ event, onClos
             {/* Información Básica */}
             <Card className="border-0 shadow-lg bg-white/80 backdrop-blur-sm">
               <CardHeader className="text-center pb-6">
-                <div className="mx-auto w-16 h-16 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center mb-4">
-                  <Calendar className="h-8 w-8 text-white" />
+                <div className="mx-auto w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mb-4">
+                  <Calendar className="h-8 w-8 text-orange-600" />
                 </div>
                 <CardTitle className="text-2xl">Información Básica</CardTitle>
                 <CardDescription>Datos principales de la experiencia Comfenalco</CardDescription>
@@ -278,8 +279,8 @@ const ComfenalcoEventForm: React.FC<ComfenalcoEventFormProps> = ({ event, onClos
             {/* Fechas y Enlaces */}
             <Card className="border-0 shadow-lg bg-white/80 backdrop-blur-sm">
               <CardHeader className="text-center pb-6">
-                <div className="mx-auto w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center mb-4">
-                  <LinkIcon className="h-8 w-8 text-white" />
+                <div className="mx-auto w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+                  <LinkIcon className="h-8 w-8 text-blue-600" />
                 </div>
                 <CardTitle className="text-2xl">Fechas y Enlaces</CardTitle>
                 <CardDescription>Información de fechas y enlaces relacionados</CardDescription>
@@ -348,8 +349,8 @@ const ComfenalcoEventForm: React.FC<ComfenalcoEventFormProps> = ({ event, onClos
             {/* Banner Image */}
             <Card className="border-0 shadow-lg bg-white/80 backdrop-blur-sm">
               <CardHeader className="text-center pb-6">
-                <div className="mx-auto w-16 h-16 bg-gradient-to-r from-green-500 to-teal-500 rounded-full flex items-center justify-center mb-4">
-                  <ImageIcon className="h-8 w-8 text-white" />
+                <div className="mx-auto w-16 h-16 bg-teal-100 rounded-full flex items-center justify-center mb-4">
+                  <ImageIcon className="h-8 w-8 text-teal-600" />
                 </div>
                 <CardTitle className="text-2xl">Imagen Banner</CardTitle>
                 <CardDescription>Sube la imagen principal de la experiencia (máximo 5MB)</CardDescription>
@@ -406,7 +407,7 @@ const ComfenalcoEventForm: React.FC<ComfenalcoEventFormProps> = ({ event, onClos
               <Button
                 type="submit"
                 disabled={createMutation.isPending || updateMutation.isPending}
-                className="h-12 px-8 bg-gradient-to-r from-orange-500 to-red-500"
+                className="h-12 px-8 bg-orange-500 hover:bg-orange-600"
               >
                 {createMutation.isPending || updateMutation.isPending
                   ? 'Guardando...'

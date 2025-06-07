@@ -116,7 +116,7 @@ const UserForm: React.FC<UserFormProps> = ({ user, onClose }) => {
                 <ArrowLeft className="h-6 w-6" />
               </Button>
               <div className="flex-1">
-                <h1 className="text-4xl font-bold bg-gradient-to-r from-primary-prosalud to-primary-prosalud-dark bg-clip-text text-transparent">
+                <h1 className="text-4xl font-bold text-primary-prosalud">
                   {user ? 'Editar Usuario' : 'Nuevo Usuario'}
                 </h1>
                 <p className="text-lg text-muted-foreground mt-2">
@@ -130,8 +130,8 @@ const UserForm: React.FC<UserFormProps> = ({ user, onClose }) => {
             {/* Información Personal */}
             <Card className="border-0 shadow-lg bg-white/80 backdrop-blur-sm">
               <CardHeader className="text-center pb-6">
-                <div className="mx-auto w-16 h-16 bg-gradient-to-r from-primary-prosalud to-primary-prosalud-dark rounded-full flex items-center justify-center mb-4">
-                  <UserIcon className="h-8 w-8 text-white" />
+                <div className="mx-auto w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+                  <UserIcon className="h-8 w-8 text-blue-600" />
                 </div>
                 <CardTitle className="text-2xl">Información Personal</CardTitle>
                 <CardDescription>Datos básicos del usuario del sistema</CardDescription>
@@ -221,7 +221,7 @@ const UserForm: React.FC<UserFormProps> = ({ user, onClose }) => {
               <Button
                 type="submit"
                 disabled={createMutation.isPending || updateMutation.isPending}
-                className="h-12 px-8 bg-gradient-to-r from-primary-prosalud to-primary-prosalud-dark"
+                className="h-12 px-8 bg-primary-prosalud hover:bg-primary-prosalud-dark"
               >
                 {createMutation.isPending || updateMutation.isPending
                   ? 'Guardando...'
