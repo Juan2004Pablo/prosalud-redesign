@@ -23,7 +23,10 @@ const NotFound = () => {
     <div className="min-h-screen bg-gradient-to-br from-primary-prosalud via-primary-prosalud-dark to-slate-900 flex items-center justify-center px-4">
       <div className="max-w-4xl mx-auto text-center">
         {/* Animated 404 Number */}
-
+        <div className="relative mb-8">
+          <div className="absolute inset-0 text-8xl md:text-9xl font-black text-blue-200/20 animate-pulse">404</div>
+        </div>
+        
         {/* Content */}
         <div className={`transform transition-all duration-1000 delay-300 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
           <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 md:p-12 border border-white/20 shadow-2xl">
