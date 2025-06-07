@@ -24,6 +24,9 @@ const NotFound = () => {
       <div className="max-w-4xl mx-auto text-center">
         {/* Animated 404 Number */}
         <div className="relative mb-8">
+          <h1 className="text-8xl md:text-9xl font-black text-transparent bg-clip-text animate-bounce">
+            404
+          </h1>
           <div className="absolute inset-0 text-8xl md:text-9xl font-black text-blue-200/20 animate-pulse">404</div>
         </div>
         
