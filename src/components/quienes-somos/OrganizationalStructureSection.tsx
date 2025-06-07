@@ -7,6 +7,22 @@ import {
 } from 'lucide-react';
 
 const OrganizationalStructureSection: React.FC = () => {
+  const organosData = [
+    { title: "Presidente", icon: UserCog, description: "Liderazgo y representación general." },
+    { title: "Vicepresidente", icon: UserSquare, description: "Apoyo en liderazgo y funciones delegadas." },
+    { title: "Vocales", icon: UsersRound, description: "Representación y voz de los afiliados." },
+    { title: "Tesorero", icon: Calculator, description: "Gestión financiera y de recursos." },
+    { title: "Fiscal", icon: ShieldQuestion, description: "Vigilancia y control normativo." },
+  ];
+
+  const areasData = [
+    { title: "S. Gerencia", icon: BriefcaseBusiness, description: "Soporte a la gerencia y procesos estratégicos." },
+    { title: "Nómina", icon: FileText, description: "Gestión de pagos y compensaciones." },
+    { title: "Sistemas", icon: Laptop, description: "Infraestructura tecnológica y soporte." },
+    { title: "Recursos Humanos", icon: Users, description: "Gestión del talento humano y bienestar." },
+    { title: "S.S.T.", icon: Shield, subTitle: "(Salud y Seguridad en el Trabajo)", description: "Promoción de un entorno seguro y saludable." },
+  ];
+
   return (
     <section id="estructura-organizacional" className="py-16 md:py-24 bg-slate-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -34,15 +50,18 @@ const OrganizationalStructureSection: React.FC = () => {
             <h3 className="text-2xl md:text-3xl font-semibold text-secondary-prosaludgreen mb-8 text-center flex items-center justify-center">
               <Network size={30} className="mr-3" /> Órganos de Dirección y Control
             </h3>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[
-                { title: "Presidente", icon: UserCog, description: "Liderazgo y representación general." },
-                { title: "Vicepresidente", icon: UserSquare, description: "Apoyo en liderazgo y funciones delegadas." },
-                { title: "Vocales", icon: UsersRound, description: "Representación y voz de los afiliados." },
-                { title: "Tesorero", icon: Calculator, description: "Gestión financiera y de recursos." },
-                { title: "Fiscal", icon: ShieldQuestion, description: "Vigilancia y control normativo." },
-              ].map((item, index) => (
-                <Card key={index} className="shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-lg p-6 text-center animate-scale-in" style={{ animationDelay: `${index * 100 + 400}ms` }}>
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 place-items-center">
+              {organosData.slice(0, 3).map((item, index) => (
+                <Card key={index} className="w-full max-w-sm shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-lg p-6 text-center animate-scale-in" style={{ animationDelay: `${index * 100 + 400}ms` }}>
+                  <item.icon size={36} className="mx-auto mb-3 text-primary-prosalud" />
+                  <CardTitle className="text-xl font-medium text-text-dark mb-1">{item.title}</CardTitle>
+                  <CardDescription className="text-sm text-text-gray">{item.description}</CardDescription>
+                </Card>
+              ))}
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 place-items-center mt-6 max-w-2xl mx-auto">
+              {organosData.slice(3).map((item, index) => (
+                <Card key={index + 3} className="w-full max-w-sm shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-lg p-6 text-center animate-scale-in" style={{ animationDelay: `${(index + 3) * 100 + 400}ms` }}>
                   <item.icon size={36} className="mx-auto mb-3 text-primary-prosalud" />
                   <CardTitle className="text-xl font-medium text-text-dark mb-1">{item.title}</CardTitle>
                   <CardDescription className="text-sm text-text-gray">{item.description}</CardDescription>
@@ -68,15 +87,18 @@ const OrganizationalStructureSection: React.FC = () => {
             <h3 className="text-2xl md:text-3xl font-semibold text-secondary-prosaludgreen mb-8 text-center flex items-center justify-center">
               <Workflow size={30} className="mr-3" /> Áreas Operativas
             </h3>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[
-                { title: "S. Gerencia", icon: BriefcaseBusiness, description: "Soporte a la gerencia y procesos estratégicos." },
-                { title: "Nómina", icon: FileText, description: "Gestión de pagos y compensaciones." },
-                { title: "Sistemas", icon: Laptop, description: "Infraestructura tecnológica y soporte." },
-                { title: "Recursos Humanos", icon: Users, description: "Gestión del talento humano y bienestar." },
-                { title: "S.S.T.", icon: Shield, subTitle: "(Salud y Seguridad en el Trabajo)", description: "Promoción de un entorno seguro y saludable." },
-              ].map((item, index) => (
-                <Card key={index} className="shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-lg p-6 text-center animate-scale-in" style={{ animationDelay: `${index * 100 + 800}ms` }}>
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 place-items-center">
+              {areasData.slice(0, 3).map((item, index) => (
+                <Card key={index} className="w-full max-w-sm shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-lg p-6 text-center animate-scale-in" style={{ animationDelay: `${index * 100 + 800}ms` }}>
+                  <item.icon size={36} className="mx-auto mb-3 text-primary-prosalud" />
+                  <CardTitle className="text-xl font-medium text-text-dark mb-1">{item.title} {item.subTitle && <span className="block text-xs text-muted-foreground">{item.subTitle}</span>}</CardTitle>
+                  <CardDescription className="text-sm text-text-gray">{item.description}</CardDescription>
+                </Card>
+              ))}
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 place-items-center mt-6 max-w-2xl mx-auto">
+              {areasData.slice(3).map((item, index) => (
+                <Card key={index + 3} className="w-full max-w-sm shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-lg p-6 text-center animate-scale-in" style={{ animationDelay: `${(index + 3) * 100 + 800}ms` }}>
                   <item.icon size={36} className="mx-auto mb-3 text-primary-prosalud" />
                   <CardTitle className="text-xl font-medium text-text-dark mb-1">{item.title} {item.subTitle && <span className="block text-xs text-muted-foreground">{item.subTitle}</span>}</CardTitle>
                   <CardDescription className="text-sm text-text-gray">{item.description}</CardDescription>
