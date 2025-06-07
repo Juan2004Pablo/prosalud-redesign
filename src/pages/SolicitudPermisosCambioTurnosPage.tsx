@@ -1,14 +1,20 @@
+
 import React from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { Link } from 'react-router-dom';
-import { Home, Download, AlertTriangle, FileText } from 'lucide-react';
+import { Home, DownloadCloud, AlertTriangle, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 const SolicitudPermisosCambioTurnosPage: React.FC = () => {
   const formatoPermisosUrl = "http://orgs.ddns.net:8091/DocPublicos/Modelo%20de%20Plantillas/Formato%20Solicitud%20Permisos/Formato%20Solicitud%20Permisos.pdf";
   const formatoCambioTurnosUrl = "http://orgs.ddns.net:8091/DocPublicos/Modelo%20de%20Plantillas/Formato%20cambio%20de%20turnos/Formato%20cambio%20de%20turnos%20ProSalud.pdf";
+
+  const handleDownload = (url: string) => (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    window.open(url, '_blank');
+  };
 
   return (
     <MainLayout>
@@ -44,35 +50,32 @@ const SolicitudPermisosCambioTurnosPage: React.FC = () => {
           </header>
         <div className="bg-card p-6 md:p-8 rounded-lg shadow-lg border border-prosalud-border">
           
-
-          <section className="mb-10 p-6 border rounded-lg bg-gray-50 shadow-sm">
-            <h2 className="text-xl font-semibold text-gray-700 mb-4 flex items-center">
-              <Download className="mr-3 h-6 w-6 text-primary-prosalud" /> Descarga de Formatos
-            </h2>
-            <p className="text-gray-600 mb-6">
-              Descarga los formatos oficiales para tu solicitud. Asegúrate de diligenciarlos completamente y obtener las firmas requeridas.
+          <div className="mb-6 p-6 border-2 border-primary-prosalud rounded-lg shadow-lg bg-primary-prosalud/5 text-center">
+            <h2 className="text-xl font-semibold text-primary-prosalud mb-4">Descargar Formatos de Solicitud</h2>
+            <p className="text-gray-700 mb-4">
+              Descargue los formatos oficiales para su solicitud. Asegúrese de diligenciarlos completamente y obtener las firmas requeridas.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Button 
-                asChild 
-                className="w-full bg-secondary-prosaludgreen hover:bg-secondary-prosaludgreen/90 text-white py-6 text-base"
+              <Button
+                type="button"
+                onClick={handleDownload(formatoPermisosUrl)}
                 size="lg"
+                className="bg-primary-prosalud hover:bg-primary-prosalud/90 text-white"
               >
-                <a href={formatoPermisosUrl} target="_blank" rel="noopener noreferrer">
-                  <Download className="mr-2 h-5 w-5" /> Formato de Solicitud de Permisos
-                </a>
+                <DownloadCloud className="mr-2 h-5 w-5" />
+                Formato de Permisos
               </Button>
-              <Button 
-                asChild 
-                className="w-full bg-secondary-prosaludgreen hover:bg-secondary-prosaludgreen/90 text-white py-6 text-base"
+              <Button
+                type="button"
+                onClick={handleDownload(formatoCambioTurnosUrl)}
                 size="lg"
+                className="bg-primary-prosalud hover:bg-primary-prosalud/90 text-white"
               >
-                <a href={formatoCambioTurnosUrl} target="_blank" rel="noopener noreferrer">
-                  <Download className="mr-2 h-5 w-5" /> Formato de Cambio de Turnos
-                </a>
+                <DownloadCloud className="mr-2 h-5 w-5" />
+                Formato de Cambio de Turnos
               </Button>
             </div>
-          </section>
+          </div>
 
           <section className="mb-8">
             <Alert className="border-amber-400 bg-amber-50 text-amber-700">
