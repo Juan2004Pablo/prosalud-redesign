@@ -52,7 +52,7 @@ const OrganizationalStructureSection: React.FC = () => {
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 place-items-center">
               {organosData.slice(0, 3).map((item, index) => (
-                <Card key={index} className="w-full max-w-sm shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-lg p-6 text-center animate-scale-in" style={{ animationDelay: `${index * 100 + 400}ms` }}>
+                <Card key={index} className="w-full max-w-sm min-h-[170px] shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-lg p-6 text-center animate-scale-in" style={{ animationDelay: `${index * 100 + 400}ms` }}>
                   <item.icon size={36} className="mx-auto mb-3 text-primary-prosalud" />
                   <CardTitle className="text-xl font-medium text-text-dark mb-1">{item.title}</CardTitle>
                   <CardDescription className="text-sm text-text-gray">{item.description}</CardDescription>
@@ -61,7 +61,7 @@ const OrganizationalStructureSection: React.FC = () => {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 place-items-center mt-6 max-w-2xl mx-auto">
               {organosData.slice(3).map((item, index) => (
-                <Card key={index + 3} className="w-full max-w-sm shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-lg p-6 text-center animate-scale-in" style={{ animationDelay: `${(index + 3) * 100 + 400}ms` }}>
+                <Card key={index + 3} className="w-full max-w-sm min-h-[170px] shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-lg p-6 text-center animate-scale-in" style={{ animationDelay: `${(index + 3) * 100 + 400}ms` }}>
                   <item.icon size={36} className="mx-auto mb-3 text-primary-prosalud" />
                   <CardTitle className="text-xl font-medium text-text-dark mb-1">{item.title}</CardTitle>
                   <CardDescription className="text-sm text-text-gray">{item.description}</CardDescription>
@@ -89,7 +89,7 @@ const OrganizationalStructureSection: React.FC = () => {
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 place-items-center">
               {areasData.slice(0, 3).map((item, index) => (
-                <Card key={index} className="w-full max-w-sm shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-lg p-6 text-center animate-scale-in" style={{ animationDelay: `${index * 100 + 800}ms` }}>
+                <Card key={index} className="w-full max-w-sm min-h-[170px] shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-lg p-6 text-center animate-scale-in" style={{ animationDelay: `${index * 100 + 800}ms` }}>
                   <item.icon size={36} className="mx-auto mb-3 text-primary-prosalud" />
                   <CardTitle className="text-xl font-medium text-text-dark mb-1">{item.title} {item.subTitle && <span className="block text-xs text-muted-foreground">{item.subTitle}</span>}</CardTitle>
                   <CardDescription className="text-sm text-text-gray">{item.description}</CardDescription>
