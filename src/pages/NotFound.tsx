@@ -23,27 +23,6 @@ const NotFound = () => {
     <div className="min-h-screen bg-gradient-to-br from-primary-prosalud via-primary-prosalud-dark to-slate-900 flex items-center justify-center px-4">
       <div className="max-w-4xl mx-auto text-center">
         {/* Animated 404 Number */}
-        { /* <div className={`transform transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
-          <div className="relative mb-8">
-            <h1 className="text-8xl md:text-9xl lg:text-[12rem] font-black text-white/10 select-none">
-              404
-            </h1>
-          </div>
-        </div> */ }
-
-        <div className="relative mb-8">
-          <h1 className="text-8xl md:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 animate-bounce">
-            404
-          </h1>
-          <div className="absolute inset-0 text-8xl md:text-9xl font-black text-blue-200/20 animate-pulse">404</div>
-        </div>
-
-        <div className="relative mb-8">
-          <h1 className="text-8xl md:text-9xl lg:text-[12rem] font-black text-transparent bg-clip-text animate-bounce">
-            404
-          </h1>
-          <div className="absolute inset-0 lg:text-[12rem] text-8xl md:text-9xl font-black text-blue-200/20 animate-pulse">404</div>
-        </div>
 
         {/* Content */}
         <div className={`transform transition-all duration-1000 delay-300 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
@@ -51,6 +30,9 @@ const NotFound = () => {
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
               ¡Oops! Página no encontrada
             </h2>
+            <p className="text-lg md:text-xl text-primary-prosalud-light/90 mb-2">
+              Parece que te has perdido en el camino.
+            </p>
             <p className="text-base md:text-lg text-primary-prosalud-light/75 mb-8">
               La página que buscas no existe o ha sido movida.
             </p>
@@ -65,15 +47,6 @@ const NotFound = () => {
 
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Button
-                variant="outline"
-                size="lg"
-                onClick={() => window.history.back()}
-                className="text-white border-white/70 hover:bg-white/10 px-8 py-6 transition-all duration-300 transform hover:scale-105"
-              >
-                <ArrowLeft className="mr-2 h-5 w-5" />
-                Página Anterior
-              </Button>
               <Link to="/">
                 <Button
                   size="lg"
@@ -83,6 +56,16 @@ const NotFound = () => {
                   Volver al Inicio
                 </Button>
               </Link>
+              
+              <Button
+                variant="outline"
+                size="lg"
+                onClick={() => window.history.back()}
+                className="text-white border-white/70 hover:bg-white/10 px-8 py-6 transition-all duration-300 transform hover:scale-105"
+              >
+                <ArrowLeft className="mr-2 h-5 w-5" />
+                Página Anterior
+              </Button>
             </div>
           </div>
         </div>
