@@ -54,7 +54,7 @@ const NotFound = () => {
                 variant="outline"
                 size="lg"
                 onClick={() => window.history.back()}
-                className="text-white border-white/70 bg-white/10 px-8 py-6 transition-all duration-300 transform hover:scale-105"
+                className="text-white border-white/70 hover:bg-white/10 bg-white/10 px-8 py-6 transition-all duration-300 transform hover:scale-105"
               >
                 <ArrowLeft className="mr-2 h-5 w-5" />
                 Página Anterior
