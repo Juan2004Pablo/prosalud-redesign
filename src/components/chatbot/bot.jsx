@@ -847,7 +847,7 @@ export default function ChatBot() {
                                                     <button
                                                         key={index}
                                                         onClick={() => handleSuggestionClick(suggestion)}
-                                                        className="text-left rounded-lg bg-white px-3 py-2 text-xs text-gray-700 shadow-sm transition-all duration-300 hover:bg-prosalud-salud hover:text-white hover:shadow-md dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-prosalud-salud border border-gray-200 dark:border-gray-500"
+                                                        className="text-left rounded-lg bg-white px-3 py-2 text-xs text-gray-700 shadow-sm transition-all duration-300 hover:bg-prosalud-salud hover:text-gray-700 hover:shadow-md dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-prosalud-salud border border-gray-200 dark:border-gray-500"
                                                     >
                                                         {suggestion}
                                                     </button>
