@@ -19,14 +19,15 @@ import js from 'react-syntax-highlighter/dist/cjs/languages/hljs/javascript'
 import json from 'react-syntax-highlighter/dist/cjs/languages/hljs/json'
 import php from 'react-syntax-highlighter/dist/cjs/languages/hljs/php'
 import { atomOneDark } from 'react-syntax-highlighter/dist/cjs/styles/hljs'
+import { generateText, streamText } from 'ai'
+import { createOpenAI } from '@ai-sdk/openai'
 import ReactMarkdown from 'react-markdown'
-import DOMPurify from 'dompurify'
 
 SyntaxHighlighter.registerLanguage('javascript', js)
 SyntaxHighlighter.registerLanguage('json', json)
 SyntaxHighlighter.registerLanguage('php', php)
 
-export default function Chatbot() {
+export default function Bot() {
     const [isOpen, setIsOpen] = useState(false)
     const [messages, setMessages] = useState([])
     const [inputMessage, setInputMessage] = useState('')
@@ -51,22 +52,6 @@ export default function Chatbot() {
 
     const docsModules = import.meta.glob('/src/doc/**/*.md', { as: 'raw' });
 
-    // Security: Input sanitization function
-    const sanitizeInput = (input) => {
-        if (typeof input !== 'string') return '';
-        // Remove potential XSS vectors and limit length
-        const sanitized = DOMPurify.sanitize(input.trim(), { 
-            ALLOWED_TAGS: [],
-            ALLOWED_ATTR: [],
-            KEEP_CONTENT: true 
-        });
-        return sanitized.slice(0, 1000); // Limit input length
-    };
-
-    // Security: Rate limiting for message sending
-    const [lastMessageTime, setLastMessageTime] = useState(0);
-    const MESSAGE_RATE_LIMIT = 2000; // 2 seconds between messages
-
     const importContext = async (specialtyPart) => {
         try {
             if (specialtyPart && !hasContext) {
@@ -79,27 +64,30 @@ export default function Chatbot() {
                     (files['show-chatbot'] ?? true)
                 )
 
+                // Cargamos los MD como texto
                 const getDocs = (files.docs || []).map(fp => {
                     const key = `/src/doc/${fp}`
                     if (!docsModules[key]) {
                         throw new Error(`No encuentro el módulo para la ruta ${key}`)
                     }
-                    return docsModules[key]()
+                    return docsModules[key]()  // devuelve el contenido raw
                 })
 
                 const docsArray = await Promise.all(getDocs)
-                const joinedDocs = docsArray.join('\n\n')
+                const joinedDocs = docsArray.join('\n\n')   // 👈 CAMBIO: construimos la string completa
 
+                // Guardamos el contexto en estado
                 setAllPageContents(joinedDocs)
                 setIndications(joinedDocs)
                 setHasContext(true)
 
+                // Devolvemos los valores para initializeChat
                 return { docs: joinedDocs }
             } else {
                 setShowChatbot(false)
             }
         } catch (error) {
-            // Security: Don't expose internal error details
+            console.error('Error:', error)
             setShowChatbot(false)
         }
     }
@@ -111,13 +99,21 @@ export default function Chatbot() {
         'Información de contacto',
     ]
 
+    const openai = createOpenAI({
+        compatibility: 'strict',
+        apiKey: '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',
+        /** TODO: MANEJAR VARIABLE DE ENTORNO */
+    })
+
     const AVATAR_URL = '/images/bot_avatar.webp'
+        // 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyKQfbFObUQu4wMCYalXLZZ_xilW1J7xriag&s'
+        
 
     const updateSuggestionsHeight = () => {
         if (suggestionsContentRef.current) {
-            const headerHeight = 40
+            const headerHeight = 40 // Height of the suggestions header
             const contentHeight = suggestionsContentRef.current.scrollHeight
-            const maxHeight = Math.min(contentHeight + headerHeight, 300)
+            const maxHeight = Math.min(contentHeight + headerHeight, 300) // Limitar la altura máxima a 300px
             setSuggestionsHeight(maxHeight)
         }
     }
@@ -142,7 +138,7 @@ export default function Chatbot() {
                 if (clickCount === 1) {
                     timer = setTimeout(() => {
                         clickCount = 0
-                    }, 300)
+                    }, 300) // 300ms para detectar doble clic
                 } else if (clickCount === 2) {
                     clearTimeout(timer)
                     clickCount = 0
@@ -231,6 +227,8 @@ export default function Chatbot() {
 
         docs = context.docs
 
+        console.log('docs', docs)
+
         await resetChat(newSpecialty.specialty)
         setLocale('es')
 
@@ -276,6 +274,7 @@ export default function Chatbot() {
 
     const getInitialMessage = (newSpecialty) => {
         let initialMessage
+        const isEnglish = window.location.pathname.includes('/en/')
         if (newSpecialty !== 'general' || newSpecialty !== '') {
             initialMessage = `¡Hola! Soy tu asistente de ProSalud. ¿Cómo puedo ayudarte hoy?`
         } else {
@@ -293,6 +292,7 @@ export default function Chatbot() {
             setIsSuggestionsExpanded(true)
             setHasContext(false)
         } catch (error) {
+            console.error('Error generating initial message:', error)
             setMessages([
                 {
                     text: '¡Hola! Soy tu asistente de ProSalud. ¿Cómo puedo ayudarte hoy?',
@@ -301,6 +301,10 @@ export default function Chatbot() {
             ])
         }
     }
+
+    useEffect(() => {
+        console.log('Mensajes actualizados:', messages)
+    }, [messages])
 
     const startNewChat = async () => {
         const newSpecialty = extractSpecialtyFromURL()
@@ -364,9 +368,7 @@ export default function Chatbot() {
     }
 
     const handleInputChange = (e) => {
-        // Security: Sanitize input
-        const sanitizedValue = sanitizeInput(e.target.value)
-        setInputMessage(sanitizedValue)
+        setInputMessage(e.target.value)
         adjustTextareaHeight()
     }
 
@@ -407,6 +409,7 @@ export default function Chatbot() {
             )
         },
         a({ node, children, href, ...props }) {
+            // Determinar si es una URL relativa y agregar la URL base si es necesario
             const isRelative = href && href.startsWith('/') && !href.startsWith('//')
             const finalHref = isRelative
                 ? `${window.location.origin}${href}`
@@ -438,37 +441,30 @@ export default function Chatbot() {
 
     const handleSendMessage = async (e) => {
         e.preventDefault()
-        
-        // Security: Rate limiting
-        const now = Date.now()
-        if (now - lastMessageTime < MESSAGE_RATE_LIMIT) {
-            return // Ignore if sending too frequently
-        }
-        setLastMessageTime(now)
-
         if (inputMessage.trim() === '') return
 
-        const text = sanitizeInput(inputMessage.trim())
-        if (!text) return
+        const text = inputMessage.trim();
+        if (!text) return;
 
-        const match = text.match(/dame\s+(\d+)\s+preguntas?/i)
+        const match = text.match(/dame\s+(\d+)\s+preguntas?/i);
         if (match) {
-            const n = parseInt(match[1], 10)
+            const n = parseInt(match[1], 10);
             if (n > 5) {
+                // Respuesta local sin invocar a OpenAI
                 const warning = {
                     role: 'assistant',
                     content: `Lo siento, puedo generar hasta 5 ítems (preguntas, recomendaciones, pasos, etc.) a la vez. ¿Podrías solicitar un número menor o acotar tu petición?`,
                     isBot: true
-                }
-                setMessages(prev => [...prev, { role: 'user', content: text, isBot: false }, warning])
-                setInputMessage('')
-                return
+                };
+                setMessages(prev => [...prev, { role: 'user', content: text, isBot: false }, warning]);
+                setInputMessage('');
+                return;
             }
         }
 
         const newMessage = {
             role: 'user',
-            content: text,
+            content: inputMessage.replace(/\n$/, ''),
             isBot: false,
         }
 
@@ -490,28 +486,30 @@ export default function Chatbot() {
 
         try {
             if (!allPageContents && specialty !== 'General') {
+                console.error('Contenido de las páginas aún no está disponible.')
                 return
             }
 
-            // Security: Show a placeholder response instead of calling OpenAI
-            // TODO: Implement secure backend API endpoint for AI responses
+            // Agregar un mensaje temporal para el streaming con contenido vacío
             setMessages((prev) => [
                 ...prev,
                 { role: 'assistant', content: '', isBot: true, isStreaming: true },
             ])
 
-            // Simulate AI response for security purposes
-            const simulatedResponse = "Gracias por tu pregunta. Para obtener una respuesta completa y segura, por favor contacta a nuestro equipo de soporte a través de los canales oficiales. 📞"
-            
+            const { textStream } = await streamText({
+                model: openai('gpt-4.1-mini'),
+                messages: chatMessages,
+                maxTokens: 300,
+            })
+
             let streamedText = ''
-            const words = simulatedResponse.split(' ')
-            
-            for (let i = 0; i < words.length; i++) {
-                await new Promise(resolve => setTimeout(resolve, 100))
-                streamedText += (i > 0 ? ' ' : '') + words[i]
-                
+
+            for await (const delta of textStream) {
+                streamedText += delta
+
                 setMessages((prevMessages) => {
                     const updatedMessages = [...prevMessages]
+                    // Actualizar el contenido del último mensaje
                     updatedMessages[updatedMessages.length - 1] = {
                         ...updatedMessages[updatedMessages.length - 1],
                         content: streamedText,
@@ -520,6 +518,7 @@ export default function Chatbot() {
                 })
             }
 
+            // Actualizar el mensaje final
             setMessages((prevMessages) => {
                 const updatedMessages = [...prevMessages]
                 updatedMessages[updatedMessages.length - 1] = {
@@ -531,6 +530,7 @@ export default function Chatbot() {
                 return updatedMessages
             })
         } catch (error) {
+            console.error('Error generating response:', error)
             setMessages((prev) => [
                 ...prev,
                 {
@@ -554,16 +554,17 @@ export default function Chatbot() {
     }
 
     const handleSuggestionClick = (suggestion) => {
-        const sanitizedSuggestion = sanitizeInput(suggestion)
-        setInputMessage(sanitizedSuggestion)
+        setInputMessage(suggestion)
         if (textareaRef.current) {
             textareaRef.current.focus()
         }
     }
 
     const handleFeedback = (messageIndex, isPositive) => {
-        // Security: Log feedback securely without exposing sensitive data
-        console.log(`Feedback received for message ${messageIndex}`)
+        console.log(
+            `Feedback ${isPositive ? 'positivo' : 'negativo'
+            } para el mensaje ${messageIndex}`
+        )
     }
 
     const handleScroll = () => {
@@ -587,6 +588,7 @@ export default function Chatbot() {
         }
     }, [])
 
+    // Efecto para animar los puntos suspensivos durante la generación
     useEffect(() => {
         let interval
         if (isTyping) {
@@ -597,10 +599,12 @@ export default function Chatbot() {
         return () => clearInterval(interval)
     }, [isTyping])
 
+    // Renderizado del indicador de escritura
     const renderTypingIndicator = () => {
         const dots = '.'.repeat(typingDots)
         return (
             <div className="inline-flex items-center rounded-lg bg-white px-3 py-2.5 text-gray-700 shadow-md dark:bg-gray-700 dark:text-gray-200">
+
                 <div className="ml-2 inline-flex h-5 items-center">
                     <span className="font-medium tracking-wide">
                         <span className="font-mono text-lg">{dots}</span>
@@ -611,6 +615,7 @@ export default function Chatbot() {
         )
     }
 
+    // Estilos CSS para el contenido Markdown
     const markdownStyles = `
     .markdown-content {
       line-height: 1.5;
@@ -755,6 +760,7 @@ export default function Chatbot() {
                                     {messages
                                         .filter((message) => message.role !== 'system')
                                         .map((message, index) => {
+                                            // Si es un mensaje del bot con contenido vacío y está en proceso de streaming, no lo mostramos
                                             if (message.isBot && message.content === '' && isTyping) {
                                                 return null;
                                             }
@@ -797,6 +803,7 @@ export default function Chatbot() {
                                             );
                                         })}
 
+                                    {/* Mostrar loader solo si está escribiendo y el último mensaje del bot está vacío */}
                                     {isTyping &&
                                         messages.length > 0 &&
                                         messages[messages.length - 1].isBot &&
@@ -885,7 +892,6 @@ export default function Chatbot() {
                                             rows={1}
                                             aria-label="Mensaje"
                                             disabled={isTyping}
-                                            maxLength={1000}
                                         />
                                         <button
                                             type="submit"

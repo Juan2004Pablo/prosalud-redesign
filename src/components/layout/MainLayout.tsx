@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 import Header from './Header';
 import Footer from './Footer';
-import ChatbotFab from '@/components/home/ChatbotFab';
+import Bot from '@/components/chatbot/Bot';
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -92,7 +92,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         {children}
       </main>
       <Footer />
-      <ChatbotFab />
+      <Bot />
     </div>
   );
 };

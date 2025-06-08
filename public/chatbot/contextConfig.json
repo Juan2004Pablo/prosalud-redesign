@@ -19,14 +19,7 @@
             "servicios/encuesta-bienestar.md",
             "servicios/galeria-bienestar.md",
             "servicios/incapacidades-licencias.md",
-            "servicios/overview.md",
-            "servicios/permisos-cambio-turnos.md",
-            "servicios/solicitud-compensacion-anual-diferida.md",
-            "servicios/solicitud-descanso.md",
-            "servicios/solicitud-microcredito.md",
-            "servicios/solicitud-retiro-sindical.md",
-            "servicios/sst.md",
-            "servicios/verificacion-pagos.md"
+            "servicios/overview.md"
         ]
     },
     "payments": {
