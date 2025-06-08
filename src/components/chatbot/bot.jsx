@@ -13,6 +13,7 @@ import {
     ChevronDown,
     ThumbsUp,
     ThumbsDown,
+    MessageSquare,
 } from 'lucide-react'
 import SyntaxHighlighter from 'react-syntax-highlighter/dist/cjs/light'
 import js from 'react-syntax-highlighter/dist/cjs/languages/hljs/javascript'
@@ -646,15 +647,17 @@ export default function Bot() {
                                 : 'pointer-events-none scale-95 opacity-0'
                             }
               ${isFullscreen
-                                ? 'fixed inset-0 m-0 flex flex-col rounded-none'
-                                : 'fixed bottom-4 right-4 w-96 flex flex-col'
+                                ? 'fixed inset-0 m-0 flex flex-col rounded-none h-screen w-screen'
+                                : 'fixed bottom-4 right-4 flex flex-col w-96 sm:w-80 md:w-96'
                             }
             `}
                         style={{
-                            height: isFullscreen ? '100vh' : '32rem', // Fixed height: 512px (32rem)
+                            height: isFullscreen ? '100vh' : '32rem',
+                            maxWidth: isFullscreen ? '100vw' : '24rem',
                         }}
                     >
                         <div className="flex h-full flex-col">
+                            {/* Header */}
                             <div
                                 className={`flex items-center justify-between border-b border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800 flex-shrink-0 ${isFullscreen ? 'h-20 p-4' : 'h-16'
                                     }`}
@@ -711,6 +714,8 @@ export default function Bot() {
                                     </button>
                                 </div>
                             </div>
+
+                            {/* Subtitle */}
                             <p
                                 className={`border-b border-gray-200 bg-gray-50 px-3 py-2 text-xs text-gray-600 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 flex-shrink-0 ${isFullscreen ? 'py-3 text-base px-4' : ''
                                     }`}
@@ -719,6 +724,8 @@ export default function Bot() {
                                     ? 'Asistente General de ProSalud'
                                     : `Especialista en ${specialty}`}
                             </p>
+
+                            {/* Messages Container */}
                             <div className="relative flex flex-grow flex-col overflow-hidden min-h-0">
                                 <div
                                     className={`flex-grow space-y-3 overflow-y-auto bg-gray-100 px-3 pb-4 pt-3 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-300 dark:bg-gray-900 dark:scrollbar-thumb-gray-700 ${isFullscreen ? 'px-6 text-lg space-y-4' : ''
@@ -747,7 +754,7 @@ export default function Bot() {
                                                     <div
                                                         className={`rounded-lg p-3 m-2 ${message.isBot
                                                             ? 'bg-white text-gray-900 shadow-md dark:bg-gray-700 dark:text-gray-100'
-                                                            : 'bg-blue-500 text-white'
+                                                            : 'bg-prosalud-salud text-white'
                                                             } max-w-[80%] overflow-x-auto transition-all duration-300 ease-out ${index === messages.length - 1
                                                                 ? 'animate-fadeIn'
                                                                 : ''
@@ -767,7 +774,7 @@ export default function Bot() {
                                                             index === messages.length - 1 &&
                                                             !isTyping && (
                                                                 <div className="mt-1 flex justify-end">
-                                                                    <Check className="h-3 w-3 text-gray-400" />
+                                                                    <Check className="h-3 w-3 text-gray-300" />
                                                                 </div>
                                                             )}
                                                     </div>
@@ -786,11 +793,48 @@ export default function Bot() {
                                         )}
                                     <div ref={messagesEndRef} />
                                 </div>
+
+                                {/* Input Form */}
+                                <form
+                                    onSubmit={handleSendMessage}
+                                    className={`relative z-20 border-t border-gray-200 bg-white p-2 dark:border-gray-700 dark:bg-gray-800 flex-shrink-0 ${isFullscreen ? 'p-4' : ''
+                                        }`}
+                                >
+                                    <div className="flex items-end gap-2">
+                                        <textarea
+                                            ref={textareaRef}
+                                            value={inputMessage}
+                                            onChange={handleInputChange}
+                                            onKeyDown={handleKeyDown}
+                                            className={`flex-grow resize-none overflow-hidden rounded-lg border border-gray-300 bg-gray-100 p-2 text-sm text-gray-900 placeholder-gray-500 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-prosalud-salud dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:ring-prosalud-salud ${isFullscreen
+                                                ? 'max-h-[120px] min-h-[3rem] p-3 text-base'
+                                                : 'max-h-[80px] min-h-[2.5rem]'
+                                                }`}
+                                            placeholder="Escribe tu pregunta aquí..."
+                                            rows={1}
+                                            aria-label="Mensaje"
+                                            disabled={isTyping}
+                                        />
+                                        <button
+                                            type="submit"
+                                            className={`transform rounded-lg bg-prosalud-salud p-2 text-white transition-all duration-300 hover:scale-105 hover:bg-prosalud-salud/90 focus:outline-none cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 flex-shrink-0 ${isFullscreen ? 'p-3' : ''
+                                                }`}
+                                            disabled={isTyping || inputMessage.trim() === ''}
+                                            title="Enviar mensaje"
+                                            aria-label="Enviar mensaje"
+                                        >
+                                            <Send
+                                                className={`${isFullscreen ? 'h-6 w-6' : 'h-4 w-4'}`}
+                                            />
+                                        </button>
+                                    </div>
+                                </form>
+
+                                {/* Suggestions - Moved to bottom */}
                                 {showSuggestions && (
                                     <div
                                         ref={suggestionsRef}
-                                        className={`absolute ${isFullscreen ? 'bottom-16' : 'bottom-14'
-                                            } left-0 right-0 z-10 overflow-hidden border-t border-gray-200 bg-gray-100 transition-all duration-300 ease-in-out dark:border-gray-700 dark:bg-gray-800`}
+                                        className={`absolute bottom-0 left-0 right-0 z-10 overflow-hidden border-t border-gray-200 bg-gray-100 transition-all duration-300 ease-in-out dark:border-gray-700 dark:bg-gray-800`}
                                         style={{
                                             maxHeight: isSuggestionsExpanded
                                                 ? `${suggestionsHeight}px`
@@ -826,12 +870,12 @@ export default function Bot() {
                                             </button>
                                         </div>
                                         <div ref={suggestionsContentRef} className="px-3 py-2">
-                                            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                                            <div className="grid grid-cols-1 gap-2">
                                                 {suggestions.map((suggestion, index) => (
                                                     <button
                                                         key={index}
                                                         onClick={() => handleSuggestionClick(suggestion)}
-                                                        className="truncate rounded-lg bg-white px-2 py-1.5 text-left text-xs text-gray-700 shadow-sm transition-colors duration-300 hover:bg-blue-100 dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-blue-900"
+                                                        className="truncate rounded-lg bg-white px-2 py-1.5 text-left text-xs text-gray-700 shadow-sm transition-colors duration-300 hover:bg-prosalud-salud hover:text-white dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-prosalud-salud"
                                                     >
                                                         {suggestion}
                                                     </button>
@@ -840,40 +884,6 @@ export default function Bot() {
                                         </div>
                                     </div>
                                 )}
-                                <form
-                                    onSubmit={handleSendMessage}
-                                    className={`relative z-20 border-t border-gray-200 bg-white p-2 dark:border-gray-700 dark:bg-gray-800 flex-shrink-0 ${isFullscreen ? 'p-4' : ''
-                                        }`}
-                                >
-                                    <div className="flex items-end gap-2">
-                                        <textarea
-                                            ref={textareaRef}
-                                            value={inputMessage}
-                                            onChange={handleInputChange}
-                                            onKeyDown={handleKeyDown}
-                                            className={`flex-grow resize-none overflow-hidden rounded-lg border border-gray-300 bg-gray-100 p-2 text-sm text-gray-900 placeholder-gray-500 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:ring-primary-400 ${isFullscreen
-                                                ? 'max-h-[120px] min-h-[3rem] p-3 text-base'
-                                                : 'max-h-[80px] min-h-[2.5rem]'
-                                                }`}
-                                            placeholder="Escribe tu pregunta aquí..."
-                                            rows={1}
-                                            aria-label="Mensaje"
-                                            disabled={isTyping}
-                                        />
-                                        <button
-                                            type="submit"
-                                            className={`transform rounded-lg bg-blue-500 p-2 text-white transition-all duration-300 hover:scale-105 hover:bg-blue-400 focus:outline-none cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 flex-shrink-0 ${isFullscreen ? 'p-3' : ''
-                                                }`}
-                                            disabled={isTyping || inputMessage.trim() === ''}
-                                            title="Enviar mensaje"
-                                            aria-label="Enviar mensaje"
-                                        >
-                                            <Send
-                                                className={`${isFullscreen ? 'h-6 w-6' : 'h-4 w-4'}`}
-                                            />
-                                        </button>
-                                    </div>
-                                </form>
                             </div>
                         </div>
                     </div>
@@ -886,19 +896,19 @@ export default function Bot() {
                         <button
                         onClick={() => {
                             toggleChat();
-                            setIsTooltipOpen(true); // Opcional: mostrar tooltip al hacer click también
+                            setIsTooltipOpen(true);
                         }}
                         onMouseEnter={() => setIsTooltipOpen(true)}
                         onMouseLeave={() => setIsTooltipOpen(false)}
-                        className={`fixed bottom-4 right-4 z-10 transform rounded-full bg-blue-500 p-3
+                        className={`fixed bottom-4 right-4 z-10 transform rounded-full bg-prosalud-salud p-4
                             text-white shadow-lg transition-all 
-                            duration-300 hover:rotate-3 hover:scale-110 hover:bg-blue-400 focus:outline-none
+                            duration-300 hover:rotate-3 hover:scale-110 hover:bg-prosalud-salud/90 focus:outline-none
                             ${isOpen ? 'scale-0 opacity-0' : 'scale-100 opacity-100'}
                         `}
                         title="Abrir chat de ayuda"
                         aria-label="Abrir chat de ayuda"
                         >
-                        <MessageCircle className="h-6 w-6" />
+                        <MessageSquare className="h-7 w-7" />
                         </button>
                     </TooltipTrigger>
                     <TooltipContent side="left" className="bg-gray-800 text-white border-gray-700">
