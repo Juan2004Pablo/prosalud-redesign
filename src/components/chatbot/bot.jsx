@@ -14,8 +14,6 @@ import {
     ThumbsUp,
     ThumbsDown,
     MessageSquare,
-    Bot,
-    User,
 } from 'lucide-react'
 import SyntaxHighlighter from 'react-syntax-highlighter/dist/cjs/light'
 import js from 'react-syntax-highlighter/dist/cjs/languages/hljs/javascript'
@@ -36,7 +34,7 @@ SyntaxHighlighter.registerLanguage('javascript', js)
 SyntaxHighlighter.registerLanguage('json', json)
 SyntaxHighlighter.registerLanguage('php', php)
 
-export default function ChatBot() {
+export default function Bot() {
     const [isOpen, setIsOpen] = useState(false)
     const [messages, setMessages] = useState([])
     const [inputMessage, setInputMessage] = useState('')
@@ -650,9 +648,13 @@ export default function ChatBot() {
                             }
               ${isFullscreen
                                 ? 'fixed inset-0 m-0 flex flex-col rounded-none h-screen w-screen'
-                                : 'fixed bottom-4 right-4 flex flex-col h-[32rem] w-[24rem] max-w-[calc(100vw-2rem)] max-h-[calc(100vh-2rem)]'
+                                : 'fixed bottom-4 right-4 flex flex-col w-96 sm:w-80 md:w-96'
                             }
             `}
+                        style={{
+                            height: isFullscreen ? '100vh' : '32rem',
+                            maxWidth: isFullscreen ? '100vw' : '24rem',
+                        }}
                     >
                         <div className="flex h-full flex-col">
                             {/* Header */}
@@ -676,7 +678,7 @@ export default function ChatBot() {
                                 <div className="flex items-center space-x-2 flex-shrink-0">
                                     <button
                                         onClick={startNewChat}
-                                        className="text-gray-500 transition-colors duration-300 hover:text-prosalud-salud focus:outline-none dark:text-gray-400 dark:hover:text-prosalud-salud"
+                                        className="text-gray-500 transition-colors duration-300 hover:text-primary-500 focus:outline-none dark:text-gray-400 dark:hover:text-primary-400"
                                         title="Iniciar nuevo chat"
                                         aria-label="Iniciar nuevo chat"
                                     >
@@ -684,7 +686,7 @@ export default function ChatBot() {
                                     </button>
                                     <button
                                         onClick={toggleFullscreen}
-                                        className="text-gray-500 transition-colors duration-300 hover:text-prosalud-salud focus:outline-none dark:text-gray-400 dark:hover:text-prosalud-salud"
+                                        className="text-gray-500 transition-colors duration-300 hover:text-primary-500 focus:outline-none dark:text-gray-400 dark:hover:text-primary-400"
                                         title={
                                             isFullscreen
                                                 ? 'Salir de pantalla completa'
@@ -704,7 +706,7 @@ export default function ChatBot() {
                                     </button>
                                     <button
                                         onClick={toggleChat}
-                                        className="text-gray-500 transition-colors duration-300 hover:text-prosalud-salud focus:outline-none dark:text-gray-400 dark:hover:text-prosalud-salud"
+                                        className="text-gray-500 transition-colors duration-300 hover:text-primary-500 focus:outline-none dark:text-gray-400 dark:hover:text-primary-400"
                                         title="Cerrar chat"
                                         aria-label="Cerrar chat"
                                     >
@@ -724,172 +726,165 @@ export default function ChatBot() {
                             </p>
 
                             {/* Messages Container */}
-                            <div 
-                                className={`flex-1 space-y-3 overflow-y-auto bg-gray-100 px-3 pb-4 pt-3 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-300 dark:bg-gray-900 dark:scrollbar-thumb-gray-700 ${isFullscreen ? 'px-6 text-lg space-y-4' : ''
-                                    }`}
-                                style={{
-                                    minHeight: 0,
-                                    maxHeight: '100%',
-                                }}
-                                onScroll={handleScroll}
-                            >
-                                {messages
-                                    .filter((message) => message.role !== 'system')
-                                    .map((message, index) => {
-                                        // Si es un mensaje del bot con contenido vacío y está en proceso de streaming, no lo mostramos
-                                        if (message.isBot && message.content === '' && isTyping) {
-                                            return null;
-                                        }
-
-                                        return (
-                                            <div
-                                                key={index}
-                                                className={`flex items-start gap-3 ${message.isBot ? 'justify-start' : 'justify-end'
-                                                    }`}
-                                            >
-                                                {/* Avatar para mensajes del bot */}
-                                                {message.isBot && (
-                                                    <div className="flex-shrink-0">
-                                                        <div className="w-8 h-8 rounded-full bg-prosalud-salud flex items-center justify-center">
-                                                            <Bot className="w-5 h-5 text-white" />
-                                                        </div>
-                                                    </div>
-                                                )}
-
-                                                <div
-                                                    className={`rounded-lg p-3 ${message.isBot
-                                                        ? 'bg-white text-gray-900 shadow-md dark:bg-gray-700 dark:text-gray-100'
-                                                        : 'bg-prosalud-salud text-white'
-                                                        } max-w-[80%] overflow-x-auto transition-all duration-300 ease-out ${index === messages.length - 1
-                                                            ? 'animate-fadeIn'
-                                                            : ''
-                                                        }`}
-                                                >
-                                                    <div className="text-sm break-words markdown-content">
-                                                        <ReactMarkdown
-                                                            components={renderers}
-                                                        >
-                                                            {message.content}
-                                                        </ReactMarkdown>
-                                                    </div>
-
-                                                    {!message.isBot &&
-                                                        index === messages.length - 1 &&
-                                                        !isTyping && (
-                                                            <div className="mt-1 flex justify-end">
-                                                                <Check className="h-3 w-3 text-gray-300" />
-                                                            </div>
-                                                        )}
-                                                </div>
-
-                                                {/* Avatar para mensajes del usuario */}
-                                                {!message.isBot && (
-                                                    <div className="flex-shrink-0">
-                                                        <div className="w-8 h-8 rounded-full bg-gray-400 flex items-center justify-center">
-                                                            <User className="w-5 h-5 text-white" />
-                                                        </div>
-                                                    </div>
-                                                )}
-                                            </div>
-                                        );
-                                    })}
-
-                                {/* Mostrar loader solo si está escribiendo y el último mensaje del bot está vacío */}
-                                {isTyping &&
-                                    messages.length > 0 &&
-                                    messages[messages.length - 1].isBot &&
-                                    messages[messages.length - 1].content === '' && (
-                                        <div className="flex items-start gap-3 justify-start">
-                                            <div className="flex-shrink-0">
-                                                <div className="w-8 h-8 rounded-full bg-prosalud-salud flex items-center justify-center">
-                                                    <Bot className="w-5 h-5 text-white" />
-                                                </div>
-                                            </div>
-                                            {renderTypingIndicator()}
-                                        </div>
-                                    )}
-                                <div ref={messagesEndRef} />
-                            </div>
-
-                            {/* Suggestions - Moved to bottom */}
-                            {showSuggestions && messages.length <= 2 && (
-                                <div className="flex-shrink-0 border-t border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800">
-                                    <div
-                                        className="flex items-center justify-between px-3 py-2 cursor-pointer"
-                                        onClick={() => setIsSuggestionsExpanded(!isSuggestionsExpanded)}
-                                    >
-                                        <p className="text-xs font-medium text-gray-700 dark:text-gray-300">
-                                            Preguntas sugeridas
-                                        </p>
-                                        <button
-                                            className="text-gray-600 transition-colors duration-300 hover:text-prosalud-salud focus:outline-none dark:text-gray-400 dark:hover:text-prosalud-salud"
-                                            aria-label={
-                                                isSuggestionsExpanded
-                                                    ? 'Contraer sugerencias'
-                                                    : 'Expandir sugerencias'
+                            <div className="relative flex flex-grow flex-col overflow-hidden min-h-0">
+                                <div
+                                    className={`flex-grow space-y-3 overflow-y-auto bg-gray-100 px-3 pb-4 pt-3 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-300 dark:bg-gray-900 dark:scrollbar-thumb-gray-700 ${isFullscreen ? 'px-6 text-lg space-y-4' : ''
+                                        }`}
+                                    style={{
+                                        height: '100%',
+                                        maxHeight: '100%',
+                                    }}
+                                    onScroll={handleScroll}
+                                >
+                                    {messages
+                                        .filter((message) => message.role !== 'system')
+                                        .map((message, index) => {
+                                            // Si es un mensaje del bot con contenido vacío y está en proceso de streaming, no lo mostramos
+                                            if (message.isBot && message.content === '' && isTyping) {
+                                                return null;
                                             }
+
+                                            return (
+                                                <div
+                                                    key={index}
+                                                    className={`flex 
+                          ${message.isBot ? 'justify-start' : 'justify-end'} 
+                        `}
+                                                >
+                                                    <div
+                                                        className={`rounded-lg p-3 m-2 ${message.isBot
+                                                            ? 'bg-white text-gray-900 shadow-md dark:bg-gray-700 dark:text-gray-100'
+                                                            : 'bg-prosalud-salud text-white'
+                                                            } max-w-[80%] overflow-x-auto transition-all duration-300 ease-out ${index === messages.length - 1
+                                                                ? 'animate-fadeIn'
+                                                                : ''
+                                                            }`}
+                                                    >
+
+                                                        <div className="text-sm break-words markdown-content">
+                                                            <ReactMarkdown
+                                                                components={renderers}
+                                                            >
+                                                                {message.content}
+                                                            </ReactMarkdown>
+                                                        </div>
+
+                                                        
+                                                        {!message.isBot &&
+                                                            index === messages.length - 1 &&
+                                                            !isTyping && (
+                                                                <div className="mt-1 flex justify-end">
+                                                                    <Check className="h-3 w-3 text-gray-300" />
+                                                                </div>
+                                                            )}
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
+
+                                    {/* Mostrar loader solo si está escribiendo y el último mensaje del bot está vacío */}
+                                    {isTyping &&
+                                        messages.length > 0 &&
+                                        messages[messages.length - 1].isBot &&
+                                        messages[messages.length - 1].content === '' && (
+                                            <div className="flex justify-start m-2">
+                                                {renderTypingIndicator()}
+                                            </div>
+                                        )}
+                                    <div ref={messagesEndRef} />
+                                </div>
+
+                                {/* Input Form */}
+                                <form
+                                    onSubmit={handleSendMessage}
+                                    className={`relative z-20 border-t border-gray-200 bg-white p-2 dark:border-gray-700 dark:bg-gray-800 flex-shrink-0 ${isFullscreen ? 'p-4' : ''
+                                        }`}
+                                >
+                                    <div className="flex items-end gap-2">
+                                        <textarea
+                                            ref={textareaRef}
+                                            value={inputMessage}
+                                            onChange={handleInputChange}
+                                            onKeyDown={handleKeyDown}
+                                            className={`flex-grow resize-none overflow-hidden rounded-lg border border-gray-300 bg-gray-100 p-2 text-sm text-gray-900 placeholder-gray-500 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-prosalud-salud dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:ring-prosalud-salud ${isFullscreen
+                                                ? 'max-h-[120px] min-h-[3rem] p-3 text-base'
+                                                : 'max-h-[80px] min-h-[2.5rem]'
+                                                }`}
+                                            placeholder="Escribe tu pregunta aquí..."
+                                            rows={1}
+                                            aria-label="Mensaje"
+                                            disabled={isTyping}
+                                        />
+                                        <button
+                                            type="submit"
+                                            className={`transform rounded-lg bg-prosalud-salud p-2 text-white transition-all duration-300 hover:scale-105 hover:bg-prosalud-salud/90 focus:outline-none cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 flex-shrink-0 ${isFullscreen ? 'p-3' : ''
+                                                }`}
+                                            disabled={isTyping || inputMessage.trim() === ''}
+                                            title="Enviar mensaje"
+                                            aria-label="Enviar mensaje"
                                         >
-                                            {isSuggestionsExpanded ? (
-                                                <ChevronUp className="h-4 w-4" />
-                                            ) : (
-                                                <ChevronDown className="h-4 w-4" />
-                                            )}
+                                            <Send
+                                                className={`${isFullscreen ? 'h-6 w-6' : 'h-4 w-4'}`}
+                                            />
                                         </button>
                                     </div>
-                                    
-                                    {isSuggestionsExpanded && (
-                                        <div className="px-3 pb-3">
+                                </form>
+
+                                {/* Suggestions - Moved to bottom */}
+                                {showSuggestions && (
+                                    <div
+                                        ref={suggestionsRef}
+                                        className={`absolute bottom-0 left-0 right-0 z-10 overflow-hidden border-t border-gray-200 bg-gray-100 transition-all duration-300 ease-in-out dark:border-gray-700 dark:bg-gray-800`}
+                                        style={{
+                                            maxHeight: isSuggestionsExpanded
+                                                ? `${suggestionsHeight}px`
+                                                : '32px',
+                                            transform: `translateY(${isSuggestionsExpanded
+                                                ? '0'
+                                                : `calc(100% - 32px)`
+                                                })`,
+                                        }}
+                                    >
+                                        <div
+                                            className="flex h-8 items-center justify-between bg-gray-200 px-3 py-2 dark:bg-gray-700"
+                                        >
+                                            <p className="text-xs font-medium text-gray-700 dark:text-gray-300">
+                                                Preguntas sugeridas
+                                            </p>
+                                            <button
+                                                onClick={() =>
+                                                    setIsSuggestionsExpanded(!isSuggestionsExpanded)
+                                                }
+                                                className="text-gray-600 transition-colors duration-300 hover:text-primary-500 focus:outline-none dark:text-gray-400 dark:hover:text-primary-400"
+                                                aria-label={
+                                                    isSuggestionsExpanded
+                                                        ? 'Contraer sugerencias'
+                                                        : 'Expandir sugerencias'
+                                                }
+                                            >
+                                                {isSuggestionsExpanded ? (
+                                                    <ChevronUp className="h-4 w-4" />
+                                                ) : (
+                                                    <ChevronDown className="h-4 w-4" />
+                                                )}
+                                            </button>
+                                        </div>
+                                        <div ref={suggestionsContentRef} className="px-3 py-2">
                                             <div className="grid grid-cols-1 gap-2">
                                                 {suggestions.map((suggestion, index) => (
                                                     <button
                                                         key={index}
                                                         onClick={() => handleSuggestionClick(suggestion)}
-                                                        className="text-left rounded-lg bg-white px-3 py-2 text-xs text-gray-700 shadow-sm transition-all duration-300 hover:bg-prosalud-salud hover:text-white hover:shadow-md dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-prosalud-salud border border-gray-200 dark:border-gray-500"
+                                                        className="truncate rounded-lg bg-white px-2 py-1.5 text-left text-xs text-gray-700 shadow-sm transition-colors duration-300 hover:bg-prosalud-salud hover:text-white dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-prosalud-salud"
                                                     >
                                                         {suggestion}
                                                     </button>
                                                 ))}
                                             </div>
                                         </div>
-                                    )}
-                                </div>
-                            )}
-
-                            {/* Input Form */}
-                            <form
-                                onSubmit={handleSendMessage}
-                                className={`border-t border-gray-200 bg-white p-3 dark:border-gray-700 dark:bg-gray-800 flex-shrink-0 ${isFullscreen ? 'p-4' : ''
-                                    }`}
-                            >
-                                <div className="flex items-end gap-2">
-                                    <textarea
-                                        ref={textareaRef}
-                                        value={inputMessage}
-                                        onChange={handleInputChange}
-                                        onKeyDown={handleKeyDown}
-                                        className={`flex-grow resize-none overflow-hidden rounded-lg border border-gray-300 bg-gray-100 p-3 text-sm text-gray-900 placeholder-gray-500 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-prosalud-salud dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:ring-prosalud-salud ${isFullscreen
-                                            ? 'max-h-[120px] min-h-[3rem] p-3 text-base'
-                                            : 'max-h-[80px] min-h-[2.5rem]'
-                                            }`}
-                                        placeholder="Escribe tu pregunta aquí..."
-                                        rows={1}
-                                        aria-label="Mensaje"
-                                        disabled={isTyping}
-                                    />
-                                    <button
-                                        type="submit"
-                                        className={`transform rounded-lg bg-prosalud-salud p-3 text-white transition-all duration-300 hover:scale-105 hover:bg-prosalud-salud/90 focus:outline-none cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 flex-shrink-0 ${isFullscreen ? 'p-3' : ''
-                                            }`}
-                                        disabled={isTyping || inputMessage.trim() === ''}
-                                        title="Enviar mensaje"
-                                        aria-label="Enviar mensaje"
-                                    >
-                                        <Send
-                                            className={`${isFullscreen ? 'h-6 w-6' : 'h-5 w-5'}`}
-                                        />
-                                    </button>
-                                </div>
-                            </form>
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -897,28 +892,28 @@ export default function ChatBot() {
             {showChatbot && (
                 <TooltipProvider delayDuration={100}>
                     <Tooltip open={isTooltipOpen} onOpenChange={setIsTooltipOpen}>
-                        <TooltipTrigger asChild>
-                            <button
-                                onClick={() => {
-                                    toggleChat();
-                                    setIsTooltipOpen(true);
-                                }}
-                                onMouseEnter={() => setIsTooltipOpen(true)}
-                                onMouseLeave={() => setIsTooltipOpen(false)}
-                                className={`fixed bottom-4 right-4 z-10 transform rounded-full bg-prosalud-salud p-5
+                    <TooltipTrigger asChild>
+                        <button
+                        onClick={() => {
+                            toggleChat();
+                            setIsTooltipOpen(true);
+                        }}
+                        onMouseEnter={() => setIsTooltipOpen(true)}
+                        onMouseLeave={() => setIsTooltipOpen(false)}
+                        className={`fixed bottom-4 right-4 z-10 transform rounded-full bg-prosalud-salud p-4
                             text-white shadow-lg transition-all 
                             duration-300 hover:rotate-3 hover:scale-110 hover:bg-prosalud-salud/90 focus:outline-none
                             ${isOpen ? 'scale-0 opacity-0' : 'scale-100 opacity-100'}
                         `}
-                                title="Abrir chat de ayuda"
-                                aria-label="Abrir chat de ayuda"
-                            >
-                                <MessageCircle className="h-8 w-8" />
-                            </button>
-                        </TooltipTrigger>
-                        <TooltipContent side="left" className="bg-gray-800 text-white border-gray-700">
-                            <p>¡Chatea con nosotros!</p>
-                        </TooltipContent>
+                        title="Abrir chat de ayuda"
+                        aria-label="Abrir chat de ayuda"
+                        >
+                        <MessageSquare className="h-7 w-7" />
+                        </button>
+                    </TooltipTrigger>
+                    <TooltipContent side="left" className="bg-gray-800 text-white border-gray-700">
+                        <p>¡Chatea con nosotros!</p>
+                    </TooltipContent>
                     </Tooltip>
                 </TooltipProvider>
             )}
