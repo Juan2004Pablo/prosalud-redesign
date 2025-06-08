@@ -14,6 +14,8 @@ import {
     ThumbsUp,
     ThumbsDown,
     MessageSquare,
+    Bot,
+    User,
 } from 'lucide-react'
 import SyntaxHighlighter from 'react-syntax-highlighter/dist/cjs/light'
 import js from 'react-syntax-highlighter/dist/cjs/languages/hljs/javascript'
@@ -34,7 +36,7 @@ SyntaxHighlighter.registerLanguage('javascript', js)
 SyntaxHighlighter.registerLanguage('json', json)
 SyntaxHighlighter.registerLanguage('php', php)
 
-export default function Bot() {
+export default function ChatBot() {
     const [isOpen, setIsOpen] = useState(false)
     const [messages, setMessages] = useState([])
     const [inputMessage, setInputMessage] = useState('')
@@ -751,32 +753,46 @@ export default function Bot() {
                           ${message.isBot ? 'justify-start' : 'justify-end'} 
                         `}
                                                 >
-                                                    <div
-                                                        className={`rounded-lg p-3 m-2 ${message.isBot
-                                                            ? 'bg-white text-gray-900 shadow-md dark:bg-gray-700 dark:text-gray-100'
-                                                            : 'bg-prosalud-salud text-white'
-                                                            } max-w-[80%] overflow-x-auto transition-all duration-300 ease-out ${index === messages.length - 1
-                                                                ? 'animate-fadeIn'
-                                                                : ''
-                                                            }`}
-                                                    >
+                                                    <div className="flex items-start space-x-2 max-w-[80%]">
+                                                        {/* Avatar */}
+                                                        {message.isBot && (
+                                                            <div className="flex-shrink-0">
+                                                                <Bot className="h-6 w-6 text-prosalud-salud bg-gray-200 rounded-full p-1" />
+                                                            </div>
+                                                        )}
+                                                        
+                                                        <div
+                                                            className={`rounded-lg p-3 ${message.isBot
+                                                                ? 'bg-white text-gray-900 shadow-md dark:bg-gray-700 dark:text-gray-100'
+                                                                : 'bg-prosalud-salud text-white'
+                                                                } overflow-x-auto transition-all duration-300 ease-out ${index === messages.filter(m => m.role !== 'system').length - 1
+                                                                    ? 'animate-fadeIn'
+                                                                    : ''
+                                                                }`}
+                                                        >
+                                                            <div className="text-sm break-words markdown-content">
+                                                                <ReactMarkdown
+                                                                    components={renderers}
+                                                                >
+                                                                    {message.content}
+                                                                </ReactMarkdown>
+                                                            </div>
 
-                                                        <div className="text-sm break-words markdown-content">
-                                                            <ReactMarkdown
-                                                                components={renderers}
-                                                            >
-                                                                {message.content}
-                                                            </ReactMarkdown>
+                                                            {!message.isBot &&
+                                                                index === messages.filter(m => m.role !== 'system').length - 1 &&
+                                                                !isTyping && (
+                                                                    <div className="mt-1 flex justify-end">
+                                                                        <Check className="h-3 w-3 text-gray-300" />
+                                                                    </div>
+                                                                )}
                                                         </div>
 
-                                                        
-                                                        {!message.isBot &&
-                                                            index === messages.length - 1 &&
-                                                            !isTyping && (
-                                                                <div className="mt-1 flex justify-end">
-                                                                    <Check className="h-3 w-3 text-gray-300" />
-                                                                </div>
-                                                            )}
+                                                        {/* Avatar para usuario */}
+                                                        {!message.isBot && (
+                                                            <div className="flex-shrink-0">
+                                                                <User className="h-6 w-6 text-white bg-prosalud-salud rounded-full p-1" />
+                                                            </div>
+                                                        )}
                                                     </div>
                                                 </div>
                                             );
@@ -787,12 +803,73 @@ export default function Bot() {
                                         messages.length > 0 &&
                                         messages[messages.length - 1].isBot &&
                                         messages[messages.length - 1].content === '' && (
-                                            <div className="flex justify-start m-2">
-                                                {renderTypingIndicator()}
+                                            <div className="flex justify-start">
+                                                <div className="flex items-start space-x-2">
+                                                    <div className="flex-shrink-0">
+                                                        <Bot className="h-6 w-6 text-prosalud-salud bg-gray-200 rounded-full p-1" />
+                                                    </div>
+                                                    {renderTypingIndicator()}
+                                                </div>
                                             </div>
                                         )}
                                     <div ref={messagesEndRef} />
                                 </div>
+
+                                {/* Suggestions - Fixed positioning */}
+                                {showSuggestions && (
+                                    <div
+                                        ref={suggestionsRef}
+                                        className={`absolute bottom-0 left-0 right-0 z-10 bg-gray-100 border-t border-gray-200 dark:bg-gray-800 dark:border-gray-700 transition-all duration-300 ease-in-out ${
+                                            isSuggestionsExpanded 
+                                                ? 'opacity-100 visible' 
+                                                : 'opacity-100 visible'
+                                        }`}
+                                        style={{
+                                            height: isSuggestionsExpanded ? 'auto' : '40px',
+                                            maxHeight: isSuggestionsExpanded ? '140px' : '40px',
+                                            overflow: 'hidden'
+                                        }}
+                                    >
+                                        <div className="flex h-10 items-center justify-between bg-gray-200 px-3 py-2 dark:bg-gray-700">
+                                            <p className="text-xs font-medium text-gray-700 dark:text-gray-300">
+                                                Preguntas sugeridas
+                                            </p>
+                                            <button
+                                                onClick={() => setIsSuggestionsExpanded(!isSuggestionsExpanded)}
+                                                className="text-gray-600 transition-colors duration-300 hover:text-prosalud-salud focus:outline-none dark:text-gray-400 dark:hover:text-prosalud-salud"
+                                                aria-label={
+                                                    isSuggestionsExpanded
+                                                        ? 'Contraer sugerencias'
+                                                        : 'Expandir sugerencias'
+                                                }
+                                            >
+                                                {isSuggestionsExpanded ? (
+                                                    <ChevronUp className="h-4 w-4" />
+                                                ) : (
+                                                    <ChevronDown className="h-4 w-4" />
+                                                )}
+                                            </button>
+                                        </div>
+                                        {isSuggestionsExpanded && (
+                                            <div 
+                                                ref={suggestionsContentRef} 
+                                                className="px-3 py-2 max-h-24 overflow-y-auto"
+                                            >
+                                                <div className="grid grid-cols-1 gap-2">
+                                                    {suggestions.map((suggestion, index) => (
+                                                        <button
+                                                            key={index}
+                                                            onClick={() => handleSuggestionClick(suggestion)}
+                                                            className="truncate rounded-lg bg-white px-2 py-1.5 text-left text-xs text-gray-700 shadow-sm transition-colors duration-300 hover:bg-gray-200 hover:text-gray-900 dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-500 dark:hover:text-gray-100"
+                                                        >
+                                                            {suggestion}
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
 
                                 {/* Input Form */}
                                 <form
@@ -829,61 +906,6 @@ export default function Bot() {
                                         </button>
                                     </div>
                                 </form>
-
-                                {/* Suggestions - Moved to bottom */}
-                                {showSuggestions && (
-                                    <div
-                                        ref={suggestionsRef}
-                                        className={`absolute bottom-0 left-0 right-0 z-10 overflow-hidden border-t border-gray-200 bg-gray-100 transition-all duration-300 ease-in-out dark:border-gray-700 dark:bg-gray-800`}
-                                        style={{
-                                            maxHeight: isSuggestionsExpanded
-                                                ? `${suggestionsHeight}px`
-                                                : '32px',
-                                            transform: `translateY(${isSuggestionsExpanded
-                                                ? '0'
-                                                : `calc(100% - 32px)`
-                                                })`,
-                                        }}
-                                    >
-                                        <div
-                                            className="flex h-8 items-center justify-between bg-gray-200 px-3 py-2 dark:bg-gray-700"
-                                        >
-                                            <p className="text-xs font-medium text-gray-700 dark:text-gray-300">
-                                                Preguntas sugeridas
-                                            </p>
-                                            <button
-                                                onClick={() =>
-                                                    setIsSuggestionsExpanded(!isSuggestionsExpanded)
-                                                }
-                                                className="text-gray-600 transition-colors duration-300 hover:text-primary-500 focus:outline-none dark:text-gray-400 dark:hover:text-primary-400"
-                                                aria-label={
-                                                    isSuggestionsExpanded
-                                                        ? 'Contraer sugerencias'
-                                                        : 'Expandir sugerencias'
-                                                }
-                                            >
-                                                {isSuggestionsExpanded ? (
-                                                    <ChevronUp className="h-4 w-4" />
-                                                ) : (
-                                                    <ChevronDown className="h-4 w-4" />
-                                                )}
-                                            </button>
-                                        </div>
-                                        <div ref={suggestionsContentRef} className="px-3 py-2">
-                                            <div className="grid grid-cols-1 gap-2">
-                                                {suggestions.map((suggestion, index) => (
-                                                    <button
-                                                        key={index}
-                                                        onClick={() => handleSuggestionClick(suggestion)}
-                                                        className="truncate rounded-lg bg-white px-2 py-1.5 text-left text-xs text-gray-700 shadow-sm transition-colors duration-300 hover:bg-prosalud-salud hover:text-white dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-prosalud-salud"
-                                                    >
-                                                        {suggestion}
-                                                    </button>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
                             </div>
                         </div>
                     </div>
