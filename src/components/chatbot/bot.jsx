@@ -114,8 +114,6 @@ export default function Bot() {
     })
 
     const AVATAR_URL = '/images/bot_avatar.webp'
-        // 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyKQfbFObUQu4wMCYalXLZZ_xilW1J7xriag&s'
-        
 
     const updateSuggestionsHeight = () => {
         if (suggestionsContentRef.current) {
@@ -649,9 +647,12 @@ export default function Bot() {
                             }
               ${isFullscreen
                                 ? 'fixed inset-0 m-0 flex flex-col rounded-none'
-                                : 'fixed bottom-4 right-4 w-96 h-[32rem] flex flex-col'
+                                : 'fixed bottom-4 right-4 w-96 flex flex-col'
                             }
             `}
+                        style={{
+                            height: isFullscreen ? '100vh' : '32rem', // Fixed height: 512px (32rem)
+                        }}
                     >
                         <div className="flex h-full flex-col">
                             <div
@@ -722,6 +723,10 @@ export default function Bot() {
                                 <div
                                     className={`flex-grow space-y-3 overflow-y-auto bg-gray-100 px-3 pb-4 pt-3 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-300 dark:bg-gray-900 dark:scrollbar-thumb-gray-700 ${isFullscreen ? 'px-6 text-lg space-y-4' : ''
                                         }`}
+                                    style={{
+                                        height: '100%',
+                                        maxHeight: '100%',
+                                    }}
                                     onScroll={handleScroll}
                                 >
                                     {messages
@@ -740,7 +745,7 @@ export default function Bot() {
                         `}
                                                 >
                                                     <div
-                                                        className={`rounded-lg p-2.5 ${message.isBot
+                                                        className={`rounded-lg p-3 m-2 ${message.isBot
                                                             ? 'bg-white text-gray-900 shadow-md dark:bg-gray-700 dark:text-gray-100'
                                                             : 'bg-blue-500 text-white'
                                                             } max-w-[80%] overflow-x-auto transition-all duration-300 ease-out ${index === messages.length - 1
@@ -775,7 +780,7 @@ export default function Bot() {
                                         messages.length > 0 &&
                                         messages[messages.length - 1].isBot &&
                                         messages[messages.length - 1].content === '' && (
-                                            <div className="flex justify-start">
+                                            <div className="flex justify-start m-2">
                                                 {renderTypingIndicator()}
                                             </div>
                                         )}
