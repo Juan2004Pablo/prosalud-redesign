@@ -109,7 +109,7 @@ export default function Bot() {
 
     const openai = createOpenAI({
         compatibility: 'strict',
-        apiKey: '',
+        apiKey: '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',
         /** TODO: MANEJAR VARIABLE DE ENTORNO */
     })
 
