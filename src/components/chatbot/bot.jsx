@@ -36,7 +36,7 @@ SyntaxHighlighter.registerLanguage('javascript', js)
 SyntaxHighlighter.registerLanguage('json', json)
 SyntaxHighlighter.registerLanguage('php', php)
 
-export default function Bot() {
+export default function ChatBot() {
     const [isOpen, setIsOpen] = useState(false)
     const [messages, setMessages] = useState([])
     const [inputMessage, setInputMessage] = useState('')
@@ -650,13 +650,9 @@ export default function Bot() {
                             }
               ${isFullscreen
                                 ? 'fixed inset-0 m-0 flex flex-col rounded-none h-screen w-screen'
-                                : 'fixed bottom-4 right-4 flex flex-col'
+                                : 'fixed bottom-4 right-4 flex flex-col h-[32rem] w-[24rem] max-w-[calc(100vw-2rem)] max-h-[calc(100vh-2rem)]'
                             }
             `}
-                        style={{
-                            height: isFullscreen ? '100vh' : '32rem',
-                            width: isFullscreen ? '100vw' : 'min(24rem, calc(100vw - 2rem))',
-                        }}
                     >
                         <div className="flex h-full flex-col">
                             {/* Header */}
@@ -680,7 +676,7 @@ export default function Bot() {
                                 <div className="flex items-center space-x-2 flex-shrink-0">
                                     <button
                                         onClick={startNewChat}
-                                        className="text-gray-500 transition-colors duration-300 hover:text-primary-500 focus:outline-none dark:text-gray-400 dark:hover:text-primary-400"
+                                        className="text-gray-500 transition-colors duration-300 hover:text-prosalud-salud focus:outline-none dark:text-gray-400 dark:hover:text-prosalud-salud"
                                         title="Iniciar nuevo chat"
                                         aria-label="Iniciar nuevo chat"
                                     >
@@ -688,7 +684,7 @@ export default function Bot() {
                                     </button>
                                     <button
                                         onClick={toggleFullscreen}
-                                        className="text-gray-500 transition-colors duration-300 hover:text-primary-500 focus:outline-none dark:text-gray-400 dark:hover:text-primary-400"
+                                        className="text-gray-500 transition-colors duration-300 hover:text-prosalud-salud focus:outline-none dark:text-gray-400 dark:hover:text-prosalud-salud"
                                         title={
                                             isFullscreen
                                                 ? 'Salir de pantalla completa'
@@ -708,7 +704,7 @@ export default function Bot() {
                                     </button>
                                     <button
                                         onClick={toggleChat}
-                                        className="text-gray-500 transition-colors duration-300 hover:text-primary-500 focus:outline-none dark:text-gray-400 dark:hover:text-primary-400"
+                                        className="text-gray-500 transition-colors duration-300 hover:text-prosalud-salud focus:outline-none dark:text-gray-400 dark:hover:text-prosalud-salud"
                                         title="Cerrar chat"
                                         aria-label="Cerrar chat"
                                     >
@@ -815,7 +811,7 @@ export default function Bot() {
                                 <div ref={messagesEndRef} />
                             </div>
 
-                            {/* Suggestions */}
+                            {/* Suggestions - Moved to bottom */}
                             {showSuggestions && messages.length <= 2 && (
                                 <div className="flex-shrink-0 border-t border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800">
                                     <div
@@ -909,7 +905,7 @@ export default function Bot() {
                                 }}
                                 onMouseEnter={() => setIsTooltipOpen(true)}
                                 onMouseLeave={() => setIsTooltipOpen(false)}
-                                className={`fixed bottom-4 right-4 z-10 transform rounded-full bg-prosalud-salud p-4
+                                className={`fixed bottom-4 right-4 z-10 transform rounded-full bg-prosalud-salud p-5
                             text-white shadow-lg transition-all 
                             duration-300 hover:rotate-3 hover:scale-110 hover:bg-prosalud-salud/90 focus:outline-none
                             ${isOpen ? 'scale-0 opacity-0' : 'scale-100 opacity-100'}
@@ -917,7 +913,7 @@ export default function Bot() {
                                 title="Abrir chat de ayuda"
                                 aria-label="Abrir chat de ayuda"
                             >
-                                <MessageSquare className="h-7 w-7" />
+                                <MessageCircle className="h-8 w-8" />
                             </button>
                         </TooltipTrigger>
                         <TooltipContent side="left" className="bg-gray-800 text-white border-gray-700">
