@@ -724,7 +724,7 @@ export default function ChatBot() {
                             >
                                 {specialty === 'general'
                                     ? 'Asistente General de ProSalud'
-                                    : `Especialista en ${specialty}`}
+                                    : `Especialista en ProSalud`}
                             </p>
 
                             {/* Messages Container */}
@@ -815,61 +815,48 @@ export default function ChatBot() {
                                     <div ref={messagesEndRef} />
                                 </div>
 
-                                {/* Suggestions - Fixed positioning */}
-                                {showSuggestions && (
+   {showSuggestions && messages.length <= 2 && (
+                                <div className="flex-shrink-0 border-t border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800">
                                     <div
-                                        ref={suggestionsRef}
-                                        className={`absolute bottom-0 left-0 right-0 z-10 bg-gray-100 border-t border-gray-200 dark:bg-gray-800 dark:border-gray-700 transition-all duration-300 ease-in-out ${
-                                            isSuggestionsExpanded 
-                                                ? 'opacity-100 visible' 
-                                                : 'opacity-100 visible'
-                                        }`}
-                                        style={{
-                                            height: isSuggestionsExpanded ? 'auto' : '40px',
-                                            maxHeight: isSuggestionsExpanded ? '140px' : '40px',
-                                            overflow: 'hidden'
-                                        }}
+                                        className="flex items-center justify-between px-3 py-2 cursor-pointer"
+                                        onClick={() => setIsSuggestionsExpanded(!isSuggestionsExpanded)}
                                     >
-                                        <div className="flex h-10 items-center justify-between bg-gray-200 px-3 py-2 dark:bg-gray-700">
-                                            <p className="text-xs font-medium text-gray-700 dark:text-gray-300">
-                                                Preguntas sugeridas
-                                            </p>
-                                            <button
-                                                onClick={() => setIsSuggestionsExpanded(!isSuggestionsExpanded)}
-                                                className="text-gray-600 transition-colors duration-300 hover:text-prosalud-salud focus:outline-none dark:text-gray-400 dark:hover:text-prosalud-salud"
-                                                aria-label={
-                                                    isSuggestionsExpanded
-                                                        ? 'Contraer sugerencias'
-                                                        : 'Expandir sugerencias'
-                                                }
-                                            >
-                                                {isSuggestionsExpanded ? (
-                                                    <ChevronUp className="h-4 w-4" />
-                                                ) : (
-                                                    <ChevronDown className="h-4 w-4" />
-                                                )}
-                                            </button>
-                                        </div>
-                                        {isSuggestionsExpanded && (
-                                            <div 
-                                                ref={suggestionsContentRef} 
-                                                className="px-3 py-2 max-h-24 overflow-y-auto"
-                                            >
-                                                <div className="grid grid-cols-1 gap-2">
-                                                    {suggestions.map((suggestion, index) => (
-                                                        <button
-                                                            key={index}
-                                                            onClick={() => handleSuggestionClick(suggestion)}
-                                                            className="truncate rounded-lg bg-white px-2 py-1.5 text-left text-xs text-gray-700 shadow-sm transition-colors duration-300 hover:bg-gray-200 hover:text-gray-900 dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-500 dark:hover:text-gray-100"
-                                                        >
-                                                            {suggestion}
-                                                        </button>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        )}
+                                        <p className="text-xs font-medium text-gray-700 dark:text-gray-300">
+                                            Preguntas sugeridas
+                                        </p>
+                                        <button
+                                            className="text-gray-600 transition-colors duration-300 hover:text-prosalud-salud focus:outline-none dark:text-gray-400 dark:hover:text-prosalud-salud"
+                                            aria-label={
+                                                isSuggestionsExpanded
+                                                    ? 'Contraer sugerencias'
+                                                    : 'Expandir sugerencias'
+                                            }
+                                        >
+                                            {isSuggestionsExpanded ? (
+                                                <ChevronUp className="h-4 w-4" />
+                                            ) : (
+                                                <ChevronDown className="h-4 w-4" />
+                                            )}
+                                        </button>
                                     </div>
-                                )}
+                                    
+                                    {isSuggestionsExpanded && (
+                                        <div className="px-3 pb-3">
+                                            <div className="grid grid-cols-1 gap-2">
+                                                {suggestions.map((suggestion, index) => (
+                                                    <button
+                                                        key={index}
+                                                        onClick={() => handleSuggestionClick(suggestion)}
+                                                        className="text-left rounded-lg bg-white px-3 py-2 text-xs text-gray-700 shadow-sm transition-all duration-300 hover:bg-prosalud-salud hover:text-white hover:shadow-md dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-prosalud-salud border border-gray-200 dark:border-gray-500"
+                                                    >
+                                                        {suggestion}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
 
                                 {/* Input Form */}
                                 <form
