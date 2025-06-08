@@ -121,7 +121,7 @@ export default function Bot() {
         if (suggestionsContentRef.current) {
             const headerHeight = 40 // Height of the suggestions header
             const contentHeight = suggestionsContentRef.current.scrollHeight
-            const maxHeight = Math.min(contentHeight + headerHeight, 300) // Limitar la altura máxima a 300px
+            const maxHeight = Math.min(contentHeight + headerHeight, 120) // Reducir altura máxima para sugerencias
             setSuggestionsHeight(maxHeight)
         }
     }
@@ -344,9 +344,10 @@ export default function Bot() {
     const adjustTextareaHeight = () => {
         if (textareaRef.current) {
             textareaRef.current.style.height = 'auto'
+            const maxHeight = 80; // Altura máxima fija para el textarea
             textareaRef.current.style.height = `${Math.min(
                 textareaRef.current.scrollHeight,
-                150
+                maxHeight
             )}px`
         }
     }
@@ -648,36 +649,36 @@ export default function Bot() {
                             }
               ${isFullscreen
                                 ? 'fixed inset-0 m-0 flex flex-col rounded-none'
-                                : 'fixed bottom-4 right-4 h-[32rem] w-full sm:w-96'
+                                : 'fixed bottom-4 right-4 w-96 h-[32rem] flex flex-col'
                             }
             `}
                     >
                         <div className="flex h-full flex-col">
                             <div
-                                className={`flex items-center justify-between border-b border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800 ${isFullscreen ? 'h-20' : ''
+                                className={`flex items-center justify-between border-b border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800 flex-shrink-0 ${isFullscreen ? 'h-20 p-4' : 'h-16'
                                     }`}
                             >
                                 <h2
-                                    className={`flex items-center text-lg font-semibold text-gray-900 dark:text-white ${isFullscreen ? 'text-2xl' : ''
+                                    className={`flex items-center text-lg font-semibold text-gray-900 dark:text-white ${isFullscreen ? 'text-2xl' : 'text-base'
                                         }`}
                                 >
                                     <img
                                         src={AVATAR_URL}
                                         alt="ProSalud Assistant Avatar"
-                                        width={isFullscreen ? 56 : 40}
-                                        height={isFullscreen ? 56 : 40}
-                                        className="mr-4 rounded-full"
+                                        width={isFullscreen ? 56 : 32}
+                                        height={isFullscreen ? 56 : 32}
+                                        className="mr-3 rounded-full flex-shrink-0"
                                     />
-                                    Asistente ProSalud
+                                    <span className="truncate">Asistente ProSalud</span>
                                 </h2>
-                                <div className="flex items-center space-x-2">
+                                <div className="flex items-center space-x-2 flex-shrink-0">
                                     <button
                                         onClick={startNewChat}
                                         className="text-gray-500 transition-colors duration-300 hover:text-primary-500 focus:outline-none dark:text-gray-400 dark:hover:text-primary-400"
                                         title="Iniciar nuevo chat"
                                         aria-label="Iniciar nuevo chat"
                                     >
-                                        <PlusCircle className="h-5 w-5" />
+                                        <PlusCircle className="h-4 w-4" />
                                     </button>
                                     <button
                                         onClick={toggleFullscreen}
@@ -694,9 +695,9 @@ export default function Bot() {
                                         }
                                     >
                                         {isFullscreen ? (
-                                            <Minimize2 className="h-5 w-5" />
+                                            <Minimize2 className="h-4 w-4" />
                                         ) : (
-                                            <Maximize2 className="h-5 w-5" />
+                                            <Maximize2 className="h-4 w-4" />
                                         )}
                                     </button>
                                     <button
@@ -705,24 +706,21 @@ export default function Bot() {
                                         title="Cerrar chat"
                                         aria-label="Cerrar chat"
                                     >
-                                        <X className="h-5 w-5" />
+                                        <X className="h-4 w-4" />
                                     </button>
                                 </div>
                             </div>
                             <p
-                                className={`border-b border-gray-200 bg-gray-50 px-4 py-2 text-sm text-gray-600 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 ${isFullscreen ? 'py-3 text-base' : ''
+                                className={`border-b border-gray-200 bg-gray-50 px-3 py-2 text-xs text-gray-600 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 flex-shrink-0 ${isFullscreen ? 'py-3 text-base px-4' : ''
                                     }`}
                             >
                                 {specialty === 'general'
                                     ? 'Asistente General de ProSalud'
                                     : `Especialista en ${specialty}`}
                             </p>
-                            <div
-                                className={`relative flex flex-grow flex-col overflow-hidden ${isFullscreen ? 'mx-auto w-full max-w-4xl' : ''
-                                    }`}
-                            >
+                            <div className="relative flex flex-grow flex-col overflow-hidden min-h-0">
                                 <div
-                                    className={`flex-grow space-y-4 overflow-y-auto bg-gray-100 px-4 pb-8 pt-4 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-300 dark:bg-gray-900 dark:scrollbar-thumb-gray-700 ${isFullscreen ? 'px-6 text-lg' : ''
+                                    className={`flex-grow space-y-3 overflow-y-auto bg-gray-100 px-3 pb-4 pt-3 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-300 dark:bg-gray-900 dark:scrollbar-thumb-gray-700 ${isFullscreen ? 'px-6 text-lg space-y-4' : ''
                                         }`}
                                     onScroll={handleScroll}
                                 >
@@ -742,10 +740,10 @@ export default function Bot() {
                         `}
                                                 >
                                                     <div
-                                                        className={`rounded-lg p-3 ${message.isBot
+                                                        className={`rounded-lg p-2.5 ${message.isBot
                                                             ? 'bg-white text-gray-900 shadow-md dark:bg-gray-700 dark:text-gray-100'
                                                             : 'bg-blue-500 text-white'
-                                                            } max-w-[75%] overflow-x-auto transition-all duration-300 ease-out ${index === messages.length - 1
+                                                            } max-w-[80%] overflow-x-auto transition-all duration-300 ease-out ${index === messages.length - 1
                                                                 ? 'animate-fadeIn'
                                                                 : ''
                                                             }`}
@@ -764,7 +762,7 @@ export default function Bot() {
                                                             index === messages.length - 1 &&
                                                             !isTyping && (
                                                                 <div className="mt-1 flex justify-end">
-                                                                    <Check className="h-4 w-4 text-gray-400" />
+                                                                    <Check className="h-3 w-3 text-gray-400" />
                                                                 </div>
                                                             )}
                                                     </div>
@@ -786,24 +784,22 @@ export default function Bot() {
                                 {showSuggestions && (
                                     <div
                                         ref={suggestionsRef}
-                                        className={`absolute ${isFullscreen ? 'bottom-[72px]' : 'bottom-[58px]'
-                                            } left-0 right-0 z-10 overflow-hidden border-t border-gray-200 bg-gray-100 transition-all duration-300 ease-in-out dark:border-gray-700 dark:bg-gray-800 ${isFullscreen ? 'mx-auto w-full max-w-4xl' : ''
-                                            }`}
+                                        className={`absolute ${isFullscreen ? 'bottom-16' : 'bottom-14'
+                                            } left-0 right-0 z-10 overflow-hidden border-t border-gray-200 bg-gray-100 transition-all duration-300 ease-in-out dark:border-gray-700 dark:bg-gray-800`}
                                         style={{
                                             maxHeight: isSuggestionsExpanded
                                                 ? `${suggestionsHeight}px`
-                                                : '40px',
+                                                : '32px',
                                             transform: `translateY(${isSuggestionsExpanded
                                                 ? '0'
-                                                : `calc(100% - ${isFullscreen ? '60px' : '40px'})`
+                                                : `calc(100% - 32px)`
                                                 })`,
                                         }}
                                     >
                                         <div
-                                            className={`${!isSuggestionsExpanded ? '' : ''
-                                                } flex h-10 items-center justify-between bg-gray-200 px-4 py-3 dark:bg-gray-700`}
+                                            className="flex h-8 items-center justify-between bg-gray-200 px-3 py-2 dark:bg-gray-700"
                                         >
-                                            <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                                            <p className="text-xs font-medium text-gray-700 dark:text-gray-300">
                                                 Preguntas sugeridas
                                             </p>
                                             <button
@@ -818,22 +814,19 @@ export default function Bot() {
                                                 }
                                             >
                                                 {isSuggestionsExpanded ? (
-                                                    <ChevronUp className="h-5 w-5" />
+                                                    <ChevronUp className="h-4 w-4" />
                                                 ) : (
-                                                    <ChevronDown className="h-5 w-5" />
+                                                    <ChevronDown className="h-4 w-4" />
                                                 )}
                                             </button>
                                         </div>
-                                        <div ref={suggestionsContentRef} className="px-4 py-3">
-                                            <div
-                                                className={`${isFullscreen ? 'pb-8' : ''
-                                                    } grid grid-cols-1 gap-3 sm:grid-cols-2`}
-                                            >
+                                        <div ref={suggestionsContentRef} className="px-3 py-2">
+                                            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                                                 {suggestions.map((suggestion, index) => (
                                                     <button
                                                         key={index}
                                                         onClick={() => handleSuggestionClick(suggestion)}
-                                                        className="truncate rounded-lg bg-white px-3 py-2 text-left text-sm text-gray-700 shadow-sm transition-colors duration-300 hover:bg-blue-100 dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-blue-900"
+                                                        className="truncate rounded-lg bg-white px-2 py-1.5 text-left text-xs text-gray-700 shadow-sm transition-colors duration-300 hover:bg-blue-100 dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-blue-900"
                                                     >
                                                         {suggestion}
                                                     </button>
@@ -844,7 +837,7 @@ export default function Bot() {
                                 )}
                                 <form
                                     onSubmit={handleSendMessage}
-                                    className={`relative z-20 border-t border-gray-200 bg-white p-2 dark:border-gray-700 dark:bg-gray-800 ${isFullscreen ? 'mx-auto w-full max-w-4xl p-4' : ''
+                                    className={`relative z-20 border-t border-gray-200 bg-white p-2 dark:border-gray-700 dark:bg-gray-800 flex-shrink-0 ${isFullscreen ? 'p-4' : ''
                                         }`}
                                 >
                                     <div className="flex items-end gap-2">
@@ -854,8 +847,8 @@ export default function Bot() {
                                             onChange={handleInputChange}
                                             onKeyDown={handleKeyDown}
                                             className={`flex-grow resize-none overflow-hidden rounded-lg border border-gray-300 bg-gray-100 p-2 text-sm text-gray-900 placeholder-gray-500 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:ring-primary-400 ${isFullscreen
-                                                ? 'max-h-[200px] min-h-[3.5rem] p-3 text-base'
-                                                : 'max-h-[150px] min-h-[2.5rem]'
+                                                ? 'max-h-[120px] min-h-[3rem] p-3 text-base'
+                                                : 'max-h-[80px] min-h-[2.5rem]'
                                                 }`}
                                             placeholder="Escribe tu pregunta aquí..."
                                             rows={1}
@@ -864,14 +857,14 @@ export default function Bot() {
                                         />
                                         <button
                                             type="submit"
-                                            className={`transform rounded-lg bg-blue-500 p-2 text-white transition-all duration-300 hover:scale-105 hover:bg-blue-400 focus:outline-none cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 ${isFullscreen ? 'p-4' : ''
+                                            className={`transform rounded-lg bg-blue-500 p-2 text-white transition-all duration-300 hover:scale-105 hover:bg-blue-400 focus:outline-none cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 flex-shrink-0 ${isFullscreen ? 'p-3' : ''
                                                 }`}
                                             disabled={isTyping || inputMessage.trim() === ''}
                                             title="Enviar mensaje"
                                             aria-label="Enviar mensaje"
                                         >
                                             <Send
-                                                className={`${isFullscreen ? 'h-7 w-7' : 'h-5 w-5'}`}
+                                                className={`${isFullscreen ? 'h-6 w-6' : 'h-4 w-4'}`}
                                             />
                                         </button>
                                     </div>
