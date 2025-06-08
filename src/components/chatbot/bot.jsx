@@ -22,6 +22,12 @@ import { atomOneDark } from 'react-syntax-highlighter/dist/cjs/styles/hljs'
 import { generateText, streamText } from 'ai'
 import { createOpenAI } from '@ai-sdk/openai'
 import ReactMarkdown from 'react-markdown'
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 SyntaxHighlighter.registerLanguage('javascript', js)
 SyntaxHighlighter.registerLanguage('json', json)
@@ -50,6 +56,8 @@ export default function Bot() {
     const [showChatbot, setShowChatbot] = useState(false)
     const [typingDots, setTypingDots] = useState(1)
 
+    const [isTooltipOpen, setIsTooltipOpen] = useState(false);
+
     const docsModules = import.meta.glob('/src/doc/**/*.md', { as: 'raw' });
 
     const importContext = async (specialtyPart) => {
@@ -60,7 +68,7 @@ export default function Bot() {
 
                 setShowChatbot(
                     !!files &&
-                    ((files.docs && files.docs.length) || (files.api && files.api.length)) &&
+                    (files.docs && files.docs.length) &&
                     (files['show-chatbot'] ?? true)
                 )
 
@@ -101,7 +109,7 @@ export default function Bot() {
 
     const openai = createOpenAI({
         compatibility: 'strict',
-        apiKey: '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',
+        apiKey: '',
         /** TODO: MANEJAR VARIABLE DE ENTORNO */
     })
 
@@ -180,7 +188,7 @@ export default function Bot() {
             - Language: Spanish
             - Dark/Light mode: Users can toggle between dark and light mode using the moon/sun icon in the top right corner.
             - Search bar: Located at the top of the documentation.
-            -If the user requests more than 5 items (questions, recommendations, steps, etc.), tell them: "Sorry, I can give you up to 5 items at a time. Can you narrow down your request?" and don't include any other content.
+            -If the user requests more than 10 items (questions, recommendations, steps, etc.), tell them: "Sorry, I can give you up to 10 items at a time. Can you narrow down your request?" and don't include any other content.
 
             AMBIGUOUS OR DIFFICULT QUESTIONS:
             When a user asks a question that is ambiguous, difficult to answer, or doesn't have a clear answer in the documentation:
@@ -190,7 +198,7 @@ export default function Bot() {
             4. Always include the contact information in your response
             5. Emphasize that it's better to share only verified information from the documentation
             6. Never invent information about the support process or how issues are handled
-            7. If the user requests more than 5 items (questions, recommendations, steps, etc.), tell them: "Sorry, I can give you up to 5 items at a time. Can you narrow down your request?" and don't include any other content.
+            7. If the user requests more than 10 items (questions, recommendations, steps, etc.), tell them: "Sorry, I can give you up to 10 items at a time. Can you narrow down your request?" and don't include any other content.
             
             DOCUMENTATION LINKS:
             When referring to specific products or features, always include a Markdown link to the relevant documentation. Use the format:
@@ -212,7 +220,7 @@ export default function Bot() {
 
         const initialMessage = {
             role: 'assistant',
-            content: getInitialMessage(specialty),
+            content: getInitialMessage(),
             isBot: true,
         }
 
@@ -227,8 +235,6 @@ export default function Bot() {
 
         docs = context.docs
 
-        console.log('docs', docs)
-
         await resetChat(newSpecialty.specialty)
         setLocale('es')
 
@@ -240,48 +246,14 @@ export default function Bot() {
     }
 
     const extractSpecialtyFromURL = () => {
-        const path = window.location.pathname
-        const parts = path.split('/')
-        let specialtyPart = ''
-
-        if (parts[1] === 'en' || parts[1] === 'es') {
-            specialtyPart = parts[2]
-        } else {
-            specialtyPart = parts[1]
-        }
-
-        const specialtyMap = {
-            payments: 'Payments',
-            'payment-links': 'Payment Links',
-            checkout: 'Checkout',
-            microsites: 'Microsites',
-            gateway: 'Gateway',
-            core: 'Core',
-            sdks: 'SDKs',
-            'three-d-s-server': '3D Secure Server',
-            ticket: 'Administración de Aerolineas PVA',
-            'token-requestor': 'Token Requestor',
-            'api-scudo': 'API Scudo',
-            acs: 'ACS',
-            'account-validator': 'Account Validator',
-        }
-
         return {
-            specialty: specialtyMap[specialtyPart] || 'general',
-            specialtyPart: specialtyPart || 'general',
+            specialty: 'general',
+            specialtyPart: 'general',
         }
     }
 
-    const getInitialMessage = (newSpecialty) => {
-        let initialMessage
-        const isEnglish = window.location.pathname.includes('/en/')
-        if (newSpecialty !== 'general' || newSpecialty !== '') {
-            initialMessage = `¡Hola! Soy tu asistente de ProSalud. ¿Cómo puedo ayudarte hoy?`
-        } else {
-            initialMessage = `¡Hola! Bienvenido/a a ProSalud. ¿Buscas algún trámite en particular? Estoy aquí para ayudarte a encontrar la mejor solución para ti.`
-        }
-
-        return initialMessage
+    const getInitialMessage = () => {
+        return `¡Hola! Soy tu asistente de ProSalud. ¿Cómo puedo ayudarte hoy?`
     }
 
     const resetChat = async (newSpecialty) => {
@@ -319,19 +291,16 @@ export default function Bot() {
 
     useEffect(() => {
         const handleURLChange = () => {
-            const newSpecialty = extractSpecialtyFromURL()
-            const newLocale = window.location.pathname.includes('/en/') ? 'en' : 'es'
+            /*const newSpecialty = extractSpecialtyFromURL()
 
             const specialtyChanged =
                 newSpecialty.specialty !== specialty && specialty !== ''
-            const localeChanged = newLocale !== locale
 
             setSpecialty(newSpecialty.specialty)
-            setLocale(newLocale)
 
             if (specialtyChanged || localeChanged) {
                 initializeChat()
-            }
+            }*/
         }
 
         window.addEventListener('popstate', handleURLChange)
@@ -449,11 +418,11 @@ export default function Bot() {
         const match = text.match(/dame\s+(\d+)\s+preguntas?/i);
         if (match) {
             const n = parseInt(match[1], 10);
-            if (n > 5) {
+            if (n > 10) {
                 // Respuesta local sin invocar a OpenAI
                 const warning = {
                     role: 'assistant',
-                    content: `Lo siento, puedo generar hasta 5 ítems (preguntas, recomendaciones, pasos, etc.) a la vez. ¿Podrías solicitar un número menor o acotar tu petición?`,
+                    content: `Lo siento, puedo generar hasta 10 ítems (preguntas, recomendaciones, pasos, etc.) a la vez. ¿Podrías solicitar un número menor o acotar tu petición?`,
                     isBot: true
                 };
                 setMessages(prev => [...prev, { role: 'user', content: text, isBot: false }, warning]);
@@ -913,18 +882,32 @@ export default function Bot() {
                 </div>
             )}
             {showChatbot && (
-                <button
-                    onClick={toggleChat}
-                    className={`fixed bottom-4 right-4 z-10 transform rounded-full bg-blue-500 p-3
-            text-white shadow-lg transition-all 
-            duration-300 hover:rotate-3 hover:scale-110 hover:bg-blue-400 focus:outline-none
-            ${isOpen ? 'scale-0 opacity-0' : 'scale-100 opacity-100'}
-          `}
-                    title="Abrir chat de ayuda"
-                    aria-label="Abrir chat de ayuda"
-                >
-                    <MessageCircle className="h-6 w-6" />
-                </button>
+                <TooltipProvider delayDuration={100}>
+                    <Tooltip open={isTooltipOpen} onOpenChange={setIsTooltipOpen}>
+                    <TooltipTrigger asChild>
+                        <button
+                        onClick={() => {
+                            toggleChat();
+                            setIsTooltipOpen(true); // Opcional: mostrar tooltip al hacer click también
+                        }}
+                        onMouseEnter={() => setIsTooltipOpen(true)}
+                        onMouseLeave={() => setIsTooltipOpen(false)}
+                        className={`fixed bottom-4 right-4 z-10 transform rounded-full bg-blue-500 p-3
+                            text-white shadow-lg transition-all 
+                            duration-300 hover:rotate-3 hover:scale-110 hover:bg-blue-400 focus:outline-none
+                            ${isOpen ? 'scale-0 opacity-0' : 'scale-100 opacity-100'}
+                        `}
+                        title="Abrir chat de ayuda"
+                        aria-label="Abrir chat de ayuda"
+                        >
+                        <MessageCircle className="h-6 w-6" />
+                        </button>
+                    </TooltipTrigger>
+                    <TooltipContent side="left" className="bg-gray-800 text-white border-gray-700">
+                        <p>¡Chatea con nosotros!</p>
+                    </TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
             )}
         </>
     )
