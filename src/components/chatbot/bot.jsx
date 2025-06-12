@@ -279,7 +279,7 @@ export default function ChatBot() {
             setInputMessage('')
             setIsTyping(false)
             setShowSuggestions(true)
-            setIsSuggestionsExpanded(false) // Changed to false by default
+            setIsSuggestionsExpanded(true)
             setHasContext(false)
         } catch (error) {
             console.error('Error generating initial message:', error)
@@ -595,19 +595,13 @@ export default function ChatBot() {
     }
 
     const generateErrorResponse = () => {
-        return `<div className="flex items-center gap-2 mb-3">
-  <XCircle className="h-5 w-5 text-red-500" />
-  <strong>Error en la consulta</strong>
-</div>
+        return `❌ **Error en la consulta**
 
 Lo sentimos, ocurrió un problema al consultar la información de tu incapacidad. 
 
 Por favor, intenta nuevamente en unos minutos o comunícate con nosotros para obtener asistencia.
 
-<div className="flex items-center gap-2 mt-4 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-  <Shield className="h-4 w-4 text-blue-500" />
-  <span className="text-sm"><strong>Nota:</strong> Esta consulta es confidencial y solo visible para ti.</span>
-</div>`;
+**Nota:** Esta consulta es confidencial y solo visible para ti.`;
     }
 
     const generateIncapacidadResponse = (data) => {
@@ -615,20 +609,14 @@ Por favor, intenta nuevamente en unos minutos o comunícate con nosotros para ob
         const hasMainData = data && (data.nombres || data.estado || data.radicado);
         
         if (!hasMainData) {
-            return `<div className="flex items-center gap-2 mb-3">
-  <XCircle className="h-5 w-5 text-red-500" />
-  <strong>No se encontró información de incapacidad</strong>
-</div>
+            return `❌ **No se encontró información de incapacidad**
 
 Lo sentimos, no pudimos encontrar información sobre tu incapacidad en nuestros registros. 
 
 **¿Necesitas ayuda?**
 Por favor, comunícate con nosotros para verificar tu información y obtener el estado actualizado de tu solicitud.
 
-<div className="flex items-center gap-2 mt-4 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-  <Shield className="h-4 w-4 text-blue-500" />
-  <span className="text-sm"><strong>Nota:</strong> Esta consulta es confidencial y solo visible para ti.</span>
-</div>`;
+**Nota:** Esta consulta es confidencial y solo visible para ti.`;
         }
 
         // Generar párrafo de resumen
@@ -655,11 +643,11 @@ Por favor, comunícate con nosotros para verificar tu información y obtener el 
         // Generar iconos según el estado
         const getStatusIcon = (status) => {
             switch (status) {
-                case 'PAGADA': return 'CheckCircle';
-                case 'EN_PROCESO': return 'Clock';
-                case 'PENDIENTE_DOCUMENTOS': return 'FileText';
-                case 'RECHAZADA': return 'XCircle';
-                default: return 'AlertCircle';
+                case 'PAGADA': return '✅';
+                case 'EN_PROCESO': return '🔄';
+                case 'PENDIENTE_DOCUMENTOS': return '📋';
+                case 'RECHAZADA': return '❌';
+                default: return 'ℹ️';
             }
         };
 
@@ -669,78 +657,36 @@ Por favor, comunícate con nosotros para verificar tu información y obtener el 
                           estado === 'PENDIENTE_DOCUMENTOS' ? 'PENDIENTE DOCUMENTOS' :
                           estado === 'RECHAZADA' ? 'RECHAZADA' : estado;
 
-        return `<div className="flex items-center gap-2 mb-3">
-  <${statusIcon} className="h-5 w-5 ${estado === 'PAGADA' ? 'text-green-500' : estado === 'EN_PROCESO' ? 'text-blue-500' : estado === 'PENDIENTE_DOCUMENTOS' ? 'text-yellow-500' : 'text-red-500'}" />
-  <strong>Tu incapacidad está ${statusText}</strong>
-</div>
+        return `${statusIcon} **Tu incapacidad está ${statusText}**
 
 ${summary}
 
-<div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 mt-4">
-  <div className="flex items-center gap-2 mb-3">
-    <FileText className="h-4 w-4 text-prosalud-salud" />
-    <strong className="text-sm">Detalles de tu incapacidad:</strong>
-  </div>
+**📋 Detalles de tu incapacidad:**
 
-  <div className="space-y-2 text-sm">
-    <div className="flex items-center gap-2">
-      <User className="h-4 w-4 text-gray-500" />
-      <span><strong>Nombre:</strong> ${data.nombres || 'No disponible'}</span>
-    </div>
-    
-    <div className="flex items-center gap-2">
-      <User className="h-4 w-4 text-gray-500" />
-      <span><strong>Cargo:</strong> ${data.cargo || 'No especificado'}</span>
-    </div>
-    
-    <div className="flex items-center gap-2">
-      <Calendar className="h-4 w-4 text-gray-500" />
-      <span><strong>Fecha inicio:</strong> ${data.fechaInicio || 'No disponible'}</span>
-    </div>
-    
-    <div className="flex items-center gap-2">
-      <Calendar className="h-4 w-4 text-gray-500" />
-      <span><strong>Fecha fin:</strong> ${data.fechaFin || 'No disponible'}</span>
-    </div>
-    
-    <div className="flex items-center gap-2">
-      <Clock className="h-4 w-4 text-gray-500" />
-      <span><strong>Total días:</strong> ${data.dias || 'No especificado'}</span>
-    </div>
-    
-    ${data.valor ? `<div className="flex items-center gap-2">
-      <DollarSign className="h-4 w-4 text-green-500" />
-      <span><strong>Valor recibido:</strong> ${data.valor}</span>
-    </div>` : ''}
-    
-    <div className="flex items-center gap-2">
-      <Building2 className="h-4 w-4 text-gray-500" />
-      <span><strong>Hospital:</strong> ${data.hospital || 'No especificado'}</span>
-    </div>
-    
-    <div className="flex items-center gap-2">
-      <Shield className="h-4 w-4 text-gray-500" />
-      <span><strong>Administradora:</strong> ${data.administradora || 'No especificada'}</span>
-    </div>
-    
-    <div className="flex items-center gap-2">
-      <FileText className="h-4 w-4 text-gray-500" />
-      <span><strong>N° Radicado:</strong> ${data.radicado || 'No disponible'}</span>
-    </div>
-    
-    <div className="flex items-center gap-2">
-      <Calendar className="h-4 w-4 text-gray-500" />
-      <span><strong>Fecha de recibido:</strong> ${data.fechaRecibido || 'No disponible'}</span>
-    </div>
-  </div>
-</div>
+**👤 Datos personales:**
+• Nombre: ${data.nombres || 'No disponible'}
+• Cargo: ${data.cargo || 'No especificado'}
+
+**📅 Período de incapacidad:**
+• Fecha inicio: ${data.fechaInicio || 'No disponible'}
+• Fecha fin: ${data.fechaFin || 'No disponible'}
+• Total días: ${data.dias || 'No especificado'}
+
+${data.valor ? `**💰 Información de pago:**
+• Estado: ${statusText}
+• Valor recibido: ${data.valor}
+
+` : ''}**🏥 Entidad:**
+• Hospital: ${data.hospital || 'No especificado'}
+• Administradora: ${data.administradora || 'No especificada'}
+
+**📄 Detalles administrativos:**
+• N° Radicado: ${data.radicado || 'No disponible'}
+• Fecha de recibido: ${data.fechaRecibido || 'No disponible'}
 
 Si algún dato no coincide con tu información o tienes dudas sobre el proceso, puedes comunicarte con nosotros para más detalles.
 
-<div className="flex items-center gap-2 mt-4 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-  <Shield className="h-4 w-4 text-blue-500" />
-  <span className="text-sm"><strong>Nota:</strong> Esta consulta es confidencial y solo visible para ti.</span>
-</div>`;
+**🔒 Nota:** Esta consulta es confidencial y solo visible para ti.`
     }
 
     const closeIncapacidadForm = () => {
@@ -1065,9 +1011,9 @@ Si algún dato no coincide con tu información o tienes dudas sobre el proceso, 
                                         <div className="px-3 py-3">
                                             <button
                                                 onClick={() => setShowIncapacidadForm(true)}
-                                                className="w-full text-left text-xs text-gray-700 dark:text-gray-300 hover:text-prosalud-salud dark:hover:text-prosalud-salud transition-colors duration-300 flex items-center gap-2"
+                                                className="w-full text-left rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-600 px-3 py-2 text-sm text-gray-700 dark:text-gray-200 shadow-sm transition-all duration-300 hover:bg-prosalud-salud/10 hover:text-gray-900 hover:shadow-md dark:hover:bg-prosalud-salud/20 flex items-center gap-2"
                                             >
-                                                <CreditCard className="h-3 w-3 text-prosalud-salud" />
+                                                <CreditCard className="h-4 w-4 text-prosalud-salud" />
                                                 Consultar pago de una incapacidad
                                             </button>
                                         </div>
