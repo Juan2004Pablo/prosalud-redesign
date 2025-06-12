@@ -32,6 +32,8 @@ import {
     TooltipTrigger,
 } from "@/components/ui/tooltip";
 
+import IncapacidadForm from './IncapacidadForm';
+
 SyntaxHighlighter.registerLanguage('javascript', js)
 SyntaxHighlighter.registerLanguage('json', json)
 SyntaxHighlighter.registerLanguage('php', php)
@@ -49,6 +51,8 @@ export default function ChatBot() {
     const [indications, setIndications] = useState('')
     const [allPageContents, setAllPageContents] = useState('')
     const [autoScroll, setAutoScroll] = useState(true)
+    const [showIncapacidadForm, setShowIncapacidadForm] = useState(false)
+    const [isConsultingIncapacidad, setIsConsultingIncapacidad] = useState(false)
     const messagesEndRef = useRef(null)
     const textareaRef = useRef(null)
     const suggestionsRef = useRef(null)
@@ -107,6 +111,7 @@ export default function ChatBot() {
         '¿Qué es ProSalud?',
         'Certificado de convenio sindical',
         'Consultar estado de una incapacidad',
+        '📄 Consultar pago de incapacidad',
         'Información de contacto',
     ]
 
@@ -525,10 +530,76 @@ export default function ChatBot() {
     }
 
     const handleSuggestionClick = (suggestion) => {
-        setInputMessage(suggestion)
-        if (textareaRef.current) {
-            textareaRef.current.focus()
+        if (suggestion === '📄 Consultar pago de incapacidad') {
+            setShowIncapacidadForm(true)
+            setShowSuggestions(false)
+            setIsSuggestionsExpanded(false)
+        } else {
+            setInputMessage(suggestion)
+            if (textareaRef.current) {
+                textareaRef.current.focus()
+            }
         }
+    }
+
+    const handleIncapacidadFormSubmit = async (formData) => {
+        setIsConsultingIncapacidad(true)
+        setShowIncapacidadForm(false)
+
+        // Add loading message
+        const loadingMessage = {
+            role: 'assistant',
+            content: '🔄 Consultando información de tu incapacidad...',
+            isBot: true,
+            isLoading: true
+        }
+
+        setMessages(prev => [...prev, loadingMessage])
+
+        // Simulate loading for 2-3 seconds
+        setTimeout(() => {
+            const responseMessage = {
+                role: 'assistant',
+                content: generateIncapacidadResponse(),
+                isBot: true
+            }
+
+            setMessages(prev => {
+                const newMessages = [...prev]
+                // Replace loading message with response
+                newMessages[newMessages.length - 1] = responseMessage
+                return newMessages
+            })
+            
+            setIsConsultingIncapacidad(false)
+            setShowSuggestions(true)
+        }, 2500)
+    }
+
+    const generateIncapacidadResponse = () => {
+        return `✅ **Tu incapacidad ha sido PAGADA**
+
+👤 **Nombre:** JHON DOE EXAMPLE  
+🧑‍⚕️ **Cargo:** Auxiliar de enfermería  
+📆 **Período:** 6/6/24 a 6/6/24  
+📄 **Días de incapacidad:** 216  
+💰 **Valor recibido:** $9.360.000 COP  
+🏥 **Hospital:** LA MARIA VIH 131 - PRINCIPAL  
+
+📋 **Detalles adicionales:**
+- **N° Radicado:** 003614
+- **Fecha de recibido:** 13/6/24
+- **Clasificación:** Inicial
+- **Administradora:** EPS SURA
+
+Si algo no coincide con tu información, puedes comunicarte con nosotros para más detalles.
+
+🔒 **Nota:** Esta consulta es confidencial y solo visible para ti.`
+    }
+
+    const closeIncapacidadForm = () => {
+        setShowIncapacidadForm(false)
+        setShowSuggestions(true)
     }
 
     const handleFeedback = (messageIndex, isPositive) => {
@@ -730,170 +801,199 @@ export default function ChatBot() {
 
                             {/* Messages Container */}
                             <div className="relative flex flex-grow flex-col overflow-hidden min-h-0">
-                                <div
-                                    className={`flex-grow space-y-3 overflow-y-auto bg-gray-100 px-3 pb-4 pt-3 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-300 dark:bg-gray-900 dark:scrollbar-thumb-gray-700 ${isFullscreen ? 'px-6 text-lg space-y-4' : ''
-                                        }`}
-                                    style={{
-                                        height: '100%',
-                                        maxHeight: '100%',
-                                    }}
-                                    onScroll={handleScroll}
-                                >
-                                    {messages
-                                        .filter((message) => message.role !== 'system')
-                                        .map((message, index) => {
-                                            // Si es un mensaje del bot con contenido vacío y está en proceso de streaming, no lo mostramos
-                                            if (message.isBot && message.content === '' && isTyping) {
-                                                return null;
-                                            }
+                                {showIncapacidadForm ? (
+                                    <div className="flex-grow bg-gray-100 dark:bg-gray-900 p-4 overflow-y-auto">
+                                        <div className="flex justify-between items-center mb-4">
+                                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                                                Consulta de Incapacidad
+                                            </h3>
+                                            <button
+                                                onClick={closeIncapacidadForm}
+                                                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                                            >
+                                                <X className="h-4 w-4" />
+                                            </button>
+                                        </div>
+                                        <IncapacidadForm 
+                                            onSubmit={handleIncapacidadFormSubmit}
+                                            isLoading={isConsultingIncapacidad}
+                                        />
+                                    </div>
+                                ) : (
+                                    <div
+                                        className={`flex-grow space-y-3 overflow-y-auto bg-gray-100 px-3 pb-4 pt-3 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-300 dark:bg-gray-900 dark:scrollbar-thumb-gray-700 ${isFullscreen ? 'px-6 text-lg space-y-4' : ''
+                                            }`}
+                                        style={{
+                                            height: '100%',
+                                            maxHeight: '100%',
+                                        }}
+                                        onScroll={handleScroll}
+                                    >
+                                        {messages
+                                            .filter((message) => message.role !== 'system')
+                                            .map((message, index) => {
+                                                // Si es un mensaje del bot con contenido vacío y está en proceso de streaming, no lo mostramos
+                                                if (message.isBot && message.content === '' && isTyping) {
+                                                    return null;
+                                                }
 
-                                            return (
-                                                <div
-                                                    key={index}
-                                                    className={`flex 
-                          ${message.isBot ? 'justify-start' : 'justify-end'} 
-                        `}
-                                                >
-                                                    <div className="flex items-start space-x-2 max-w-[80%]">
-                                                        {/* Avatar */}
-                                                        {message.isBot && (
-                                                            <div className="flex-shrink-0">
-                                                                <Bot className="h-6 w-6 text-prosalud-salud bg-gray-200 rounded-full p-1" />
-                                                            </div>
-                                                        )}
-                                                        
-                                                        <div
-                                                            className={`rounded-lg p-3 ${message.isBot
-                                                                ? 'bg-white text-gray-900 shadow-md dark:bg-gray-700 dark:text-gray-100'
-                                                                : 'bg-prosalud-salud text-white'
-                                                                } overflow-x-auto transition-all duration-300 ease-out ${index === messages.filter(m => m.role !== 'system').length - 1
-                                                                    ? 'animate-fadeIn'
-                                                                    : ''
-                                                                }`}
-                                                        >
-                                                            <div className="text-sm break-words markdown-content">
-                                                                <ReactMarkdown
-                                                                    components={renderers}
-                                                                >
-                                                                    {message.content}
-                                                                </ReactMarkdown>
+                                                return (
+                                                    <div
+                                                        key={index}
+                                                        className={`flex 
+                              ${message.isBot ? 'justify-start' : 'justify-end'} 
+                            `}
+                                                    >
+                                                        <div className="flex items-start space-x-2 max-w-[80%]">
+                                                            {/* Avatar */}
+                                                            {message.isBot && (
+                                                                <div className="flex-shrink-0">
+                                                                    <Bot className="h-6 w-6 text-prosalud-salud bg-gray-200 rounded-full p-1" />
+                                                                </div>
+                                                            )}
+                                                            
+                                                            <div
+                                                                className={`rounded-lg p-3 ${message.isBot
+                                                                    ? 'bg-white text-gray-900 shadow-md dark:bg-gray-700 dark:text-gray-100'
+                                                                    : 'bg-prosalud-salud text-white'
+                                                                    } overflow-x-auto transition-all duration-300 ease-out ${index === messages.filter(m => m.role !== 'system').length - 1
+                                                                        ? 'animate-fadeIn'
+                                                                        : ''
+                                                                    }`}
+                                                            >
+                                                                <div className="text-sm break-words markdown-content">
+                                                                    {message.isLoading ? (
+                                                                        <div className="flex items-center space-x-2">
+                                                                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-prosalud-salud"></div>
+                                                                            <span>{message.content}</span>
+                                                                        </div>
+                                                                    ) : (
+                                                                        <ReactMarkdown
+                                                                            components={renderers}
+                                                                        >
+                                                                            {message.content}
+                                                                        </ReactMarkdown>
+                                                                    )}
+                                                                </div>
+
+                                                                {!message.isBot &&
+                                                                    index === messages.filter(m => m.role !== 'system').length - 1 &&
+                                                                    !isTyping && (
+                                                                        <div className="mt-1 flex justify-end">
+                                                                            <Check className="h-3 w-3 text-gray-300" />
+                                                                        </div>
+                                                                    )}
                                                             </div>
 
-                                                            {!message.isBot &&
-                                                                index === messages.filter(m => m.role !== 'system').length - 1 &&
-                                                                !isTyping && (
-                                                                    <div className="mt-1 flex justify-end">
-                                                                        <Check className="h-3 w-3 text-gray-300" />
-                                                                    </div>
-                                                                )}
+                                                            {/* Avatar para usuario */}
+                                                            {!message.isBot && (
+                                                                <div className="flex-shrink-0">
+                                                                    <User className="h-6 w-6 text-white bg-prosalud-salud rounded-full p-1" />
+                                                                </div>
+                                                            )}
                                                         </div>
-
-                                                        {/* Avatar para usuario */}
-                                                        {!message.isBot && (
-                                                            <div className="flex-shrink-0">
-                                                                <User className="h-6 w-6 text-white bg-prosalud-salud rounded-full p-1" />
-                                                            </div>
-                                                        )}
+                                                    </div>
+                                                );
+                                            })}
+                                        {/* Mostrar loader solo si está escribiendo y el último mensaje del bot está vacío */}
+                                        {isTyping &&
+                                            messages.length > 0 &&
+                                            messages[messages.length - 1].isBot &&
+                                            messages[messages.length - 1].content === '' && (
+                                                <div className="flex justify-start">
+                                                    <div className="flex items-start space-x-2">
+                                                        <div className="flex-shrink-0">
+                                                            <Bot className="h-6 w-6 text-prosalud-salud bg-gray-200 rounded-full p-1" />
+                                                        </div>
+                                                        {renderTypingIndicator()}
                                                     </div>
                                                 </div>
-                                            );
-                                        })}
+                                            )}
+                                        <div ref={messagesEndRef} />
+                                    </div>
+                                )}
 
-                                    {/* Mostrar loader solo si está escribiendo y el último mensaje del bot está vacío */}
-                                    {isTyping &&
-                                        messages.length > 0 &&
-                                        messages[messages.length - 1].isBot &&
-                                        messages[messages.length - 1].content === '' && (
-                                            <div className="flex justify-start">
-                                                <div className="flex items-start space-x-2">
-                                                    <div className="flex-shrink-0">
-                                                        <Bot className="h-6 w-6 text-prosalud-salud bg-gray-200 rounded-full p-1" />
-                                                    </div>
-                                                    {renderTypingIndicator()}
+                                {/* Suggestions Section */}
+                                {!showIncapacidadForm && showSuggestions && messages.length <= 2 && (
+                                    <div className="flex-shrink-0 border-t border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800">
+                                        <div
+                                            className="flex items-center justify-between px-3 py-2 cursor-pointer"
+                                            onClick={() => setIsSuggestionsExpanded(!isSuggestionsExpanded)}
+                                        >
+                                            <p className="text-xs font-medium text-gray-700 dark:text-gray-300">
+                                                Preguntas sugeridas
+                                            </p>
+                                            <button
+                                                className="text-gray-600 transition-colors duration-300 hover:text-prosalud-salud focus:outline-none dark:text-gray-400 dark:hover:text-prosalud-salud"
+                                                aria-label={
+                                                    isSuggestionsExpanded
+                                                        ? 'Contraer sugerencias'
+                                                        : 'Expandir sugerencias'
+                                                }
+                                            >
+                                                {isSuggestionsExpanded ? (
+                                                    <ChevronUp className="h-4 w-4" />
+                                                ) : (
+                                                    <ChevronDown className="h-4 w-4" />
+                                                )}
+                                            </button>
+                                        </div>
+                                        
+                                        {isSuggestionsExpanded && (
+                                            <div className="px-3 pb-3">
+                                                <div className="grid grid-cols-1 gap-2">
+                                                    {suggestions.map((suggestion, index) => (
+                                                        <button
+                                                            key={index}
+                                                            onClick={() => handleSuggestionClick(suggestion)}
+                                                            className="text-left rounded-lg bg-white px-3 py-2 text-xs text-gray-700 shadow-sm transition-all duration-300 hover:bg-prosalud-salud/10 hover:text-gray-900 hover:shadow-md dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-prosalud-salud/20 border border-gray-200 dark:border-gray-500"
+                                                        >
+                                                            {suggestion}
+                                                        </button>
+                                                    ))}
                                                 </div>
                                             </div>
                                         )}
-                                    <div ref={messagesEndRef} />
-                                </div>
-
-   {showSuggestions && messages.length <= 2 && (
-                                <div className="flex-shrink-0 border-t border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800">
-                                    <div
-                                        className="flex items-center justify-between px-3 py-2 cursor-pointer"
-                                        onClick={() => setIsSuggestionsExpanded(!isSuggestionsExpanded)}
-                                    >
-                                        <p className="text-xs font-medium text-gray-700 dark:text-gray-300">
-                                            Preguntas sugeridas
-                                        </p>
-                                        <button
-                                            className="text-gray-600 transition-colors duration-300 hover:text-prosalud-salud focus:outline-none dark:text-gray-400 dark:hover:text-prosalud-salud"
-                                            aria-label={
-                                                isSuggestionsExpanded
-                                                    ? 'Contraer sugerencias'
-                                                    : 'Expandir sugerencias'
-                                            }
-                                        >
-                                            {isSuggestionsExpanded ? (
-                                                <ChevronUp className="h-4 w-4" />
-                                            ) : (
-                                                <ChevronDown className="h-4 w-4" />
-                                            )}
-                                        </button>
                                     </div>
-                                    
-                                    {isSuggestionsExpanded && (
-                                        <div className="px-3 pb-3">
-                                            <div className="grid grid-cols-1 gap-2">
-                                                {suggestions.map((suggestion, index) => (
-                                                    <button
-                                                        key={index}
-                                                        onClick={() => handleSuggestionClick(suggestion)}
-                                                        className="text-left rounded-lg bg-white px-3 py-2 text-xs text-gray-700 shadow-sm transition-all duration-300 hover:bg-prosalud-salud hover:text-gray-700 hover:shadow-md dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-prosalud-salud border border-gray-200 dark:border-gray-500"
-                                                    >
-                                                        {suggestion}
-                                                    </button>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    )}
-                                </div>
-                            )}
+                                )}
 
                                 {/* Input Form */}
-                                <form
-                                    onSubmit={handleSendMessage}
-                                    className={`relative z-20 border-t border-gray-200 bg-white p-2 dark:border-gray-700 dark:bg-gray-800 flex-shrink-0 ${isFullscreen ? 'p-4' : ''
-                                        }`}
-                                >
-                                    <div className="flex items-end gap-2">
-                                        <textarea
-                                            ref={textareaRef}
-                                            value={inputMessage}
-                                            onChange={handleInputChange}
-                                            onKeyDown={handleKeyDown}
-                                            className={`flex-grow resize-none overflow-hidden rounded-lg border border-gray-300 bg-gray-100 p-2 text-sm text-gray-900 placeholder-gray-500 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-prosalud-salud dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:ring-prosalud-salud ${isFullscreen
-                                                ? 'max-h-[120px] min-h-[3rem] p-3 text-base'
-                                                : 'max-h-[80px] min-h-[2.5rem]'
-                                                }`}
-                                            placeholder="Escribe tu pregunta aquí..."
-                                            rows={1}
-                                            aria-label="Mensaje"
-                                            disabled={isTyping}
-                                        />
-                                        <button
-                                            type="submit"
-                                            className={`transform rounded-lg bg-prosalud-salud p-2 text-white transition-all duration-300 hover:scale-105 hover:bg-prosalud-salud/90 focus:outline-none cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 flex-shrink-0 ${isFullscreen ? 'p-3' : ''
-                                                }`}
-                                            disabled={isTyping || inputMessage.trim() === ''}
-                                            title="Enviar mensaje"
-                                            aria-label="Enviar mensaje"
-                                        >
-                                            <Send
-                                                className={`${isFullscreen ? 'h-6 w-6' : 'h-4 w-4'}`}
+                                {!showIncapacidadForm && (
+                                    <form
+                                        onSubmit={handleSendMessage}
+                                        className={`relative z-20 border-t border-gray-200 bg-white p-2 dark:border-gray-700 dark:bg-gray-800 flex-shrink-0 ${isFullscreen ? 'p-4' : ''
+                                            }`}
+                                    >
+                                        <div className="flex items-end gap-2">
+                                            <textarea
+                                                ref={textareaRef}
+                                                value={inputMessage}
+                                                onChange={handleInputChange}
+                                                onKeyDown={handleKeyDown}
+                                                className={`flex-grow resize-none overflow-hidden rounded-lg border border-gray-300 bg-gray-100 p-2 text-sm text-gray-900 placeholder-gray-500 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-prosalud-salud dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:ring-prosalud-salud ${isFullscreen
+                                                    ? 'max-h-[120px] min-h-[3rem] p-3 text-base'
+                                                    : 'max-h-[80px] min-h-[2.5rem]'
+                                                    }`}
+                                                placeholder="Escribe tu pregunta aquí..."
+                                                rows={1}
+                                                aria-label="Mensaje"
+                                                disabled={isTyping}
                                             />
-                                        </button>
-                                    </div>
-                                </form>
+                                            <button
+                                                type="submit"
+                                                className={`transform rounded-lg bg-prosalud-salud p-2 text-white transition-all duration-300 hover:scale-105 hover:bg-prosalud-salud/90 focus:outline-none cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 flex-shrink-0 ${isFullscreen ? 'p-3' : ''
+                                                    }`}
+                                                disabled={isTyping || inputMessage.trim() === ''}
+                                                title="Enviar mensaje"
+                                                aria-label="Enviar mensaje"
+                                            >
+                                                <Send
+                                                    className={`${isFullscreen ? 'h-6 w-6' : 'h-4 w-4'}`}
+                                                />
+                                            </button>
+                                        </div>
+                                    </form>
+                                )}
                             </div>
                         </div>
                     </div>
