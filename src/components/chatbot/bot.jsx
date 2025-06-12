@@ -17,6 +17,7 @@ import {
     Bot,
     User,
     FileText,
+    Search,
     Calendar,
     CreditCard,
 } from 'lucide-react'
