@@ -897,7 +897,7 @@ Si algún dato no coincide con tu información o tienes dudas sobre el proceso, 
                                         <div className="flex justify-between items-center mb-4">
                                             <CardTitle className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                                               <Search className="h-5 w-5 text-prosalud-salud" />
-                                              Consultar Pago de Incapacidad
+                                              Consultar pago de una incapacidad
                                             </CardTitle>
                                             <button
                                                 onClick={closeIncapacidadForm}
