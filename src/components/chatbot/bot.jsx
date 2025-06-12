@@ -897,7 +897,7 @@ Si algún dato no coincide con tu información o tienes dudas sobre el proceso, 
                                         <div className="flex justify-between items-center mb-4">
                                             <CardTitle className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                                               <Search className="h-5 w-5 text-prosalud-salud" />
-                                              Consultar pago de una incapacidad
+                                              Consultar pago de incapacidad
                                             </CardTitle>
                                             <button
                                                 onClick={closeIncapacidadForm}
@@ -1014,7 +1014,7 @@ Si algún dato no coincide con tu información o tienes dudas sobre el proceso, 
                                                 className="w-full text-left rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-600 px-3 py-2 text-sm text-gray-700 dark:text-gray-200 shadow-sm transition-all duration-300 hover:bg-prosalud-salud/10 hover:text-gray-900 hover:shadow-md dark:hover:bg-prosalud-salud/20 flex items-center gap-2"
                                             >
                                                 <CreditCard className="h-4 w-4 text-prosalud-salud" />
-                                                Consultar pago de incapacidad
+                                                Consultar pago de una incapacidad
                                             </button>
                                         </div>
                                     </div>
