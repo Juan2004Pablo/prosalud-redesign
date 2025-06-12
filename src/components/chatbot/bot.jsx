@@ -36,6 +36,7 @@ import {
 } from "@/components/ui/tooltip";
 
 import IncapacidadForm from './IncapacidadForm';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 SyntaxHighlighter.registerLanguage('javascript', js)
 SyntaxHighlighter.registerLanguage('json', json)
