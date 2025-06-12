@@ -544,7 +544,7 @@ export default function ChatBot() {
         // Add loading message
         const loadingMessage = {
             role: 'assistant',
-            content: '🔄 Consultando información de tu incapacidad...',
+            content: 'Consultando información de tu incapacidad...',
             isBot: true,
             isLoading: true
         }
@@ -594,42 +594,42 @@ export default function ChatBot() {
 
 Lo sentimos, no pudimos encontrar información sobre tu incapacidad en nuestros registros. 
 
-📞 **¿Necesitas ayuda?**
+**¿Necesitas ayuda?**
 Por favor, comunícate con nosotros para verificar tu información y obtener el estado actualizado de tu solicitud.
 
-🔒 **Nota:** Esta consulta es confidencial y solo visible para ti.`;
+**Nota:** Esta consulta es confidencial y solo visible para ti.`;
         }
 
-        return `✅ **Tu incapacidad ha sido ${data.estado}**
+        return `**Tu incapacidad ha sido ${data.estado}**
 
 En resumen, tu solicitud de incapacidad laboral del período ${data.fechaInicio} a ${data.fechaFin} ha sido procesada exitosamente y el pago por valor de ${data.valor} ha sido realizado. El proceso tardó desde la fecha de recepción (${data.fechaRecibido}) hasta la aprobación final.
 
-📋 **Detalles de tu incapacidad:**
+**Detalles de tu incapacidad:**
 
-👤 **Datos personales:**
+**Datos personales:**
 • Nombre: ${data.nombres || 'No disponible'}
 • Cargo: ${data.cargo || 'No especificado'}
 
-📅 **Período de incapacidad:**
+**Período de incapacidad:**
 • Fecha inicio: ${data.fechaInicio || 'No disponible'}
 • Fecha fin: ${data.fechaFin || 'No disponible'}
 • Total días: ${data.dias || 'No especificado'}
 
-💰 **Información de pago:**
+**Información de pago:**
 • Estado: ${data.estado}
 • Valor recibido: ${data.valor}
 
-🏥 **Entidad:**
+**Entidad:**
 • Hospital: ${data.hospital || 'No especificado'}
 • Administradora: ${data.administradora || 'No especificada'}
 
-📄 **Detalles administrativos:**
+**Detalles administrativos:**
 • N° Radicado: ${data.radicado || 'No disponible'}
 • Fecha de recibido: ${data.fechaRecibido || 'No disponible'}
 
 Si algún dato no coincide con tu información o tienes dudas sobre el proceso, puedes comunicarte con nosotros para más detalles.
 
-🔒 **Nota:** Esta consulta es confidencial y solo visible para ti.`
+**Nota:** Esta consulta es confidencial y solo visible para ti.`
     }
 
     const closeIncapacidadForm = () => {
@@ -838,9 +838,10 @@ Si algún dato no coincide con tu información o tienes dudas sobre el proceso, 
                                 {showIncapacidadForm ? (
                                     <div className="flex-grow bg-gray-100 dark:bg-gray-900 p-4 overflow-y-auto">
                                         <div className="flex justify-between items-center mb-4">
-                                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                                                Consulta de Incapacidad
-                                            </h3>
+                                            <CardTitle className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                                              <Search className="h-5 w-5 text-prosalud-salud" />
+                                              Consultar Pago de Incapacidad
+                                            </CardTitle>
                                             <button
                                                 onClick={closeIncapacidadForm}
                                                 className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
@@ -953,10 +954,10 @@ Si algún dato no coincide con tu información o tienes dudas sobre el proceso, 
                                         <div className="px-3 py-3">
                                             <button
                                                 onClick={() => setShowIncapacidadForm(true)}
-                                                className="w-full text-left rounded-lg bg-gradient-to-r from-prosalud-salud to-prosalud-salud/80 px-4 py-3 text-white font-medium shadow-md transition-all duration-300 hover:shadow-lg hover:from-prosalud-salud/90 hover:to-prosalud-salud/70 flex items-center justify-center gap-2"
+                                                className="w-full text-left rounded-lg bg-gradient-to-r from-prosalud-salud to-prosalud-salud/80 px-4 py-3 text-prosalud-primary font-medium shadow-md transition-all duration-300 hover:shadow-lg hover:from-prosalud-salud/90 hover:to-prosalud-salud/70 flex items-center justify-center gap-2"
                                             >
                                                 <CreditCard className="h-5 w-5" />
-                                                📄 Consultar pago de incapacidad
+                                                Consultar pago de incapacidad
                                             </button>
                                         </div>
                                     </div>

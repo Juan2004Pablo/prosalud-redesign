@@ -18,11 +18,10 @@ interface FormData {
 }
 
 const documentTypes = [
-  { value: 'CC', label: 'Cédula de Ciudadanía (CC)' },
-  { value: 'TI', label: 'Tarjeta de Identidad (TI)' },
-  { value: 'CE', label: 'Cédula de Extranjería (CE)' },
-  { value: 'PP', label: 'Pasaporte (PP)' },
-  { value: 'RC', label: 'Registro Civil (RC)' }
+    { value: "CC", label: "Cédula de Ciudadanía (CC)" },
+    { value: "CE", label: "Cédula de Extranjería (CE)" },
+    { value: "PP", label: "Pasaporte (PP)" },
+    { value: "PT", label: "Permiso por protección temporal (PT)" },
 ];
 
 const getDocumentValidation = (tipo: string) => {
