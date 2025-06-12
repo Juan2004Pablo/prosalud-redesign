@@ -60,7 +60,7 @@ export default function ChatBot() {
     const [isFullscreen, setIsFullscreen] = useState(false)
     const [specialty, setSpecialty] = useState('')
     const [isSuggestionsExpanded, setIsSuggestionsExpanded] = useState(false)
-    const [showSuggestions, setShowSuggestions] = useState(true)
+    const [showSuggestions, setShowSuggestions] = useState(false)
     const [hasContext, setHasContext] = useState(false)
     const [indications, setIndications] = useState('')
     const [allPageContents, setAllPageContents] = useState('')
