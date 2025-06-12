@@ -16,6 +16,9 @@ import {
     MessageSquare,
     Bot,
     User,
+    FileText,
+    Calendar,
+    CreditCard,
 } from 'lucide-react'
 import SyntaxHighlighter from 'react-syntax-highlighter/dist/cjs/light'
 import js from 'react-syntax-highlighter/dist/cjs/languages/hljs/javascript'
@@ -111,7 +114,6 @@ export default function ChatBot() {
         '¿Qué es ProSalud?',
         'Certificado de convenio sindical',
         'Consultar estado de una incapacidad',
-        '📄 Consultar pago de incapacidad',
         'Información de contacto',
     ]
 
@@ -451,7 +453,7 @@ export default function ChatBot() {
             return chatMessages
         })
         setInputMessage('')
-        setShowSuggestions(false)
+        // No ocultar las sugerencias completamente, solo colapsar
         setIsSuggestionsExpanded(false)
         setHasContext(true)
         setIsTyping(true)
@@ -518,7 +520,6 @@ export default function ChatBot() {
             ])
         } finally {
             setIsTyping(false)
-            setShowSuggestions(true)
         }
     }
 
@@ -530,15 +531,9 @@ export default function ChatBot() {
     }
 
     const handleSuggestionClick = (suggestion) => {
-        if (suggestion === '📄 Consultar pago de incapacidad') {
-            setShowIncapacidadForm(true)
-            setShowSuggestions(false)
-            setIsSuggestionsExpanded(false)
-        } else {
-            setInputMessage(suggestion)
-            if (textareaRef.current) {
-                textareaRef.current.focus()
-            }
+        setInputMessage(suggestion)
+        if (textareaRef.current) {
+            textareaRef.current.focus()
         }
     }
 
@@ -560,7 +555,7 @@ export default function ChatBot() {
         setTimeout(() => {
             const responseMessage = {
                 role: 'assistant',
-                content: generateIncapacidadResponse(),
+                content: generateIncapacidadResponse(formData),
                 isBot: true
             }
 
@@ -572,34 +567,73 @@ export default function ChatBot() {
             })
             
             setIsConsultingIncapacidad(false)
-            setShowSuggestions(true)
         }, 2500)
     }
 
-    const generateIncapacidadResponse = () => {
-        return `✅ **Tu incapacidad ha sido PAGADA**
+    const generateIncapacidadResponse = (formData) => {
+        // Datos de ejemplo con validación de nulos
+        const data = {
+            radicado: '003614',
+            fechaRecibido: '13/6/24',
+            nombres: 'JHON DOE EXAMPLE',
+            cargo: 'Auxiliar de enfermería',
+            fechaInicio: '6/6/24',
+            fechaFin: '6/6/24',
+            dias: '216',
+            estado: 'PAGADA',
+            valor: '$9.360.000 COP',
+            hospital: 'LA MARIA VIH 131 - PRINCIPAL',
+            administradora: 'EPS SURA'
+        }
 
-👤 **Nombre:** JHON DOE EXAMPLE  
-🧑‍⚕️ **Cargo:** Auxiliar de enfermería  
-📆 **Período:** 6/6/24 a 6/6/24  
-📄 **Días de incapacidad:** 216  
-💰 **Valor recibido:** $9.360.000 COP  
-🏥 **Hospital:** LA MARIA VIH 131 - PRINCIPAL  
+        // Validar que los datos principales estén presentes
+        const hasMainData = data.nombres && data.estado && data.valor;
+        
+        if (!hasMainData) {
+            return `❌ **No se encontró información de incapacidad**
 
-📋 **Detalles adicionales:**
-- **N° Radicado:** 003614
-- **Fecha de recibido:** 13/6/24
-- **Clasificación:** Inicial
-- **Administradora:** EPS SURA
+Lo sentimos, no pudimos encontrar información sobre tu incapacidad en nuestros registros. 
 
-Si algo no coincide con tu información, puedes comunicarte con nosotros para más detalles.
+📞 **¿Necesitas ayuda?**
+Por favor, comunícate con nosotros para verificar tu información y obtener el estado actualizado de tu solicitud.
+
+🔒 **Nota:** Esta consulta es confidencial y solo visible para ti.`;
+        }
+
+        return `✅ **Tu incapacidad ha sido ${data.estado}**
+
+En resumen, tu solicitud de incapacidad laboral del período ${data.fechaInicio} a ${data.fechaFin} ha sido procesada exitosamente y el pago por valor de ${data.valor} ha sido realizado. El proceso tardó desde la fecha de recepción (${data.fechaRecibido}) hasta la aprobación final.
+
+📋 **Detalles de tu incapacidad:**
+
+👤 **Datos personales:**
+• Nombre: ${data.nombres || 'No disponible'}
+• Cargo: ${data.cargo || 'No especificado'}
+
+📅 **Período de incapacidad:**
+• Fecha inicio: ${data.fechaInicio || 'No disponible'}
+• Fecha fin: ${data.fechaFin || 'No disponible'}
+• Total días: ${data.dias || 'No especificado'}
+
+💰 **Información de pago:**
+• Estado: ${data.estado}
+• Valor recibido: ${data.valor}
+
+🏥 **Entidad:**
+• Hospital: ${data.hospital || 'No especificado'}
+• Administradora: ${data.administradora || 'No especificada'}
+
+📄 **Detalles administrativos:**
+• N° Radicado: ${data.radicado || 'No disponible'}
+• Fecha de recibido: ${data.fechaRecibido || 'No disponible'}
+
+Si algún dato no coincide con tu información o tienes dudas sobre el proceso, puedes comunicarte con nosotros para más detalles.
 
 🔒 **Nota:** Esta consulta es confidencial y solo visible para ti.`
     }
 
     const closeIncapacidadForm = () => {
         setShowIncapacidadForm(false)
-        setShowSuggestions(true)
     }
 
     const handleFeedback = (messageIndex, isPositive) => {
@@ -913,8 +947,23 @@ Si algo no coincide con tu información, puedes comunicarte con nosotros para m�
                                     </div>
                                 )}
 
+                                {/* Consulta de Incapacidad Button - A nivel principal */}
+                                {!showIncapacidadForm && showSuggestions && (
+                                    <div className="flex-shrink-0 border-t border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800">
+                                        <div className="px-3 py-3">
+                                            <button
+                                                onClick={() => setShowIncapacidadForm(true)}
+                                                className="w-full text-left rounded-lg bg-gradient-to-r from-prosalud-salud to-prosalud-salud/80 px-4 py-3 text-white font-medium shadow-md transition-all duration-300 hover:shadow-lg hover:from-prosalud-salud/90 hover:to-prosalud-salud/70 flex items-center justify-center gap-2"
+                                            >
+                                                <CreditCard className="h-5 w-5" />
+                                                📄 Consultar pago de incapacidad
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
+
                                 {/* Suggestions Section */}
-                                {!showIncapacidadForm && showSuggestions && messages.length <= 2 && (
+                                {!showIncapacidadForm && showSuggestions && (
                                     <div className="flex-shrink-0 border-t border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800">
                                         <div
                                             className="flex items-center justify-between px-3 py-2 cursor-pointer"
