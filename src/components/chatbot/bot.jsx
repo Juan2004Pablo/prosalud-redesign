@@ -672,8 +672,8 @@ export default function ChatBot() {
                                   <div className="mr-3 rounded-full flex-shrink-0">
                                     <Bot
                                       className={`${
-                                        isFullscreen ? 'w-14 h-14' : 'w-8 h-8'
-                                      } text-prosalud-salud bg-gray-200 rounded-full p-1`}
+                                        isFullscreen ? 'w-16 h-16' : 'w-10 h-10'
+                                      } text-prosalud-salud rounded-full p-1`}
                                     />
                                   </div>
                                   <span className="truncate">Asistente ProSalud</span>
