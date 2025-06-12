@@ -665,17 +665,18 @@ export default function ChatBot() {
                                     }`}
                             >
                                 <h2
-                                    className={`flex items-center text-lg font-semibold text-gray-900 dark:text-white ${isFullscreen ? 'text-2xl' : 'text-base'
-                                        }`}
+                                  className={`flex items-center text-lg font-semibold text-gray-900 dark:text-white ${
+                                    isFullscreen ? 'text-2xl' : 'text-base'
+                                  }`}
                                 >
-                                    <img
-                                        src={AVATAR_URL}
-                                        alt="ProSalud Assistant Avatar"
-                                        width={isFullscreen ? 56 : 32}
-                                        height={isFullscreen ? 56 : 32}
-                                        className="mr-3 rounded-full flex-shrink-0"
+                                  <div className="mr-3 rounded-full flex-shrink-0">
+                                    <Bot
+                                      className={`${
+                                        isFullscreen ? 'w-14 h-14' : 'w-8 h-8'
+                                      } text-prosalud-salud bg-gray-200 rounded-full p-1`}
                                     />
-                                    <span className="truncate">Asistente ProSalud</span>
+                                  </div>
+                                  <span className="truncate">Asistente ProSalud</span>
                                 </h2>
                                 <div className="flex items-center space-x-2 flex-shrink-0">
                                     <button
