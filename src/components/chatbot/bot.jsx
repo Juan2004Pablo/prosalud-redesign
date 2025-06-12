@@ -124,7 +124,6 @@ export default function ChatBot() {
     const suggestions = [
         '¿Qué es ProSalud?',
         'Certificado de convenio sindical',
-        'Consultar estado de una incapacidad',
         'Información de contacto',
     ]
 
