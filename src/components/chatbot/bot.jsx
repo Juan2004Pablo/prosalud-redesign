@@ -279,7 +279,7 @@ export default function ChatBot() {
             setInputMessage('')
             setIsTyping(false)
             setShowSuggestions(true)
-            setIsSuggestionsExpanded(true)
+            setIsSuggestionsExpanded(false)
             setHasContext(false)
         } catch (error) {
             console.error('Error generating initial message:', error)
