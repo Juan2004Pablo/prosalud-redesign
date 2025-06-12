@@ -20,6 +20,14 @@ import {
     Search,
     Calendar,
     CreditCard,
+    CheckCircle,
+    Clock,
+    XCircle,
+    AlertCircle,
+    DollarSign,
+    Building2,
+    Shield,
+    Loader2,
 } from 'lucide-react'
 import SyntaxHighlighter from 'react-syntax-highlighter/dist/cjs/light'
 import js from 'react-syntax-highlighter/dist/cjs/languages/hljs/javascript'
@@ -38,6 +46,7 @@ import {
 
 import IncapacidadForm from './IncapacidadForm';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { consultarIncapacidad } from '@/services/incapacidadService';
 
 SyntaxHighlighter.registerLanguage('javascript', js)
 SyntaxHighlighter.registerLanguage('json', json)
@@ -50,7 +59,7 @@ export default function ChatBot() {
     const [isTyping, setIsTyping] = useState(false)
     const [isFullscreen, setIsFullscreen] = useState(false)
     const [specialty, setSpecialty] = useState('')
-    const [isSuggestionsExpanded, setIsSuggestionsExpanded] = useState(true)
+    const [isSuggestionsExpanded, setIsSuggestionsExpanded] = useState(false)
     const [showSuggestions, setShowSuggestions] = useState(true)
     const [hasContext, setHasContext] = useState(false)
     const [indications, setIndications] = useState('')
@@ -553,11 +562,13 @@ export default function ChatBot() {
 
         setMessages(prev => [...prev, loadingMessage])
 
-        // Simulate loading for 2-3 seconds
-        setTimeout(() => {
+        try {
+            // Use the mock service
+            const incapacidadData = await consultarIncapacidad(formData);
+            
             const responseMessage = {
                 role: 'assistant',
-                content: generateIncapacidadResponse(formData),
+                content: generateIncapacidadResponse(incapacidadData),
                 isBot: true
             }
 
@@ -567,29 +578,36 @@ export default function ChatBot() {
                 newMessages[newMessages.length - 1] = responseMessage
                 return newMessages
             })
-            
+        } catch (error) {
+            const errorMessage = {
+                role: 'assistant',
+                content: generateErrorResponse(),
+                isBot: true
+            }
+
+            setMessages(prev => {
+                const newMessages = [...prev]
+                newMessages[newMessages.length - 1] = errorMessage
+                return newMessages
+            })
+        } finally {
             setIsConsultingIncapacidad(false)
-        }, 2500)
+        }
     }
 
-    const generateIncapacidadResponse = (formData) => {
-        // Datos de ejemplo con validación de nulos
-        const data = {
-            radicado: '003614',
-            fechaRecibido: '13/6/24',
-            nombres: 'JHON DOE EXAMPLE',
-            cargo: 'Auxiliar de enfermería',
-            fechaInicio: '6/6/24',
-            fechaFin: '6/6/24',
-            dias: '216',
-            estado: 'PAGADA',
-            valor: '$9.360.000 COP',
-            hospital: 'LA MARIA VIH 131 - PRINCIPAL',
-            administradora: 'EPS SURA'
-        }
+    const generateErrorResponse = () => {
+        return `❌ **Error en la consulta**
 
+Lo sentimos, ocurrió un problema al consultar la información de tu incapacidad. 
+
+Por favor, intenta nuevamente en unos minutos o comunícate con nosotros para obtener asistencia.
+
+**Nota:** Esta consulta es confidencial y solo visible para ti.`;
+    }
+
+    const generateIncapacidadResponse = (data) => {
         // Validar que los datos principales estén presentes
-        const hasMainData = data.nombres && data.estado && data.valor;
+        const hasMainData = data && (data.nombres || data.estado || data.radicado);
         
         if (!hasMainData) {
             return `❌ **No se encontró información de incapacidad**
@@ -602,36 +620,74 @@ Por favor, comunícate con nosotros para verificar tu información y obtener el 
 **Nota:** Esta consulta es confidencial y solo visible para ti.`;
         }
 
-        return `**Tu incapacidad ha sido ${data.estado}**
+        // Generar párrafo de resumen
+        let summary = '';
+        const estado = data.estado || 'DESCONOCIDO';
+        
+        switch (estado) {
+            case 'PAGADA':
+                summary = `Tu solicitud de incapacidad laboral del período ${data.fechaInicio || 'N/A'} a ${data.fechaFin || 'N/A'} ha sido procesada exitosamente y el pago${data.valor ? ` por valor de ${data.valor}` : ''} ha sido realizado. El proceso tardó desde la fecha de recepción${data.fechaRecibido ? ` (${data.fechaRecibido})` : ''} hasta la aprobación final.`;
+                break;
+            case 'EN_PROCESO':
+                summary = `Tu solicitud de incapacidad está actualmente en proceso de revisión. Fue recibida${data.fechaRecibido ? ` el ${data.fechaRecibido}` : ''} y nuestro equipo está trabajando en la verificación de la documentación.`;
+                break;
+            case 'PENDIENTE_DOCUMENTOS':
+                summary = `Tu solicitud de incapacidad requiere documentación adicional para completar el proceso. Por favor, revisa los requisitos y envía la información faltante.`;
+                break;
+            case 'RECHAZADA':
+                summary = `Tu solicitud de incapacidad ha sido revisada pero no cumple con los requisitos establecidos. Te recomendamos contactarnos para obtener más detalles sobre los motivos.`;
+                break;
+            default:
+                summary = `Hemos encontrado información sobre tu solicitud de incapacidad. Revisa los detalles a continuación.`;
+        }
 
-En resumen, tu solicitud de incapacidad laboral del período ${data.fechaInicio} a ${data.fechaFin} ha sido procesada exitosamente y el pago por valor de ${data.valor} ha sido realizado. El proceso tardó desde la fecha de recepción (${data.fechaRecibido}) hasta la aprobación final.
+        // Generar iconos según el estado
+        const getStatusIcon = (status) => {
+            switch (status) {
+                case 'PAGADA': return '✅';
+                case 'EN_PROCESO': return '🔄';
+                case 'PENDIENTE_DOCUMENTOS': return '📋';
+                case 'RECHAZADA': return '❌';
+                default: return 'ℹ️';
+            }
+        };
 
-**Detalles de tu incapacidad:**
+        const statusIcon = getStatusIcon(estado);
+        const statusText = estado === 'PAGADA' ? 'PAGADA' : 
+                          estado === 'EN_PROCESO' ? 'EN PROCESO' :
+                          estado === 'PENDIENTE_DOCUMENTOS' ? 'PENDIENTE DOCUMENTOS' :
+                          estado === 'RECHAZADA' ? 'RECHAZADA' : estado;
 
-**Datos personales:**
+        return `${statusIcon} **Tu incapacidad está ${statusText}**
+
+${summary}
+
+**📋 Detalles de tu incapacidad:**
+
+**👤 Datos personales:**
 • Nombre: ${data.nombres || 'No disponible'}
 • Cargo: ${data.cargo || 'No especificado'}
 
-**Período de incapacidad:**
+**📅 Período de incapacidad:**
 • Fecha inicio: ${data.fechaInicio || 'No disponible'}
 • Fecha fin: ${data.fechaFin || 'No disponible'}
 • Total días: ${data.dias || 'No especificado'}
 
-**Información de pago:**
-• Estado: ${data.estado}
+${data.valor ? `**💰 Información de pago:**
+• Estado: ${statusText}
 • Valor recibido: ${data.valor}
 
-**Entidad:**
+` : ''}**🏥 Entidad:**
 • Hospital: ${data.hospital || 'No especificado'}
 • Administradora: ${data.administradora || 'No especificada'}
 
-**Detalles administrativos:**
+**📄 Detalles administrativos:**
 • N° Radicado: ${data.radicado || 'No disponible'}
 • Fecha de recibido: ${data.fechaRecibido || 'No disponible'}
 
 Si algún dato no coincide con tu información o tienes dudas sobre el proceso, puedes comunicarte con nosotros para más detalles.
 
-**Nota:** Esta consulta es confidencial y solo visible para ti.`
+**🔒 Nota:** Esta consulta es confidencial y solo visible para ti.`
     }
 
     const closeIncapacidadForm = () => {
@@ -951,14 +1007,14 @@ Si algún dato no coincide con tu información o tienes dudas sobre el proceso, 
                                 )}
 
                                 {/* Consulta de Incapacidad Button - A nivel principal */}
-                                {!showIncapacidadForm && showSuggestions && (
+                                {!showIncapacidadForm && (
                                     <div className="flex-shrink-0 border-t border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800">
                                         <div className="px-3 py-3">
                                             <button
                                                 onClick={() => setShowIncapacidadForm(true)}
-                                                className="w-full text-left rounded-lg bg-gradient-to-r from-prosalud-salud to-prosalud-salud/80 px-4 py-3 text-prosalud-primary font-medium shadow-md transition-all duration-300 hover:shadow-lg hover:from-prosalud-salud/90 hover:to-prosalud-salud/70 flex items-center justify-center gap-2"
+                                                className="w-full text-left rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-600 px-3 py-2 text-sm text-gray-700 dark:text-gray-200 shadow-sm transition-all duration-300 hover:bg-prosalud-salud/10 hover:text-gray-900 hover:shadow-md dark:hover:bg-prosalud-salud/20 flex items-center gap-2"
                                             >
-                                                <CreditCard className="h-5 w-5" />
+                                                <CreditCard className="h-4 w-4 text-prosalud-salud" />
                                                 Consultar pago de incapacidad
                                             </button>
                                         </div>
