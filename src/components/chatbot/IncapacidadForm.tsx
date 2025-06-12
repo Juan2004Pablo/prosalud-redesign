@@ -35,6 +35,12 @@ const getDocumentValidation = (tipo: string) => {
   return validations[tipo as keyof typeof validations] || { min: 6, max: 20 };
 };
 
+// Get today's date in YYYY-MM-DD format for max attribute
+const getTodayDate = () => {
+  const today = new Date();
+  return today.toISOString().split('T')[0];
+};
+
 export default function IncapacidadForm({ onSubmit, isLoading }: IncapacidadFormProps) {
   const [formData, setFormData] = useState<FormData>({
     tipoDocumento: 'CC',
@@ -143,6 +149,7 @@ export default function IncapacidadForm({ onSubmit, isLoading }: IncapacidadForm
               type="date"
               value={formData.fechaExpedicion}
               onChange={(e) => handleInputChange('fechaExpedicion', e.target.value)}
+              max={getTodayDate()}
               className="w-full"
             />
             {errors.fechaExpedicion && (
