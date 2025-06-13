@@ -2,7 +2,6 @@
 
 import React, { useState, useRef, useEffect } from 'react'
 import {
-    MessageCircle,
     X,
     Send,
     Maximize2,
@@ -11,23 +10,12 @@ import {
     PlusCircle,
     ChevronUp,
     ChevronDown,
-    ThumbsUp,
-    ThumbsDown,
     MessageSquare,
     Bot,
     User,
-    FileText,
     Search,
-    Calendar,
     CreditCard,
-    CheckCircle,
-    Clock,
-    XCircle,
-    AlertCircle,
-    DollarSign,
-    Building2,
-    Shield,
-    Loader2,
+    CircleMinus,
 } from 'lucide-react'
 import SyntaxHighlighter from 'react-syntax-highlighter/dist/cjs/light'
 import js from 'react-syntax-highlighter/dist/cjs/languages/hljs/javascript'
@@ -47,6 +35,8 @@ import {
 import IncapacidadForm from './IncapacidadForm';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { consultarIncapacidad } from '@/services/incapacidadService';
+
+import { useIsMobile } from "@/hooks/use-mobile"
 
 SyntaxHighlighter.registerLanguage('javascript', js)
 SyntaxHighlighter.registerLanguage('json', json)
@@ -76,6 +66,9 @@ export default function ChatBot() {
     const [locale, setLocale] = useState('')
     const [showChatbot, setShowChatbot] = useState(false)
     const [typingDots, setTypingDots] = useState(1)
+
+    const isMobile = useIsMobile()
+    const chatWidth = isMobile ? "w-80" : "w-96"
 
     const [isTooltipOpen, setIsTooltipOpen] = useState(false);
 
@@ -564,7 +557,7 @@ export default function ChatBot() {
         try {
             // Use the mock service
             const incapacidadData = await consultarIncapacidad(formData);
-            
+
             const responseMessage = {
                 role: 'assistant',
                 content: generateIncapacidadResponse(incapacidadData),
@@ -607,7 +600,7 @@ Por favor, intenta nuevamente en unos minutos o comunícate con nosotros para ob
     const generateIncapacidadResponse = (data) => {
         // Validar que los datos principales estén presentes
         const hasMainData = data && (data.nombres || data.estado || data.radicado);
-        
+
         if (!hasMainData) {
             return `❌ **No se encontró información de incapacidad**
 
@@ -622,7 +615,7 @@ Por favor, comunícate con nosotros para verificar tu información y obtener el 
         // Generar párrafo de resumen
         let summary = '';
         const estado = data.estado || 'DESCONOCIDO';
-        
+
         switch (estado) {
             case 'PAGADA':
                 summary = `Tu solicitud de incapacidad laboral del período ${data.fechaInicio || 'N/A'} a ${data.fechaFin || 'N/A'} ha sido procesada exitosamente y el pago${data.valor ? ` por valor de ${data.valor}` : ''} ha sido realizado. El proceso tardó desde la fecha de recepción${data.fechaRecibido ? ` (${data.fechaRecibido})` : ''} hasta la aprobación final.`;
@@ -652,10 +645,10 @@ Por favor, comunícate con nosotros para verificar tu información y obtener el 
         };
 
         const statusIcon = getStatusIcon(estado);
-        const statusText = estado === 'PAGADA' ? 'PAGADA' : 
-                          estado === 'EN_PROCESO' ? 'EN PROCESO' :
-                          estado === 'PENDIENTE_DOCUMENTOS' ? 'PENDIENTE DOCUMENTOS' :
-                          estado === 'RECHAZADA' ? 'RECHAZADA' : estado;
+        const statusText = estado === 'PAGADA' ? 'PAGADA' :
+            estado === 'EN_PROCESO' ? 'EN PROCESO' :
+                estado === 'PENDIENTE_DOCUMENTOS' ? 'PENDIENTE DOCUMENTOS' :
+                    estado === 'RECHAZADA' ? 'RECHAZADA' : estado;
 
         return `${statusIcon} **Tu incapacidad está ${statusText}**
 
@@ -828,7 +821,7 @@ Si algún dato no coincide con tu información o tienes dudas sobre el proceso, 
                             }
               ${isFullscreen
                                 ? 'fixed inset-0 m-0 flex flex-col rounded-none h-screen w-screen'
-                                : 'fixed bottom-2 right-2 flex flex-col w-80 sm:w-100 lg:w-[36rem] max-w-[calc(100vw-1rem)]'
+                                : `fixed bottom-2 right-2 flex flex-col ${chatWidth} max-w-full mx-2`
                             }
             `}
                         style={{
@@ -843,18 +836,16 @@ Si algún dato no coincide con tu información o tienes dudas sobre el proceso, 
                                     }`}
                             >
                                 <h2
-                                  className={`flex items-center text-lg font-semibold text-gray-900 dark:text-white ${
-                                    isFullscreen ? 'text-2xl' : 'text-base'
-                                  }`}
+                                    className={`flex items-center text-lg font-semibold text-gray-900 dark:text-white ${isFullscreen ? 'text-2xl' : 'text-base'
+                                        }`}
                                 >
-                                  <div className="mr-3 rounded-full flex-shrink-0">
-                                    <Bot
-                                      className={`${
-                                        isFullscreen ? 'w-16 h-16' : 'w-10 h-10'
-                                      } text-prosalud-salud rounded-full p-1`}
-                                    />
-                                  </div>
-                                  <span className="truncate">Asistente ProSalud</span>
+                                    <div className="mr-3 rounded-full flex-shrink-0">
+                                        <Bot
+                                            className={`${isFullscreen ? 'w-16 h-16' : 'w-10 h-10'
+                                                } text-prosalud-salud rounded-full p-1`}
+                                        />
+                                    </div>
+                                    <span className="truncate">Asistente ProSalud</span>
                                 </h2>
                                 <div className="flex items-center space-x-2 flex-shrink-0">
                                     <button
@@ -912,17 +903,17 @@ Si algún dato no coincide con tu información o tienes dudas sobre el proceso, 
                                     <div className="flex-grow bg-gray-100 dark:bg-gray-900 p-4 overflow-y-auto">
                                         <div className="flex justify-between items-center mb-4">
                                             <CardTitle className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-                                              <Search className="h-5 w-5 text-prosalud-salud" />
-                                              Consultar pago de incapacidad
+                                                <Search className="h-5 w-5 text-prosalud-salud" />
+                                                Consultar pago de incapacidad
                                             </CardTitle>
                                             <button
                                                 onClick={closeIncapacidadForm}
                                                 className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                                             >
-                                                <X className="h-4 w-4" />
+                                                <CircleMinus className="h-4 w-4" />
                                             </button>
                                         </div>
-                                        <IncapacidadForm 
+                                        <IncapacidadForm
                                             onSubmit={handleIncapacidadFormSubmit}
                                             isLoading={isConsultingIncapacidad}
                                         />
@@ -959,11 +950,11 @@ Si algún dato no coincide con tu información o tienes dudas sobre el proceso, 
                                                                     <Bot className="h-6 w-6 text-prosalud-salud bg-gray-200 rounded-full p-1" />
                                                                 </div>
                                                             )}
-                                                            
+
                                                             <div
-                                                                className={`rounded-lg p-3 ${message.isBot
-                                                                    ? 'bg-white lg:max-w-1/2 text-gray-900 shadow-md dark:bg-gray-700 dark:text-gray-100'
-                                                                    : 'bg-prosalud-salud lg:max-w-1/2 text-white'
+                                                                className={`rounded-lg sm:max-w-lg lg:max-w-2xl p-3 ${message.isBot
+                                                                    ? 'bg-white text-gray-900 shadow-md dark:bg-gray-700 dark:text-gray-100'
+                                                                    : 'bg-prosalud-salud sm:max-w-lg lg:max-w-2xl text-white'
                                                                     } overflow-x-auto transition-all duration-300 ease-out ${index === messages.filter(m => m.role !== 'system').length - 1
                                                                         ? 'animate-fadeIn'
                                                                         : ''
@@ -1061,7 +1052,7 @@ Si algún dato no coincide con tu información o tienes dudas sobre el proceso, 
                                                 )}
                                             </button>
                                         </div>
-                                        
+
                                         {isSuggestionsExpanded && (
                                             <div className="px-3 pb-3">
                                                 <div className="grid grid-cols-1 gap-2">
@@ -1125,28 +1116,28 @@ Si algún dato no coincide con tu información o tienes dudas sobre el proceso, 
             {showChatbot && (
                 <TooltipProvider delayDuration={100}>
                     <Tooltip open={isTooltipOpen} onOpenChange={setIsTooltipOpen}>
-                    <TooltipTrigger asChild>
-                        <button
-                        onClick={() => {
-                            toggleChat();
-                            setIsTooltipOpen(true);
-                        }}
-                        onMouseEnter={() => setIsTooltipOpen(true)}
-                        onMouseLeave={() => setIsTooltipOpen(false)}
-                        className={`fixed bottom-2 right-2 z-10 transform rounded-full bg-prosalud-salud p-4
+                        <TooltipTrigger asChild>
+                            <button
+                                onClick={() => {
+                                    toggleChat();
+                                    setIsTooltipOpen(true);
+                                }}
+                                onMouseEnter={() => setIsTooltipOpen(true)}
+                                onMouseLeave={() => setIsTooltipOpen(false)}
+                                className={`fixed bottom-2 right-2 z-10 transform rounded-full bg-prosalud-salud p-4
                             text-white shadow-lg transition-all 
                             duration-300 hover:rotate-3 hover:scale-110 hover:bg-prosalud-salud/90 focus:outline-none
                             ${isOpen ? 'scale-0 opacity-0' : 'scale-100 opacity-100'}
                         `}
-                        title="Abrir chat de ayuda"
-                        aria-label="Abrir chat de ayuda"
-                        >
-                        <MessageSquare className="h-7 w-7" />
-                        </button>
-                    </TooltipTrigger>
-                    <TooltipContent side="left" className="bg-gray-800 text-white border-gray-700">
-                        <p>¡Chatea con nosotros!</p>
-                    </TooltipContent>
+                                title="Abrir chat de ayuda"
+                                aria-label="Abrir chat de ayuda"
+                            >
+                                <MessageSquare className="h-7 w-7" />
+                            </button>
+                        </TooltipTrigger>
+                        <TooltipContent side="left" className="bg-gray-800 text-white border-gray-700">
+                            <p>¡Chatea con nosotros!</p>
+                        </TooltipContent>
                     </Tooltip>
                 </TooltipProvider>
             )}
