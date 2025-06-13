@@ -1,3 +1,4 @@
+
 'use client'
 
 import React, { useState, useRef, useEffect } from 'react'
@@ -836,7 +837,7 @@ Si algún dato no coincide con tu información o tienes dudas sobre el proceso, 
                             maxWidth: isFullscreen ? '100vw' : '24rem',
                         }}
                     >
-                        <div className="flex h-full flex-col">
+                        <div className={`flex h-full flex-col ${isFullscreen ? 'mx-auto max-w-4xl lg:max-w-[50vw]' : ''}`}>
                             {/* Header */}
                             <div
                                 className={`flex items-center justify-between border-b border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800 flex-shrink-0 ${isFullscreen ? 'h-20 p-4' : 'h-16'
@@ -937,90 +938,87 @@ Si algún dato no coincide con tu información o tienes dudas sobre el proceso, 
                                         }}
                                         onScroll={handleScroll}
                                     >
-                                        {/* Contenedor centrado para los mensajes en pantalla completa */}
-                                        <div className={`${isFullscreen ? 'max-w-2xl mx-auto w-full' : ''}`}>
-                                            {messages
-                                                .filter((message) => message.role !== 'system')
-                                                .map((message, index) => {
-                                                    // Si es un mensaje del bot con contenido vacío y está en proceso de streaming, no lo mostramos
-                                                    if (message.isBot && message.content === '' && isTyping) {
-                                                        return null;
-                                                    }
+                                        {messages
+                                            .filter((message) => message.role !== 'system')
+                                            .map((message, index) => {
+                                                // Si es un mensaje del bot con contenido vacío y está en proceso de streaming, no lo mostramos
+                                                if (message.isBot && message.content === '' && isTyping) {
+                                                    return null;
+                                                }
 
-                                                    return (
-                                                        <div
-                                                            key={index}
-                                                            className={`flex 
+                                                return (
+                                                    <div
+                                                        key={index}
+                                                        className={`flex 
                               ${message.isBot ? 'justify-start' : 'justify-end'} 
                             `}
-                                                        >
-                                                            <div className="flex items-start space-x-2 max-w-[80%]">
-                                                                {/* Avatar */}
-                                                                {message.isBot && (
-                                                                    <div className="flex-shrink-0">
-                                                                        <Bot className="h-6 w-6 text-prosalud-salud bg-gray-200 rounded-full p-1" />
-                                                                    </div>
-                                                                )}
-                                                                
-                                                                <div
-                                                                    className={`rounded-lg p-3 ${message.isBot
-                                                                        ? 'bg-white text-gray-900 shadow-md dark:bg-gray-700 dark:text-gray-100'
-                                                                        : 'bg-prosalud-salud text-white'
-                                                                        } overflow-x-auto transition-all duration-300 ease-out ${index === messages.filter(m => m.role !== 'system').length - 1
-                                                                            ? 'animate-fadeIn'
-                                                                            : ''
-                                                                        }`}
-                                                                >
-                                                                    <div className="text-sm break-words markdown-content">
-                                                                        {message.isLoading ? (
-                                                                            <div className="flex items-center space-x-2">
-                                                                                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-prosalud-salud"></div>
-                                                                                <span>{message.content}</span>
-                                                                            </div>
-                                                                        ) : (
-                                                                            <ReactMarkdown
-                                                                                components={renderers}
-                                                                            >
-                                                                                {message.content}
-                                                                            </ReactMarkdown>
-                                                                        )}
-                                                                    </div>
-
-                                                                    {!message.isBot &&
-                                                                        index === messages.filter(m => m.role !== 'system').length - 1 &&
-                                                                        !isTyping && (
-                                                                            <div className="mt-1 flex justify-end">
-                                                                                <Check className="h-3 w-3 text-gray-300" />
-                                                                            </div>
-                                                                        )}
+                                                    >
+                                                        <div className="flex items-start space-x-2 max-w-[80%]">
+                                                            {/* Avatar */}
+                                                            {message.isBot && (
+                                                                <div className="flex-shrink-0">
+                                                                    <Bot className="h-6 w-6 text-prosalud-salud bg-gray-200 rounded-full p-1" />
+                                                                </div>
+                                                            )}
+                                                            
+                                                            <div
+                                                                className={`rounded-lg p-3 ${message.isBot
+                                                                    ? 'bg-white text-gray-900 shadow-md dark:bg-gray-700 dark:text-gray-100'
+                                                                    : 'bg-prosalud-salud text-white'
+                                                                    } overflow-x-auto transition-all duration-300 ease-out ${index === messages.filter(m => m.role !== 'system').length - 1
+                                                                        ? 'animate-fadeIn'
+                                                                        : ''
+                                                                    }`}
+                                                            >
+                                                                <div className="text-sm break-words markdown-content">
+                                                                    {message.isLoading ? (
+                                                                        <div className="flex items-center space-x-2">
+                                                                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-prosalud-salud"></div>
+                                                                            <span>{message.content}</span>
+                                                                        </div>
+                                                                    ) : (
+                                                                        <ReactMarkdown
+                                                                            components={renderers}
+                                                                        >
+                                                                            {message.content}
+                                                                        </ReactMarkdown>
+                                                                    )}
                                                                 </div>
 
-                                                                {/* Avatar para usuario */}
-                                                                {!message.isBot && (
-                                                                    <div className="flex-shrink-0">
-                                                                        <User className="h-6 w-6 text-white bg-prosalud-salud rounded-full p-1" />
-                                                                    </div>
-                                                                )}
+                                                                {!message.isBot &&
+                                                                    index === messages.filter(m => m.role !== 'system').length - 1 &&
+                                                                    !isTyping && (
+                                                                        <div className="mt-1 flex justify-end">
+                                                                            <Check className="h-3 w-3 text-gray-300" />
+                                                                        </div>
+                                                                    )}
                                                             </div>
-                                                        </div>
-                                                    );
-                                                })}
-                                            {/* Mostrar loader solo si está escribiendo y el último mensaje del bot está vacío */}
-                                            {isTyping &&
-                                                messages.length > 0 &&
-                                                messages[messages.length - 1].isBot &&
-                                                messages[messages.length - 1].content === '' && (
-                                                    <div className="flex justify-start">
-                                                        <div className="flex items-start space-x-2">
-                                                            <div className="flex-shrink-0">
-                                                                <Bot className="h-6 w-6 text-prosalud-salud bg-gray-200 rounded-full p-1" />
-                                                            </div>
-                                                            {renderTypingIndicator()}
+
+                                                            {/* Avatar para usuario */}
+                                                            {!message.isBot && (
+                                                                <div className="flex-shrink-0">
+                                                                    <User className="h-6 w-6 text-white bg-prosalud-salud rounded-full p-1" />
+                                                                </div>
+                                                            )}
                                                         </div>
                                                     </div>
-                                                )}
-                                            <div ref={messagesEndRef} />
-                                        </div>
+                                                );
+                                            })}
+                                        {/* Mostrar loader solo si está escribiendo y el último mensaje del bot está vacío */}
+                                        {isTyping &&
+                                            messages.length > 0 &&
+                                            messages[messages.length - 1].isBot &&
+                                            messages[messages.length - 1].content === '' && (
+                                                <div className="flex justify-start">
+                                                    <div className="flex items-start space-x-2">
+                                                        <div className="flex-shrink-0">
+                                                            <Bot className="h-6 w-6 text-prosalud-salud bg-gray-200 rounded-full p-1" />
+                                                        </div>
+                                                        {renderTypingIndicator()}
+                                                    </div>
+                                                </div>
+                                            )}
+                                        <div ref={messagesEndRef} />
                                     </div>
                                 )}
 
