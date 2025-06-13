@@ -1,4 +1,3 @@
-
 'use client'
 
 import React, { useState, useRef, useEffect } from 'react'
@@ -815,7 +814,7 @@ Si algún dato no coincide con tu información o tienes dudas sobre el proceso, 
             <style jsx global>{markdownStyles}</style>
             {showChatbot && (
                 <div
-                    className={`fixed ${isFullscreen ? 'inset-0' : 'bottom-4 right-4'
+                    className={`fixed ${isFullscreen ? 'inset-0' : 'bottom-2 right-2'
                         } z-50`}
                 >
                     <div
@@ -829,12 +828,12 @@ Si algún dato no coincide con tu información o tienes dudas sobre el proceso, 
                             }
               ${isFullscreen
                                 ? 'fixed inset-0 m-0 flex flex-col rounded-none h-screen w-screen'
-                                : 'fixed bottom-4 right-4 flex flex-col w-96 sm:w-80 md:w-96'
+                                : 'fixed bottom-2 right-2 flex flex-col w-80 max-w-[calc(100vw-1rem)]'
                             }
             `}
                         style={{
                             height: isFullscreen ? '100vh' : '32rem',
-                            maxWidth: isFullscreen ? '100vw' : '24rem',
+                            maxHeight: isFullscreen ? '100vh' : 'calc(100vh - 1rem)',
                         }}
                     >
                         <div className="flex h-full flex-col">
@@ -1134,7 +1133,7 @@ Si algún dato no coincide con tu información o tienes dudas sobre el proceso, 
                         }}
                         onMouseEnter={() => setIsTooltipOpen(true)}
                         onMouseLeave={() => setIsTooltipOpen(false)}
-                        className={`fixed bottom-4 right-4 z-10 transform rounded-full bg-prosalud-salud p-4
+                        className={`fixed bottom-2 right-2 z-10 transform rounded-full bg-prosalud-salud p-4
                             text-white shadow-lg transition-all 
                             duration-300 hover:rotate-3 hover:scale-110 hover:bg-prosalud-salud/90 focus:outline-none
                             ${isOpen ? 'scale-0 opacity-0' : 'scale-100 opacity-100'}
