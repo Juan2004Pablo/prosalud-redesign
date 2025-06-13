@@ -666,7 +666,6 @@ ${summary}
 
 **👤 Datos personales:**
 
-
 • Nombre: ${data.nombres || 'No disponible'}
 
 • Cargo: ${data.cargo || 'No especificado'}
@@ -674,24 +673,23 @@ ${summary}
 
 **📅 Período de incapacidad:**
 
-
 • Fecha inicio: ${data.fechaInicio || 'No disponible'}
- 
+
 • Fecha fin: ${data.fechaFin || 'No disponible'}
 
 • Total días: ${data.dias || 'No especificado'}
 
 ${data.valor ? `**💰 Información de pago:**
  Estado: ${statusText}
-/ Valor recibido: ${data.valor}
+- Valor recibido: ${data.valor}
 
 ` : ''}**🏥 Entidad:**
- Hospital: ${data.hospital || 'No especificado'}
-• Administradora: ${data.administradora || 'No especificada'}
+ Hospital: ${data.hospital || 'No especificado'},
+ Administradora: ${data.administradora || 'No especificada'}
 
 **📄 Detalles administrativos:**
- N° Radicado: ${data.radicado || 'No disponible'}
-• Fecha de recibido: ${data.fechaRecibido || 'No disponible'}
+ N° Radicado: ${data.radicado || 'No disponible'},
+ Fecha de recibido: ${data.fechaRecibido || 'No disponible'}
 
 Si algún dato no coincide con tu información o tienes dudas sobre el proceso, puedes comunicarte con nosotros para más detalles.
 
