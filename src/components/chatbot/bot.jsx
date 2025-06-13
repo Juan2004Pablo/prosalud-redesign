@@ -963,7 +963,7 @@ Si algún dato no coincide con tu información o tienes dudas sobre el proceso, 
                                                             
                                                             <div
                                                                 className={`rounded-lg p-3 ${message.isBot
-                                                                    ? 'bg-white lg:max-w-1/2 text-gray-900 shadow-md dark:bg-gray-700 dark:text-gray-100'
+                                                                    ? 'bg-white lg:max-w-1/3 text-gray-900 shadow-md dark:bg-gray-700 dark:text-gray-100'
                                                                     : 'bg-prosalud-salud text-white'
                                                                     } overflow-x-auto transition-all duration-300 ease-out ${index === messages.filter(m => m.role !== 'system').length - 1
                                                                         ? 'animate-fadeIn'
