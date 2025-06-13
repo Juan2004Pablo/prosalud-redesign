@@ -1,4 +1,3 @@
-
 'use client'
 
 import React, { useState, useRef, useEffect } from 'react'
@@ -815,7 +814,7 @@ Si algún dato no coincide con tu información o tienes dudas sobre el proceso, 
             <style jsx global>{markdownStyles}</style>
             {showChatbot && (
                 <div
-                    className={`fixed ${isFullscreen ? 'inset-0' : 'bottom-4 right-4'
+                    className={`fixed ${isFullscreen ? 'inset-0' : 'bottom-2 right-2 sm:bottom-4 sm:right-4'
                         } z-50`}
                 >
                     <div
@@ -829,12 +828,12 @@ Si algún dato no coincide con tu información o tienes dudas sobre el proceso, 
                             }
               ${isFullscreen
                                 ? 'fixed inset-0 m-0 flex flex-col rounded-none h-screen w-screen'
-                                : 'fixed bottom-4 right-4 flex flex-col w-96 sm:w-80 md:w-96'
+                                : 'fixed flex flex-col w-[calc(100vw-1rem)] max-w-[24rem] sm:w-80 md:w-96'
                             }
             `}
                         style={{
                             height: isFullscreen ? '100vh' : '32rem',
-                            maxWidth: isFullscreen ? '100vw' : '24rem',
+                            maxHeight: isFullscreen ? '100vh' : '90vh',
                         }}
                     >
                         <div className="flex h-full flex-col">
@@ -845,26 +844,26 @@ Si algún dato no coincide con tu información o tienes dudas sobre el proceso, 
                             >
                                 <h2
                                   className={`flex items-center text-lg font-semibold text-gray-900 dark:text-white ${
-                                    isFullscreen ? 'text-2xl' : 'text-base'
+                                    isFullscreen ? 'text-2xl' : 'text-sm sm:text-base'
                                   }`}
                                 >
-                                  <div className="mr-3 rounded-full flex-shrink-0">
+                                  <div className="mr-2 sm:mr-3 rounded-full flex-shrink-0">
                                     <Bot
                                       className={`${
-                                        isFullscreen ? 'w-16 h-16' : 'w-10 h-10'
+                                        isFullscreen ? 'w-16 h-16' : 'w-8 h-8 sm:w-10 sm:h-10'
                                       } text-prosalud-salud rounded-full p-1`}
                                     />
                                   </div>
                                   <span className="truncate">Asistente ProSalud</span>
                                 </h2>
-                                <div className="flex items-center space-x-2 flex-shrink-0">
+                                <div className="flex items-center space-x-1 sm:space-x-2 flex-shrink-0">
                                     <button
                                         onClick={startNewChat}
                                         className="text-gray-500 transition-colors duration-300 hover:text-primary-500 focus:outline-none dark:text-gray-400 dark:hover:text-primary-400"
                                         title="Iniciar nuevo chat"
                                         aria-label="Iniciar nuevo chat"
                                     >
-                                        <PlusCircle className="h-4 w-4" />
+                                        <PlusCircle className="h-3 w-3 sm:h-4 sm:w-4" />
                                     </button>
                                     <button
                                         onClick={toggleFullscreen}
@@ -881,9 +880,9 @@ Si algún dato no coincide con tu información o tienes dudas sobre el proceso, 
                                         }
                                     >
                                         {isFullscreen ? (
-                                            <Minimize2 className="h-4 w-4" />
+                                            <Minimize2 className="h-3 w-3 sm:h-4 sm:w-4" />
                                         ) : (
-                                            <Maximize2 className="h-4 w-4" />
+                                            <Maximize2 className="h-3 w-3 sm:h-4 sm:w-4" />
                                         )}
                                     </button>
                                     <button
@@ -892,14 +891,14 @@ Si algún dato no coincide con tu información o tienes dudas sobre el proceso, 
                                         title="Cerrar chat"
                                         aria-label="Cerrar chat"
                                     >
-                                        <X className="h-4 w-4" />
+                                        <X className="h-3 w-3 sm:h-4 sm:w-4" />
                                     </button>
                                 </div>
                             </div>
 
                             {/* Subtitle */}
                             <p
-                                className={`border-b border-gray-200 bg-gray-50 px-3 py-2 text-xs text-gray-600 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 flex-shrink-0 ${isFullscreen ? 'py-3 text-base px-4' : ''
+                                className={`border-b border-gray-200 bg-gray-50 px-3 py-2 text-xs text-gray-600 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 flex-shrink-0 ${isFullscreen ? 'py-3 text-sm sm:text-base px-4' : ''
                                     }`}
                             >
                                 {specialty === 'general'
@@ -953,24 +952,24 @@ Si algún dato no coincide con tu información o tienes dudas sobre el proceso, 
                               ${message.isBot ? 'justify-start' : 'justify-end'} 
                             `}
                                                     >
-                                                        <div className="flex items-start space-x-2 max-w-[80%]">
+                                                        <div className={`flex items-start space-x-2 ${isFullscreen ? 'max-w-[85%] sm:max-w-[75%] md:max-w-[65%]' : 'max-w-[80%]'}`}>
                                                             {/* Avatar */}
                                                             {message.isBot && (
                                                                 <div className="flex-shrink-0">
-                                                                    <Bot className="h-6 w-6 text-prosalud-salud bg-gray-200 rounded-full p-1" />
+                                                                    <Bot className="h-5 w-5 sm:h-6 sm:w-6 text-prosalud-salud bg-gray-200 rounded-full p-1" />
                                                                 </div>
                                                             )}
                                                             
                                                             <div
-                                                                className={`rounded-lg p-3 ${message.isBot
-                                                                    ? 'bg-white lg:max-w-1/2 text-gray-900 shadow-md dark:bg-gray-700 dark:text-gray-100'
-                                                                    : 'bg-prosalud-salud lg:max-w-1/2 text-white'
+                                                                className={`rounded-lg p-2 sm:p-3 ${message.isBot
+                                                                    ? 'bg-white text-gray-900 shadow-md dark:bg-gray-700 dark:text-gray-100'
+                                                                    : 'bg-prosalud-salud text-white'
                                                                     } overflow-x-auto transition-all duration-300 ease-out ${index === messages.filter(m => m.role !== 'system').length - 1
                                                                         ? 'animate-fadeIn'
                                                                         : ''
                                                                     }`}
                                                             >
-                                                                <div className="text-sm break-words markdown-content">
+                                                                <div className={`${isFullscreen ? 'text-base' : 'text-xs sm:text-sm'} break-words markdown-content`}>
                                                                     {message.isLoading ? (
                                                                         <div className="flex items-center space-x-2">
                                                                             <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-prosalud-salud"></div>
@@ -997,7 +996,7 @@ Si algún dato no coincide con tu información o tienes dudas sobre el proceso, 
                                                             {/* Avatar para usuario */}
                                                             {!message.isBot && (
                                                                 <div className="flex-shrink-0">
-                                                                    <User className="h-6 w-6 text-white bg-prosalud-salud rounded-full p-1" />
+                                                                    <User className="h-5 w-5 sm:h-6 sm:w-6 text-white bg-prosalud-salud rounded-full p-1" />
                                                                 </div>
                                                             )}
                                                         </div>
@@ -1012,7 +1011,7 @@ Si algún dato no coincide con tu información o tienes dudas sobre el proceso, 
                                                 <div className="flex justify-start">
                                                     <div className="flex items-start space-x-2">
                                                         <div className="flex-shrink-0">
-                                                            <Bot className="h-6 w-6 text-prosalud-salud bg-gray-200 rounded-full p-1" />
+                                                            <Bot className="h-5 w-5 sm:h-6 sm:w-6 text-prosalud-salud bg-gray-200 rounded-full p-1" />
                                                         </div>
                                                         {renderTypingIndicator()}
                                                     </div>
@@ -1028,7 +1027,7 @@ Si algún dato no coincide con tu información o tienes dudas sobre el proceso, 
                                         <div className="px-3 py-3">
                                             <button
                                                 onClick={() => setShowIncapacidadForm(true)}
-                                                className="w-full text-left rounded-lg bg-white px-3 py-2 text-xs text-gray-700 shadow-sm transition-all duration-300 hover:bg-prosalud-salud/10 hover:text-gray-900 hover:shadow-md dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-prosalud-salud/20 border border-gray-200 dark:border-gray-500 flex items-center gap-2"
+                                                className={`w-full text-left rounded-lg bg-white px-3 py-2 ${isFullscreen ? 'text-sm' : 'text-xs'} text-gray-700 shadow-sm transition-all duration-300 hover:bg-prosalud-salud/10 hover:text-gray-900 hover:shadow-md dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-prosalud-salud/20 border border-gray-200 dark:border-gray-500 flex items-center gap-2`}
                                             >
                                                 <CreditCard className="h-4 w-4 text-prosalud-salud" />
                                                 Consultar pago de una incapacidad
@@ -1044,7 +1043,7 @@ Si algún dato no coincide con tu información o tienes dudas sobre el proceso, 
                                             className="flex items-center justify-between px-3 py-2 cursor-pointer"
                                             onClick={() => setIsSuggestionsExpanded(!isSuggestionsExpanded)}
                                         >
-                                            <p className="text-xs font-medium text-gray-700 dark:text-gray-300">
+                                            <p className={`${isFullscreen ? 'text-sm' : 'text-xs'} font-medium text-gray-700 dark:text-gray-300`}>
                                                 Preguntas sugeridas
                                             </p>
                                             <button
@@ -1070,7 +1069,7 @@ Si algún dato no coincide con tu información o tienes dudas sobre el proceso, 
                                                         <button
                                                             key={index}
                                                             onClick={() => handleSuggestionClick(suggestion)}
-                                                            className="text-left rounded-lg bg-white px-3 py-2 text-xs text-gray-700 shadow-sm transition-all duration-300 hover:bg-prosalud-salud/10 hover:text-gray-900 hover:shadow-md dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-prosalud-salud/20 border border-gray-200 dark:border-gray-500"
+                                                            className={`text-left rounded-lg bg-white px-3 py-2 ${isFullscreen ? 'text-sm' : 'text-xs'} text-gray-700 shadow-sm transition-all duration-300 hover:bg-prosalud-salud/10 hover:text-gray-900 hover:shadow-md dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-prosalud-salud/20 border border-gray-200 dark:border-gray-500`}
                                                         >
                                                             {suggestion}
                                                         </button>
@@ -1094,8 +1093,8 @@ Si algún dato no coincide con tu información o tienes dudas sobre el proceso, 
                                                 value={inputMessage}
                                                 onChange={handleInputChange}
                                                 onKeyDown={handleKeyDown}
-                                                className={`flex-grow resize-none overflow-hidden rounded-lg border border-gray-300 bg-gray-100 p-2 text-sm text-gray-900 placeholder-gray-500 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-prosalud-salud dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:ring-prosalud-salud ${isFullscreen
-                                                    ? 'max-h-[120px] min-h-[3rem] p-3 text-base'
+                                                className={`flex-grow resize-none overflow-hidden rounded-lg border border-gray-300 bg-gray-100 p-2 ${isFullscreen ? 'text-base' : 'text-xs sm:text-sm'} text-gray-900 placeholder-gray-500 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-prosalud-salud dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:ring-prosalud-salud ${isFullscreen
+                                                    ? 'max-h-[120px] min-h-[3rem] p-3'
                                                     : 'max-h-[80px] min-h-[2.5rem]'
                                                     }`}
                                                 placeholder="Escribe tu pregunta aquí..."
@@ -1112,7 +1111,7 @@ Si algún dato no coincide con tu información o tienes dudas sobre el proceso, 
                                                 aria-label="Enviar mensaje"
                                             >
                                                 <Send
-                                                    className={`${isFullscreen ? 'h-6 w-6' : 'h-4 w-4'}`}
+                                                    className={`${isFullscreen ? 'h-6 w-6' : 'h-3 w-3 sm:h-4 sm:w-4'}`}
                                                 />
                                             </button>
                                         </div>
@@ -1134,7 +1133,7 @@ Si algún dato no coincide con tu información o tienes dudas sobre el proceso, 
                         }}
                         onMouseEnter={() => setIsTooltipOpen(true)}
                         onMouseLeave={() => setIsTooltipOpen(false)}
-                        className={`fixed bottom-4 right-4 z-10 transform rounded-full bg-prosalud-salud p-4
+                        className={`fixed bottom-2 right-2 sm:bottom-4 sm:right-4 z-10 transform rounded-full bg-prosalud-salud p-3 sm:p-4
                             text-white shadow-lg transition-all 
                             duration-300 hover:rotate-3 hover:scale-110 hover:bg-prosalud-salud/90 focus:outline-none
                             ${isOpen ? 'scale-0 opacity-0' : 'scale-100 opacity-100'}
@@ -1142,7 +1141,7 @@ Si algún dato no coincide con tu información o tienes dudas sobre el proceso, 
                         title="Abrir chat de ayuda"
                         aria-label="Abrir chat de ayuda"
                         >
-                        <MessageSquare className="h-7 w-7" />
+                        <MessageSquare className="h-5 w-5 sm:h-7 sm:w-7" />
                         </button>
                     </TooltipTrigger>
                     <TooltipContent side="left" className="bg-gray-800 text-white border-gray-700">
