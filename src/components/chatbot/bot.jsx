@@ -1,3 +1,4 @@
+
 'use client'
 
 import React, { useState, useRef, useEffect } from 'react'
@@ -804,8 +805,8 @@ Si algún dato no coincide con tu información o tienes dudas sobre el proceso, 
                     <div
                         ref={chatContainerRef}
                         className={`
-              chat-container overflow-hidden rounded-xl border-2 border-primary-200 bg-white shadow-2xl transition-all 
-              duration-500 ease-in-out dark:border-primary-800 dark:bg-gray-900
+              chat-container overflow-hidden rounded-xl border-2 border-prosalud-salud bg-white shadow-2xl transition-all 
+              duration-500 ease-in-out dark:border-prosalud-salud dark:bg-gray-900
               ${isOpen
                                 ? 'scale-100 opacity-100'
                                 : 'pointer-events-none scale-95 opacity-0'
@@ -1011,7 +1012,7 @@ Si algún dato no coincide con tu información o tienes dudas sobre el proceso, 
                                         <div className="px-3 py-3">
                                             <button
                                                 onClick={() => setShowIncapacidadForm(true)}
-                                                className="w-full text-left rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-600 px-3 py-2 text-sm text-gray-700 dark:text-gray-200 shadow-sm transition-all duration-300 hover:bg-prosalud-salud/10 hover:text-gray-900 hover:shadow-md dark:hover:bg-prosalud-salud/20 flex items-center gap-2"
+                                                className="w-full text-left rounded-lg bg-white px-3 py-2 text-xs text-gray-700 shadow-sm transition-all duration-300 hover:bg-prosalud-salud/10 hover:text-gray-900 hover:shadow-md dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-prosalud-salud/20 border border-gray-200 dark:border-gray-500 flex items-center gap-2"
                                             >
                                                 <CreditCard className="h-4 w-4 text-prosalud-salud" />
                                                 Consultar pago de una incapacidad
