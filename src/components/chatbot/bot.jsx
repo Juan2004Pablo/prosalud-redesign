@@ -665,8 +665,13 @@ ${summary}
 **📋 Detalles de tu incapacidad:**
 
 **👤 Datos personales:**
+
+
  Nombre: ${data.nombres || 'No disponible'}
+
+ 
 / Cargo: ${data.cargo || 'No especificado'}
+
 
 **📅 Período de incapacidad:**
  Fecha inicio: ${data.fechaInicio || 'No disponible'}
