@@ -837,7 +837,7 @@ Si algún dato no coincide con tu información o tienes dudas sobre el proceso, 
                             maxWidth: isFullscreen ? '100vw' : '24rem',
                         }}
                     >
-                        <div className="flex h-full flex-col">
+                        <div className={`flex h-full flex-col ${isFullscreen ? 'mx-auto max-w-4xl lg:max-w-[50vw]' : ''}`}>
                             {/* Header */}
                             <div
                                 className={`flex items-center justify-between border-b border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800 flex-shrink-0 ${isFullscreen ? 'h-20 p-4' : 'h-16'
