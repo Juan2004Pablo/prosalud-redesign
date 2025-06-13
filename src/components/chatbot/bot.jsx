@@ -828,7 +828,7 @@ Si algún dato no coincide con tu información o tienes dudas sobre el proceso, 
                             }
               ${isFullscreen
                                 ? 'fixed inset-0 m-0 flex flex-col rounded-none h-screen w-screen'
-                                : 'fixed bottom-2 right-2 flex flex-col w-80 sm:w-96 lg:w-[28rem] max-w-[calc(100vw-1rem)]'
+                                : 'fixed bottom-2 right-2 flex flex-col w-80 sm:w-100 lg:w-[36rem] max-w-[calc(100vw-1rem)]'
                             }
             `}
                         style={{
