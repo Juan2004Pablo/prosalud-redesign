@@ -667,16 +667,19 @@ ${summary}
 **👤 Datos personales:**
 
 
- Nombre: ${data.nombres || 'No disponible'}
+• Nombre: ${data.nombres || 'No disponible'}
 
- 
-/ Cargo: ${data.cargo || 'No especificado'}
+• Cargo: ${data.cargo || 'No especificado'}
 
 
 **📅 Período de incapacidad:**
- Fecha inicio: ${data.fechaInicio || 'No disponible'}
-/ Fecha fin: ${data.fechaFin || 'No disponible'}
-/ Total días: ${data.dias || 'No especificado'}
+
+
+• Fecha inicio: ${data.fechaInicio || 'No disponible'}
+ 
+• Fecha fin: ${data.fechaFin || 'No disponible'}
+
+• Total días: ${data.dias || 'No especificado'}
 
 ${data.valor ? `**💰 Información de pago:**
  Estado: ${statusText}
