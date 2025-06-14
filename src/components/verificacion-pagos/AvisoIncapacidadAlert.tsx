@@ -13,11 +13,8 @@ const AvisoIncapacidadAlert: React.FC<AvisoIncapacidadAlertProps> = ({ onOpenCha
     if (onOpenChatbot) {
       onOpenChatbot();
     } else {
-      // Buscar el botón del chatbot en el DOM y hacer clic
-      const chatbotButton = document.querySelector('[data-chatbot-trigger]') as HTMLElement;
-      if (chatbotButton) {
-        chatbotButton.click();
-      }
+      // Disparar evento personalizado para abrir el chatbot
+      window.dispatchEvent(new CustomEvent('openChatbot'));
     }
   };
 

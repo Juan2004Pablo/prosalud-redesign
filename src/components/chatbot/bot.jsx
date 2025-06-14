@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { MessageCircle, X } from 'lucide-react';
 
@@ -23,6 +24,45 @@ const Chatbot = () => {
     }, 5000);
 
     return () => clearInterval(intervalId);
+  }, []);
+
+  // Auto-hide tooltip after 1 minute
+  useEffect(() => {
+    if (showWelcomeTooltip) {
+      const timer = setTimeout(() => {
+        setShowWelcomeTooltip(false);
+      }, 60000); // 1 minute
+
+      return () => clearTimeout(timer);
+    }
+  }, [showWelcomeTooltip]);
+
+  // Listen for external chatbot open requests
+  useEffect(() => {
+    const handleOpenChatbot = () => {
+      setIsOpen(true);
+      setShowWelcomeTooltip(false);
+    };
+
+    // Listen for clicks on elements with data-chatbot-trigger
+    const triggerElements = document.querySelectorAll('[data-chatbot-trigger]');
+    triggerElements.forEach(element => {
+      if (element !== document.querySelector('[data-chatbot-trigger]')) {
+        element.addEventListener('click', handleOpenChatbot);
+      }
+    });
+
+    // Custom event listener for external chatbot activation
+    window.addEventListener('openChatbot', handleOpenChatbot);
+
+    return () => {
+      triggerElements.forEach(element => {
+        if (element !== document.querySelector('[data-chatbot-trigger]')) {
+          element.removeEventListener('click', handleOpenChatbot);
+        }
+      });
+      window.removeEventListener('openChatbot', handleOpenChatbot);
+    };
   }, []);
 
   const closeWelcomeTooltip = () => {
@@ -63,6 +103,16 @@ const Chatbot = () => {
     }
   };
 
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    if (value.length <= 500) {
+      setInputValue(value);
+    }
+  };
+
+  const remainingChars = 500 - inputValue.length;
+  const showCharWarning = remainingChars <= 10;
+
   useEffect(() => {
     // Scroll to bottom when messages change
     if (chatContainerRef.current) {
@@ -94,7 +144,7 @@ const Chatbot = () => {
       {/* Chatbot button */}
       <button
         onClick={toggleChat}
-        data-chatbot-trigger // Added this attribute for integration
+        data-chatbot-trigger
         className="fixed bottom-4 right-4 md:right-6 bg-prosalud-salud text-white p-4 rounded-full shadow-lg hover:bg-prosalud-salud/90 transition-all duration-300 z-[9998] flex items-center justify-center group"
         style={{ width: '60px', height: '60px' }}
         aria-label={isOpen ? 'Cerrar chat' : 'Abrir chat'}
@@ -131,7 +181,7 @@ const Chatbot = () => {
                 className="flex-grow focus:ring-indigo-500 focus:border-indigo-500 block w-full min-w-0 rounded-none rounded-l-md sm:text-sm border-gray-300"
                 placeholder="Escribe tu mensaje..."
                 value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
+                onChange={handleInputChange}
                 onKeyPress={(e) => { if (e.key === 'Enter') sendMessage(); }}
               />
               <button
@@ -141,6 +191,16 @@ const Chatbot = () => {
               >
                 Enviar
               </button>
+            </div>
+            <div className="mt-2 flex justify-between items-center text-xs">
+              <span className={`${showCharWarning ? 'text-red-500' : 'text-gray-500'}`}>
+                {inputValue.length}/500 caracteres
+              </span>
+              {showCharWarning && (
+                <span className="text-red-500 font-medium">
+                  Límite de caracteres alcanzado
+                </span>
+              )}
             </div>
           </div>
         </div>
