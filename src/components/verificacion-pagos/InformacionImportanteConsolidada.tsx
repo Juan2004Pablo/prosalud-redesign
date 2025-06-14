@@ -33,15 +33,6 @@ const InformacionImportanteConsolidada: React.FC = () => {
                   Usa nuestro chatbot especializado en la esquina inferior derecha. 
                   Selecciona la opción habilitada y sigue el paso a paso.
                 </div>
-                <Button
-                  onClick={handleChatbotClick}
-                  size="sm"
-                  className="bg-green-600 hover:bg-green-700 text-white flex items-center gap-2 flex-shrink-0"
-                >
-                  <MessageCircle className="h-4 w-4" />
-                  Abrir Chatbot
-                  <ArrowRight className="h-4 w-4" />
-                </Button>
               </div>
             </AlertDescription>
           </Alert>

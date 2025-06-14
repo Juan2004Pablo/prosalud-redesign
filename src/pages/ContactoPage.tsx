@@ -48,17 +48,6 @@ const ContactoPage: React.FC = () => {
                 <br />
                 Usa nuestro chatbot en la esquina inferior derecha para consultas rápidas sobre servicios e incapacidades.
               </div>
-              <Button
-                onClick={() => {
-                  const chatbotButton = document.querySelector('[data-chatbot-trigger]') as HTMLElement;
-                  if (chatbotButton) chatbotButton.click();
-                }}
-                size="sm"
-                className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2"
-              >
-                <MessageCircle className="h-4 w-4" />
-                Abrir Chatbot
-              </Button>
             </div>
           </AlertDescription>
         </Alert>
