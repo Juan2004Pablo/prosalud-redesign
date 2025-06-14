@@ -75,6 +75,14 @@ const InformacionImportanteConsolidada: React.FC = () => {
               a su lista de contactos y correos deseados.
             </AlertDescription>
           </Alert>
+          <Alert className="border-gray-200 bg-gray-50">
+            <Info className="h-5 w-5 text-gray-600" />
+            <AlertDescription className="text-gray-700">
+              <strong>Horario de revisión:</strong> Lunes a viernes de 7:00 a.m. a 5:00 p.m. 
+              Cualquier registro fuera de este horario se entenderá presentado el día hábil siguiente. 
+              Se registran y asignan por orden de llegada.
+            </AlertDescription>
+          </Alert>
         </TabsContent>
       </Tabs>
     </div>
