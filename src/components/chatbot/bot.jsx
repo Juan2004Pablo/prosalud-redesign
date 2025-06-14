@@ -1155,7 +1155,7 @@ Si algún dato no coincide con tu información o tienes dudas sobre el proceso, 
                                             </div>
                                             <button
                                                 type="submit"
-                                                className={`transform rounded-lg bg-prosalud-salud p-2 text-white transition-all duration-300 hover:scale-105 hover:bg-prosalud-salud/90 focus:outline-none cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 flex-shrink-0 ${isFullscreen ? 'p-3' : ''
+                                                className={`mb-5 transform rounded-lg bg-prosalud-salud p-2 text-white transition-all duration-300 hover:scale-105 hover:bg-prosalud-salud/90 focus:outline-none cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 flex-shrink-0 ${isFullscreen ? 'p-3' : ''
                                                     }`}
                                                 disabled={isTyping || inputMessage.trim() === '' || inputMessage.length > MAX_CHARS}
                                                 title="Enviar mensaje"
