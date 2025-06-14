@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -8,6 +9,7 @@ import ScrollToTop from '@/components/utils/ScrollToTop';
 import Index from '@/pages/Index';
 import QuienesSomos from '@/pages/QuienesSomos';
 import FAQPage from '@/pages/FAQPage';
+import ContactoPage from '@/pages/ContactoPage';
 import LoginPage from '@/pages/LoginPage';
 import ForgotPasswordPage from '@/pages/ForgotPasswordPage';
 import ResetPasswordPage from '@/pages/ResetPasswordPage';
@@ -52,6 +54,7 @@ function App() {
           <Route path="/nosotros/estatutos" element={<EstatutosBeneficiosPage />} />
           <Route path="/nosotros/contrato-sindical" element={<ContratoSindicalPage />} />
           <Route path="/faq" element={<FAQPage />} />
+          <Route path="/contacto" element={<ContactoPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />

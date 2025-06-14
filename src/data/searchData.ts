@@ -18,6 +18,14 @@ export const searchData: SearchItem[] = [
     keywords: ["inicio", "home", "principal", "bienvenida", "portada", "proSalud", "inicio pagina"]
   },
   {
+    id: "contacto",
+    title: "Información de Contacto",
+    description: "Encuentra nuestros canales de comunicación, horarios y datos de contacto",
+    path: "/contacto",
+    category: "Información",
+    keywords: ["contacto", "telefono", "direccion", "correo", "comunicacion", "horarios", "atencion", "sede", "ubicacion"]
+  },
+  {
     id: "login",
     title: "Iniciar Sesión",
     description: "Accede a tu cuenta de ProSalud",

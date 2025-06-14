@@ -18,6 +18,7 @@ import DetalleNovedadSection from '@/components/verificacion-pagos/DetalleNoveda
 import ArchivoAnexoSection from '@/components/verificacion-pagos/ArchivoAnexoSection';
 import VerificacionHeader from '@/components/verificacion-pagos/VerificacionHeader';
 import InformacionImportanteVerificacionAlert from '@/components/verificacion-pagos/InformacionImportanteVerificacionAlert';
+import AvisoIncapacidadAlert from '@/components/verificacion-pagos/AvisoIncapacidadAlert';
 import ConfirmacionCorreoSection from '@/components/solicitud-certificado/ConfirmacionCorreoSection';
 import AutorizacionDatosSection from '@/components/solicitud-certificado/AutorizacionDatosSection';
 
@@ -132,6 +133,7 @@ const VerificacionPagosPage: React.FC = () => {
       
       <div className="container mx-auto py-8 px-4 md:px-6 lg:px-8">
         <VerificacionHeader />
+        <AvisoIncapacidadAlert />
         <InformacionImportanteVerificacionAlert />
 
         <Form {...form}>
@@ -140,7 +142,7 @@ const VerificacionPagosPage: React.FC = () => {
             <InformacionProcesoSection control={form.control} />
             <DetalleNovedadSection control={form.control} />
             <ArchivoAnexoSection control={form.control} />
-            <ConfirmacionCorreoSection /> {/* Removed control prop */}
+            <ConfirmacionCorreoSection />
             <AutorizacionDatosSection />
             
             <div className="flex justify-center mt-10">
