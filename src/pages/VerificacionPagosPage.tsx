@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -17,8 +16,7 @@ import InformacionProcesoSection from '@/components/verificacion-pagos/Informaci
 import DetalleNovedadSection from '@/components/verificacion-pagos/DetalleNovedadSection';
 import ArchivoAnexoSection from '@/components/verificacion-pagos/ArchivoAnexoSection';
 import VerificacionHeader from '@/components/verificacion-pagos/VerificacionHeader';
-import InformacionImportanteVerificacionAlert from '@/components/verificacion-pagos/InformacionImportanteVerificacionAlert';
-import AvisoIncapacidadAlert from '@/components/verificacion-pagos/AvisoIncapacidadAlert';
+import InformacionImportanteConsolidada from '@/components/verificacion-pagos/InformacionImportanteConsolidada';
 import ConfirmacionCorreoSection from '@/components/solicitud-certificado/ConfirmacionCorreoSection';
 import AutorizacionDatosSection from '@/components/solicitud-certificado/AutorizacionDatosSection';
 
@@ -133,8 +131,7 @@ const VerificacionPagosPage: React.FC = () => {
       
       <div className="container mx-auto py-8 px-4 md:px-6 lg:px-8">
         <VerificacionHeader />
-        <AvisoIncapacidadAlert />
-        <InformacionImportanteVerificacionAlert />
+        <InformacionImportanteConsolidada />
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit, handleError)} className="space-y-8">
