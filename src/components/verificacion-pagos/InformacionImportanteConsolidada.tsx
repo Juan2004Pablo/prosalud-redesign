@@ -17,27 +17,11 @@ const InformacionImportanteConsolidada: React.FC = () => {
     <div className="mb-8">
       <Tabs defaultValue="incapacidad" className="w-full">
         <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="incapacidad">Incapacidades</TabsTrigger>
           <TabsTrigger value="tiempos">Tiempos</TabsTrigger>
+          <TabsTrigger value="incapacidad">Incapacidades</TabsTrigger>
           <TabsTrigger value="importante">Información</TabsTrigger>
         </TabsList>
-        
-        <TabsContent value="incapacidad">
-          <Alert className="border-green-200 bg-green-50">
-            <MessageCircle className="h-5 w-5 text-green-600" />
-            <AlertDescription className="text-green-800">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                <div>
-                  <strong>¿Consultas sobre el pago de una incapacidad?</strong>
-                  <br />
-                  Usa nuestro chatbot especializado en la esquina inferior derecha. 
-                  Selecciona la opción habilitada y sigue el paso a paso.
-                </div>
-              </div>
-            </AlertDescription>
-          </Alert>
-        </TabsContent>
-        
+
         <TabsContent value="tiempos">
           <Alert className="border-amber-200 bg-amber-50">
             <Clock className="h-5 w-5 text-amber-600" />
@@ -57,6 +41,31 @@ const InformacionImportanteConsolidada: React.FC = () => {
           </Alert>
         </TabsContent>
         
+        <TabsContent value="incapacidad">
+          <Alert className="border-green-200 bg-green-50">
+            <MessageCircle className="h-5 w-5 text-green-600" />
+            <AlertDescription className="text-green-800">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <div>
+                  <strong>¿Consultas sobre el pago de una incapacidad?</strong>
+                  <br />
+                  Usa nuestro chatbot especializado en la esquina inferior derecha. 
+                  Selecciona la opción habilitada y sigue el paso a paso.
+                </div>
+                <Button
+                  onClick={handleChatbotClick}
+                  size="sm"
+                  className="bg-green-600 hover:bg-green-700 text-white flex items-center gap-2 flex-shrink-0"
+                >
+                  <MessageCircle className="h-4 w-4" />
+                  Abrir Chatbot
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
+              </div>
+            </AlertDescription>
+          </Alert>
+        </TabsContent>
+        
         <TabsContent value="importante">
           <Alert className="border-blue-200 bg-blue-50">
             <Mail className="h-5 w-5 text-blue-600" />
@@ -64,14 +73,6 @@ const InformacionImportanteConsolidada: React.FC = () => {
               <strong>Evite que nuestros correos lleguen a SPAM:</strong> Agregue la cuenta 
               <span className="font-mono bg-blue-100 px-1 rounded mx-1">comunicaciones@sindicatoprosalud.com</span>
               a su lista de contactos y correos deseados.
-            </AlertDescription>
-          </Alert>
-          <Alert className="border-gray-200 bg-gray-50 my-2">
-            <Info className="h-5 w-5 text-gray-600" />
-            <AlertDescription className="text-gray-700">
-              <strong>Horario de revisión:</strong> Lunes a viernes de 7:00 a.m. a 5:00 p.m. 
-              Cualquier registro fuera de este horario se entenderá presentado el día hábil siguiente. 
-              Se registran y asignan por orden de llegada.
             </AlertDescription>
           </Alert>
         </TabsContent>
