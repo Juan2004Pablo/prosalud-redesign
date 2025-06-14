@@ -84,29 +84,29 @@ export default function ChatBot() {
 
     const docsModules = import.meta.glob('/src/doc/**/*.md', { as: 'raw' });
 
-    // Efecto para rotar mensajes del tooltip cada 3 segundos
+    // Efecto para rotar mensajes del tooltip cada 5 segundos
     useEffect(() => {
         if (!showWelcomeTooltip) return;
 
         const interval = setInterval(() => {
             setCurrentTooltipMessage(prev => (prev + 1) % tooltipMessages.length);
-        }, 3000);
+        }, 5000);
 
         return () => clearInterval(interval);
     }, [showWelcomeTooltip, tooltipMessages.length]);
 
-    // Mostrar tooltip de bienvenida por 15 segundos o hasta que se abra el chat
+    // Mostrar tooltip de bienvenida por 60 segundos o hasta que se abra el chat
     useEffect(() => {
         const timer = setTimeout(() => {
             setShowWelcomeTooltip(false);
-        }, 15000);
+        }, 60000);
 
         return () => clearTimeout(timer);
     }, []);
 
     // Validación de límite de caracteres
     const MAX_CHARS = 500;
-    const remainingChars = MAX_CHARS - inputMessage.length;
+    const currentChars = inputMessage.length;
 
     const importContext = async (specialtyPart) => {
         try {
@@ -863,7 +863,10 @@ Si algún dato no coincide con tu información o tienes dudas sobre el proceso, 
                             }
               ${isFullscreen
                                 ? 'fixed inset-0 m-0 flex flex-col rounded-none h-screen w-screen'
-                                : `fixed bottom-2 right-2 flex flex-col ${isMobile ? 'w-80 max-w-[calc(100vw-1rem)]' : 'w-96 lg:w-[28rem]'} mx-2`
+                                : `fixed bottom-2 right-2 flex flex-col ${isMobile 
+                                    ? 'w-[calc(100vw-1rem)] max-w-80 mx-2' 
+                                    : 'w-96 lg:w-[28rem] mx-2'
+                                }`
                             }
             `}
                         style={{
@@ -1139,11 +1142,11 @@ Si algún dato no coincide con tu información o tienes dudas sobre el proceso, 
                                                 />
                                                 {/* Contador de caracteres */}
                                                 <div className="flex justify-between items-center mt-1 px-1">
-                                                    <div className={`text-xs ${remainingChars < 50 ? 'text-red-500' : 'text-gray-500'
+                                                    <div className={`text-xs ${currentChars >= 490 ? 'text-red-500' : 'text-gray-500'
                                                         }`}>
-                                                        {remainingChars}/{MAX_CHARS}
+                                                        {currentChars}/{MAX_CHARS}
                                                     </div>
-                                                    {remainingChars < 50 && (
+                                                    {currentChars >= 490 && (
                                                         <div className="text-xs text-red-500">
                                                             Límite de caracteres alcanzado
                                                         </div>
