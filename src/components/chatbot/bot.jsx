@@ -72,8 +72,41 @@ export default function ChatBot() {
     const chatWidth = isMobile ? "w-80" : "w-96"
 
     const [isTooltipOpen, setIsTooltipOpen] = useState(false);
+    const [showWelcomeTooltip, setShowWelcomeTooltip] = useState(true);
+    const [currentTooltipMessage, setCurrentTooltipMessage] = useState(0);
+
+    // Mensajes del tooltip rotativo
+    const tooltipMessages = [
+        "¡Hola! Si tienes preguntas, no dudes en consultarme.",
+        "Consulta el pago de una incapacidad aquí",
+        "¿Necesitas ayuda? Haz clic y hablamos."
+    ];
 
     const docsModules = import.meta.glob('/src/doc/**/*.md', { as: 'raw' });
+
+    // Efecto para rotar mensajes del tooltip cada 3 segundos
+    useEffect(() => {
+        if (!showWelcomeTooltip) return;
+
+        const interval = setInterval(() => {
+            setCurrentTooltipMessage(prev => (prev + 1) % tooltipMessages.length);
+        }, 3000);
+
+        return () => clearInterval(interval);
+    }, [showWelcomeTooltip, tooltipMessages.length]);
+
+    // Mostrar tooltip de bienvenida por 15 segundos o hasta que se abra el chat
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setShowWelcomeTooltip(false);
+        }, 15000);
+
+        return () => clearTimeout(timer);
+    }, []);
+
+    // Validación de límite de caracteres
+    const MAX_CHARS = 500;
+    const remainingChars = MAX_CHARS - inputMessage.length;
 
     const importContext = async (specialtyPart) => {
         try {
@@ -342,6 +375,10 @@ export default function ChatBot() {
     const toggleChat = () => {
         setIsFullscreen(false)
         setIsOpen(!isOpen)
+        // Ocultar tooltip de bienvenida cuando se abre el chat
+        if (!isOpen) {
+            setShowWelcomeTooltip(false)
+        }
     }
 
     const toggleFullscreen = () => {
@@ -349,8 +386,12 @@ export default function ChatBot() {
     }
 
     const handleInputChange = (e) => {
-        setInputMessage(e.target.value)
-        adjustTextareaHeight()
+        const value = e.target.value;
+        // Limitar a 500 caracteres
+        if (value.length <= MAX_CHARS) {
+            setInputMessage(value)
+            adjustTextareaHeight()
+        }
     }
 
     const adjustTextareaHeight = () => {
@@ -822,7 +863,7 @@ Si algún dato no coincide con tu información o tienes dudas sobre el proceso, 
                             }
               ${isFullscreen
                                 ? 'fixed inset-0 m-0 flex flex-col rounded-none h-screen w-screen'
-                                : `fixed bottom-2 right-2 flex flex-col ${chatWidth} max-w-full mx-2`
+                                : `fixed bottom-2 right-2 flex flex-col ${isMobile ? 'w-80 max-w-[calc(100vw-1rem)]' : 'w-96 lg:w-[28rem]'} mx-2`
                             }
             `}
                         style={{
@@ -1080,25 +1121,40 @@ Si algún dato no coincide con tu información o tienes dudas sobre el proceso, 
                                             }`}
                                     >
                                         <div className="flex items-end gap-2">
-                                            <textarea
-                                                ref={textareaRef}
-                                                value={inputMessage}
-                                                onChange={handleInputChange}
-                                                onKeyDown={handleKeyDown}
-                                                className={`flex-grow resize-none overflow-hidden rounded-lg border border-gray-300 bg-gray-100 p-2 text-sm text-gray-900 placeholder-gray-500 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-prosalud-salud dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:ring-prosalud-salud ${isFullscreen
-                                                    ? 'max-h-[120px] min-h-[3rem] p-3 text-base'
-                                                    : 'max-h-[80px] min-h-[2.5rem]'
-                                                    }`}
-                                                placeholder="Escribe tu pregunta aquí..."
-                                                rows={1}
-                                                aria-label="Mensaje"
-                                                disabled={isTyping}
-                                            />
+                                            <div className="flex-grow">
+                                                <textarea
+                                                    ref={textareaRef}
+                                                    value={inputMessage}
+                                                    onChange={handleInputChange}
+                                                    onKeyDown={handleKeyDown}
+                                                    className={`w-full resize-none overflow-hidden rounded-lg border border-gray-300 bg-gray-100 p-2 text-sm text-gray-900 placeholder-gray-500 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-prosalud-salud dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:ring-prosalud-salud ${isFullscreen
+                                                        ? 'max-h-[120px] min-h-[3rem] p-3 text-base'
+                                                        : 'max-h-[80px] min-h-[2.5rem]'
+                                                        }`}
+                                                    placeholder="Escribe tu pregunta aquí..."
+                                                    rows={1}
+                                                    aria-label="Mensaje"
+                                                    disabled={isTyping}
+                                                    maxLength={MAX_CHARS}
+                                                />
+                                                {/* Contador de caracteres */}
+                                                <div className="flex justify-between items-center mt-1 px-1">
+                                                    <div className={`text-xs ${remainingChars < 50 ? 'text-red-500' : 'text-gray-500'
+                                                        }`}>
+                                                        {remainingChars}/{MAX_CHARS}
+                                                    </div>
+                                                    {remainingChars < 50 && (
+                                                        <div className="text-xs text-red-500">
+                                                            Límite de caracteres alcanzado
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </div>
                                             <button
                                                 type="submit"
                                                 className={`transform rounded-lg bg-prosalud-salud p-2 text-white transition-all duration-300 hover:scale-105 hover:bg-prosalud-salud/90 focus:outline-none cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 flex-shrink-0 ${isFullscreen ? 'p-3' : ''
                                                     }`}
-                                                disabled={isTyping || inputMessage.trim() === ''}
+                                                disabled={isTyping || inputMessage.trim() === '' || inputMessage.length > MAX_CHARS}
                                                 title="Enviar mensaje"
                                                 aria-label="Enviar mensaje"
                                             >
@@ -1116,15 +1172,16 @@ Si algún dato no coincide con tu información o tienes dudas sobre el proceso, 
             )}
             {showChatbot && (
                 <TooltipProvider delayDuration={100}>
-                    <Tooltip open={isTooltipOpen} onOpenChange={setIsTooltipOpen}>
+                    <Tooltip open={showWelcomeTooltip || isTooltipOpen} onOpenChange={setIsTooltipOpen}>
                         <TooltipTrigger asChild>
                             <button
                                 onClick={() => {
                                     toggleChat();
+                                    setShowWelcomeTooltip(false);
                                     setIsTooltipOpen(true);
                                 }}
-                                onMouseEnter={() => setIsTooltipOpen(true)}
-                                onMouseLeave={() => setIsTooltipOpen(false)}
+                                onMouseEnter={() => !showWelcomeTooltip && setIsTooltipOpen(true)}
+                                onMouseLeave={() => !showWelcomeTooltip && setIsTooltipOpen(false)}
                                 className={`fixed bottom-2 right-2 z-10 transform rounded-full bg-prosalud-salud p-4
                             text-white shadow-lg transition-all 
                             duration-300 hover:rotate-3 hover:scale-110 hover:bg-prosalud-salud/90 focus:outline-none
@@ -1136,8 +1193,25 @@ Si algún dato no coincide con tu información o tienes dudas sobre el proceso, 
                                 <MessageSquare className="h-7 w-7" />
                             </button>
                         </TooltipTrigger>
-                        <TooltipContent side="left" className="bg-gray-800 text-white border-gray-700">
-                            <p>¡Chatea con nosotros!</p>
+                        <TooltipContent 
+                            side="left" 
+                            className="bg-gray-800 text-white border-gray-700 max-w-xs relative"
+                        >
+                            <div className="flex justify-between items-start gap-2">
+                                <p className="text-sm">{tooltipMessages[currentTooltipMessage]}</p>
+                                {showWelcomeTooltip && (
+                                    <button
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            setShowWelcomeTooltip(false);
+                                        }}
+                                        className="text-gray-400 hover:text-white flex-shrink-0 ml-2"
+                                        aria-label="Cerrar tooltip"
+                                    >
+                                        <X className="h-3 w-3" />
+                                    </button>
+                                )}
+                            </div>
                         </TooltipContent>
                     </Tooltip>
                 </TooltipProvider>
