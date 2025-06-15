@@ -23,7 +23,6 @@ import json from 'react-syntax-highlighter/dist/cjs/languages/hljs/json'
 import php from 'react-syntax-highlighter/dist/cjs/languages/hljs/php'
 import { atomOneDark } from 'react-syntax-highlighter/dist/cjs/styles/hljs'
 import { generateText, streamText } from 'ai'
-import { createOpenAI } from '@ai-sdk/openai'
 import ReactMarkdown from 'react-markdown'
 import {
     Tooltip,
@@ -157,12 +156,6 @@ export default function ChatBot() {
         'Certificado de convenio sindical',
         'Información de contacto',
     ]
-
-    const openai = createOpenAI({
-        compatibility: 'strict',
-        apiKey: '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',
-        /** TODO: MANEJAR VARIABLE DE ENTORNO */
-    })
 
     const AVATAR_URL = '/images/bot_avatar.webp'
 
@@ -460,6 +453,19 @@ Recuerda: No inventes información. Solo responde según los recursos/documentos
         blockquote: ({ children }) => <blockquote className="border-l-4 border-gray-300 pl-3 py-1 my-2 italic dark:border-gray-600">{children}</blockquote>,
     }
 
+    // NUEVO: función para llamar a la edge function en Supabase
+    async function solicitarRespuestaConOpenAI(messages) {
+        const response = await fetch('/functions/v1/openai-gpt-chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ messages }),
+        });
+        const data = await response.json();
+        if (data.error) throw new Error(data.error);
+        return data.generatedText;
+    }
+
+    // AJUSTA handleSendMessage para usar la función intermedia y NO el SDK directo
     const handleSendMessage = async (e) => {
         e.preventDefault()
         if (inputMessage.trim() === '') return
@@ -585,38 +591,18 @@ Recuerda: No inventes información. Solo responde según los recursos/documentos
                 { role: 'assistant', content: '', isBot: true, isStreaming: true },
             ])
 
-            const { textStream } = await streamText({
-                model: openai('gpt-4.1-mini'),
-                messages: promptMessages,
-                maxTokens: 300,
-            })
+            // NUEVO: Llama a edge function, recibe la respuesta completa (sin streaming)
+            const generatedText = await solicitarRespuestaConOpenAI(promptMessages);
 
-            let streamedText = ''
-
-            for await (const delta of textStream) {
-                streamedText += delta
-
-                setMessages((prevMessages) => {
-                    const updatedMessages = [...prevMessages]
-                    // Actualizar el contenido del último mensaje
-                    updatedMessages[updatedMessages.length - 1] = {
-                        ...updatedMessages[updatedMessages.length - 1],
-                        content: streamedText,
-                    }
-                    return updatedMessages
-                })
-            }
-
-            // Actualizar el mensaje final
             setMessages((prevMessages) => {
-                const updatedMessages = [...prevMessages]
+                const updatedMessages = [...prevMessages];
                 updatedMessages[updatedMessages.length - 1] = {
                     role: 'assistant',
-                    content: streamedText,
+                    content: generatedText,
                     isBot: true,
                     isStreaming: false,
-                }
-                return updatedMessages
+                };
+                return updatedMessages;
             })
         } catch (error) {
             console.error('Error generating response:', error)
