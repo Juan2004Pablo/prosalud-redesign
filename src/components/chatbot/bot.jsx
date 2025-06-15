@@ -467,14 +467,17 @@ Recuerda: No inventes información. Solo responde según los recursos/documentos
             try {
                 data = await response.json();
             } catch (e) {
-                throw new Error('La respuesta del servidor está vacía o es inválida.');
+                // Intentar leer como texto y mostrarlo si hubo error
+                let raw = await response.text();
+                console.error("El cuerpo no es JSON parseable:", raw);
+                throw new Error('La respuesta del servidor está vacía o es inválida:\n' + raw);
             }
 
             if (!data || typeof data !== 'object') {
                 throw new Error('Respuesta inesperada del servidor.');
             }
 
-            if (data.error) throw new Error(data.error);
+            if (data.error) throw new Error(data.error + (data.openaiRaw ? "\nOpenAI raw: " + data.openaiRaw : ''));
             return data.generatedText;
         } catch (err) {
             // Fallback general para cualquier error (solo para mostrar en consola y lanzar)
