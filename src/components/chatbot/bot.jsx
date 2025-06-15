@@ -467,7 +467,7 @@ Recuerda: No inventes información. Solo responde según los recursos/documentos
                 throw new Error(`Error del servidor: ${response.status} ${response.statusText}`);
             }
 
-            // Leer el contenido solo UNA vez
+            // Leer el contenido como texto primero
             const responseText = await response.text();
             console.log('Response raw text:', responseText);
 
