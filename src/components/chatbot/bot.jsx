@@ -453,38 +453,60 @@ Recuerda: No inventes información. Solo responde según los recursos/documentos
         blockquote: ({ children }) => <blockquote className="border-l-4 border-gray-300 pl-3 py-1 my-2 italic dark:border-gray-600">{children}</blockquote>,
     }
 
-    // NUEVO: función para llamar a la edge function en Supabase
+    // CORREGIR: función para llamar a la edge function en Supabase
     async function solicitarRespuestaConOpenAI(messages) {
         try {
-            const response = await fetch('/functions/v1/openai-gpt-chat', {
+            console.log('Iniciando llamada a edge function con mensajes:', messages);
+            
+            const response = await fetch('https://wgzzegyxorlustvfjueb.supabase.co/functions/v1/openai-gpt-chat', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnenplZ3l4b3JsdXN0dmZqdWViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQxNTgzNjUsImV4cCI6MjA0OTczNDM2NX0.TjSDTrGPY0JuVWOAYZgRyGcBrmORAcZT_HNtFSNaLSU'}`
+                },
                 body: JSON.stringify({ messages }),
             });
 
-            // Si la respuesta no trae JSON válido
+            console.log('Response status:', response.status);
+            console.log('Response headers:', Object.fromEntries(response.headers.entries()));
+
+            if (!response.ok) {
+                console.error('Response no OK:', response.status, response.statusText);
+                throw new Error(`Error del servidor: ${response.status} ${response.statusText}`);
+            }
+
+            // Leer el contenido solo UNA vez
+            const responseText = await response.text();
+            console.log('Response raw text:', responseText);
+
+            if (!responseText || responseText.trim() === '') {
+                throw new Error('El servidor retornó una respuesta vacía');
+            }
+
+            // Intentar parsear como JSON
             let data;
             try {
-                data = await response.json();
-            } catch (e) {
-                // Intentar leer como texto y mostrarlo si hubo error
-                let raw = await response.text();
-                console.error("El cuerpo no es JSON parseable:", raw);
-                throw new Error('La respuesta del servidor está vacía o es inválida:\n' + raw);
+                data = JSON.parse(responseText);
+            } catch (parseError) {
+                console.error('Error parseando JSON:', parseError);
+                console.error('Texto recibido:', responseText);
+                throw new Error('La respuesta del servidor no es JSON válido: ' + responseText.substring(0, 200));
             }
 
-            if (!data || typeof data !== 'object') {
-                throw new Error('Respuesta inesperada del servidor.');
+            console.log('Datos parseados:', data);
+
+            if (data.error) {
+                throw new Error(data.error);
             }
 
-            if (data.error) throw new Error(data.error + (data.openaiRaw ? "\nOpenAI raw: " + data.openaiRaw : ''));
+            if (!data.generatedText) {
+                throw new Error('La respuesta no contiene el campo generatedText: ' + JSON.stringify(data));
+            }
+
             return data.generatedText;
         } catch (err) {
-            // Fallback general para cualquier error (solo para mostrar en consola y lanzar)
-            console.error('Error en solicitarRespuestaConOpenAI:', err);
-            throw new Error(
-                err?.message || 'Error inesperado al comunicarse con el backend'
-            );
+            console.error('Error completo en solicitarRespuestaConOpenAI:', err);
+            throw new Error(err?.message || 'Error inesperado al comunicarse con el backend');
         }
     }
 
