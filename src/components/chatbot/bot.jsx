@@ -455,14 +455,34 @@ Recuerda: No inventes información. Solo responde según los recursos/documentos
 
     // NUEVO: función para llamar a la edge function en Supabase
     async function solicitarRespuestaConOpenAI(messages) {
-        const response = await fetch('/functions/v1/openai-gpt-chat', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ messages }),
-        });
-        const data = await response.json();
-        if (data.error) throw new Error(data.error);
-        return data.generatedText;
+        try {
+            const response = await fetch('/functions/v1/openai-gpt-chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ messages }),
+            });
+
+            // Si la respuesta no trae JSON válido
+            let data;
+            try {
+                data = await response.json();
+            } catch (e) {
+                throw new Error('La respuesta del servidor está vacía o es inválida.');
+            }
+
+            if (!data || typeof data !== 'object') {
+                throw new Error('Respuesta inesperada del servidor.');
+            }
+
+            if (data.error) throw new Error(data.error);
+            return data.generatedText;
+        } catch (err) {
+            // Fallback general para cualquier error (solo para mostrar en consola y lanzar)
+            console.error('Error en solicitarRespuestaConOpenAI:', err);
+            throw new Error(
+                err?.message || 'Error inesperado al comunicarse con el backend'
+            );
+        }
     }
 
     // AJUSTA handleSendMessage para usar la función intermedia y NO el SDK directo

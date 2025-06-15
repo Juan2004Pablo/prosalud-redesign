@@ -1,4 +1,3 @@
-
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
@@ -11,7 +10,7 @@ const corsHeaders = {
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders });
+    return new Response(JSON.stringify({ ok: true }), { headers: corsHeaders });
   }
 
   try {
@@ -31,14 +30,30 @@ serve(async (req) => {
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      return new Response(JSON.stringify({ error: errorData.error?.message || 'Error OpenAI API' }), {
+      let errMsg;
+      try {
+        const errorData = await response.json();
+        errMsg = errorData.error?.message || 'Error OpenAI API';
+      } catch {
+        errMsg = 'Error desconocido con OpenAI API';
+      }
+      return new Response(JSON.stringify({ error: errMsg }), {
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
-    const data = await response.json();
+    // Validar que la respuesta tenga el formato esperado
+    let data;
+    try {
+      data = await response.json();
+    } catch (error) {
+      return new Response(
+        JSON.stringify({ error: 'Respuesta vacía o inválida de OpenAI.' }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
     const generatedText = data.choices?.[0]?.message?.content || '';
 
     return new Response(JSON.stringify({ generatedText }), {
@@ -46,9 +61,12 @@ serve(async (req) => {
     });
   } catch (error) {
     console.error('Error in openai-gpt-chat function:', error);
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 500,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    });
+    return new Response(
+      JSON.stringify({ error: error.message || 'Error inesperado en función OpenAI.' }),
+      {
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      }
+    );
   }
 });
