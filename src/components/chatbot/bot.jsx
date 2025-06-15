@@ -160,7 +160,7 @@ export default function ChatBot() {
 
     const openai = createOpenAI({
         compatibility: 'strict',
-        apiKey: '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',
+        apiKey: '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',
         /** TODO: MANEJAR VARIABLE DE ENTORNO */
     })
 
