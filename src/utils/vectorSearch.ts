@@ -1,8 +1,19 @@
 
 import { supabase } from "@/integrations/supabase/client";
 
+// Definir tipo para los chunks recuperados
+export type RelevantChunk = {
+  id: string;
+  doc_path: string;
+  chunk_index: number;
+  content: string;
+  embedding: any; // Puede ser string o vector, depende de configuración
+  created_at: string;
+  similarity: number;
+};
+
 // Genera embedding en frontend usando OpenAI
-export async function getQuestionEmbedding(text) {
+export async function getQuestionEmbedding(text: string): Promise<number[]> {
   // Aquí deberías llamar a una edge function privada que hace la llamada real a OpenAI
   // Este simple ejemplo asume que tienes una edge function /embed-question
   const resp = await fetch("/functions/v1/embed-question", {
@@ -16,18 +27,18 @@ export async function getQuestionEmbedding(text) {
 
 /**
  * Recupera los N chunks más relevantes de la base de datos usando similitud de embeddings cosine.
- * @param {*} query Texto de la pregunta del usuario
- * @param {number} topK Número de bloques a devolver (default: 3)
- * @returns Lista de objetos {doc_path, chunk_index, content, embedding}
+ * @param query Texto de la pregunta del usuario
+ * @param topK Número de bloques a devolver (default: 3)
+ * @returns Lista de objetos RelevantChunk
  */
-export async function searchRelevantChunks(query: string, topK: number = 3) {
+export async function searchRelevantChunks(query: string, topK: number = 3): Promise<RelevantChunk[]> {
   const questionEmbedding = await getQuestionEmbedding(query);
 
-  // Consulta vectorial en Supabase
+  // Consulta vectorial en Supabase a través de la función RPC registrada
   const { data, error } = await supabase.rpc("match_doc_chunks", {
     query_embedding: questionEmbedding,
     match_count: topK
-  });
+  }) as { data: RelevantChunk[] | null, error: any };
 
   if (error) throw error;
   return data || [];

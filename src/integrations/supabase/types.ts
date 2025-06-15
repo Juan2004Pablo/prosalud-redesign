@@ -97,6 +97,18 @@ export type Database = {
         Args: { "": string } | { "": unknown } | { "": unknown }
         Returns: string
       }
+      match_doc_chunks: {
+        Args: { query_embedding: string; match_count?: number }
+        Returns: {
+          id: string
+          doc_path: string
+          chunk_index: number
+          content: string
+          embedding: string
+          created_at: string
+          similarity: number
+        }[]
+      }
       sparsevec_out: {
         Args: { "": unknown }
         Returns: unknown
