@@ -1,4 +1,3 @@
-
 import { supabase } from "@/integrations/supabase/client";
 
 // Definir tipo para los chunks recuperados
@@ -34,9 +33,9 @@ export async function getQuestionEmbedding(text: string): Promise<number[]> {
 export async function searchRelevantChunks(query: string, topK: number = 3): Promise<RelevantChunk[]> {
   const questionEmbedding = await getQuestionEmbedding(query);
 
-  // Consulta vectorial en Supabase a través de la función RPC registrada
+  // Convertir embedding a string antes de enviar a Supabase
   const { data, error } = await supabase.rpc("match_doc_chunks", {
-    query_embedding: questionEmbedding,
+    query_embedding: JSON.stringify(questionEmbedding), // <-- fix: stringify the array!
     match_count: topK
   }) as { data: RelevantChunk[] | null, error: any };
 
