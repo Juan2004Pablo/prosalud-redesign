@@ -1484,8 +1484,3 @@ Si algún dato no coincide con tu información o tienes dudas sobre el proceso, 
         </>
     )
 }
-
-async function searchRelevantChunks(text, limit) {
-    // Implementación de la función de búsqueda de chunks relevantes
-    return [];
-}
