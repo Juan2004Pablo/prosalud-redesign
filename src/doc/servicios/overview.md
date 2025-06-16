@@ -1,119 +1,108 @@
 
-# Servicios ProSalud - Resumen General
+# Servicios ProSalud
 
-ProSalud ofrece diversos servicios digitales para facilitar trámites y consultas a sus afiliados. Todos los servicios están disponibles a través del portal web oficial.
+ProSalud ofrece diversos servicios y trámites en línea para facilitar la gestión de sus afiliados. A continuación, se listan algunos de los principales servicios disponibles a través de nuestro portal web.
 
-## Certificados y Documentos
+## Servicios Destacados
 
-### Certificado de Convenio Sindical
-Documento que certifica la participación del afiliado en contratos sindicales y otra información laboral relevante.
-- **Proceso:** Formulario en línea
-- **Entrega:** Correo electrónico
-- **Tiempo:** Días hábiles
-- **Requisitos:** Datos personales y especificación del tipo de certificado
+### 1. Certificado de Convenio Sindical
+- **Descripción**: Solicitud en línea para obtener la certificación oficial de participación en contratos sindicales y otra información laboral relevante.
+- **Modalidad**: 100% digital.
+- **Propósito**: Trámites bancarios, gubernamentales, laborales, entre otros.
+- **Enlace**: [`/servicios/certificado-convenio`](/servicios/certificado-convenio)
+- **Documentación detallada**: [Ver más](./certificado-convenio.md)
 
-### Certificado de Aportes a la Seguridad Social
-Servicio externo que permite obtener certificación de aportes de manera autónoma.
-- **Plataforma:** ARUS SUAPORTE (enlace externo)
-- **Proceso:** Autogestión del afiliado
-- **Acceso:** Través del portal ProSalud
+### 2. Solicitud de Retiro Sindical
+- **Descripción**: Proceso para que los afiliados notifiquen formalmente su retiro del sindicato.
+- **Modalidad**: Descarga de formato y seguimiento de instrucciones.
+- **Propósito**: Cumplir con el trámite obligatorio de desvinculación.
+- **Enlace**: [`/servicios/retiro-sindical`](/servicios/retiro-sindical)
+- **Documentación detallada**: [Ver más](./solicitud-retiro-sindical.md)
 
-## Solicitudes y Trámites
+### 3. Solicitud de Descanso Laboral
+- **Descripción**: Formulario para solicitar descansos laborales remunerados, sujetos a aprobación y cumplimiento de requisitos.
+- **Modalidad**: Formulario digital.
+- **Propósito**: Gestionar periodos de descanso compensados.
+- **Enlace**: [`/servicios/descanso-laboral`](/servicios/descanso-laboral)
+- **Documentación detallada**: [Ver más](./solicitud-descanso-laboral.md)
 
-### Retiro Sindical
-Proceso para afiliados que desean desvincularse del sindicato.
-- **Modalidad:** Digital con formato descargable
-- **Requisitos:** Formato diligenciado y firmado
-- **Proceso:** Obligatorio para afiliados código 53
+### 4. Solicitud de Compensación Anual Diferida
+- **Descripción**: Trámite para solicitar la compensación anual diferida, adjuntando los soportes necesarios.
+- **Modalidad**: Formulario digital con adjuntos.
+- **Propósito**: Acceder al beneficio de compensación anual diferida.
+- **Enlace**: [`/servicios/compensacion-anual`](/servicios/compensacion-anual)
+- **Documentación detallada**: [Ver más](./solicitud-compensacion-anual-diferida.md)
 
-### Descanso Laboral
-Solicitud de descansos laborales remunerados.
-- **Aprobación:** Requiere V°B° del coordinador
-- **Compensación:** Por parte del contratante
-- **Documentos:** Anexo con visto bueno obligatorio
+### 5. Verificación de Pagos (Consulta de Pagos)
+- **Descripción**: Canal para que los afiliados realicen consultas sobre pagos, novedades financieras o seguridad social.
+- **Modalidad**: Formulario digital.
+- **Propósito**: Aclarar dudas y verificar información financiera y de pagos.
+- **Enlace**: [`/servicios/consulta-pagos`](/servicios/consulta-pagos)
+- **Documentación detallada**: [Ver más](./verificacion-pagos.md)
 
-### Compensación Anual Diferida
-Beneficio económico por días de descanso acumulados.
-- **Requisitos:** Formato y evidencia de soporte
-- **Revisión:** Según convenio colectivo
-- **Archivos:** PDF, Word o imágenes (máx. 4MB)
+### 6. Solicitud de Microcrédito CEII
+- **Descripción**: Formulario informativo para iniciar el proceso de solicitud de microcrédito con Capital & Ideas S.A.S.
+- **Modalidad**: Formulario digital informativo.
+- **Propósito**: Manifestar interés en un microcrédito.
+- **Enlace**: [`/servicios/microcredito`](/servicios/microcredito)
+- **Documentación detallada**: [Ver más](./solicitud-microcredito.md)
 
-## Consultas y Verificaciones
+### 7. Certificado de Seguridad Social
+- **Descripción**: Genera tu certificado de aportes a la seguridad social a través del portal ARUS SUAPORTE.
+- **Modalidad**: Autoconsulta en portal externo.
+- **Propósito**: Obtener constancia de aportes a seguridad social.
+- **Enlace**: [`/servicios/certificado-seguridad-social`](/servicios/certificado-seguridad-social)
+- **Documentación detallada**: [Ver más](./certificado-seguridad-social.md)
 
-### Verificación de Pagos
-Consulta sobre estado de pagos y compensaciones.
-- **Tiempo de respuesta:** Hasta 15 días hábiles
-- **Información requerida:** Datos del proceso y período
-- **Seguimiento:** Vía correo electrónico
+### 8. Actualizar Cuenta Bancaria
+- **Descripción**: Notifica un cambio en tu cuenta bancaria para recibir pagos.
+- **Modalidad**: Formulario digital con adjunto de certificación.
+- **Propósito**: Asegurar la correcta recepción de pagos.
+- **Enlace**: [`/servicios/actualizar-cuenta`](/servicios/actualizar-cuenta)
+- **Documentación detallada**: [Ver más](./actualizar-cuenta-bancaria.md)
 
-### Actualización de Cuenta Bancaria
-Cambio de información bancaria para pagos.
-- **Requisito principal:** Certificación bancaria
-- **Titular:** Debe ser el afiliado
-- **Procesamiento:** Siguiente período de pagos
+### 9. Incapacidades y Licencias
+- **Descripción**: Reporta tu incapacidad o licencia (maternidad, etc.) al sindicato.
+- **Modalidad**: Envío de documentos por correo electrónico.
+- **Propósito**: Gestionar el trámite de incapacidades y licencias.
+- **Enlace**: [`/servicios/incapacidad-maternidad`](/servicios/incapacidad-maternidad)
+- **Documentación detallada**: [Ver más](./incapacidades-licencias.md)
 
-## Herramientas y Consultas
+### 10. Seguridad y Salud en el Trabajo (SST)
+- **Descripción**: Accede a recursos y reportes relacionados con SST.
+- **Modalidad**: Informativa / Documental (contenido en desarrollo).
+- **Propósito**: Promover la prevención y el autocuidado.
+- **Enlace**: [`/servicios/sst`](/servicios/sst)
+- **Documentación detallada**: [Ver más](./sst.md)
 
-### Cuadro de Turnos
-Consulta de programación a través de ProSanet.
-- **Plataforma:** Externa (ProSanet)
-- **Acceso:** Con credenciales del afiliado
-- **Función:** Solo consulta
+### 11. Encuesta de Bienestar Laboral
+- **Descripción**: Participa en encuestas para mejorar tu entorno laboral.
+- **Modalidad**: Formulario externo (Google Forms).
+- **Propósito**: Recopilar opiniones para mejorar el bienestar.
+- **Enlace Externo**: [`https://forms.gle/2YnLMixdN6EnZ7Qq6`](https://forms.gle/2YnLMixdN6EnZ7Qq6)
+- **Documentación detallada**: [Ver más](./encuesta-bienestar-laboral.md)
 
-### Permisos y Cambio de Turnos
-Formatos para solicitar permisos o cambios.
-- **Formatos:** Descargables en PDF
-- **Aprobación:** V°B° del coordinador obligatorio
-- **Proceso:** Diligenciamiento y envío formal
+### 12. Galería de Bienestar
+- **Descripción**: Explora fotos y eventos organizados para tu bienestar.
+- **Modalidad**: Informativa / Visual (contenido en desarrollo).
+- **Propósito**: Compartir recuerdos y promover la participación.
+- **Enlace**: [`/servicios/galeria-bienestar`](/servicios/galeria-bienestar)
+- **Documentación detallada**: [Ver más](./galeria-bienestar.md)
 
-## Trámites de Salud
+### 13. Formato de Permisos y Cambio de Turnos
+- **Descripción**: Diligencia el formato para solicitudes de permisos laborales o ajustes en tus turnos.
+- **Modalidad**: Descarga de formatos y envío según instrucciones.
+- **Propósito**: Gestionar solicitudes de permisos y cambios de turno.
+- **Enlace**: [`/servicios/permisos-turnos`](/servicios/permisos-turnos)
+- **Documentación detallada**: [Ver más](./permisos-cambio-turnos.md)
 
-### Incapacidades y Licencias
-Proceso especializado para reporte de incapacidades.
-- **Canal exclusivo:** incapacidades@sindicatoprosalud.com
-- **Formato:** Solo PDF legible
-- **Plazo:** 5 días calendario desde expedición
-- **Respuesta:** 3 días hábiles
+### 14. Cuadro de Turnos
+- **Descripción**: Consulta tu calendario de turnos asignados en ProSanet.
+- **Modalidad**: Consulta en portal externo (ProSanet).
+- **Propósito**: Acceder a la programación de turnos.
+- **Enlace Externo**: [`https://www.prosanet.com/#/shifts-employees/index`](https://www.prosanet.com/#/shifts-employees/index)
+- **Documentación detallada**: [Ver más](./cuadro-turnos.md)
 
-## Servicios de Bienestar
 
-### Encuesta de Bienestar Laboral
-Participación en estudios de clima laboral.
-- **Modalidad:** Google Forms
-- **Participación:** Voluntaria y confidencial
-- **Objetivo:** Mejora del ambiente laboral
+*Otros servicios pueden estar disponibles. Consulte el menú de navegación del sitio o contacte a ProSalud para más información.*
 
-### Galería de Bienestar
-Visualización de eventos y actividades sindicales.
-- **Contenido:** Fotos de eventos, actividades culturales y deportivas
-- **Acceso:** Portal web
-- **Actualización:** Según realización de eventos
-
-## Microcrédito CEII
-Servicio informativo de microcrédito a través de Capital & Ideas S.A.S.
-- **Proceso:** Pre-solicitud informativa
-- **Contacto:** ceiisas@hotmail.com (si pre-aprobado)
-- **Montos:** Variables según capacidad
-- **Cuotas:** 1 a 12 meses
-
-## Horarios y Contacto
-
-### Atención General
-- **Presencial:** Lunes a viernes, 7:00 AM - 5:00 PM
-- **Telefónica:** Lunes a viernes, 7:00 AM - 6:00 PM
-- **Digital:** 24/7 través del portal web
-
-### Canales Especializados
-- **Incapacidades:** incapacidades@sindicatoprosalud.com
-- **Comunicaciones:** comunicaciones@sindicatoprosalud.com
-- **Teléfono:** (604) 444-5555
-
-## Notas Importantes
-
-- Todos los servicios requieren ser afiliado activo
-- Los tiempos de respuesta son días hábiles
-- Se recomienda agregar correos institucionales a contactos
-- Algunos servicios requieren documentación de soporte
-- Las solicitudes fuera de horario se procesan el día hábil siguiente
-
-Para más información detallada sobre cada servicio, consulte las secciones específicas en el portal web de ProSalud.
