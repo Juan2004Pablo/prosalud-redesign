@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Card } from '../ui/card';
-import { Send, HeadsetHelpingHand, X } from 'lucide-react';
+import { Send, Headphones, X } from 'lucide-react';
 
 import { searchRelevantChunks } from '../../utils/vectorSearch';
 import { faqData } from '../../data/faqData';
@@ -179,7 +179,7 @@ const ChatBot = () => {
         className="fixed bottom-5 right-5 z-[1000] bg-blue-600 hover:bg-blue-700 text-white rounded-full p-3 shadow-lg"
         size="icon"
       >
-        {isOpen ? <X className="h-6 w-6" /> : <HeadsetHelpingHand className="h-6 w-6" />}
+        {isOpen ? <X className="h-6 w-6" /> : <Headphones className="h-6 w-6" />}
       </Button>
 
       {isOpen && (
