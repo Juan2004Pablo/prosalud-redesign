@@ -1,13 +1,11 @@
+
 import React, { useState, useEffect, useRef } from 'react';
-import { Avatar, IconButton, InputAdornment, TextField } from '@mui/material';
-import SendIcon from '@mui/icons-material/Send';
-import HeadsetMicIcon from '@mui/icons-material/HeadsetMic';
-import CloseIcon from '@mui/icons-material/Close';
-import { Box, styled } from '@mui/system';
-import CircularProgress from '@mui/material/CircularProgress';
+import { Button } from '../ui/button';
+import { Input } from '../ui/input';
+import { Card } from '../ui/card';
+import { Send, HeadsetHelpingHand, X } from 'lucide-react';
 
 import { searchRelevantChunks } from '../../utils/vectorSearch';
-import { getSecurityMessage } from '../../utils/inputValidator';
 import { faqData } from '../../data/faqData';
 import { faqCategories } from '../../data/faqData';
 import { 
@@ -15,66 +13,6 @@ import {
   getSecurityMessage, 
   requiresContactInfo 
 } from '../../utils/inputValidator.js';
-
-const StyledChatBox = styled(Box)(({ theme }) => ({
-  position: 'fixed',
-  bottom: theme.spacing(2),
-  right: theme.spacing(2),
-  width: '350px',
-  height: '500px',
-  display: 'flex',
-  flexDirection: 'column',
-  border: '1px solid #ccc',
-  borderRadius: theme.spacing(1),
-  backgroundColor: 'white',
-  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-  fontFamily: 'Arial, sans-serif',
-  zIndex: 1000,
-}));
-
-const StyledHeader = styled(Box)(({ theme }) => ({
-  background: '#007BFF',
-  color: 'white',
-  padding: theme.spacing(2),
-  textAlign: 'center',
-  fontWeight: 'bold',
-  borderTopLeftRadius: theme.spacing(1),
-  borderTopRightRadius: theme.spacing(1),
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-}));
-
-const StyledChatMessages = styled(Box)(({ theme }) => ({
-  flexGrow: 1,
-  padding: theme.spacing(2),
-  overflowY: 'auto',
-  display: 'flex',
-  flexDirection: 'column',
-}));
-
-const StyledMessage = styled(Box)(({ theme, isBot }) => ({
-  padding: theme.spacing(1),
-  borderRadius: theme.spacing(1),
-  marginBottom: theme.spacing(1),
-  maxWidth: '80%',
-  marginLeft: isBot ? '0' : 'auto',
-  marginRight: isBot ? 'auto' : '0',
-  backgroundColor: isBot ? '#f0f0f0' : '#e2f0ff',
-  textAlign: isBot ? 'left' : 'right',
-  wordBreak: 'break-word',
-}));
-
-const StyledFooter = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(2),
-  borderTop: '1px solid #ccc',
-  display: 'flex',
-}));
-
-const StyledTextField = styled(TextField)(({ theme }) => ({
-  flexGrow: 1,
-  marginRight: theme.spacing(1),
-}));
 
 const categorizeQuery = (query) => {
   // Convertir la consulta a minúsculas para hacer la comparación insensible a mayúsculas
@@ -195,7 +133,10 @@ const ChatBot = () => {
 
       // Construir el prompt para OpenAI
       const prompt = `Eres un asistente virtual del Sindicato de Profesionales de la Salud - ProSalud.
-        Tu objetivo es ayudar a los afiliados respondiendo preguntas sobre ProSalud, sus servicios y beneficios.
+        
+        IMPORTANTE: ProSalud es un sindicato, NO un empleador. Los usuarios son afiliados al sindicato, NO empleados de ProSalud. Nunca menciones relaciones laborales entre ProSalud y los afiliados, ya que esto es contradictorio al contrato sindical y puede causar problemas legales.
+        
+        Tu objetivo es ayudar a los afiliados respondiendo preguntas sobre ProSalud, sus servicios y beneficios como sindicato.
         Utiliza el siguiente contexto para responder la pregunta del usuario:
         
         ${contextText}
@@ -233,45 +174,54 @@ const ChatBot = () => {
 
   return (
     <>
-      <IconButton
+      <Button
         onClick={toggleChat}
-        style={{
-          position: 'fixed',
-          bottom: '20px',
-          right: '20px',
-          backgroundColor: '#007BFF',
-          color: 'white',
-          zIndex: 1000,
-        }}
+        className="fixed bottom-5 right-5 z-[1000] bg-blue-600 hover:bg-blue-700 text-white rounded-full p-3 shadow-lg"
+        size="icon"
       >
-        {isOpen ? <CloseIcon /> : <HeadsetMicIcon />}
-      </IconButton>
+        {isOpen ? <X className="h-6 w-6" /> : <HeadsetHelpingHand className="h-6 w-6" />}
+      </Button>
 
       {isOpen && (
-        <StyledChatBox>
-          <StyledHeader>
+        <Card className="fixed bottom-5 right-5 w-[350px] h-[500px] z-[1000] flex flex-col border border-gray-300 rounded-lg bg-white shadow-lg font-sans">
+          <div className="bg-blue-600 text-white p-4 text-center font-bold rounded-t-lg flex justify-between items-center">
             <span>Chat de Ayuda ProSalud</span>
-            <IconButton onClick={toggleChat} style={{ color: 'white' }}>
-              <CloseIcon />
-            </IconButton>
-          </StyledHeader>
-          <StyledChatMessages ref={chatMessagesRef}>
+            <Button
+              onClick={toggleChat}
+              variant="ghost"
+              size="icon"
+              className="text-white hover:bg-blue-700"
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
+          
+          <div 
+            ref={chatMessagesRef}
+            className="flex-1 p-4 overflow-y-auto flex flex-col space-y-2"
+          >
             {messages.map((message, index) => (
-              <StyledMessage key={index} isBot={message.isBot}>
+              <div
+                key={index}
+                className={`p-2 rounded-lg max-w-[80%] break-words ${
+                  message.isBot
+                    ? 'bg-gray-100 text-left mr-auto'
+                    : 'bg-blue-100 text-right ml-auto'
+                }`}
+              >
                 {message.text}
-              </StyledMessage>
+              </div>
             ))}
             {isLoading && (
-              <StyledMessage isBot={true}>
-                <CircularProgress size={20} />
-              </StyledMessage>
+              <div className="bg-gray-100 text-left mr-auto p-2 rounded-lg max-w-[80%]">
+                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600"></div>
+              </div>
             )}
-          </StyledChatMessages>
-          <StyledFooter>
-            <StyledTextField
-              label="Escribe tu mensaje..."
-              variant="outlined"
-              size="small"
+          </div>
+          
+          <div className="p-4 border-t border-gray-300 flex space-x-2">
+            <Input
+              placeholder="Escribe tu mensaje..."
               value={inputValue}
               onChange={handleInputChange}
               onKeyPress={(event) => {
@@ -279,18 +229,17 @@ const ChatBot = () => {
                   handleSendMessage();
                 }
               }}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton onClick={handleSendMessage} color="primary">
-                      <SendIcon />
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
+              className="flex-1"
             />
-          </StyledFooter>
-        </StyledChatBox>
+            <Button 
+              onClick={handleSendMessage}
+              size="icon"
+              className="bg-blue-600 hover:bg-blue-700"
+            >
+              <Send className="h-4 w-4" />
+            </Button>
+          </div>
+        </Card>
       )}
     </>
   );
