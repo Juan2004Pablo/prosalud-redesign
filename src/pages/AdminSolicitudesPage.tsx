@@ -1,9 +1,11 @@
+
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   FileText, Search, Filter, Download, Eye, Clock,
   Users, CheckCircle, AlertCircle, XCircle, Calendar,
-  TrendingUp, MoreHorizontal, User
+  TrendingUp, MoreHorizontal, User, Edit, Trash2,
+  MapPin, Phone, Mail, Copy
 } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -13,7 +15,10 @@ import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Separator } from '@/components/ui/separator';
 import AdminLayout from '@/components/admin/AdminLayout';
+import DataPagination from '@/components/ui/data-pagination';
+import { usePagination } from '@/hooks/usePagination';
 import { mockRequests, mockRequestStats, requestTypeLabels, statusLabels, statusColors } from '@/data/requestsMock';
 import { Request, RequestFilters } from '@/types/requests';
 
@@ -35,6 +40,19 @@ const AdminSolicitudesPage: React.FC = () => {
       );
     }
     return true;
+  });
+
+  const {
+    currentPage,
+    itemsPerPage,
+    totalPages,
+    totalItems,
+    paginatedData: paginatedRequests,
+    goToPage,
+    setItemsPerPage
+  } = usePagination({
+    data: filteredRequests,
+    initialItemsPerPage: 10
   });
 
   // ... keep existing code (containerVariants, itemVariants, formatDate, getStatusIcon)
@@ -82,6 +100,10 @@ const AdminSolicitudesPage: React.FC = () => {
   const handleStatusUpdate = (requestId: string, newStatus: string) => {
     console.log(`Actualizando solicitud ${requestId} a estado: ${newStatus}`);
     // Aquí se haría la llamada al API en el futuro
+  };
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
   };
 
   return (
@@ -232,7 +254,7 @@ const AdminSolicitudesPage: React.FC = () => {
           <motion.div variants={itemVariants}>
             <Card>
               <CardHeader>
-                <CardTitle>Solicitudes ({filteredRequests.length})</CardTitle>
+                <CardTitle>Solicitudes ({totalItems})</CardTitle>
                 <CardDescription>
                   Lista completa de solicitudes realizadas por los afiliados
                 </CardDescription>
@@ -250,7 +272,7 @@ const AdminSolicitudesPage: React.FC = () => {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {filteredRequests.map((request) => (
+                      {paginatedRequests.map((request) => (
                         <TableRow key={request.id} className="hover:bg-gray-50">
                           <TableCell>
                             <div className="flex items-center gap-3">
@@ -298,49 +320,181 @@ const AdminSolicitudesPage: React.FC = () => {
                                     <Eye className="h-4 w-4" />
                                   </Button>
                                 </DialogTrigger>
-                                <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
-                                  <DialogHeader>
-                                    <DialogTitle>Detalles de la Solicitud</DialogTitle>
+                                <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                                  <DialogHeader className="space-y-3">
+                                    <div className="flex items-center justify-between">
+                                      <DialogTitle className="text-xl font-bold">
+                                        Detalles de la Solicitud
+                                      </DialogTitle>
+                                      <Badge className={`${statusColors[selectedRequest?.status || 'pending']} flex items-center gap-1`}>
+                                        {selectedRequest && getStatusIcon(selectedRequest.status)}
+                                        {selectedRequest && statusLabels[selectedRequest.status]}
+                                      </Badge>
+                                    </div>
+                                    <Separator />
                                   </DialogHeader>
                                   {selectedRequest && (
                                     <div className="space-y-6">
-                                      <div className="grid grid-cols-2 gap-4">
-                                        <div>
-                                          <h4 className="font-semibold text-sm text-gray-600">Información Personal</h4>
-                                          <div className="mt-2 space-y-2">
-                                            <p><span className="font-medium">Nombre:</span> {selectedRequest.name} {selectedRequest.last_name}</p>
-                                            <p><span className="font-medium">Documento:</span> {selectedRequest.id_type} {selectedRequest.id_number}</p>
-                                            <p><span className="font-medium">Email:</span> {selectedRequest.email}</p>
-                                            <p><span className="font-medium">Teléfono:</span> {selectedRequest.phone_number}</p>
-                                          </div>
-                                        </div>
-                                        <div>
-                                          <h4 className="font-semibold text-sm text-gray-600">Estado de la Solicitud</h4>
-                                          <div className="mt-2 space-y-2">
-                                            <div className="flex items-center gap-2">
-                                              <Badge className={statusColors[selectedRequest.status]}>
-                                                {statusLabels[selectedRequest.status]}
-                                              </Badge>
+                                      {/* Personal Information Section */}
+                                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                        <Card>
+                                          <CardHeader className="pb-3">
+                                            <CardTitle className="text-lg flex items-center gap-2">
+                                              <User className="h-5 w-5" />
+                                              Información Personal
+                                            </CardTitle>
+                                          </CardHeader>
+                                          <CardContent className="space-y-4">
+                                            <div className="grid grid-cols-2 gap-4">
+                                              <div>
+                                                <label className="text-sm font-medium text-gray-600">Nombre Completo</label>
+                                                <div className="flex items-center gap-2 mt-1">
+                                                  <p className="text-sm">{selectedRequest.name} {selectedRequest.last_name}</p>
+                                                  <Button
+                                                    variant="ghost"
+                                                    size="sm"
+                                                    onClick={() => copyToClipboard(`${selectedRequest.name} ${selectedRequest.last_name}`)}
+                                                    className="h-6 w-6 p-0"
+                                                  >
+                                                    <Copy className="h-3 w-3" />
+                                                  </Button>
+                                                </div>
+                                              </div>
+                                              <div>
+                                                <label className="text-sm font-medium text-gray-600">Documento</label>
+                                                <div className="flex items-center gap-2 mt-1">
+                                                  <p className="text-sm">{selectedRequest.id_type} {selectedRequest.id_number}</p>
+                                                  <Button
+                                                    variant="ghost"
+                                                    size="sm"
+                                                    onClick={() => copyToClipboard(selectedRequest.id_number)}
+                                                    className="h-6 w-6 p-0"
+                                                  >
+                                                    <Copy className="h-3 w-3" />
+                                                  </Button>
+                                                </div>
+                                              </div>
                                             </div>
-                                            <p><span className="font-medium">Tipo:</span> {requestTypeLabels[selectedRequest.request_type]}</p>
-                                            <p><span className="font-medium">Creada:</span> {formatDate(selectedRequest.created_at)}</p>
-                                            {selectedRequest.processed_at && (
-                                              <p><span className="font-medium">Procesada:</span> {formatDate(selectedRequest.processed_at)}</p>
-                                            )}
-                                            {selectedRequest.resolved_at && (
-                                              <p><span className="font-medium">Resuelta:</span> {formatDate(selectedRequest.resolved_at)}</p>
-                                            )}
-                                          </div>
-                                        </div>
+                                            <div className="space-y-3">
+                                              <div className="flex items-center gap-3">
+                                                <Mail className="h-4 w-4 text-gray-500" />
+                                                <span className="text-sm">{selectedRequest.email}</span>
+                                                <Button
+                                                  variant="ghost"
+                                                  size="sm"
+                                                  onClick={() => copyToClipboard(selectedRequest.email)}
+                                                  className="h-6 w-6 p-0"
+                                                >
+                                                  <Copy className="h-3 w-3" />
+                                                </Button>
+                                              </div>
+                                              <div className="flex items-center gap-3">
+                                                <Phone className="h-4 w-4 text-gray-500" />
+                                                <span className="text-sm">{selectedRequest.phone_number}</span>
+                                                <Button
+                                                  variant="ghost"
+                                                  size="sm"
+                                                  onClick={() => copyToClipboard(selectedRequest.phone_number)}
+                                                  className="h-6 w-6 p-0"
+                                                >
+                                                  <Copy className="h-3 w-3" />
+                                                </Button>
+                                              </div>
+                                            </div>
+                                          </CardContent>
+                                        </Card>
+
+                                        <Card>
+                                          <CardHeader className="pb-3">
+                                            <CardTitle className="text-lg flex items-center gap-2">
+                                              <Calendar className="h-5 w-5" />
+                                              Estado de la Solicitud
+                                            </CardTitle>
+                                          </CardHeader>
+                                          <CardContent className="space-y-4">
+                                            <div>
+                                              <label className="text-sm font-medium text-gray-600">Tipo de Solicitud</label>
+                                              <p className="text-sm mt-1 font-medium">{requestTypeLabels[selectedRequest.request_type]}</p>
+                                            </div>
+                                            <div>
+                                              <label className="text-sm font-medium text-gray-600">ID de Solicitud</label>
+                                              <div className="flex items-center gap-2 mt-1">
+                                                <p className="text-sm font-mono bg-gray-100 px-2 py-1 rounded">{selectedRequest.id}</p>
+                                                <Button
+                                                  variant="ghost"
+                                                  size="sm"
+                                                  onClick={() => copyToClipboard(selectedRequest.id)}
+                                                  className="h-6 w-6 p-0"
+                                                >
+                                                  <Copy className="h-3 w-3" />
+                                                </Button>
+                                              </div>
+                                            </div>
+                                            <div className="grid grid-cols-1 gap-3">
+                                              <div>
+                                                <label className="text-sm font-medium text-gray-600">Fecha de Creación</label>
+                                                <p className="text-sm mt-1">{formatDate(selectedRequest.created_at)}</p>
+                                              </div>
+                                              {selectedRequest.processed_at && (
+                                                <div>
+                                                  <label className="text-sm font-medium text-gray-600">Fecha de Procesamiento</label>
+                                                  <p className="text-sm mt-1">{formatDate(selectedRequest.processed_at)}</p>
+                                                </div>
+                                              )}
+                                              {selectedRequest.resolved_at && (
+                                                <div>
+                                                  <label className="text-sm font-medium text-gray-600">Fecha de Resolución</label>
+                                                  <p className="text-sm mt-1 text-green-600">{formatDate(selectedRequest.resolved_at)}</p>
+                                                </div>
+                                              )}
+                                            </div>
+                                          </CardContent>
+                                        </Card>
                                       </div>
                                       
-                                      <div>
-                                        <h4 className="font-semibold text-sm text-gray-600 mb-3">Detalles Específicos</h4>
-                                        <div className="bg-gray-50 p-4 rounded-lg">
-                                          <pre className="text-sm whitespace-pre-wrap">
-                                            {JSON.stringify(selectedRequest.payload, null, 2)}
-                                          </pre>
-                                        </div>
+                                      {/* Request Details Section */}
+                                      <Card>
+                                        <CardHeader>
+                                          <CardTitle className="text-lg flex items-center gap-2">
+                                            <FileText className="h-5 w-5" />
+                                            Detalles Específicos de la Solicitud
+                                          </CardTitle>
+                                        </CardHeader>
+                                        <CardContent>
+                                          <div className="bg-gray-50 p-4 rounded-lg border">
+                                            <pre className="text-sm whitespace-pre-wrap overflow-x-auto">
+                                              {JSON.stringify(selectedRequest.payload, null, 2)}
+                                            </pre>
+                                          </div>
+                                        </CardContent>
+                                      </Card>
+
+                                      {/* Action Buttons */}
+                                      <div className="flex flex-wrap gap-3 pt-4 border-t">
+                                        <Button
+                                          onClick={() => handleStatusUpdate(selectedRequest.id, 'in_progress')}
+                                          className="bg-blue-600 hover:bg-blue-700"
+                                          disabled={selectedRequest.status === 'in_progress'}
+                                        >
+                                          <Edit className="h-4 w-4 mr-2" />
+                                          Marcar en Proceso
+                                        </Button>
+                                        <Button
+                                          onClick={() => handleStatusUpdate(selectedRequest.id, 'resolved')}
+                                          className="bg-green-600 hover:bg-green-700"
+                                          disabled={selectedRequest.status === 'resolved'}
+                                        >
+                                          <CheckCircle className="h-4 w-4 mr-2" />
+                                          Marcar como Resuelto
+                                        </Button>
+                                        <Button
+                                          onClick={() => handleStatusUpdate(selectedRequest.id, 'rejected')}
+                                          variant="destructive"
+                                          disabled={selectedRequest.status === 'rejected'}
+                                        >
+                                          <XCircle className="h-4 w-4 mr-2" />
+                                          Rechazar
+                                        </Button>
                                       </div>
                                     </div>
                                   )}
@@ -372,6 +526,17 @@ const AdminSolicitudesPage: React.FC = () => {
                     </TableBody>
                   </Table>
                 </div>
+
+                {/* Pagination */}
+                <DataPagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  totalItems={totalItems}
+                  itemsPerPage={itemsPerPage}
+                  onPageChange={goToPage}
+                  onItemsPerPageChange={setItemsPerPage}
+                  className="mt-4"
+                />
               </CardContent>
             </Card>
           </motion.div>
