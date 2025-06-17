@@ -1,10 +1,11 @@
+
 "use client"
 
 import type React from "react"
 import { useState, useMemo, useEffect } from "react"
 import MainLayout from "@/components/layout/MainLayout"
 import EventCard from "@/components/galeria-bienestar/EventCard"
-import { mockEvents } from "@/data/eventosMock" // Usaremos datos mock por ahora
+import { mockEvents } from "@/data/eventosMock"
 import { Link } from "react-router-dom"
 import {
   Breadcrumb,
@@ -15,104 +16,55 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import { Image, GalleryVertical, Home, ArrowDownUp, FilterIcon } from "lucide-react"
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Label } from "@/components/ui/label"
-
-const ITEMS_PER_PAGE = 12 // Mostrar 12 eventos por página
+import DataPagination from "@/components/ui/data-pagination"
+import { usePagination } from "@/hooks/usePagination"
 
 const GaleriaBienestarPage: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState(1)
   const [sortOrder, setSortOrder] = useState<"date-desc" | "date-asc">("date-desc")
   const [filterCategory, setFilterCategory] = useState<string>("all")
 
   const uniqueCategories = useMemo(() => {
     const categories = new Set(mockEvents.map((event) => event.category).filter(Boolean) as string[])
-    // Ordenar categorías alfabéticamente para el selector
     return ["all", ...Array.from(categories).sort((a, b) => a.localeCompare(b))]
   }, [])
 
   const processedEvents = useMemo(() => {
-    // Crear una copia profunda del array original para evitar mutaciones
     let events = mockEvents.map((event) => ({ ...event }))
 
-    // Filtrar por categoría
     if (filterCategory !== "all") {
       events = events.filter((event) => event.category === filterCategory)
     }
 
-    // Ordenar - siempre crear una nueva instancia del array
     if (sortOrder === "date-desc") {
       events.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     } else if (sortOrder === "date-asc") {
       events.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
     }
 
-    // Agregar un identificador único que incluya el orden para forzar re-renderización
     return events.map((event, index) => ({
       ...event,
       _sortKey: `${sortOrder}-${filterCategory}-${index}`,
     }))
   }, [sortOrder, filterCategory])
 
+  const {
+    currentPage,
+    itemsPerPage,
+    totalPages,
+    totalItems,
+    paginatedData: eventsToDisplay,
+    goToPage,
+    setItemsPerPage
+  } = usePagination({
+    data: processedEvents,
+    initialItemsPerPage: 12
+  });
+
   useEffect(() => {
-    setCurrentPage(1) // Resetear a la primera página cuando cambia el orden o filtro
     window.scrollTo(0, 0)
-  }, [sortOrder, filterCategory])
-
-  const totalPages = Math.ceil(processedEvents.length / ITEMS_PER_PAGE)
-
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
-  const endIndex = startIndex + ITEMS_PER_PAGE
-  const eventsToDisplay = processedEvents.slice(startIndex, endIndex)
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page)
-    window.scrollTo(0, 0) // Scroll al inicio de la página al cambiar de página
-  }
-
-  const getPageNumbers = () => {
-    const pageNumbers = []
-    const maxPagesToShow = 5 // Máximo de números de página directos a mostrar
-    const halfPagesToShow = Math.floor(maxPagesToShow / 2)
-
-    if (totalPages <= maxPagesToShow) {
-      for (let i = 1; i <= totalPages; i++) {
-        pageNumbers.push(i)
-      }
-    } else {
-      if (currentPage <= halfPagesToShow + 1) {
-        for (let i = 1; i <= maxPagesToShow - 1; i++) {
-          pageNumbers.push(i)
-        }
-        pageNumbers.push("ellipsis-end")
-        pageNumbers.push(totalPages)
-      } else if (currentPage >= totalPages - halfPagesToShow) {
-        pageNumbers.push(1)
-        pageNumbers.push("ellipsis-start")
-        for (let i = totalPages - maxPagesToShow + 2; i <= totalPages; i++) {
-          pageNumbers.push(i)
-        }
-      } else {
-        pageNumbers.push(1)
-        pageNumbers.push("ellipsis-start")
-        for (let i = currentPage - halfPagesToShow + 1; i <= currentPage + halfPagesToShow - 1; i++) {
-          pageNumbers.push(i)
-        }
-        pageNumbers.push("ellipsis-end")
-        pageNumbers.push(totalPages)
-      }
-    }
-    return pageNumbers
-  }
+  }, [currentPage, sortOrder, filterCategory])
 
   return (
     <MainLayout>
@@ -153,7 +105,6 @@ const GaleriaBienestarPage: React.FC = () => {
           </p>
         </div>
 
-        {/* Controles de Ordenamiento y Filtrado */}
         <div className="flex flex-col sm:flex-row gap-4 mb-8 justify-center sm:justify-start items-center">
           <div className="flex flex-col items-start gap-1.5 w-full sm:w-auto">
             <Label htmlFor="sort-order" className="text-sm font-medium text-muted-foreground flex items-center">
@@ -203,52 +154,15 @@ const GaleriaBienestarPage: React.FC = () => {
           </div>
         )}
 
-        {totalPages > 1 && (
-          <Pagination className="mt-12">
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault()
-                    if (currentPage > 1) handlePageChange(currentPage - 1)
-                  }}
-                  className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
-                />
-              </PaginationItem>
-
-              {getPageNumbers().map((page, index) => (
-                <PaginationItem key={index}>
-                  {typeof page === "number" ? (
-                    <PaginationLink
-                      href="#"
-                      onClick={(e) => {
-                        e.preventDefault()
-                        handlePageChange(page)
-                      }}
-                      isActive={currentPage === page}
-                    >
-                      {page}
-                    </PaginationLink>
-                  ) : (
-                    <PaginationEllipsis />
-                  )}
-                </PaginationItem>
-              ))}
-
-              <PaginationItem>
-                <PaginationNext
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault()
-                    if (currentPage < totalPages) handlePageChange(currentPage + 1)
-                  }}
-                  className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
-                />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
-        )}
+        <DataPagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          totalItems={totalItems}
+          itemsPerPage={itemsPerPage}
+          onPageChange={goToPage}
+          onItemsPerPageChange={setItemsPerPage}
+          className="mt-12"
+        />
       </div>
     </MainLayout>
   )

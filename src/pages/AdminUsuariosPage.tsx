@@ -12,6 +12,8 @@ import { Badge } from '@/components/ui/badge';
 import AdminLayout from '@/components/admin/AdminLayout';
 import UserForm from '@/components/admin/usuarios/UserForm';
 import UserAvatar from '@/components/admin/UserAvatar';
+import DataPagination from '@/components/ui/data-pagination';
+import { usePagination } from '@/hooks/usePagination';
 import { usersApi } from '@/services/adminApi';
 import { User } from '@/types/admin';
 
@@ -21,30 +23,51 @@ const AdminUsuariosPage: React.FC = () => {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
 
-  // Check if we should open the create form based on URL params
   useEffect(() => {
     if (searchParams.get('action') === 'create') {
       setShowForm(true);
       setSelectedUser(null);
-      // Remove the action param after opening the form
       setSearchParams({});
     }
   }, [searchParams, setSearchParams]);
 
   const { data: usersResponse, isLoading, error } = useQuery({
-    queryKey: ['users', currentPage, searchTerm, statusFilter],
+    queryKey: ['users', searchTerm, statusFilter],
     queryFn: () => {
       const status = statusFilter === 'all' ? undefined : statusFilter;
-      return usersApi.getUsers(currentPage, itemsPerPage, searchTerm, status);
+      return usersApi.getUsers(1, 1000, searchTerm, status); // Get all users for client-side pagination
     }
   });
 
-  // Extract users array from the paginated response
   const users = usersResponse?.data || [];
-  const totalPages = usersResponse?.totalPages || 1;
+  
+  // Filter users based on search and status
+  const filteredUsers = users.filter(user => {
+    const matchesSearch = !searchTerm || 
+      user.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.email.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    const matchesStatus = statusFilter === 'all' || 
+      (statusFilter === 'active' && user.isActive) ||
+      (statusFilter === 'inactive' && !user.isActive);
+    
+    return matchesSearch && matchesStatus;
+  });
+
+  const {
+    currentPage,
+    itemsPerPage,
+    totalPages,
+    totalItems,
+    paginatedData: paginatedUsers,
+    goToPage,
+    setItemsPerPage
+  } = usePagination({
+    data: filteredUsers,
+    initialItemsPerPage: 10
+  });
 
   const handleCreate = () => {
     setSelectedUser(null);
@@ -136,7 +159,7 @@ const AdminUsuariosPage: React.FC = () => {
           {/* Users List */}
           <Card className="bg-white border shadow-sm">
             <CardHeader>
-              <CardTitle>Usuarios ({usersResponse?.total || 0})</CardTitle>
+              <CardTitle>Usuarios ({totalItems})</CardTitle>
               <CardDescription>
                 Lista de todos los usuarios registrados en el sistema
               </CardDescription>
@@ -152,7 +175,7 @@ const AdminUsuariosPage: React.FC = () => {
                 </div>
               ) : (
                 <div className="space-y-4">
-                  {users.map((user) => (
+                  {paginatedUsers.map((user) => (
                     <div key={user.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 border rounded-lg hover:bg-slate-50 transition-colors gap-4">
                       <div className="flex items-center gap-3 flex-1">
                         <UserAvatar
@@ -196,33 +219,18 @@ const AdminUsuariosPage: React.FC = () => {
                   ))}
                 </div>
               )}
+
+              <DataPagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                totalItems={totalItems}
+                itemsPerPage={itemsPerPage}
+                onPageChange={goToPage}
+                onItemsPerPageChange={setItemsPerPage}
+                className="mt-6"
+              />
             </CardContent>
           </Card>
-
-          {/* Pagination */}
-          {totalPages > 1 && (
-            <div className="flex flex-col sm:flex-row justify-center items-center gap-2">
-              <Button
-                variant="outline"
-                disabled={currentPage === 1}
-                onClick={() => setCurrentPage(currentPage - 1)}
-                className="w-full sm:w-auto"
-              >
-                Anterior
-              </Button>
-              <span className="flex items-center px-4 py-2 text-sm">
-                Página {currentPage} de {totalPages}
-              </span>
-              <Button
-                variant="outline"
-                disabled={currentPage === totalPages}
-                onClick={() => setCurrentPage(currentPage + 1)}
-                className="w-full sm:w-auto"
-              >
-                Siguiente
-              </Button>
-            </div>
-          )}
         </motion.div>
       </div>
     </AdminLayout>

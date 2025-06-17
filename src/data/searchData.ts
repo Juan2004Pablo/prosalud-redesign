@@ -1,4 +1,3 @@
-
 export interface SearchItem {
   id: string;
   title: string;
@@ -185,4 +184,43 @@ export const searchData: SearchItem[] = [
     category: "Principal",
     keywords: ["comfenalco", "servicios", "experiencias", "bienestar", "beneficios", "caja", "antioquia", "compensacion"]
   },
+  // Información EPS Sura
+  {
+    id: 'eps-sura',
+    title: 'EPS Sura - Gestión y Trámites',
+    description: 'Información completa sobre trámites y procedimientos con EPS Sura: traslados, cambio de IPS, retiro de beneficiarios, UPC adicional, certificados e incapacidades.',
+    category: 'Información',
+    keywords: ['eps', 'sura', 'traslado', 'ips', 'beneficiarios', 'upc', 'certificados', 'incapacidades', 'afiliación', 'retiro'],
+    url: '/eps-sura',
+    content: `
+      Gestión EPS Sura - Información y procedimientos completos
+      
+      TRASLADO DE EPS A EPS SURA
+      - Enviar información al WhatsApp 3002799230
+      - Documentos: copia cédula, dirección, celular, email
+      - Información de beneficiarios y tratamientos en curso
+      
+      CAMBIO DE IPS
+      - Portal www.epssura.com.co
+      - Servicios a un clic → Iniciar sesión
+      - Solicitudes y autorizaciones → Cambio de IPS
+      
+      RETIRO DE BENEFICIARIOS
+      - Proceso en línea con firma digital
+      - Envío a ceretirobenepssura@suramericana.com.co
+      - Documentos adicionales solo para divorcios
+      
+      PROCESO UPC ADICIONAL
+      - Consultar valores según edad
+      - Contacto ARUS: 6042727 / WhatsApp: 3158024685
+      - Pago y solicitud de turno virtual
+      
+      SERVICIOS EN LÍNEA
+      - Transcripción de incapacidades
+      - Descarga de certificados
+      - Actualización de documentos de identidad
+      
+      Todos los servicios requieren registro en www.epssura.com.co
+    `
+  }
 ];

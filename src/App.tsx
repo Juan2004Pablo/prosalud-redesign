@@ -17,6 +17,7 @@ import NotFound from '@/pages/NotFound';
 import GaleriaBienestarPage from '@/pages/GaleriaBienestarPage';
 import EstatutosBeneficiosPage from '@/pages/EstatutosBeneficiosPage';
 import ContratoSindicalPage from '@/pages/ContratoSindicalPage';
+import EpsSuraPage from '@/pages/EpsSuraPage';
 
 // Service Pages
 import SolicitudCertificadoConvenioPage from '@/pages/SolicitudCertificadoConvenioPage';
@@ -60,6 +61,7 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/bienestar" element={<GaleriaBienestarPage />} />
+          <Route path="/eps-sura" element={<EpsSuraPage />} />
           
           {/* Service Routes */}
           <Route path="/servicios/certificado-convenio" element={<SolicitudCertificadoConvenioPage />} />

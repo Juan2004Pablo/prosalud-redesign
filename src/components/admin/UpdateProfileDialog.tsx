@@ -49,13 +49,17 @@ const UpdateProfileDialog: React.FC<UpdateProfileDialogProps> = ({
       const { data: { user } } = await supabase.auth.getUser();
       
       if (user) {
+        console.log('Usuario cargado:', user);
+        console.log('Metadata del usuario:', user.user_metadata);
+        
         setProfile({
-          firstName: user.user_metadata?.firstName || '',
-          lastName: user.user_metadata?.lastName || '',
+          firstName: user.user_metadata?.firstName || user.user_metadata?.first_name || '',
+          lastName: user.user_metadata?.lastName || user.user_metadata?.last_name || '',
           email: user.email || ''
         });
       }
     } catch (error) {
+      console.error('Error cargando perfil:', error);
       toast({
         title: "Error",
         description: "No se pudo cargar el perfil del usuario",
@@ -81,21 +85,27 @@ const UpdateProfileDialog: React.FC<UpdateProfileDialogProps> = ({
     setIsLoading(true);
 
     try {
+      console.log('Actualizando perfil con:', profile);
+      
       const { error } = await supabase.auth.updateUser({
         email: profile.email,
         data: {
           firstName: profile.firstName.trim(),
-          lastName: profile.lastName.trim()
+          lastName: profile.lastName.trim(),
+          first_name: profile.firstName.trim(),
+          last_name: profile.lastName.trim()
         }
       });
 
       if (error) {
+        console.error('Error actualizando perfil:', error);
         toast({
           title: "Error",
           description: error.message,
           variant: "destructive"
         });
       } else {
+        console.log('Perfil actualizado correctamente');
         toast({
           title: "¡Éxito!",
           description: "Perfil actualizado correctamente",
@@ -105,6 +115,7 @@ const UpdateProfileDialog: React.FC<UpdateProfileDialogProps> = ({
         onOpenChange(false);
       }
     } catch (error) {
+      console.error('Error inesperado:', error);
       toast({
         title: "Error",
         description: "Ocurrió un error inesperado",
