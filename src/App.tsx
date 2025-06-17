@@ -38,6 +38,7 @@ import AdminBienestarPage from '@/pages/AdminBienestarPage';
 import AdminComfenalcoPage from '@/pages/AdminComfenalcoPage';
 import AdminConveniosPage from '@/pages/AdminConveniosPage';
 import AdminConfiguracionPage from '@/pages/AdminConfiguracionPage';
+import AdminSolicitudesPage from '@/pages/AdminSolicitudesPage';
 import ProtectedRoute from '@/components/admin/ProtectedRoute';
 
 const queryClient = new QueryClient();
@@ -81,6 +82,7 @@ function App() {
           <Route path="/admin/comfenalco" element={<ProtectedRoute><AdminComfenalcoPage /></ProtectedRoute>} />
           <Route path="/admin/convenios" element={<ProtectedRoute><AdminConveniosPage /></ProtectedRoute>} />
           <Route path="/admin/configuracion" element={<ProtectedRoute><AdminConfiguracionPage /></ProtectedRoute>} />
+          <Route path="/admin/solicitudes" element={<ProtectedRoute><AdminSolicitudesPage /></ProtectedRoute>} />
           
           {/* 404 Route */}
           <Route path="*" element={<NotFound />} />
