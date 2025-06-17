@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
@@ -37,6 +36,8 @@ const AdminSolicitudesPage: React.FC = () => {
     }
     return true;
   });
+
+  // ... keep existing code (containerVariants, itemVariants, formatDate, getStatusIcon)
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -190,12 +191,12 @@ const AdminSolicitudesPage: React.FC = () => {
                     />
                   </div>
                   
-                  <Select value={filters.status} onValueChange={(value) => setFilters({...filters, status: value})}>
+                  <Select value={filters.status || "all"} onValueChange={(value) => setFilters({...filters, status: value === "all" ? undefined : value})}>
                     <SelectTrigger>
                       <SelectValue placeholder="Estado" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Todos los estados</SelectItem>
+                      <SelectItem value="all">Todos los estados</SelectItem>
                       <SelectItem value="pending">Pendiente</SelectItem>
                       <SelectItem value="in_progress">En Proceso</SelectItem>
                       <SelectItem value="resolved">Resuelto</SelectItem>
@@ -203,12 +204,12 @@ const AdminSolicitudesPage: React.FC = () => {
                     </SelectContent>
                   </Select>
 
-                  <Select value={filters.request_type} onValueChange={(value) => setFilters({...filters, request_type: value})}>
+                  <Select value={filters.request_type || "all"} onValueChange={(value) => setFilters({...filters, request_type: value === "all" ? undefined : value})}>
                     <SelectTrigger>
                       <SelectValue placeholder="Tipo de Solicitud" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Todos los tipos</SelectItem>
+                      <SelectItem value="all">Todos los tipos</SelectItem>
                       {Object.entries(requestTypeLabels).map(([key, label]) => (
                         <SelectItem key={key} value={key}>{label}</SelectItem>
                       ))}
