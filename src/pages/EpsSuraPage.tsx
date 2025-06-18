@@ -95,7 +95,6 @@ const EpsSuraPage: React.FC = () => {
               <div className="grid lg:grid-cols-2 gap-8">
                 <div className="space-y-4">
                   <h3 className="font-semibold text-gray-900 text-lg flex items-center gap-2">
-                    <FileText className="h-5 w-5 text-primary-prosalud" />
                     Documentos Requeridos
                   </h3>
                   <div className="space-y-3">
@@ -115,7 +114,6 @@ const EpsSuraPage: React.FC = () => {
 
                 <div className="space-y-4">
                   <h3 className="font-semibold text-gray-900 text-lg flex items-center gap-2">
-                    <Info className="h-5 w-5 text-primary-prosalud" />
                     Información Adicional
                   </h3>
                   <div className="space-y-3">
