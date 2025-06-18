@@ -67,7 +67,7 @@ const EpsSuraPage: React.FC = () => {
                           variant="outline"
                           size="sm"
                           onClick={() => copyToClipboard("3002799230")}
-                          className="text-yellow-700 border-yellow-300 hover:bg-yellow-100"
+                          className="text-yellow-700 hover:text-yellow-700 border-yellow-300 hover:bg-yellow-100"
                         >
                           <Phone className="h-4 w-4 mr-1" />
                           3002799230
@@ -170,7 +170,7 @@ const EpsSuraPage: React.FC = () => {
                   <div className="mt-4">
                     <Button 
                       variant="outline" 
-                      className="text-green-700 border-green-300 hover:bg-green-50"
+                      className="text-green-700 hover:text-green-700 border-green-300 hover:bg-green-50"
                       onClick={() => window.open('https://portaleps.epssura.com/ServiciosUnClick/#/ips/cambioIps', '_blank')}
                     >
                       <ExternalLink className="h-4 w-4 mr-2" />
