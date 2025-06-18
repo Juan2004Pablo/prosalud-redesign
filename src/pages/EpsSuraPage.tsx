@@ -146,13 +146,41 @@ const EpsSuraPage: React.FC = () => {
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {/* Cambio de IPS */}
+              {/* Retiro de Beneficiarios */}
               <div className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden group">
                 <div className="h-2 bg-gradient-to-r from-primary-prosalud to-primary-prosalud-dark"></div>
                 <div className="p-6">
                   <div className="flex items-center gap-3 mb-4">
                     <div className="p-2 bg-primary-prosalud/10 rounded-lg">
-                      <UserCheck className="h-5 w-5 text-primary-prosalud" />
+                      <UserMinus className="h-5 w-5 text-primary-prosalud" />
+                    </div>
+                    <h3 className="font-semibold text-gray-900">Retiro de Beneficiarios</h3>
+                  </div>
+                  <p className="text-gray-600 text-sm mb-4">
+                    Proceso en línea con firma digital
+                  </p>
+                  <div className="text-xs text-gray-500 mb-4 p-3 bg-gray-50 rounded-lg">
+                    <Mail className="h-3 w-3 inline mr-1" />
+                    Enviar a: ceretirobenepssura@suramericana.com.co
+                  </div>
+                  <Button 
+                    variant="outline" 
+                    className="w-full group-hover:bg-orange-500 group-hover:text-white transition-colors"
+                    onClick={() => window.open('https://www.epssura.com', '_blank')}
+                  >
+                    <Globe className="h-4 w-4 mr-2" />
+                    Portal EPS Sura
+                  </Button>
+                </div>
+              </div>
+              
+              {/* Cambio de IPS */}
+              <div className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden group">
+                <div className="h-2 bg-gradient-to-r from-orange-500 to-red-500"></div>
+                <div className="p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="p-2 bg-orange-100 rounded-lg">
+                      <UserCheck className="h-5 w-5 text-orange-600" />
                     </div>
                     <h3 className="font-semibold text-gray-900">Cambio de IPS</h3>
                   </div>
@@ -170,41 +198,13 @@ const EpsSuraPage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Retiro de Beneficiarios */}
-              <div className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden group">
-                <div className="h-2 bg-gradient-to-r from-orange-500 to-red-500"></div>
-                <div className="p-6">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="p-2 bg-orange-100 rounded-lg">
-                      <UserMinus className="h-5 w-5 text-orange-600" />
-                    </div>
-                    <h3 className="font-semibold text-gray-900">Retiro de Beneficiarios</h3>
-                  </div>
-                  <p className="text-gray-600 text-sm mb-4">
-                    Proceso en línea con firma digital
-                  </p>
-                  <div className="text-xs text-gray-500 mb-4 p-3 bg-gray-50 rounded-lg">
-                    <Mail className="h-3 w-3 inline mr-1" />
-                    Enviar a: ceretirobenepssura@suramericana.com.co
-                  </div>
-                  <Button 
-                    variant="outline" 
-                    className="w-full group-hover:bg-orange-500 group-hover:text-white transition-colors"
-                    onClick={() => window.open('https://www.epssura.com.co', '_blank')}
-                  >
-                    <Globe className="h-4 w-4 mr-2" />
-                    Portal EPS Sura
-                  </Button>
-                </div>
-              </div>
-
               {/* UPC Adicional */}
               <div className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden group">
-                <div className="h-2 bg-gradient-to-r from-purple-500 to-purple-700"></div>
+                <div className="h-2 bg-gradient-to-r from-primary-prosalud to-primary-prosalud-dark"></div>
                 <div className="p-6">
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="p-2 bg-purple-100 rounded-lg">
-                      <CreditCard className="h-5 w-5 text-purple-600" />
+                    <div className="p-2 bg-primary-prosalud/10 rounded-lg">
+                      <CreditCard className="h-5 w-5 text-primary-prosalud" />
                     </div>
                     <h3 className="font-semibold text-gray-900">UPC Adicional</h3>
                   </div>
@@ -291,10 +291,10 @@ const EpsSuraPage: React.FC = () => {
                 <Button 
                   variant="outline" 
                   className="w-full"
-                  onClick={() => window.open('https://www.epssura.com.co', '_blank')}
+                  onClick={() => window.open('https://www.epssura.com', '_blank')}
                 >
                   <ExternalLink className="h-4 w-4 mr-2" />
-                  www.epssura.com.co
+                  www.epssura.com
                 </Button>
               </div>
               
