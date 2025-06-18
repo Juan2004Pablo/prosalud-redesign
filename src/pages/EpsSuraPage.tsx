@@ -242,19 +242,19 @@ const EpsSuraPage: React.FC = () => {
               {[
                 {
                   title: "Transcripción de Incapacidad",
-                  description: "Portal → INICIAR SESIÓN → SOLICITUDES Y AUTORIZACIONES → TRANSCRIBIR INCAPACIDAD",
+                  description: "PORTAL → INICIAR SESIÓN → SOLICITUDES Y AUTORIZACIONES → TRANSCRIBIR INCAPACIDAD",
                   icon: FileText,
                   color: "from-green-500 to-green-600"
                 },
                 {
                   title: "Certificados",
-                  description: "Portal → INICIAR SESIÓN → CERTIFICADOS Y CONSULTAS → Seleccionar certificado",
+                  description: "PORTAL → INICIAR SESIÓN → CERTIFICADOS Y CONSULTAS → SELECCIONAR CERTIFICADO",
                   icon: Building2,
                   color: "from-blue-500 to-blue-600"
                 },
                 {
                   title: "Actualización de Documentos",
-                  description: "Portal → INICIAR SESIÓN → SOLICITUDES Y AUTORIZACIONES → ACTUALIZACIÓN DE DOCUMENTO",
+                  description: "PORTAL → INICIAR SESIÓN → SOLICITUDES Y AUTORIZACIONES → ACTUALIZACIÓN DE DOCUMENTO",
                   icon: Clock,
                   color: "from-indigo-500 to-indigo-600"
                 }
@@ -268,7 +268,6 @@ const EpsSuraPage: React.FC = () => {
                       <h3 className="font-semibold text-gray-900 text-lg mb-2">{service.title}</h3>
                       <p className="text-gray-600 text-sm">{service.description}</p>
                     </div>
-                    <ArrowRight className="h-5 w-5 text-gray-400" />
                   </div>
                 </div>
               ))}
