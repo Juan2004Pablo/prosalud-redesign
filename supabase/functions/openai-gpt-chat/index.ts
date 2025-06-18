@@ -29,7 +29,30 @@ serve(async (req) => {
       });
     }
 
-    // Llama OpenAI
+    // Mejorar el sistema de instrucciones para ser más inclusivo
+    const enhancedMessages = messages.map((msg: any) => {
+      if (msg.role === 'system') {
+        return {
+          ...msg,
+          content: `${msg.content}
+
+INSTRUCCIONES IMPORTANTES PARA RESPONDER:
+- Eres el asistente oficial de ProSalud, el Sindicato de Profesionales de la Salud
+- Puedes responder sobre TODOS los temas que se mencionan en la documentación proporcionada
+- Esto incluye: servicios, trámites, EPS Sura, convenios, contacto, estructura organizacional, etc.
+- Si la información está en el contexto proporcionado, úsala para responder de manera completa y útil
+- NO rechaces preguntas solo porque no mencionen directamente "ProSalud"
+- Si la pregunta es sobre EPS Sura, certificados, incapacidades, turnos, etc., y tienes información en el contexto, responde con esa información
+- Mantén un tono profesional y útil
+- Si realmente no tienes información sobre el tema consultado, entonces indica que no puedes ayudar con eso
+
+RECUERDA: Tu función es ayudar con TODA la información disponible de ProSalud, no solo cuando se mencione explícitamente el nombre del sindicato.`
+        };
+      }
+      return msg;
+    });
+
+    // Llama OpenAI con las instrucciones mejoradas
     let openAIresp;
     try {
       openAIresp = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -40,8 +63,9 @@ serve(async (req) => {
         },
         body: JSON.stringify({
           model: 'gpt-4o-mini',
-          messages,
-          max_tokens: 300,
+          messages: enhancedMessages,
+          max_tokens: 400, // Aumentado para respuestas más completas
+          temperature: 0.7, // Poco de creatividad para respuestas más naturales
         }),
       });
     } catch (e) {
@@ -51,6 +75,7 @@ serve(async (req) => {
         { status: 502, headers: corsHeaders }
       );
     }
+    
     let rawText = await openAIresp.text();
     let data;
     try {
