@@ -1,3 +1,4 @@
+
 {
     "general": {
         "show-chatbot": true,
@@ -19,7 +20,8 @@
             "servicios/encuesta-bienestar.md",
             "servicios/galeria-bienestar.md",
             "servicios/incapacidades-licencias.md",
-            "servicios/overview.md"
+            "servicios/overview.md",
+            "informacion/eps-sura.md"
         ]
     },
     "payments": {
