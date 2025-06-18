@@ -165,7 +165,7 @@ const EpsSuraPage: React.FC = () => {
                   </div>
                   <Button 
                     variant="outline" 
-                    className="w-full group-hover:bg-orange-500 group-hover:text-white transition-colors"
+                    className="w-full group-hover:bg-primary-prosalud group-hover:text-white transition-colors"
                     onClick={() => window.open('https://www.epssura.com', '_blank')}
                   >
                     <Globe className="h-4 w-4 mr-2" />
@@ -189,7 +189,7 @@ const EpsSuraPage: React.FC = () => {
                   </p>
                   <Button 
                     variant="outline" 
-                    className="w-full group-hover:bg-primary-prosalud group-hover:text-white transition-colors"
+                    className="w-full group-hover:bg-orange-500 group-hover:text-white transition-colors"
                     onClick={() => window.open('https://portaleps.epssura.com/ServiciosUnClick/#/ips/cambioIps', '_blank')}
                   >
                     <ExternalLink className="h-4 w-4 mr-2" />
@@ -223,7 +223,7 @@ const EpsSuraPage: React.FC = () => {
                   </div>
                   <Button 
                     variant="outline" 
-                    className="w-full group-hover:bg-purple-600 group-hover:text-white transition-colors"
+                    className="w-full group-hover:bg-primary-prosalud group-hover:text-white transition-colors"
                     onClick={() => window.open('https://www.epssura.com/cuotas-moderadoras-copagos-valores-upc-y-tarifas', '_blank')}
                   >
                     <Globe className="h-4 w-4 mr-2" />
