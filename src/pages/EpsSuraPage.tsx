@@ -105,7 +105,7 @@ const EpsSuraPage: React.FC = () => {
                       "Número de celular",
                       "Correo electrónico personal"
                     ].map((item, index) => (
-                      <div key={index} className="flex items-start gap-3 p-1  rounded-lg">
+                      <div key={index} className="flex items-start gap-3 rounded-lg">
                         <CheckCircle className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
                         <span className="text-sm text-gray-700">{item}</span>
                       </div>
@@ -125,7 +125,7 @@ const EpsSuraPage: React.FC = () => {
                       "Tratamientos en curso (si aplica)",
                       "Nombre de la empresa donde labora"
                     ].map((item, index) => (
-                      <div key={index} className="flex items-start gap-3 p-1  rounded-lg">
+                      <div key={index} className="flex items-start gap-3 rounded-lg">
                         <CheckCircle className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
                         <span className="text-sm text-gray-700">{item}</span>
                       </div>
