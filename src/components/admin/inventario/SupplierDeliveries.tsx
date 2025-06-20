@@ -83,9 +83,9 @@ const SupplierDeliveries: React.FC = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'completed': return 'bg-green-100 text-green-700';
+      case 'completed': return 'bg-primary-prosalud text-white';
       case 'received': return 'bg-blue-100 text-blue-700';
-      case 'pending': return 'bg-yellow-100 text-yellow-700';
+      case 'pending': return 'bg-gray-100 text-gray-700';
       default: return 'bg-gray-100 text-gray-700';
     }
   };
@@ -113,7 +113,7 @@ const SupplierDeliveries: React.FC = () => {
         </div>
         <Dialog>
           <DialogTrigger asChild>
-            <Button className="bg-gradient-to-r from-primary-prosalud to-primary-prosalud-dark hover:shadow-lg transition-all duration-200">
+            <Button className="bg-primary-prosalud hover:bg-primary-prosalud-dark text-white">
               <Plus className="h-4 w-4 mr-2" />
               Nueva Entrega
             </Button>
@@ -138,7 +138,7 @@ const SupplierDeliveries: React.FC = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
       >
-        <Card className="border-0 shadow-md">
+        <Card className="border shadow-sm">
           <CardContent className="p-6">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
@@ -159,7 +159,7 @@ const SupplierDeliveries: React.FC = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
       >
-        <Card className="border-0 shadow-md">
+        <Card className="border shadow-sm">
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <Truck className="h-5 w-5" />
