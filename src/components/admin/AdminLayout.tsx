@@ -1,10 +1,9 @@
-
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Users, Calendar, Trophy, FileText, BarChart3, Settings,
-  Menu, X, LogOut, Home, ChevronRight, ClipboardList
+  Menu, X, LogOut, Home, ChevronRight, ClipboardList, Package
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
@@ -23,6 +22,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   const navigation = [
     { name: 'Dashboard', href: '/admin', icon: BarChart3 },
     { name: 'Usuarios', href: '/admin/usuarios', icon: Users },
+    { name: 'Inventario', href: '/admin/inventario', icon: Package },
     { name: 'Solicitudes', href: '/admin/solicitudes', icon: ClipboardList },
     { name: 'Convenios', href: '/admin/convenios', icon: Trophy },
     { name: 'Galería Bienestar', href: '/admin/bienestar', icon: Calendar },
