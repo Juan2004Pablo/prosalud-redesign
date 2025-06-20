@@ -6,10 +6,12 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { RotateCcw, Search, Hospital, Calendar, AlertTriangle } from 'lucide-react';
+import { RotateCcw, Search, Hospital, Calendar, Plus } from 'lucide-react';
 import { motion } from 'framer-motion';
 import DataPagination from '@/components/ui/data-pagination';
 import { usePagination } from '@/hooks/usePagination';
+import ProcessReturnForm from './ProcessReturnForm';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
 
 interface Return {
   id: string;
@@ -30,13 +32,14 @@ const Returns: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [reasonFilter, setReasonFilter] = useState('all');
+  const [showProcessReturnForm, setShowProcessReturnForm] = useState(false);
 
   const mockReturns: Return[] = [
     {
       id: '1',
       hospitalName: 'Hospital Marco Fidel Suárez',
       coordinatorName: 'María González',
-      returnDate: '2024-01-18',
+      returnDate: '2024-01-20',
       totalItems: 5,
       reason: 'excess',
       status: 'pending',
@@ -49,24 +52,24 @@ const Returns: React.FC = () => {
       id: '2',
       hospitalName: 'Hospital San Juan de Dios',
       coordinatorName: 'Carlos Pérez',
-      returnDate: '2024-01-17',
-      totalItems: 3,
+      returnDate: '2024-01-19',
+      totalItems: 10,
       reason: 'defective',
       status: 'approved',
       items: [
-        { productName: 'Bata de Laboratorio - Talla L', quantity: 3, condition: 'damaged' }
+        { productName: 'Tapabocas N95', quantity: 10, condition: 'damaged' }
       ]
     },
     {
       id: '3',
       hospitalName: 'Hospital La Merced',
       coordinatorName: 'Ana Martínez',
-      returnDate: '2024-01-15',
+      returnDate: '2024-01-18',
       totalItems: 2,
       reason: 'incorrect',
       status: 'processed',
       items: [
-        { productName: 'Uniforme Verde - Talla XL', quantity: 2, condition: 'new' }
+        { productName: 'Kit de Bienvenida', quantity: 2, condition: 'new' }
       ]
     }
   ];
@@ -146,6 +149,13 @@ const Returns: React.FC = () => {
           <h2 className="text-2xl font-bold text-gray-900">Devoluciones</h2>
           <p className="text-gray-600">Gestiona las devoluciones de implementos de los hospitales</p>
         </div>
+        <Button 
+          className="bg-primary-prosalud hover:bg-primary-prosalud-dark text-white"
+          onClick={() => setShowProcessReturnForm(true)}
+        >
+          <Plus className="h-4 w-4 mr-2" />
+          Procesar Devolución
+        </Button>
       </motion.div>
 
       {/* Filters */}
@@ -154,7 +164,7 @@ const Returns: React.FC = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
       >
-        <Card className="border-0 shadow-md">
+        <Card className="border shadow-sm">
           <CardContent className="p-6">
             <div className="flex flex-col md:flex-row gap-4">
               <div className="flex-1">
@@ -203,14 +213,14 @@ const Returns: React.FC = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
       >
-        <Card className="border-0 shadow-md">
+        <Card className="border shadow-sm">
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <RotateCcw className="h-5 w-5" />
               <span>Devoluciones ({totalItems})</span>
             </CardTitle>
             <CardDescription>
-              Lista de devoluciones de implementos de los hospitales
+              Lista de devoluciones de implementos procesadas
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -254,7 +264,6 @@ const Returns: React.FC = () => {
                       </TableCell>
                       <TableCell>
                         <Badge className={getReasonColor(returnItem.reason)}>
-                          {returnItem.reason === 'defective' && <AlertTriangle className="h-3 w-3 mr-1" />}
                           {getReasonLabel(returnItem.reason)}
                         </Badge>
                       </TableCell>
@@ -293,6 +302,13 @@ const Returns: React.FC = () => {
           </CardContent>
         </Card>
       </motion.div>
+
+      {/* Process Return Form Dialog */}
+      <Dialog open={showProcessReturnForm} onOpenChange={setShowProcessReturnForm}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white">
+          <ProcessReturnForm onClose={() => setShowProcessReturnForm(false)} />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

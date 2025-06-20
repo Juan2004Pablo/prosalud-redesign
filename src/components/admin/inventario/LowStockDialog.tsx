@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -111,7 +110,7 @@ const LowStockDialog: React.FC<LowStockDialogProps> = ({ open, onOpenChange }) =
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto bg-white">
         <DialogHeader>
           <DialogTitle className="flex items-center space-x-2">
             <AlertTriangle className="h-6 w-6 text-red-600" />

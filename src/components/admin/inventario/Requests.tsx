@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -6,10 +5,12 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ClipboardList, Search, Hospital, Clock, AlertTriangle } from 'lucide-react';
+import { ClipboardList, Search, Hospital, Clock, AlertTriangle, Plus } from 'lucide-react';
 import { motion } from 'framer-motion';
 import DataPagination from '@/components/ui/data-pagination';
 import { usePagination } from '@/hooks/usePagination';
+import NewRequestForm from './NewRequestForm';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
 
 interface Request {
   id: string;
@@ -29,6 +30,7 @@ const Requests: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [priorityFilter, setPriorityFilter] = useState('all');
+  const [showNewRequestForm, setShowNewRequestForm] = useState(false);
 
   const mockRequests: Request[] = [
     {
@@ -149,6 +151,13 @@ const Requests: React.FC = () => {
           <h2 className="text-2xl font-bold text-gray-900">Solicitudes de Implementos</h2>
           <p className="text-gray-600">Gestiona las solicitudes de los hospitales</p>
         </div>
+        <Button 
+          className="bg-primary-prosalud hover:bg-primary-prosalud-dark text-white"
+          onClick={() => setShowNewRequestForm(true)}
+        >
+          <Plus className="h-4 w-4 mr-2" />
+          Nueva Solicitud
+        </Button>
       </motion.div>
 
       {/* Filters */}
@@ -157,7 +166,7 @@ const Requests: React.FC = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
       >
-        <Card className="border-0 shadow-md">
+        <Card className="border shadow-sm">
           <CardContent className="p-6">
             <div className="flex flex-col md:flex-row gap-4">
               <div className="flex-1">
@@ -208,7 +217,7 @@ const Requests: React.FC = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
       >
-        <Card className="border-0 shadow-md">
+        <Card className="border shadow-sm">
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <ClipboardList className="h-5 w-5" />
@@ -298,6 +307,13 @@ const Requests: React.FC = () => {
           </CardContent>
         </Card>
       </motion.div>
+
+      {/* New Request Form Dialog */}
+      <Dialog open={showNewRequestForm} onOpenChange={setShowNewRequestForm}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white">
+          <NewRequestForm onClose={() => setShowNewRequestForm(false)} />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

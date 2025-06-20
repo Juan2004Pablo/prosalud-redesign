@@ -15,6 +15,9 @@ import {
   CheckCircle
 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import NewDeliveryForm from './NewDeliveryForm';
+import NewRequestForm from './NewRequestForm';
+import ProcessReturnForm from './ProcessReturnForm';
 
 interface QuickActionsDialogProps {
   open: boolean;
@@ -23,6 +26,7 @@ interface QuickActionsDialogProps {
 
 const QuickActionsDialog: React.FC<QuickActionsDialogProps> = ({ open, onOpenChange }) => {
   const [selectedAction, setSelectedAction] = useState<string | null>(null);
+  const [showForm, setShowForm] = useState<string | null>(null);
 
   const quickActions = [
     {
@@ -30,7 +34,7 @@ const QuickActionsDialog: React.FC<QuickActionsDialogProps> = ({ open, onOpenCha
       title: 'Nueva Entrega',
       description: 'Registrar productos recibidos del proveedor',
       icon: Truck,
-      color: 'text-blue-600',
+      color: 'text-primary-prosalud',
       bgColor: 'bg-blue-50',
       borderColor: 'border-blue-200'
     },
@@ -39,9 +43,9 @@ const QuickActionsDialog: React.FC<QuickActionsDialogProps> = ({ open, onOpenCha
       title: 'Nueva Solicitud',
       description: 'Crear solicitud de implementos para hospital',
       icon: ClipboardList,
-      color: 'text-green-600',
-      bgColor: 'bg-green-50',
-      borderColor: 'border-green-200'
+      color: 'text-primary-prosalud',
+      bgColor: 'bg-blue-50',
+      borderColor: 'border-blue-200'
     },
     {
       id: 'process-return',
@@ -57,18 +61,18 @@ const QuickActionsDialog: React.FC<QuickActionsDialogProps> = ({ open, onOpenCha
       title: 'Nuevo Producto',
       description: 'Agregar nuevo producto al catálogo',
       icon: Plus,
-      color: 'text-purple-600',
-      bgColor: 'bg-purple-50',
-      borderColor: 'border-purple-200'
+      color: 'text-primary-prosalud',
+      bgColor: 'bg-blue-50',
+      borderColor: 'border-blue-200'
     },
     {
       id: 'stock-adjustment',
       title: 'Ajuste de Inventario',
       description: 'Corregir cantidades en el inventario',
       icon: TrendingUp,
-      color: 'text-indigo-600',
-      bgColor: 'bg-indigo-50',
-      borderColor: 'border-indigo-200'
+      color: 'text-primary-prosalud',
+      bgColor: 'bg-blue-50',
+      borderColor: 'border-blue-200'
     },
     {
       id: 'urgent-alert',
@@ -82,20 +86,51 @@ const QuickActionsDialog: React.FC<QuickActionsDialogProps> = ({ open, onOpenCha
   ];
 
   const handleActionSelect = (actionId: string) => {
-    setSelectedAction(actionId);
-    // Aquí se implementaría la lógica específica para cada acción
-    console.log(`Acción seleccionada: ${actionId}`);
-    
-    // Simular procesamiento
-    setTimeout(() => {
-      setSelectedAction(null);
-      onOpenChange(false);
-    }, 1500);
+    if (actionId === 'new-delivery' || actionId === 'create-request' || actionId === 'process-return') {
+      setShowForm(actionId);
+    } else {
+      setSelectedAction(actionId);
+      console.log(`Acción seleccionada: ${actionId}`);
+      
+      // Simular procesamiento
+      setTimeout(() => {
+        setSelectedAction(null);
+        onOpenChange(false);
+      }, 1500);
+    }
   };
+
+  const handleFormClose = () => {
+    setShowForm(null);
+    onOpenChange(false);
+  };
+
+  const renderForm = () => {
+    switch (showForm) {
+      case 'new-delivery':
+        return <NewDeliveryForm onClose={handleFormClose} />;
+      case 'create-request':
+        return <NewRequestForm onClose={handleFormClose} />;
+      case 'process-return':
+        return <ProcessReturnForm onClose={handleFormClose} />;
+      default:
+        return null;
+    }
+  };
+
+  if (showForm) {
+    return (
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white">
+          {renderForm()}
+        </DialogContent>
+      </Dialog>
+    );
+  }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+      <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto bg-white">
         <DialogHeader>
           <DialogTitle className="flex items-center space-x-2">
             <Package className="h-6 w-6 text-primary-prosalud" />
