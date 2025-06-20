@@ -19,9 +19,15 @@ import {
   ChevronRight
 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import QuickActionsDialog from './QuickActionsDialog';
+import LowStockDialog from './LowStockDialog';
+import HospitalRequestsDialog from './HospitalRequestsDialog';
 
 const InventoryOverview: React.FC = () => {
   const [expandedCategory, setExpandedCategory] = useState<string | undefined>(undefined);
+  const [quickActionsOpen, setQuickActionsOpen] = useState(false);
+  const [lowStockOpen, setLowStockOpen] = useState(false);
+  const [hospitalRequestsOpen, setHospitalRequestsOpen] = useState(false);
 
   const categoryStats = [
     {
@@ -111,13 +117,6 @@ const InventoryOverview: React.FC = () => {
     { name: 'Bata Blanca - Talla L', current: 2, min: 8, category: 'Batas' },
     { name: 'Tapabocas N95', current: 45, min: 100, category: 'Tapabocas' },
     { name: 'Uniforme Verde - Talla S', current: 1, min: 5, category: 'Uniformes' }
-  ];
-
-  const recentActivity = [
-    { action: 'Entrega recibida', description: 'Uniformes nuevos del proveedor MedSupply', time: '2 horas', type: 'delivery' },
-    { action: 'Solicitud aprobada', description: 'Hospital Bello - 15 uniformes', time: '4 horas', type: 'request' },
-    { action: 'Devolución procesada', description: 'Hospital Rionegro - 3 batas defectuosas', time: '6 horas', type: 'return' },
-    { action: 'Stock actualizado', description: 'Tapabocas - Nueva llegada de 500 unidades', time: '1 día', type: 'update' }
   ];
 
   const hospitalRequests = [
@@ -260,7 +259,10 @@ const InventoryOverview: React.FC = () => {
                   </div>
                 </div>
               ))}
-              <Button className="w-full mt-4 bg-red-600 hover:bg-red-700 text-white">
+              <Button 
+                className="w-full mt-4 bg-red-600 hover:bg-red-700 text-white"
+                onClick={() => setLowStockOpen(true)}
+              >
                 Ver Todo el Stock Bajo
               </Button>
             </CardContent>
@@ -294,13 +296,21 @@ const InventoryOverview: React.FC = () => {
                   </Badge>
                 </div>
               ))}
-              <Button className="w-full mt-4 bg-primary-prosalud hover:bg-primary-prosalud-dark text-white">
+              <Button 
+                className="w-full mt-4 bg-primary-prosalud hover:bg-primary-prosalud-dark text-white"
+                onClick={() => setHospitalRequestsOpen(true)}
+              >
                 Gestionar Solicitudes
               </Button>
             </CardContent>
           </Card>
-        </div>
+        </motion.div>
       </div>
+
+      {/* Dialogs */}
+      <QuickActionsDialog open={quickActionsOpen} onOpenChange={setQuickActionsOpen} />
+      <LowStockDialog open={lowStockOpen} onOpenChange={setLowStockOpen} />
+      <HospitalRequestsDialog open={hospitalRequestsOpen} onOpenChange={setHospitalRequestsOpen} />
     </div>
   );
 };

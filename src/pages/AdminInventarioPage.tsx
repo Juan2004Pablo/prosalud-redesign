@@ -2,18 +2,15 @@
 import React, { useState } from 'react';
 import AdminLayout from '@/components/admin/AdminLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { 
   Package, 
   Truck, 
   RotateCcw, 
   ClipboardList, 
-  TrendingDown, 
-  AlertTriangle,
   Plus,
-  BarChart3
+  BarChart3,
+  FileText
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import InventoryOverview from '@/components/admin/inventario/InventoryOverview';
@@ -21,9 +18,11 @@ import ProductManagement from '@/components/admin/inventario/ProductManagement';
 import SupplierDeliveries from '@/components/admin/inventario/SupplierDeliveries';
 import Returns from '@/components/admin/inventario/Returns';
 import Requests from '@/components/admin/inventario/Requests';
+import QuickActionsDialog from '@/components/admin/inventario/QuickActionsDialog';
 
 const AdminInventarioPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState('overview');
+  const [quickActionsOpen, setQuickActionsOpen] = useState(false);
 
   const tabs = [
     { id: 'overview', label: 'Resumen', icon: BarChart3 },
@@ -52,10 +51,13 @@ const AdminInventarioPage: React.FC = () => {
           </div>
           <div className="flex gap-2">
             <Button variant="outline" className="hover:bg-primary-prosalud hover:text-white transition-all duration-200">
-              <Package className="h-4 w-4 mr-2" />
+              <FileText className="h-4 w-4 mr-2" />
               Exportar Reporte
             </Button>
-            <Button className="bg-primary-prosalud hover:bg-primary-prosalud-dark text-white">
+            <Button 
+              className="bg-primary-prosalud hover:bg-primary-prosalud-dark text-white"
+              onClick={() => setQuickActionsOpen(true)}
+            >
               <Plus className="h-4 w-4 mr-2" />
               Acción Rápida
             </Button>
@@ -103,6 +105,9 @@ const AdminInventarioPage: React.FC = () => {
             </TabsContent>
           </Tabs>
         </motion.div>
+
+        {/* Quick Actions Dialog */}
+        <QuickActionsDialog open={quickActionsOpen} onOpenChange={setQuickActionsOpen} />
       </div>
     </AdminLayout>
   );
