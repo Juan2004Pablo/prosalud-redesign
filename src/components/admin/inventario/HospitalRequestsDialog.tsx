@@ -91,23 +91,23 @@ const HospitalRequestsDialog: React.FC<HospitalRequestsDialogProps> = ({ open, o
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'pending': return 'bg-amber-100 text-amber-700';
-      case 'approved': return 'bg-blue-100 text-blue-700';
-      case 'preparing': return 'bg-purple-100 text-purple-700';
-      case 'shipped': return 'bg-orange-100 text-orange-700';
-      case 'delivered': return 'bg-green-100 text-green-700';
-      case 'rejected': return 'bg-red-100 text-red-700';
-      default: return 'bg-gray-100 text-gray-700';
+      case 'pending': return 'bg-yellow-100 text-yellow-800';
+      case 'approved': return 'bg-blue-100 text-blue-800';
+      case 'preparing': return 'bg-purple-100 text-purple-800';
+      case 'shipped': return 'bg-orange-100 text-orange-800';
+      case 'delivered': return 'bg-primary-prosalud text-white';
+      case 'rejected': return 'bg-red-100 text-red-800';
+      default: return 'bg-gray-100 text-gray-800';
     }
   };
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'urgent': return 'bg-red-100 text-red-700';
-      case 'high': return 'bg-orange-100 text-orange-700';
-      case 'medium': return 'bg-amber-100 text-amber-700';
-      case 'low': return 'bg-green-100 text-green-700';
-      default: return 'bg-gray-100 text-gray-700';
+      case 'urgent': return 'bg-red-100 text-red-800';
+      case 'high': return 'bg-orange-100 text-orange-800';
+      case 'medium': return 'bg-yellow-100 text-yellow-800';
+      case 'low': return 'bg-primary-prosalud text-white';
+      default: return 'bg-gray-100 text-gray-800';
     }
   };
 
@@ -151,7 +151,7 @@ const HospitalRequestsDialog: React.FC<HospitalRequestsDialogProps> = ({ open, o
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-7xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-7xl max-h-[90vh] overflow-y-auto bg-white">
         <DialogHeader>
           <DialogTitle className="flex items-center space-x-2">
             <Hospital className="h-6 w-6 text-primary-prosalud" />
@@ -208,13 +208,13 @@ const HospitalRequestsDialog: React.FC<HospitalRequestsDialogProps> = ({ open, o
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-amber-50 border border-amber-200 rounded-lg p-4"
+            className="bg-yellow-50 border border-yellow-200 rounded-lg p-4"
           >
             <div className="flex items-center space-x-3">
-              <Clock className="h-8 w-8 text-amber-600" />
+              <Clock className="h-8 w-8 text-yellow-600" />
               <div>
-                <p className="text-sm text-amber-600">Pendientes</p>
-                <p className="text-2xl font-bold text-amber-700">
+                <p className="text-sm text-yellow-600">Pendientes</p>
+                <p className="text-2xl font-bold text-yellow-800">
                   {filteredRequests.filter(req => req.status === 'pending').length}
                 </p>
               </div>
@@ -231,7 +231,7 @@ const HospitalRequestsDialog: React.FC<HospitalRequestsDialogProps> = ({ open, o
               <CheckCircle className="h-8 w-8 text-blue-600" />
               <div>
                 <p className="text-sm text-blue-600">Aprobadas</p>
-                <p className="text-2xl font-bold text-blue-700">
+                <p className="text-2xl font-bold text-blue-800">
                   {filteredRequests.filter(req => req.status === 'approved').length}
                 </p>
               </div>
@@ -248,7 +248,7 @@ const HospitalRequestsDialog: React.FC<HospitalRequestsDialogProps> = ({ open, o
               <Hospital className="h-8 w-8 text-red-600" />
               <div>
                 <p className="text-sm text-red-600">Urgentes</p>
-                <p className="text-2xl font-bold text-red-700">
+                <p className="text-2xl font-bold text-red-800">
                   {filteredRequests.filter(req => req.priority === 'urgent').length}
                 </p>
               </div>
@@ -259,13 +259,13 @@ const HospitalRequestsDialog: React.FC<HospitalRequestsDialogProps> = ({ open, o
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="bg-green-50 border border-green-200 rounded-lg p-4"
+            className="bg-primary-prosalud-light border border-primary-prosalud-light rounded-lg p-4"
           >
             <div className="flex items-center space-x-3">
-              <CheckCircle className="h-8 w-8 text-green-600" />
+              <CheckCircle className="h-8 w-8 text-primary-prosalud" />
               <div>
-                <p className="text-sm text-green-600">Entregadas</p>
-                <p className="text-2xl font-bold text-green-700">
+                <p className="text-sm text-primary-prosalud">Entregadas</p>
+                <p className="text-2xl font-bold text-primary-prosalud">
                   {filteredRequests.filter(req => req.status === 'delivered').length}
                 </p>
               </div>
@@ -324,12 +324,12 @@ const HospitalRequestsDialog: React.FC<HospitalRequestsDialogProps> = ({ open, o
                   </TableCell>
                   <TableCell>
                     {canFulfillRequest(request) ? (
-                      <Badge className="bg-green-100 text-green-700">
+                      <Badge className="bg-primary-prosalud text-white">
                         <CheckCircle className="h-3 w-3 mr-1" />
                         Disponible
                       </Badge>
                     ) : (
-                      <Badge className="bg-red-100 text-red-700">
+                      <Badge className="bg-red-100 text-red-800">
                         <X className="h-3 w-3 mr-1" />
                         Parcial
                       </Badge>
@@ -337,7 +337,7 @@ const HospitalRequestsDialog: React.FC<HospitalRequestsDialogProps> = ({ open, o
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end space-x-2">
-                      <Button variant="ghost" size="sm" className="hover:bg-gray-100">
+                      <Button variant="ghost" size="sm" className="hover:bg-gray-100 text-gray-700 hover:text-gray-700">
                         <Eye className="h-3 w-3 mr-1" />
                         Ver
                       </Button>
@@ -346,7 +346,7 @@ const HospitalRequestsDialog: React.FC<HospitalRequestsDialogProps> = ({ open, o
                           <Button 
                             variant="ghost" 
                             size="sm" 
-                            className="hover:bg-green-100 text-green-700"
+                            className="hover:bg-green-50 text-green-700 hover:text-green-700"
                             onClick={() => setSelectedRequest(request.id)}
                           >
                             <CheckCircle className="h-3 w-3 mr-1" />
@@ -355,7 +355,7 @@ const HospitalRequestsDialog: React.FC<HospitalRequestsDialogProps> = ({ open, o
                           <Button 
                             variant="ghost" 
                             size="sm" 
-                            className="hover:bg-red-100 text-red-700"
+                            className="hover:bg-red-50 text-red-700 hover:text-red-700"
                             onClick={() => setSelectedRequest(request.id)}
                           >
                             <X className="h-3 w-3 mr-1" />
@@ -405,7 +405,7 @@ const HospitalRequestsDialog: React.FC<HospitalRequestsDialogProps> = ({ open, o
                 </Button>
                 <Button 
                   variant="outline"
-                  className="border-red-200 text-red-700 hover:bg-red-50"
+                  className="border-red-200 text-red-700 hover:bg-red-50 hover:text-red-700"
                   onClick={() => handleReject(selectedRequest)}
                 >
                   <X className="h-4 w-4 mr-2" />

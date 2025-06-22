@@ -84,9 +84,9 @@ const SupplierDeliveries: React.FC = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'completed': return 'bg-primary-prosalud text-white';
-      case 'received': return 'bg-blue-100 text-blue-700';
-      case 'pending': return 'bg-gray-100 text-gray-700';
-      default: return 'bg-gray-100 text-gray-700';
+      case 'received': return 'bg-blue-100 text-blue-800';
+      case 'pending': return 'bg-gray-100 text-gray-800';
+      default: return 'bg-gray-100 text-gray-800';
     }
   };
 
@@ -213,7 +213,11 @@ const SupplierDeliveries: React.FC = () => {
                         </Badge>
                       </TableCell>
                       <TableCell className="text-right">
-                        <Button variant="ghost" size="sm" className="hover:bg-primary-prosalud-light/10">
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="hover:bg-gray-100 text-gray-700 hover:text-gray-700"
+                        >
                           Ver Detalles
                         </Button>
                       </TableCell>

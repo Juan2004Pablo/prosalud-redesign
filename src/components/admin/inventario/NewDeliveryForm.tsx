@@ -226,7 +226,7 @@ const NewDeliveryForm: React.FC<NewDeliveryFormProps> = ({ onClose }) => {
                           variant="ghost"
                           size="sm"
                           onClick={() => removeItem(item.id)}
-                          className="text-red-600 hover:text-red-700"
+                          className="text-red-600 hover:text-red-600 hover:bg-red-50"
                         >
                           <Trash className="h-4 w-4" />
                         </Button>

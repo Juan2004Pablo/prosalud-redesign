@@ -233,12 +233,13 @@ const NewRequestForm: React.FC<NewRequestFormProps> = ({ onClose }) => {
                 placeholder="0"
               />
             </div>
-            <div className="space-y-2">
+            <div className="space-y-2 md:col-span-2 lg:col-span-1">
               <Label>Justificación</Label>
-              <Input
+              <Textarea
                 value={newItem.justification || ''}
                 onChange={(e) => setNewItem({...newItem, justification: e.target.value})}
-                placeholder="Motivo de la solicitud"
+                placeholder="Motivo de la solicitud..."
+                rows={2}
               />
             </div>
           </div>
@@ -276,13 +277,13 @@ const NewRequestForm: React.FC<NewRequestFormProps> = ({ onClose }) => {
                       <TableCell>{item.size || '-'}</TableCell>
                       <TableCell>{item.color || '-'}</TableCell>
                       <TableCell>{item.quantity}</TableCell>
-                      <TableCell>{item.justification}</TableCell>
+                      <TableCell className="max-w-xs truncate">{item.justification}</TableCell>
                       <TableCell>
                         <Button
                           variant="ghost"
                           size="sm"
                           onClick={() => removeItem(item.id)}
-                          className="text-red-600 hover:text-red-700"
+                          className="text-red-600 hover:text-red-600 hover:bg-red-50"
                         >
                           <Trash className="h-4 w-4" />
                         </Button>
