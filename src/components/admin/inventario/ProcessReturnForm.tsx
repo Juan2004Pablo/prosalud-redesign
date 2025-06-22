@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -22,9 +21,10 @@ interface ReturnItem {
 
 interface ProcessReturnFormProps {
   onClose: () => void;
+  onSuccess: () => void;
 }
 
-const ProcessReturnForm: React.FC<ProcessReturnFormProps> = ({ onClose }) => {
+const ProcessReturnForm: React.FC<ProcessReturnFormProps> = ({ onClose, onSuccess }) => {
   const [hospitalName, setHospitalName] = useState('');
   const [coordinatorName, setCoordinatorName] = useState('');
   const [returnDate, setReturnDate] = useState('');
@@ -102,7 +102,7 @@ const ProcessReturnForm: React.FC<ProcessReturnFormProps> = ({ onClose }) => {
     };
     
     console.log('Nueva devolución procesada:', returnData);
-    onClose();
+    onSuccess();
   };
 
   return (
