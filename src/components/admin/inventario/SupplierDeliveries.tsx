@@ -10,6 +10,7 @@ import { motion } from 'framer-motion';
 import DataPagination from '@/components/ui/data-pagination';
 import { usePagination } from '@/hooks/usePagination';
 import NewDeliveryForm from './NewDeliveryForm';
+import { useToast } from '@/hooks/use-toast';
 
 interface Delivery {
   id: string;
@@ -28,6 +29,7 @@ const SupplierDeliveries: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [showNewDeliveryForm, setShowNewDeliveryForm] = useState(false);
   const [selectedDelivery, setSelectedDelivery] = useState<Delivery | null>(null);
+  const { toast } = useToast();
 
   const mockDeliveries: Delivery[] = [
     {
@@ -103,7 +105,20 @@ const SupplierDeliveries: React.FC = () => {
 
   const handleViewDetails = (delivery: Delivery) => {
     setSelectedDelivery(delivery);
-    console.log('Ver detalles de entrega:', delivery);
+    toast({
+      title: "Entrega Visualizada",
+      description: `Mostrando detalles de la entrega #${delivery.id} de ${delivery.supplierName}`,
+      variant: "default"
+    });
+  };
+
+  const handleNewDeliverySuccess = () => {
+    setShowNewDeliveryForm(false);
+    toast({
+      title: "Entrega Registrada",
+      description: "La nueva entrega ha sido registrada exitosamente en el sistema",
+      variant: "success"
+    });
   };
 
   return (
@@ -239,7 +254,10 @@ const SupplierDeliveries: React.FC = () => {
       {/* New Delivery Form Dialog */}
       <Dialog open={showNewDeliveryForm} onOpenChange={setShowNewDeliveryForm}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white">
-          <NewDeliveryForm onClose={() => setShowNewDeliveryForm(false)} />
+          <NewDeliveryForm 
+            onClose={() => setShowNewDeliveryForm(false)}
+            onSuccess={handleNewDeliverySuccess}
+          />
         </DialogContent>
       </Dialog>
 

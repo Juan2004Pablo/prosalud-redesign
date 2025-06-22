@@ -11,6 +11,7 @@ import DataPagination from '@/components/ui/data-pagination';
 import { usePagination } from '@/hooks/usePagination';
 import NewRequestForm from './NewRequestForm';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { useToast } from '@/hooks/use-toast';
 
 interface Request {
   id: string;
@@ -32,8 +33,7 @@ const Requests: React.FC = () => {
   const [priorityFilter, setPriorityFilter] = useState('all');
   const [showNewRequestForm, setShowNewRequestForm] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState<Request | null>(null);
-
-  const mockRequests: Request[] = [
+  const [requests, setRequests] = useState<Request[]>([
     {
       id: '1',
       hospitalName: 'Hospital Marco Fidel Suárez',
@@ -71,9 +71,11 @@ const Requests: React.FC = () => {
         { productName: 'Kit de Bienvenida', quantity: 8 }
       ]
     }
-  ];
+  ]);
+  
+  const { toast } = useToast();
 
-  const filteredRequests = mockRequests.filter(request => {
+  const filteredRequests = requests.filter(request => {
     const matchesSearch = request.hospitalName.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          request.coordinatorName.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          request.id.toLowerCase().includes(searchTerm.toLowerCase());
@@ -142,12 +144,27 @@ const Requests: React.FC = () => {
 
   const handleViewRequest = (request: Request) => {
     setSelectedRequest(request);
-    console.log('Ver solicitud:', request);
+    toast({
+      title: "Solicitud Visualizada",
+      description: `Mostrando detalles de la solicitud #${request.id}`,
+      variant: "default"
+    });
   };
 
   const handleApproveRequest = (request: Request) => {
-    console.log('Aprobar solicitud:', request);
-    // Aquí iría la lógica para aprobar la solicitud
+    setRequests(prevRequests => 
+      prevRequests.map(r => 
+        r.id === request.id 
+          ? { ...r, status: 'approved' as const }
+          : r
+      )
+    );
+    
+    toast({
+      title: "Solicitud Aprobada",
+      description: `La solicitud #${request.id} del ${request.hospitalName} ha sido aprobada exitosamente`,
+      variant: "success"
+    });
   };
 
   return (
@@ -294,7 +311,7 @@ const Requests: React.FC = () => {
                             variant="ghost" 
                             size="sm" 
                             onClick={() => handleViewRequest(request)}
-                            className="hover:bg-gray-100 text-gray-700"
+                            className="text-gray-600 hover:text-gray-600 hover:bg-gray-100"
                           >
                             Ver
                           </Button>
@@ -303,7 +320,7 @@ const Requests: React.FC = () => {
                               variant="ghost" 
                               size="sm" 
                               onClick={() => handleApproveRequest(request)}
-                              className="hover:bg-green-100 text-green-700"
+                              className="text-green-600 hover:text-green-600 hover:bg-green-50"
                             >
                               Aprobar
                             </Button>

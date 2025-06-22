@@ -4,85 +4,75 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { RotateCcw, Search, Hospital, Calendar, Plus } from 'lucide-react';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { RotateCcw, Plus, Search, Calendar, Package, AlertTriangle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import DataPagination from '@/components/ui/data-pagination';
 import { usePagination } from '@/hooks/usePagination';
 import ProcessReturnForm from './ProcessReturnForm';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { useToast } from '@/hooks/use-toast';
 
 interface Return {
   id: string;
   hospitalName: string;
-  coordinatorName: string;
   returnDate: string;
+  reason: string;
   totalItems: number;
-  reason: 'excess' | 'incorrect' | 'defective' | 'expired' | 'other';
-  status: 'pending' | 'approved' | 'processed';
+  status: 'pending' | 'processed' | 'rejected';
   items: Array<{
     productName: string;
     quantity: number;
-    condition: 'new' | 'used' | 'damaged';
   }>;
 }
 
 const Returns: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState('all');
-  const [reasonFilter, setReasonFilter] = useState('all');
   const [showProcessReturnForm, setShowProcessReturnForm] = useState(false);
   const [selectedReturn, setSelectedReturn] = useState<Return | null>(null);
-
-  const mockReturns: Return[] = [
+  const [returns, setReturns] = useState<Return[]>([
     {
       id: '1',
       hospitalName: 'Hospital Marco Fidel Suárez',
-      coordinatorName: 'María González',
-      returnDate: '2024-01-20',
-      totalItems: 5,
-      reason: 'excess',
+      returnDate: '2024-01-22',
+      reason: 'Defectuoso',
+      totalItems: 3,
       status: 'pending',
       items: [
-        { productName: 'Uniforme Azul - Talla S', quantity: 3, condition: 'new' },
-        { productName: 'Bata Blanca - Talla M', quantity: 2, condition: 'new' }
+        { productName: 'Uniforme Azul - Talla M', quantity: 1 },
+        { productName: 'Bata Blanca - Talla L', quantity: 2 }
       ]
     },
     {
       id: '2',
       hospitalName: 'Hospital San Juan de Dios',
-      coordinatorName: 'Carlos Pérez',
-      returnDate: '2024-01-19',
+      returnDate: '2024-01-21',
+      reason: 'No Necesario',
       totalItems: 10,
-      reason: 'defective',
-      status: 'approved',
+      status: 'processed',
       items: [
-        { productName: 'Tapabocas N95', quantity: 10, condition: 'damaged' }
+        { productName: 'Tapabocas N95', quantity: 10 }
       ]
     },
     {
       id: '3',
       hospitalName: 'Hospital La Merced',
-      coordinatorName: 'Ana Martínez',
-      returnDate: '2024-01-18',
-      totalItems: 2,
-      reason: 'incorrect',
-      status: 'processed',
+      returnDate: '2024-01-20',
+      reason: 'Dañado',
+      totalItems: 5,
+      status: 'pending',
       items: [
-        { productName: 'Kit de Bienvenida', quantity: 2, condition: 'new' }
+        { productName: 'Kit de Bienvenida', quantity: 5 }
       ]
     }
-  ];
+  ]);
+  
+  const { toast } = useToast();
 
-  const filteredReturns = mockReturns.filter(returnItem => {
-    const matchesSearch = returnItem.hospitalName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         returnItem.coordinatorName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         returnItem.id.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = statusFilter === 'all' || returnItem.status === statusFilter;
-    const matchesReason = reasonFilter === 'all' || returnItem.reason === reasonFilter;
-    
-    return matchesSearch && matchesStatus && matchesReason;
-  });
+  const filteredReturns = returns.filter(returnItem =>
+    returnItem.hospitalName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    returnItem.reason.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    returnItem.id.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const {
     currentPage,
@@ -100,19 +90,8 @@ const Returns: React.FC = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'pending': return 'bg-yellow-100 text-yellow-700';
-      case 'approved': return 'bg-blue-100 text-blue-700';
       case 'processed': return 'bg-green-100 text-green-700';
-      default: return 'bg-gray-100 text-gray-700';
-    }
-  };
-
-  const getReasonColor = (reason: string) => {
-    switch (reason) {
-      case 'excess': return 'bg-blue-100 text-blue-700';
-      case 'incorrect': return 'bg-orange-100 text-orange-700';
-      case 'defective': return 'bg-red-100 text-red-700';
-      case 'expired': return 'bg-purple-100 text-purple-700';
-      case 'other': return 'bg-gray-100 text-gray-700';
+      case 'rejected': return 'bg-red-100 text-red-700';
       default: return 'bg-gray-100 text-gray-700';
     }
   };
@@ -120,31 +99,44 @@ const Returns: React.FC = () => {
   const getStatusLabel = (status: string) => {
     switch (status) {
       case 'pending': return 'Pendiente';
-      case 'approved': return 'Aprobado';
       case 'processed': return 'Procesado';
+      case 'rejected': return 'Rechazado';
       default: return status;
     }
   };
 
-  const getReasonLabel = (reason: string) => {
-    switch (reason) {
-      case 'excess': return 'Exceso';
-      case 'incorrect': return 'Incorrecto';
-      case 'defective': return 'Defectuoso';
-      case 'expired': return 'Vencido';
-      case 'other': return 'Otro';
-      default: return reason;
-    }
-  };
-
-  const handleViewReturn = (returnItem: Return) => {
+  const handleViewDetails = (returnItem: Return) => {
     setSelectedReturn(returnItem);
-    console.log('Ver devolución:', returnItem);
+    toast({
+      title: "Devolución Visualizada",
+      description: `Mostrando detalles de la devolución #${returnItem.id}`,
+      variant: "default"
+    });
   };
 
-  const handleApproveReturn = (returnItem: Return) => {
-    console.log('Aprobar devolución:', returnItem);
-    // Aquí iría la lógica para aprobar la devolución
+  const handleProcessReturn = (returnItem: Return) => {
+    setReturns(prevReturns => 
+      prevReturns.map(r => 
+        r.id === returnItem.id 
+          ? { ...r, status: 'processed' as const }
+          : r
+      )
+    );
+    
+    toast({
+      title: "Devolución Procesada",
+      description: `La devolución #${returnItem.id} ha sido procesada exitosamente`,
+      variant: "success"
+    });
+  };
+
+  const handleNewReturnSuccess = () => {
+    setShowProcessReturnForm(false);
+    toast({
+      title: "Devolución Registrada",
+      description: "La nueva devolución ha sido registrada exitosamente en el sistema",
+      variant: "success"
+    });
   };
 
   return (
@@ -156,19 +148,19 @@ const Returns: React.FC = () => {
         className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4"
       >
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">Devoluciones</h2>
-          <p className="text-gray-600">Gestiona las devoluciones de implementos de los hospitales</p>
+          <h2 className="text-2xl font-bold text-gray-900">Gestionar Devoluciones</h2>
+          <p className="text-gray-600">Administra las devoluciones de implementos médicos</p>
         </div>
         <Button 
           className="bg-primary-prosalud hover:bg-primary-prosalud-dark text-white"
           onClick={() => setShowProcessReturnForm(true)}
         >
           <Plus className="h-4 w-4 mr-2" />
-          Procesar Devolución
+          Nueva Devolución
         </Button>
       </motion.div>
 
-      {/* Filters */}
+      {/* Search */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -176,42 +168,14 @@ const Returns: React.FC = () => {
       >
         <Card className="border shadow-sm">
           <CardContent className="p-6">
-            <div className="flex flex-col md:flex-row gap-4">
-              <div className="flex-1">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                  <Input
-                    placeholder="Buscar devoluciones..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10"
-                  />
-                </div>
-              </div>
-              <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger className="w-full md:w-[200px]">
-                  <SelectValue placeholder="Estado" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Todos los estados</SelectItem>
-                  <SelectItem value="pending">Pendiente</SelectItem>
-                  <SelectItem value="approved">Aprobado</SelectItem>
-                  <SelectItem value="processed">Procesado</SelectItem>
-                </SelectContent>
-              </Select>
-              <Select value={reasonFilter} onValueChange={setReasonFilter}>
-                <SelectTrigger className="w-full md:w-[200px]">
-                  <SelectValue placeholder="Motivo" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Todos los motivos</SelectItem>
-                  <SelectItem value="excess">Exceso</SelectItem>
-                  <SelectItem value="incorrect">Incorrecto</SelectItem>
-                  <SelectItem value="defective">Defectuoso</SelectItem>
-                  <SelectItem value="expired">Vencido</SelectItem>
-                  <SelectItem value="other">Otro</SelectItem>
-                </SelectContent>
-              </Select>
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+              <Input
+                placeholder="Buscar devoluciones..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10"
+              />
             </div>
           </CardContent>
         </Card>
@@ -230,7 +194,7 @@ const Returns: React.FC = () => {
               <span>Devoluciones ({totalItems})</span>
             </CardTitle>
             <CardDescription>
-              Lista de devoluciones de implementos procesadas
+              Gestión de devoluciones de implementos médicos
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -240,10 +204,9 @@ const Returns: React.FC = () => {
                   <TableRow className="bg-gray-50">
                     <TableHead>ID</TableHead>
                     <TableHead>Hospital</TableHead>
-                    <TableHead>Coordinador</TableHead>
                     <TableHead>Fecha</TableHead>
-                    <TableHead>Items</TableHead>
                     <TableHead>Motivo</TableHead>
+                    <TableHead>Items</TableHead>
                     <TableHead>Estado</TableHead>
                     <TableHead className="text-right">Acciones</TableHead>
                   </TableRow>
@@ -255,13 +218,7 @@ const Returns: React.FC = () => {
                         <span className="font-mono text-sm">#{returnItem.id}</span>
                       </TableCell>
                       <TableCell>
-                        <div className="flex items-center space-x-2">
-                          <Hospital className="h-4 w-4 text-gray-400" />
-                          <span className="font-medium text-gray-900">{returnItem.hospitalName}</span>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <span className="text-gray-600">{returnItem.coordinatorName}</span>
+                        <span className="font-medium text-gray-900">{returnItem.hospitalName}</span>
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center space-x-2">
@@ -270,12 +227,13 @@ const Returns: React.FC = () => {
                         </div>
                       </TableCell>
                       <TableCell>
-                        <span className="font-medium">{returnItem.totalItems}</span>
+                        <span className="text-gray-600">{returnItem.reason}</span>
                       </TableCell>
                       <TableCell>
-                        <Badge className={getReasonColor(returnItem.reason)}>
-                          {getReasonLabel(returnItem.reason)}
-                        </Badge>
+                        <div className="flex items-center space-x-2">
+                          <Package className="h-4 w-4 text-gray-400" />
+                          <span className="font-medium">{returnItem.totalItems}</span>
+                        </div>
                       </TableCell>
                       <TableCell>
                         <Badge className={getStatusColor(returnItem.status)}>
@@ -287,8 +245,8 @@ const Returns: React.FC = () => {
                           <Button 
                             variant="ghost" 
                             size="sm" 
-                            onClick={() => handleViewReturn(returnItem)}
-                            className="hover:bg-gray-100 text-gray-700 hover:text-gray-900"
+                            onClick={() => handleViewDetails(returnItem)}
+                            className="text-gray-600 hover:text-gray-600 hover:bg-gray-100"
                           >
                             Ver
                           </Button>
@@ -296,10 +254,10 @@ const Returns: React.FC = () => {
                             <Button 
                               variant="ghost" 
                               size="sm" 
-                              onClick={() => handleApproveReturn(returnItem)}
-                              className="hover:bg-green-100 text-green-700 hover:text-green-800"
+                              onClick={() => handleProcessReturn(returnItem)}
+                              className="text-blue-600 hover:text-blue-600 hover:bg-blue-50"
                             >
-                              Aprobar
+                              Procesar
                             </Button>
                           )}
                         </div>
@@ -326,7 +284,10 @@ const Returns: React.FC = () => {
       {/* Process Return Form Dialog */}
       <Dialog open={showProcessReturnForm} onOpenChange={setShowProcessReturnForm}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white">
-          <ProcessReturnForm onClose={() => setShowProcessReturnForm(false)} />
+          <ProcessReturnForm 
+            onClose={() => setShowProcessReturnForm(false)}
+            onSuccess={handleNewReturnSuccess}
+          />
         </DialogContent>
       </Dialog>
 
@@ -347,9 +308,13 @@ const Returns: React.FC = () => {
                   <p className="text-gray-900">{selectedReturn.hospitalName}</p>
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-gray-700">Coordinador</label>
-                  <p className="text-gray-900">{selectedReturn.coordinatorName}</p>
+                  <label className="text-sm font-medium text-gray-700">Fecha de Devolución</label>
+                  <p className="text-gray-900">{new Date(selectedReturn.returnDate).toLocaleDateString()}</p>
                 </div>
+              </div>
+              <div>
+                <label className="text-sm font-medium text-gray-700">Motivo de la Devolución</label>
+                <p className="text-gray-900">{selectedReturn.reason}</p>
               </div>
               <div>
                 <label className="text-sm font-medium text-gray-700">Productos Devueltos</label>
@@ -358,7 +323,7 @@ const Returns: React.FC = () => {
                     <div key={index} className="flex justify-between items-center p-2 bg-gray-50 rounded">
                       <span>{item.productName}</span>
                       <span className="text-sm text-gray-600">
-                        {item.quantity} - {item.condition}
+                        Cantidad: {item.quantity}
                       </span>
                     </div>
                   ))}
