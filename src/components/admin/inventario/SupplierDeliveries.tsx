@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -10,6 +9,7 @@ import { Truck, Plus, Search, Calendar, Package, CheckCircle } from 'lucide-reac
 import { motion } from 'framer-motion';
 import DataPagination from '@/components/ui/data-pagination';
 import { usePagination } from '@/hooks/usePagination';
+import NewDeliveryForm from './NewDeliveryForm';
 
 interface Delivery {
   id: string;
@@ -26,6 +26,8 @@ interface Delivery {
 
 const SupplierDeliveries: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [showNewDeliveryForm, setShowNewDeliveryForm] = useState(false);
+  const [selectedDelivery, setSelectedDelivery] = useState<Delivery | null>(null);
 
   const mockDeliveries: Delivery[] = [
     {
@@ -99,6 +101,11 @@ const SupplierDeliveries: React.FC = () => {
     }
   };
 
+  const handleViewDetails = (delivery: Delivery) => {
+    setSelectedDelivery(delivery);
+    console.log('Ver detalles de entrega:', delivery);
+  };
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -111,25 +118,13 @@ const SupplierDeliveries: React.FC = () => {
           <h2 className="text-2xl font-bold text-gray-900">Entregas de Proveedores</h2>
           <p className="text-gray-600">Gestiona las entregas y recepciones de inventario</p>
         </div>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button className="bg-primary-prosalud hover:bg-primary-prosalud-dark text-white">
-              <Plus className="h-4 w-4 mr-2" />
-              Nueva Entrega
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-2xl">
-            <DialogHeader>
-              <DialogTitle>Registrar Nueva Entrega</DialogTitle>
-              <DialogDescription>
-                Registra una nueva entrega de proveedor al inventario
-              </DialogDescription>
-            </DialogHeader>
-            <div className="p-4">
-              <p className="text-gray-600">Formulario de nueva entrega - Por implementar</p>
-            </div>
-          </DialogContent>
-        </Dialog>
+        <Button 
+          className="bg-primary-prosalud hover:bg-primary-prosalud-dark text-white"
+          onClick={() => setShowNewDeliveryForm(true)}
+        >
+          <Plus className="h-4 w-4 mr-2" />
+          Nueva Entrega
+        </Button>
       </motion.div>
 
       {/* Search */}
@@ -216,7 +211,8 @@ const SupplierDeliveries: React.FC = () => {
                         <Button 
                           variant="ghost" 
                           size="sm" 
-                          className="hover:bg-gray-100 text-gray-700 hover:text-gray-700"
+                          onClick={() => handleViewDetails(delivery)}
+                          className="hover:bg-gray-100 text-gray-700 hover:text-gray-900"
                         >
                           Ver Detalles
                         </Button>
@@ -239,6 +235,52 @@ const SupplierDeliveries: React.FC = () => {
           </CardContent>
         </Card>
       </motion.div>
+
+      {/* New Delivery Form Dialog */}
+      <Dialog open={showNewDeliveryForm} onOpenChange={setShowNewDeliveryForm}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white">
+          <NewDeliveryForm onClose={() => setShowNewDeliveryForm(false)} />
+        </DialogContent>
+      </Dialog>
+
+      {/* Delivery Details Dialog */}
+      {selectedDelivery && (
+        <Dialog open={!!selectedDelivery} onOpenChange={() => setSelectedDelivery(null)}>
+          <DialogContent className="max-w-2xl bg-white">
+            <DialogHeader>
+              <DialogTitle>Detalles de Entrega #{selectedDelivery.id}</DialogTitle>
+              <DialogDescription>
+                Información detallada de la entrega
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-medium text-gray-700">Proveedor</label>
+                  <p className="text-gray-900">{selectedDelivery.supplierName}</p>
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-gray-700">Fecha</label>
+                  <p className="text-gray-900">{new Date(selectedDelivery.deliveryDate).toLocaleDateString()}</p>
+                </div>
+              </div>
+              <div>
+                <label className="text-sm font-medium text-gray-700">Productos</label>
+                <div className="mt-2 space-y-2">
+                  {selectedDelivery.items.map((item, index) => (
+                    <div key={index} className="flex justify-between items-center p-2 bg-gray-50 rounded">
+                      <span>{item.productName}</span>
+                      <span className="text-sm text-gray-600">
+                        {item.received}/{item.quantity}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 };

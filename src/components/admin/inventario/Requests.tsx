@@ -31,6 +31,7 @@ const Requests: React.FC = () => {
   const [statusFilter, setStatusFilter] = useState('all');
   const [priorityFilter, setPriorityFilter] = useState('all');
   const [showNewRequestForm, setShowNewRequestForm] = useState(false);
+  const [selectedRequest, setSelectedRequest] = useState<Request | null>(null);
 
   const mockRequests: Request[] = [
     {
@@ -137,6 +138,16 @@ const Requests: React.FC = () => {
       case 'low': return 'Baja';
       default: return priority;
     }
+  };
+
+  const handleViewRequest = (request: Request) => {
+    setSelectedRequest(request);
+    console.log('Ver solicitud:', request);
+  };
+
+  const handleApproveRequest = (request: Request) => {
+    console.log('Aprobar solicitud:', request);
+    // Aquí iría la lógica para aprobar la solicitud
   };
 
   return (
@@ -279,11 +290,21 @@ const Requests: React.FC = () => {
                       </TableCell>
                       <TableCell className="text-right">
                         <div className="flex justify-end space-x-2">
-                          <Button variant="ghost" size="sm" className="hover:bg-primary-prosalud-light/10">
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            onClick={() => handleViewRequest(request)}
+                            className="hover:bg-gray-100 text-gray-700 hover:text-gray-900"
+                          >
                             Ver
                           </Button>
                           {request.status === 'pending' && (
-                            <Button variant="ghost" size="sm" className="hover:bg-green-100 text-green-700">
+                            <Button 
+                              variant="ghost" 
+                              size="sm" 
+                              onClick={() => handleApproveRequest(request)}
+                              className="hover:bg-green-100 text-green-700 hover:text-green-800"
+                            >
                               Aprobar
                             </Button>
                           )}
@@ -314,6 +335,45 @@ const Requests: React.FC = () => {
           <NewRequestForm onClose={() => setShowNewRequestForm(false)} />
         </DialogContent>
       </Dialog>
+
+      {/* Request Details Dialog */}
+      {selectedRequest && (
+        <Dialog open={!!selectedRequest} onOpenChange={() => setSelectedRequest(null)}>
+          <DialogContent className="max-w-2xl bg-white">
+            <DialogHeader>
+              <DialogTitle>Detalles de Solicitud #{selectedRequest.id}</DialogTitle>
+              <DialogDescription>
+                Información detallada de la solicitud
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-medium text-gray-700">Hospital</label>
+                  <p className="text-gray-900">{selectedRequest.hospitalName}</p>
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-gray-700">Coordinador</label>
+                  <p className="text-gray-900">{selectedRequest.coordinatorName}</p>
+                </div>
+              </div>
+              <div>
+                <label className="text-sm font-medium text-gray-700">Productos Solicitados</label>
+                <div className="mt-2 space-y-2">
+                  {selectedRequest.items.map((item, index) => (
+                    <div key={index} className="flex justify-between items-center p-2 bg-gray-50 rounded">
+                      <span>{item.productName}</span>
+                      <span className="text-sm text-gray-600">
+                        Cantidad: {item.quantity}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 };

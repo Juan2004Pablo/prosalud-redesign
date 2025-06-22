@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -153,6 +152,15 @@ const ProductManagement: React.FC = () => {
       case 'implemento': return 'Implementos';
       default: return category;
     }
+  };
+
+  const handleViewProduct = (product: ProductWithVariants) => {
+    console.log('Ver producto:', product);
+  };
+
+  const handleEditProduct = (product: ProductWithVariants) => {
+    setSelectedProduct(product);
+    setIsProductDialogOpen(true);
   };
 
   return (
@@ -311,18 +319,16 @@ const ProductManagement: React.FC = () => {
                             <Button 
                               variant="ghost" 
                               size="sm"
-                              className="hover:bg-primary-prosalud-light/10"
+                              onClick={() => handleViewProduct(product)}
+                              className="hover:bg-gray-100 text-gray-700 hover:text-gray-900"
                             >
                               <Eye className="h-4 w-4" />
                             </Button>
                             <Button 
                               variant="ghost" 
                               size="sm"
-                              onClick={() => {
-                                setSelectedProduct(product);
-                                setIsProductDialogOpen(true);
-                              }}
-                              className="hover:bg-primary-prosalud-light/10"
+                              onClick={() => handleEditProduct(product)}
+                              className="hover:bg-gray-100 text-gray-700 hover:text-gray-900"
                             >
                               <Edit className="h-4 w-4" />
                             </Button>

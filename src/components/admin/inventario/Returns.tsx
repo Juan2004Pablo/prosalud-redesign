@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -11,7 +10,7 @@ import { motion } from 'framer-motion';
 import DataPagination from '@/components/ui/data-pagination';
 import { usePagination } from '@/hooks/usePagination';
 import ProcessReturnForm from './ProcessReturnForm';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 interface Return {
   id: string;
@@ -33,6 +32,7 @@ const Returns: React.FC = () => {
   const [statusFilter, setStatusFilter] = useState('all');
   const [reasonFilter, setReasonFilter] = useState('all');
   const [showProcessReturnForm, setShowProcessReturnForm] = useState(false);
+  const [selectedReturn, setSelectedReturn] = useState<Return | null>(null);
 
   const mockReturns: Return[] = [
     {
@@ -135,6 +135,16 @@ const Returns: React.FC = () => {
       case 'other': return 'Otro';
       default: return reason;
     }
+  };
+
+  const handleViewReturn = (returnItem: Return) => {
+    setSelectedReturn(returnItem);
+    console.log('Ver devolución:', returnItem);
+  };
+
+  const handleApproveReturn = (returnItem: Return) => {
+    console.log('Aprobar devolución:', returnItem);
+    // Aquí iría la lógica para aprobar la devolución
   };
 
   return (
@@ -274,11 +284,21 @@ const Returns: React.FC = () => {
                       </TableCell>
                       <TableCell className="text-right">
                         <div className="flex justify-end space-x-2">
-                          <Button variant="ghost" size="sm" className="hover:bg-primary-prosalud-light/10">
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            onClick={() => handleViewReturn(returnItem)}
+                            className="hover:bg-gray-100 text-gray-700 hover:text-gray-900"
+                          >
                             Ver
                           </Button>
                           {returnItem.status === 'pending' && (
-                            <Button variant="ghost" size="sm" className="hover:bg-green-100 text-green-700">
+                            <Button 
+                              variant="ghost" 
+                              size="sm" 
+                              onClick={() => handleApproveReturn(returnItem)}
+                              className="hover:bg-green-100 text-green-700 hover:text-green-800"
+                            >
                               Aprobar
                             </Button>
                           )}
@@ -309,6 +329,45 @@ const Returns: React.FC = () => {
           <ProcessReturnForm onClose={() => setShowProcessReturnForm(false)} />
         </DialogContent>
       </Dialog>
+
+      {/* Return Details Dialog */}
+      {selectedReturn && (
+        <Dialog open={!!selectedReturn} onOpenChange={() => setSelectedReturn(null)}>
+          <DialogContent className="max-w-2xl bg-white">
+            <DialogHeader>
+              <DialogTitle>Detalles de Devolución #{selectedReturn.id}</DialogTitle>
+              <DialogDescription>
+                Información detallada de la devolución
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-medium text-gray-700">Hospital</label>
+                  <p className="text-gray-900">{selectedReturn.hospitalName}</p>
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-gray-700">Coordinador</label>
+                  <p className="text-gray-900">{selectedReturn.coordinatorName}</p>
+                </div>
+              </div>
+              <div>
+                <label className="text-sm font-medium text-gray-700">Productos Devueltos</label>
+                <div className="mt-2 space-y-2">
+                  {selectedReturn.items.map((item, index) => (
+                    <div key={index} className="flex justify-between items-center p-2 bg-gray-50 rounded">
+                      <span>{item.productName}</span>
+                      <span className="text-sm text-gray-600">
+                        {item.quantity} - {item.condition}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 };
