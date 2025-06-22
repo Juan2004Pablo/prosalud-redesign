@@ -10,7 +10,7 @@ import { motion } from 'framer-motion';
 import DataPagination from '@/components/ui/data-pagination';
 import { usePagination } from '@/hooks/usePagination';
 import NewRequestForm from './NewRequestForm';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 
 interface Request {
   id: string;
@@ -294,7 +294,7 @@ const Requests: React.FC = () => {
                             variant="ghost" 
                             size="sm" 
                             onClick={() => handleViewRequest(request)}
-                            className="hover:bg-gray-100 text-gray-700 hover:text-gray-900"
+                            className="hover:bg-gray-100 text-gray-700"
                           >
                             Ver
                           </Button>
@@ -303,7 +303,7 @@ const Requests: React.FC = () => {
                               variant="ghost" 
                               size="sm" 
                               onClick={() => handleApproveRequest(request)}
-                              className="hover:bg-green-100 text-green-700 hover:text-green-800"
+                              className="hover:bg-green-100 text-green-700"
                             >
                               Aprobar
                             </Button>
