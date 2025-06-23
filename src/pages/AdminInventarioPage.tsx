@@ -19,10 +19,12 @@ import SupplierDeliveries from '@/components/admin/inventario/SupplierDeliveries
 import Returns from '@/components/admin/inventario/Returns';
 import Requests from '@/components/admin/inventario/Requests';
 import QuickActionsDialog from '@/components/admin/inventario/QuickActionsDialog';
+import ExportReportDialog from '@/components/admin/inventario/ExportReportDialog';
 
 const AdminInventarioPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState('overview');
   const [quickActionsOpen, setQuickActionsOpen] = useState(false);
+  const [exportReportOpen, setExportReportOpen] = useState(false);
 
   const tabs = [
     { id: 'overview', label: 'Resumen', icon: BarChart3 },
@@ -50,7 +52,11 @@ const AdminInventarioPage: React.FC = () => {
             </p>
           </div>
           <div className="flex gap-2">
-            <Button variant="outline" className="hover:bg-primary-prosalud hover:text-white transition-all duration-200">
+            <Button 
+              variant="outline" 
+              className="hover:bg-primary-prosalud hover:text-white transition-all duration-200"
+              onClick={() => setExportReportOpen(true)}
+            >
               <FileText className="h-4 w-4 mr-2" />
               Exportar Reporte
             </Button>
@@ -106,8 +112,9 @@ const AdminInventarioPage: React.FC = () => {
           </Tabs>
         </motion.div>
 
-        {/* Quick Actions Dialog */}
+        {/* Dialogs */}
         <QuickActionsDialog open={quickActionsOpen} onOpenChange={setQuickActionsOpen} />
+        <ExportReportDialog open={exportReportOpen} onOpenChange={setExportReportOpen} />
       </div>
     </AdminLayout>
   );
