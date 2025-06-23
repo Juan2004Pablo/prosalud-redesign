@@ -23,7 +23,7 @@ interface ExportReportDialogProps {
 }
 
 const ExportReportDialog: React.FC<ExportReportDialogProps> = ({ open, onOpenChange }) => {
-  const [format, setFormat<'pdf' | 'excel'>('pdf')>();
+  const [format, setFormat] = useState<'pdf' | 'excel'>('pdf');
   const [reportType, setReportType] = useState('full');
   const [isGenerating, setIsGenerating] = useState(false);
   const { toast } = useToast();
