@@ -42,7 +42,6 @@ const ExportReportDialog: React.FC<ExportReportDialogProps> = ({ open, onOpenCha
       {
         name: 'Uniformes',
         description: 'Uniformes médicos para personal de salud',
-        icon: '👔',
         products: [
           { name: 'Uniforme Azul - Talla S', stock: 15, min: 10, max: 50, status: 'ok', value: 45000, sku: 'UNI-AZ-S', location: 'A-1-01' },
           { name: 'Uniforme Azul - Talla M', stock: 3, min: 10, max: 50, status: 'low', value: 45000, sku: 'UNI-AZ-M', location: 'A-1-02' },
@@ -58,7 +57,6 @@ const ExportReportDialog: React.FC<ExportReportDialogProps> = ({ open, onOpenCha
       {
         name: 'Tapabocas',
         description: 'Equipos de protección respiratoria',
-        icon: '😷',
         products: [
           { name: 'Tapabocas Quirúrgico', stock: 1200, min: 500, max: 2000, status: 'ok', value: 800, sku: 'TAP-QUI', location: 'B-1-01' },
           { name: 'Tapabocas N95', stock: 45, min: 100, max: 500, status: 'low', value: 2500, sku: 'TAP-N95', location: 'B-1-02' },
@@ -69,7 +67,6 @@ const ExportReportDialog: React.FC<ExportReportDialogProps> = ({ open, onOpenCha
       {
         name: 'Batas',
         description: 'Batas médicas y de laboratorio',
-        icon: '🥼',
         products: [
           { name: 'Bata Blanca - Talla S', stock: 12, min: 8, max: 30, status: 'ok', value: 35000, sku: 'BAT-BL-S', location: 'C-1-01' },
           { name: 'Bata Blanca - Talla M', stock: 18, min: 12, max: 40, status: 'ok', value: 35000, sku: 'BAT-BL-M', location: 'C-1-02' },
@@ -81,7 +78,6 @@ const ExportReportDialog: React.FC<ExportReportDialogProps> = ({ open, onOpenCha
       {
         name: 'Regalos',
         description: 'Artículos promocionales y de bienestar',
-        icon: '🎁',
         products: [
           { name: 'Kit de Bienvenida', stock: 15, min: 10, max: 50, status: 'ok', value: 25000, sku: 'REG-KIT', location: 'D-1-01' },
           { name: 'Termo ProSalud', stock: 8, min: 5, max: 30, status: 'ok', value: 18000, sku: 'REG-TER', location: 'D-1-02' },
@@ -126,189 +122,219 @@ const ExportReportDialog: React.FC<ExportReportDialogProps> = ({ open, onOpenCha
       minute: '2-digit'
     });
     
-    // Colores ProSalud (properly typed as tuples)
-    const primaryColor: [number, number, number] = [37, 99, 235]; // Azul ProSalud
-    const secondaryColor: [number, number, number] = [249, 250, 251]; // Gris claro
-    const accentColor: [number, number, number] = [16, 185, 129]; // Verde
-    const warningColor: [number, number, number] = [245, 158, 11]; // Amarillo
+    // Colores profesionales
+    const primaryColor: [number, number, number] = [31, 41, 55]; // Gris oscuro profesional
+    const secondaryColor: [number, number, number] = [243, 244, 246]; // Gris muy claro
+    const accentColor: [number, number, number] = [59, 130, 246]; // Azul profesional
+    const successColor: [number, number, number] = [34, 197, 94]; // Verde
+    const warningColor: [number, number, number] = [249, 115, 22]; // Naranja
     const dangerColor: [number, number, number] = [239, 68, 68]; // Rojo
 
-    // PÁGINA 1: PORTADA PROFESIONAL
-    doc.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]);
-    doc.rect(0, 0, 210, 80, 'F');
+    // PORTADA PROFESIONAL
+    doc.setFillColor(...primaryColor);
+    doc.rect(0, 0, 210, 60, 'F');
     
-    // Logo y título principal
+    // Encabezado corporativo
     doc.setTextColor(255, 255, 255);
-    doc.setFontSize(28);
+    doc.setFontSize(32);
     doc.setFont('helvetica', 'bold');
-    doc.text('PROSALUD', 20, 35);
+    doc.text('PROSALUD', 20, 30);
     
-    doc.setFontSize(18);
+    doc.setFontSize(14);
     doc.setFont('helvetica', 'normal');
-    doc.text('Sistema de Gestión de Inventario', 20, 50);
+    doc.text('Sistema Integral de Gestión de Inventario', 20, 45);
     
-    // Información del reporte
+    // Título del reporte
     doc.setTextColor(0, 0, 0);
     doc.setFontSize(24);
     doc.setFont('helvetica', 'bold');
     const reportTitle = reportType === 'summary' ? 'REPORTE EJECUTIVO DE INVENTARIO' :
                        reportType === 'lowstock' ? 'REPORTE DE STOCK CRÍTICO' :
                        'REPORTE COMPLETO DE INVENTARIO';
-    doc.text(reportTitle, 20, 110);
+    doc.text(reportTitle, 20, 85);
     
-    // Metadatos en formato profesional
-    doc.setFillColor(secondaryColor[0], secondaryColor[1], secondaryColor[2]);
-    doc.rect(20, 130, 170, 60, 'F');
-    doc.setDrawColor(primaryColor[0], primaryColor[1], primaryColor[2]);
-    doc.rect(20, 130, 170, 60, 'S');
+    // Información del documento
+    doc.setFillColor(...secondaryColor);
+    doc.rect(20, 100, 170, 50, 'F');
+    doc.setDrawColor(...primaryColor);
+    doc.setLineWidth(0.5);
+    doc.rect(20, 100, 170, 50, 'S');
     
-    doc.setFontSize(12);
+    doc.setFontSize(10);
     doc.setFont('helvetica', 'bold');
-    doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
-    doc.text('INFORMACIÓN DEL REPORTE', 25, 145);
+    doc.setTextColor(...primaryColor);
+    doc.text('INFORMACIÓN DEL DOCUMENTO', 25, 115);
     
     doc.setFont('helvetica', 'normal');
     doc.setTextColor(0, 0, 0);
-    doc.setFontSize(10);
-    doc.text(`📅 Fecha de Generación: ${currentDate}`, 25, 160);
-    doc.text(`🆔 ID del Reporte: ${data.metadata.reportId}`, 25, 170);
-    doc.text(`📊 Tipo de Reporte: ${reportTitle}`, 25, 180);
-    doc.text(`⚙️ Versión del Sistema: ${data.metadata.systemVersion}`, 110, 160);
-    doc.text(`📁 Categorías Incluidas: ${data.categories.length.toString()}`, 110, 170);
-    doc.text(`👤 Generado por: ${data.metadata.generatedBy}`, 110, 180);
+    doc.setFontSize(9);
+    
+    // Distribución en dos columnas
+    doc.text(`Fecha de Generación: ${currentDate}`, 25, 125);
+    doc.text(`ID del Reporte: ${data.metadata.reportId}`, 25, 133);
+    doc.text(`Tipo: ${reportTitle}`, 25, 141);
+    
+    doc.text(`Versión del Sistema: ${data.metadata.systemVersion}`, 115, 125);
+    doc.text(`Categorías: ${data.categories.length.toString()}`, 115, 133);
+    doc.text(`Generado por: ${data.metadata.generatedBy}`, 115, 141);
 
-    // Resumen ejecutivo
+    // Métricas principales
     const totalProducts = data.categories.reduce((sum, cat) => sum + cat.products.length, 0);
     const totalStock = data.categories.reduce((sum, cat) => 
       sum + cat.products.reduce((catSum, prod) => catSum + prod.stock, 0), 0);
     const totalValue = data.categories.reduce((sum, cat) => 
       sum + cat.products.reduce((catSum, prod) => catSum + (prod.stock * prod.value), 0), 0);
-    const lowStockItems = data.categories.reduce((sum, cat) => 
-      sum + cat.products.filter(prod => prod.status === 'low' || prod.status === 'critical').length, 0);
     const criticalItems = data.categories.reduce((sum, cat) => 
       sum + cat.products.filter(prod => prod.status === 'critical').length, 0);
+    const lowStockItems = data.categories.reduce((sum, cat) => 
+      sum + cat.products.filter(prod => prod.status === 'low').length, 0);
 
-    // Tarjetas de métricas
-    let yPos = 210;
-    const cardWidth = 80;
-    const cardHeight = 35;
-    const margin = 10;
-
-    // Tarjeta 1: Total Productos
-    doc.setFillColor(accentColor[0], accentColor[1], accentColor[2]);
-    doc.rect(20, yPos, cardWidth, cardHeight, 'F');
-    doc.setTextColor(255, 255, 255);
-    doc.setFontSize(16);
+    // Tabla de métricas
+    let yPos = 170;
+    
+    doc.setFontSize(12);
     doc.setFont('helvetica', 'bold');
-    doc.text(totalProducts.toString(), 35, yPos + 15);
-    doc.setFontSize(9);
-    doc.text('📦 Total Productos', 25, yPos + 28);
+    doc.setTextColor(...primaryColor);
+    doc.text('RESUMEN EJECUTIVO', 20, yPos);
+    
+    yPos += 15;
+    
+    const metricsData = [
+      ['Total de Productos', totalProducts.toLocaleString()],
+      ['Stock Total', totalStock.toLocaleString() + ' unidades'],
+      ['Valor Total del Inventario', '$' + totalValue.toLocaleString()],
+      ['Productos con Stock Crítico', criticalItems.toString()],
+      ['Productos con Stock Bajo', lowStockItems.toString()]
+    ];
 
-    // Tarjeta 2: Stock Total
-    doc.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]);
-    doc.rect(20 + cardWidth + margin, yPos, cardWidth, cardHeight, 'F');
-    doc.text(totalStock.toLocaleString(), 35 + cardWidth + margin, yPos + 15);
-    doc.text('📊 Stock Total', 25 + cardWidth + margin, yPos + 28);
+    autoTable(doc, {
+      startY: yPos,
+      head: [['Métrica', 'Valor']],
+      body: metricsData,
+      theme: 'striped',
+      headStyles: { 
+        fillColor: primaryColor, 
+        textColor: [255, 255, 255],
+        fontSize: 10,
+        fontStyle: 'bold'
+      },
+      bodyStyles: { 
+        fontSize: 9,
+        textColor: [0, 0, 0]
+      },
+      alternateRowStyles: { fillColor: secondaryColor },
+      columnStyles: {
+        0: { cellWidth: 80, fontStyle: 'bold' },
+        1: { cellWidth: 90, halign: 'right' }
+      },
+      margin: { left: 20, right: 20 }
+    });
 
-    // Tarjeta 3: Valor Total
-    if (reportType !== 'lowstock') {
-      yPos += cardHeight + margin;
-      doc.setFillColor(accentColor[0], accentColor[1], accentColor[2]);
-      doc.rect(20, yPos, cardWidth, cardHeight, 'F');
-      doc.text(`$${(totalValue / 1000000).toFixed(1)}M`, 30, yPos + 15);
-      doc.text('💰 Valor Total', 25, yPos + 28);
-    }
-
-    // Tarjeta 4: Items Críticos
-    doc.setFillColor(dangerColor[0], dangerColor[1], dangerColor[2]);
-    doc.rect(20 + cardWidth + margin, yPos, cardWidth, cardHeight, 'F');
-    doc.text(criticalItems.toString(), 35 + cardWidth + margin, yPos + 15);
-    doc.text('🚨 Stock Crítico', 25 + cardWidth + margin, yPos + 28);
-
-    // PÁGINA 2+: DETALLE POR CATEGORÍAS
+    // PÁGINAS DE DETALLE POR CATEGORÍAS
     if (reportType !== 'summary') {
       data.categories.forEach((category, index) => {
         if (category.products.length === 0) return;
         
         doc.addPage();
         
-        // Header de categoría
-        doc.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]);
-        doc.rect(0, 0, 210, 40, 'F');
+        // Encabezado de categoría
+        doc.setFillColor(...primaryColor);
+        doc.rect(0, 0, 210, 35, 'F');
         
         doc.setTextColor(255, 255, 255);
-        doc.setFontSize(20);
+        doc.setFontSize(18);
         doc.setFont('helvetica', 'bold');
-        doc.text(`${category.icon} ${category.name.toUpperCase()}`, 20, 25);
+        doc.text(category.name.toUpperCase(), 20, 22);
         
-        doc.setFontSize(11);
+        doc.setFontSize(10);
         doc.setFont('helvetica', 'normal');
-        doc.text(category.description, 20, 35);
+        doc.text(category.description, 20, 30);
 
         // Estadísticas de la categoría
         const catTotalStock = category.products.reduce((sum, prod) => sum + prod.stock, 0);
         const catTotalValue = category.products.reduce((sum, prod) => sum + (prod.stock * prod.value), 0);
-        const catLowStock = category.products.filter(prod => prod.status === 'low' || prod.status === 'critical').length;
+        const catCriticalItems = category.products.filter(prod => prod.status === 'critical').length;
+        const catLowItems = category.products.filter(prod => prod.status === 'low').length;
 
+        // Información de la categoría en tabla limpia
         doc.setTextColor(0, 0, 0);
-        doc.setFontSize(10);
-        let statsY = 55;
-        doc.text(`📦 Productos en categoría: ${category.products.length.toString()}`, 20, statsY);
-        doc.text(`📊 Stock total: ${catTotalStock.toLocaleString()}`, 80, statsY);
-        doc.text(`💰 Valor: $${catTotalValue.toLocaleString()}`, 140, statsY);
-        if (catLowStock > 0) {
-          doc.setTextColor(dangerColor[0], dangerColor[1], dangerColor[2]);
-          doc.text(`⚠️ Requieren atención: ${catLowStock.toString()}`, 20, statsY + 10);
-        }
+        let catYPos = 50;
+        
+        const categoryStats = [
+          ['Productos en categoría', category.products.length.toString()],
+          ['Stock total', catTotalStock.toLocaleString() + ' unidades'],
+          ['Valor total', '$' + catTotalValue.toLocaleString()],
+          ['Items críticos', catCriticalItems.toString()],
+          ['Items con stock bajo', catLowItems.toString()]
+        ];
 
-        // Tabla de productos con diseño mejorado
+        autoTable(doc, {
+          startY: catYPos,
+          body: categoryStats,
+          theme: 'plain',
+          styles: { 
+            fontSize: 9,
+            cellPadding: 2
+          },
+          columnStyles: {
+            0: { cellWidth: 50, fontStyle: 'bold', textColor: primaryColor },
+            1: { cellWidth: 40, halign: 'right' }
+          },
+          margin: { left: 20 }
+        });
+
+        // Tabla de productos con diseño profesional
         const tableData = category.products.map(product => [
           product.sku,
           product.name,
           product.stock.toString(),
           product.min.toString(),
           product.max.toString(),
-          product.status === 'ok' ? '✅ Óptimo' : 
-          product.status === 'low' ? '⚠️ Bajo' : '🚨 Crítico',
+          product.status === 'ok' ? 'Óptimo' : 
+          product.status === 'low' ? 'Bajo' : 'Crítico',
           product.location,
-          `$${(product.stock * product.value).toLocaleString()}`
+          '$' + (product.stock * product.value).toLocaleString()
         ]);
 
         autoTable(doc, {
-          startY: statsY + 20,
+          startY: doc.lastAutoTable.finalY + 15,
           head: [['SKU', 'Producto', 'Stock', 'Mín', 'Máx', 'Estado', 'Ubicación', 'Valor Total']],
           body: tableData,
-          theme: 'grid',
+          theme: 'striped',
           headStyles: { 
             fillColor: primaryColor, 
-            textColor: 255,
+            textColor: [255, 255, 255],
             fontSize: 9,
             fontStyle: 'bold'
           },
           alternateRowStyles: { fillColor: secondaryColor },
           styles: { 
             fontSize: 8,
-            cellPadding: 3
+            cellPadding: 3,
+            lineColor: [200, 200, 200],
+            lineWidth: 0.1
           },
           columnStyles: {
-            0: { cellWidth: 18 },
-            1: { cellWidth: 45 },
+            0: { cellWidth: 20 },
+            1: { cellWidth: 50 },
             2: { cellWidth: 15, halign: 'center' },
             3: { cellWidth: 12, halign: 'center' },
             4: { cellWidth: 12, halign: 'center' },
-            5: { cellWidth: 20, halign: 'center' },
+            5: { cellWidth: 18, halign: 'center' },
             6: { cellWidth: 18, halign: 'center' },
             7: { cellWidth: 25, halign: 'right' }
           },
           didParseCell: function(data) {
             if (data.row.index >= 0 && data.column.index === 5) {
-              const cellText = data.cell.raw?.toString() || '';
-              if (cellText.includes('🚨')) {
+              const cellText = data.cell.raw as string;
+              if (cellText === 'Crítico') {
                 data.cell.styles.textColor = dangerColor;
-              } else if (cellText.includes('⚠️')) {
+                data.cell.styles.fontStyle = 'bold';
+              } else if (cellText === 'Bajo') {
                 data.cell.styles.textColor = warningColor;
+                data.cell.styles.fontStyle = 'bold';
               } else {
-                data.cell.styles.textColor = accentColor;
+                data.cell.styles.textColor = successColor;
               }
             }
           }
@@ -316,53 +342,81 @@ const ExportReportDialog: React.FC<ExportReportDialogProps> = ({ open, onOpenCha
       });
     }
 
-    // Página final: Recomendaciones
+    // Página de recomendaciones profesionales
     doc.addPage();
-    doc.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]);
-    doc.rect(0, 0, 210, 30, 'F');
+    doc.setFillColor(...primaryColor);
+    doc.rect(0, 0, 210, 25, 'F');
     
     doc.setTextColor(255, 255, 255);
-    doc.setFontSize(18);
+    doc.setFontSize(16);
     doc.setFont('helvetica', 'bold');
-    doc.text('🎯 RECOMENDACIONES Y ACCIONES', 20, 20);
+    doc.text('ANÁLISIS Y RECOMENDACIONES', 20, 17);
 
     doc.setTextColor(0, 0, 0);
-    doc.setFontSize(11);
-    let recY = 50;
+    let recY = 45;
 
     if (criticalItems > 0) {
+      doc.setFontSize(12);
       doc.setFont('helvetica', 'bold');
-      doc.setTextColor(dangerColor[0], dangerColor[1], dangerColor[2]);
-      doc.text('🚨 ACCIONES URGENTES:', 20, recY);
+      doc.setTextColor(...dangerColor);
+      doc.text('ACCIONES URGENTES REQUERIDAS', 20, recY);
+      
       doc.setFont('helvetica', 'normal');
+      doc.setFontSize(10);
       doc.setTextColor(0, 0, 0);
       doc.text(`• ${criticalItems.toString()} productos requieren reposición inmediata`, 25, recY + 10);
-      doc.text('• Contactar proveedores para pedidos de emergencia', 25, recY + 20);
-      recY += 35;
+      doc.text('• Contactar proveedores para pedidos de emergencia', 25, recY + 18);
+      doc.text('• Revisar procesos de distribución para evitar desabastecimiento', 25, recY + 26);
+      recY += 45;
     }
 
-    if (lowStockItems > criticalItems) {
+    if (lowStockItems > 0) {
+      doc.setFontSize(12);
       doc.setFont('helvetica', 'bold');
-      doc.setTextColor(warningColor[0], warningColor[1], warningColor[2]);
-      doc.text('⚠️ PLANIFICACIÓN A CORTO PLAZO:', 20, recY);
+      doc.setTextColor(...warningColor);
+      doc.text('PLANIFICACIÓN A CORTO PLAZO', 20, recY);
+      
       doc.setFont('helvetica', 'normal');
+      doc.setFontSize(10);
       doc.setTextColor(0, 0, 0);
-      doc.text(`• ${(lowStockItems - criticalItems).toString()} productos necesitan reposición planificada`, 25, recY + 10);
-      doc.text('• Revisar patrones de consumo para optimizar niveles mínimos', 25, recY + 20);
-      recY += 35;
+      doc.text(`• ${lowStockItems.toString()} productos necesitan reposición planificada`, 25, recY + 10);
+      doc.text('• Evaluar patrones de consumo para optimizar niveles mínimos', 25, recY + 18);
+      doc.text('• Coordinar con hospitales para validar demanda proyectada', 25, recY + 26);
+      recY += 45;
     }
 
-    // Footer en todas las páginas
+    // Recomendaciones generales
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(...accentColor);
+    doc.text('MEJORAS OPERACIONALES', 20, recY);
+    
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    doc.setTextColor(0, 0, 0);
+    doc.text('• Implementar alertas automáticas para productos con stock bajo', 25, recY + 10);
+    doc.text('• Establecer reuniones semanales de revisión de inventario', 25, recY + 18);
+    doc.text('• Optimizar ubicaciones de almacenamiento según rotación', 25, recY + 26);
+
+    // Footer profesional en todas las páginas
     const pageCount = doc.getNumberOfPages();
     for (let i = 1; i <= pageCount; i++) {
       doc.setPage(i);
+      
+      // Línea separadora
+      doc.setDrawColor(...primaryColor);
+      doc.setLineWidth(0.5);
+      doc.line(20, 280, 190, 280);
+      
       doc.setFontSize(8);
-      doc.setTextColor(128, 128, 128);
+      doc.setTextColor(100, 100, 100);
+      doc.setFont('helvetica', 'normal');
       doc.text('ProSalud - Sistema de Gestión de Inventario', 20, 285);
-      doc.text(`Página ${i.toString()} de ${pageCount.toString()}`, 170, 285);
+      doc.text(`Página ${i.toString()} de ${pageCount.toString()}`, 160, 285);
+      
       if (i > 1) {
-        doc.text(`📅 ${currentDate}`, 20, 290);
-        doc.text(`🆔 ${data.metadata.reportId}`, 170, 290);
+        doc.text(currentDate, 20, 290);
+        doc.text(data.metadata.reportId, 160, 290);
       }
     }
 
@@ -468,7 +522,6 @@ const ExportReportDialog: React.FC<ExportReportDialogProps> = ({ open, onOpenCha
         toast({
           title: "Reporte PDF Generado",
           description: `El reporte ${reportTypeText.toLowerCase()} en PDF se ha descargado exitosamente`,
-          variant: "default"
         });
       } else {
         const wb = generateExcelReport();
@@ -477,7 +530,6 @@ const ExportReportDialog: React.FC<ExportReportDialogProps> = ({ open, onOpenCha
         toast({
           title: "Reporte Excel Generado",
           description: `El reporte ${reportTypeText.toLowerCase()} en Excel se ha descargado exitosamente`,
-          variant: "default"
         });
       }
 
@@ -539,19 +591,16 @@ const ExportReportDialog: React.FC<ExportReportDialogProps> = ({ open, onOpenCha
               <SelectContent>
                 <SelectItem value="full">
                   <div className="flex items-center space-x-2">
-                    <span>📊</span>
                     <span>Reporte Completo</span>
                   </div>
                 </SelectItem>
                 <SelectItem value="summary">
                   <div className="flex items-center space-x-2">
-                    <span>📈</span>
                     <span>Reporte Ejecutivo</span>
                   </div>
                 </SelectItem>
                 <SelectItem value="lowstock">
                   <div className="flex items-center space-x-2">
-                    <span>⚠️</span>
                     <span>Solo Stock Crítico</span>
                   </div>
                 </SelectItem>
