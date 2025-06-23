@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -28,142 +29,329 @@ const ExportReportDialog: React.FC<ExportReportDialogProps> = ({ open, onOpenCha
   const [isGenerating, setIsGenerating] = useState(false);
   const { toast } = useToast();
 
-  // Mock data del inventario
+  // Mock data del inventario expandido
   const inventoryData = {
+    metadata: {
+      lastUpdate: new Date().toLocaleDateString('es-ES'),
+      totalCategories: 4,
+      systemVersion: '2.1.0',
+      generatedBy: 'Sistema ProSalud',
+      reportId: 'RPT-' + Date.now()
+    },
     categories: [
       {
         name: 'Uniformes',
+        description: 'Uniformes médicos para personal de salud',
+        icon: '👔',
         products: [
-          { name: 'Uniforme Azul - Talla S', stock: 15, min: 10, max: 50, status: 'ok', value: 45000 },
-          { name: 'Uniforme Azul - Talla M', stock: 3, min: 10, max: 50, status: 'low', value: 45000 },
-          { name: 'Uniforme Azul - Talla L', stock: 25, min: 15, max: 60, status: 'ok', value: 45000 },
-          { name: 'Uniforme Verde - Talla S', stock: 1, min: 5, max: 30, status: 'critical', value: 45000 },
-          { name: 'Uniforme Verde - Talla M', stock: 18, min: 10, max: 50, status: 'ok', value: 45000 },
-          { name: 'Uniforme Verde - Talla L', stock: 22, min: 15, max: 60, status: 'ok', value: 45000 },
-          { name: 'Uniforme Blanco - Talla S', stock: 12, min: 8, max: 40, status: 'ok', value: 45000 },
-          { name: 'Uniforme Blanco - Talla M', stock: 20, min: 12, max: 50, status: 'ok', value: 45000 },
-          { name: 'Uniforme Blanco - Talla L', stock: 18, min: 10, max: 50, status: 'ok', value: 45000 }
+          { name: 'Uniforme Azul - Talla S', stock: 15, min: 10, max: 50, status: 'ok', value: 45000, sku: 'UNI-AZ-S', location: 'A-1-01' },
+          { name: 'Uniforme Azul - Talla M', stock: 3, min: 10, max: 50, status: 'low', value: 45000, sku: 'UNI-AZ-M', location: 'A-1-02' },
+          { name: 'Uniforme Azul - Talla L', stock: 25, min: 15, max: 60, status: 'ok', value: 45000, sku: 'UNI-AZ-L', location: 'A-1-03' },
+          { name: 'Uniforme Verde - Talla S', stock: 1, min: 5, max: 30, status: 'critical', value: 45000, sku: 'UNI-VE-S', location: 'A-2-01' },
+          { name: 'Uniforme Verde - Talla M', stock: 18, min: 10, max: 50, status: 'ok', value: 45000, sku: 'UNI-VE-M', location: 'A-2-02' },
+          { name: 'Uniforme Verde - Talla L', stock: 22, min: 15, max: 60, status: 'ok', value: 45000, sku: 'UNI-VE-L', location: 'A-2-03' },
+          { name: 'Uniforme Blanco - Talla S', stock: 12, min: 8, max: 40, status: 'ok', value: 45000, sku: 'UNI-BL-S', location: 'A-3-01' },
+          { name: 'Uniforme Blanco - Talla M', stock: 20, min: 12, max: 50, status: 'ok', value: 45000, sku: 'UNI-BL-M', location: 'A-3-02' },
+          { name: 'Uniforme Blanco - Talla L', stock: 18, min: 10, max: 50, status: 'ok', value: 45000, sku: 'UNI-BL-L', location: 'A-3-03' }
         ]
       },
       {
         name: 'Tapabocas',
+        description: 'Equipos de protección respiratoria',
+        icon: '😷',
         products: [
-          { name: 'Tapabocas Quirúrgico', stock: 1200, min: 500, max: 2000, status: 'ok', value: 800 },
-          { name: 'Tapabocas N95', stock: 45, min: 100, max: 500, status: 'low', value: 2500 },
-          { name: 'Tapabocas de Tela', stock: 800, min: 300, max: 1000, status: 'ok', value: 1200 },
-          { name: 'Tapabocas Pediátrico', stock: 295, min: 200, max: 800, status: 'ok', value: 900 }
+          { name: 'Tapabocas Quirúrgico', stock: 1200, min: 500, max: 2000, status: 'ok', value: 800, sku: 'TAP-QUI', location: 'B-1-01' },
+          { name: 'Tapabocas N95', stock: 45, min: 100, max: 500, status: 'low', value: 2500, sku: 'TAP-N95', location: 'B-1-02' },
+          { name: 'Tapabocas de Tela', stock: 800, min: 300, max: 1000, status: 'ok', value: 1200, sku: 'TAP-TEL', location: 'B-2-01' },
+          { name: 'Tapabocas Pediátrico', stock: 295, min: 200, max: 800, status: 'ok', value: 900, sku: 'TAP-PED', location: 'B-2-02' }
         ]
       },
       {
         name: 'Batas',
+        description: 'Batas médicas y de laboratorio',
+        icon: '🥼',
         products: [
-          { name: 'Bata Blanca - Talla S', stock: 12, min: 8, max: 30, status: 'ok', value: 35000 },
-          { name: 'Bata Blanca - Talla M', stock: 18, min: 12, max: 40, status: 'ok', value: 35000 },
-          { name: 'Bata Blanca - Talla L', stock: 2, min: 8, max: 30, status: 'critical', value: 35000 },
-          { name: 'Bata de Laboratorio - Talla M', stock: 15, min: 10, max: 35, status: 'ok', value: 38000 },
-          { name: 'Bata de Laboratorio - Talla L', stock: 20, min: 12, max: 40, status: 'ok', value: 38000 }
+          { name: 'Bata Blanca - Talla S', stock: 12, min: 8, max: 30, status: 'ok', value: 35000, sku: 'BAT-BL-S', location: 'C-1-01' },
+          { name: 'Bata Blanca - Talla M', stock: 18, min: 12, max: 40, status: 'ok', value: 35000, sku: 'BAT-BL-M', location: 'C-1-02' },
+          { name: 'Bata Blanca - Talla L', stock: 2, min: 8, max: 30, status: 'critical', value: 35000, sku: 'BAT-BL-L', location: 'C-1-03' },
+          { name: 'Bata de Laboratorio - Talla M', stock: 15, min: 10, max: 35, status: 'ok', value: 38000, sku: 'BAT-LAB-M', location: 'C-2-01' },
+          { name: 'Bata de Laboratorio - Talla L', stock: 20, min: 12, max: 40, status: 'ok', value: 38000, sku: 'BAT-LAB-L', location: 'C-2-02' }
         ]
       },
       {
         name: 'Regalos',
+        description: 'Artículos promocionales y de bienestar',
+        icon: '🎁',
         products: [
-          { name: 'Kit de Bienvenida', stock: 15, min: 10, max: 50, status: 'ok', value: 25000 },
-          { name: 'Termo ProSalud', stock: 8, min: 5, max: 30, status: 'ok', value: 18000 },
-          { name: 'Agenda Corporativa', stock: 12, min: 8, max: 40, status: 'ok', value: 12000 },
-          { name: 'USB Corporativo', stock: 3, min: 6, max: 25, status: 'low', value: 15000 }
+          { name: 'Kit de Bienvenida', stock: 15, min: 10, max: 50, status: 'ok', value: 25000, sku: 'REG-KIT', location: 'D-1-01' },
+          { name: 'Termo ProSalud', stock: 8, min: 5, max: 30, status: 'ok', value: 18000, sku: 'REG-TER', location: 'D-1-02' },
+          { name: 'Agenda Corporativa', stock: 12, min: 8, max: 40, status: 'ok', value: 12000, sku: 'REG-AGE', location: 'D-2-01' },
+          { name: 'USB Corporativo', stock: 3, min: 6, max: 25, status: 'low', value: 15000, sku: 'REG-USB', location: 'D-2-02' }
         ]
       }
     ]
   };
 
+  const getFilteredData = () => {
+    switch (reportType) {
+      case 'summary':
+        return {
+          ...inventoryData,
+          categories: inventoryData.categories.map(cat => ({
+            ...cat,
+            products: [] // Solo resumen, sin productos individuales
+          }))
+        };
+      case 'lowstock':
+        return {
+          ...inventoryData,
+          categories: inventoryData.categories.map(cat => ({
+            ...cat,
+            products: cat.products.filter(product => product.status === 'low' || product.status === 'critical')
+          })).filter(cat => cat.products.length > 0)
+        };
+      default:
+        return inventoryData;
+    }
+  };
+
   const generatePDFReport = () => {
     const doc = new jsPDF();
-    const currentDate = new Date().toLocaleDateString('es-ES');
-    
-    // Header con logo y título
-    doc.setFontSize(20);
-    doc.setTextColor(37, 99, 235); // color primary-prosalud
-    doc.text('PROSALUD', 20, 20);
-    
-    doc.setFontSize(16);
-    doc.setTextColor(0, 0, 0);
-    doc.text('Reporte de Inventario', 20, 35);
-    
-    doc.setFontSize(10);
-    doc.text(`Fecha de generación: ${currentDate}`, 20, 45);
-    doc.text('Sistema de Gestión de Inventario ProSalud', 20, 52);
-
-    let yPosition = 65;
-
-    // Resumen general
-    const totalProducts = inventoryData.categories.reduce((sum, cat) => sum + cat.products.length, 0);
-    const totalStock = inventoryData.categories.reduce((sum, cat) => 
-      sum + cat.products.reduce((catSum, prod) => catSum + prod.stock, 0), 0);
-    const totalValue = inventoryData.categories.reduce((sum, cat) => 
-      sum + cat.products.reduce((catSum, prod) => catSum + (prod.stock * prod.value), 0), 0);
-    const lowStockItems = inventoryData.categories.reduce((sum, cat) => 
-      sum + cat.products.filter(prod => prod.status === 'low' || prod.status === 'critical').length, 0);
-
-    doc.setFontSize(12);
-    doc.setTextColor(37, 99, 235);
-    doc.text('RESUMEN GENERAL', 20, yPosition);
-    yPosition += 10;
-
-    doc.setFontSize(10);
-    doc.setTextColor(0, 0, 0);
-    doc.text(`Total de productos: ${totalProducts.toString()}`, 20, yPosition);
-    doc.text(`Stock total: ${totalStock.toLocaleString()}`, 100, yPosition);
-    yPosition += 7;
-    doc.text(`Valor total inventario: $${totalValue.toLocaleString()}`, 20, yPosition);
-    doc.text(`Productos con stock bajo: ${lowStockItems.toString()}`, 100, yPosition);
-    yPosition += 15;
-
-    // Detalle por categorías
-    inventoryData.categories.forEach((category) => {
-      // Verificar si necesitamos una nueva página
-      if (yPosition > 250) {
-        doc.addPage();
-        yPosition = 20;
-      }
-
-      doc.setFontSize(12);
-      doc.setTextColor(37, 99, 235);
-      doc.text(`CATEGORÍA: ${category.name.toUpperCase()}`, 20, yPosition);
-      yPosition += 10;
-
-      // Tabla de productos
-      const tableData = category.products.map(product => [
-        product.name,
-        product.stock.toString(),
-        product.min.toString(),
-        product.max.toString(),
-        product.status === 'ok' ? 'Óptimo' : 
-        product.status === 'low' ? 'Bajo' : 'Crítico',
-        `$${(product.stock * product.value).toLocaleString()}`
-      ]);
-
-      autoTable(doc, {
-        startY: yPosition,
-        head: [['Producto', 'Stock', 'Mín', 'Máx', 'Estado', 'Valor Total']],
-        body: tableData,
-        theme: 'grid',
-        headStyles: { fillColor: [37, 99, 235], textColor: 255 },
-        alternateRowStyles: { fillColor: [249, 250, 251] },
-        styles: { fontSize: 8 },
-        columnStyles: {
-          0: { cellWidth: 70 },
-          1: { cellWidth: 20, halign: 'center' },
-          2: { cellWidth: 20, halign: 'center' },
-          3: { cellWidth: 20, halign: 'center' },
-          4: { cellWidth: 25, halign: 'center' },
-          5: { cellWidth: 35, halign: 'right' }
-        }
-      });
-
-      yPosition = doc.lastAutoTable.finalY + 15;
+    const data = getFilteredData();
+    const currentDate = new Date().toLocaleDateString('es-ES', { 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
     });
+    
+    // Colores ProSalud
+    const primaryColor = [37, 99, 235]; // Azul ProSalud
+    const secondaryColor = [249, 250, 251]; // Gris claro
+    const accentColor = [16, 185, 129]; // Verde
+    const warningColor = [245, 158, 11]; // Amarillo
+    const dangerColor = [239, 68, 68]; // Rojo
 
-    // Footer en la última página
+    // PÁGINA 1: PORTADA PROFESIONAL
+    doc.setFillColor(...primaryColor);
+    doc.rect(0, 0, 210, 80, 'F');
+    
+    // Logo y título principal
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(28);
+    doc.setFont('helvetica', 'bold');
+    doc.text('PROSALUD', 20, 35);
+    
+    doc.setFontSize(18);
+    doc.setFont('helvetica', 'normal');
+    doc.text('Sistema de Gestión de Inventario', 20, 50);
+    
+    // Información del reporte
+    doc.setTextColor(0, 0, 0);
+    doc.setFontSize(24);
+    doc.setFont('helvetica', 'bold');
+    const reportTitle = reportType === 'summary' ? 'REPORTE EJECUTIVO DE INVENTARIO' :
+                       reportType === 'lowstock' ? 'REPORTE DE STOCK CRÍTICO' :
+                       'REPORTE COMPLETO DE INVENTARIO';
+    doc.text(reportTitle, 20, 110);
+    
+    // Metadatos en formato profesional
+    doc.setFillColor(...secondaryColor);
+    doc.rect(20, 130, 170, 60, 'F');
+    doc.setDrawColor(...primaryColor);
+    doc.rect(20, 130, 170, 60, 'S');
+    
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(...primaryColor);
+    doc.text('INFORMACIÓN DEL REPORTE', 25, 145);
+    
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(0, 0, 0);
+    doc.setFontSize(10);
+    doc.text(`📅 Fecha de Generación: ${currentDate}`, 25, 160);
+    doc.text(`🆔 ID del Reporte: ${data.metadata.reportId}`, 25, 170);
+    doc.text(`📊 Tipo de Reporte: ${reportTitle}`, 25, 180);
+    doc.text(`⚙️ Versión del Sistema: ${data.metadata.systemVersion}`, 110, 160);
+    doc.text(`📁 Categorías Incluidas: ${data.categories.length.toString()}`, 110, 170);
+    doc.text(`👤 Generado por: ${data.metadata.generatedBy}`, 110, 180);
+
+    // Resumen ejecutivo
+    const totalProducts = data.categories.reduce((sum, cat) => sum + cat.products.length, 0);
+    const totalStock = data.categories.reduce((sum, cat) => 
+      sum + cat.products.reduce((catSum, prod) => catSum + prod.stock, 0), 0);
+    const totalValue = data.categories.reduce((sum, cat) => 
+      sum + cat.products.reduce((catSum, prod) => catSum + (prod.stock * prod.value), 0), 0);
+    const lowStockItems = data.categories.reduce((sum, cat) => 
+      sum + cat.products.filter(prod => prod.status === 'low' || prod.status === 'critical').length, 0);
+    const criticalItems = data.categories.reduce((sum, cat) => 
+      sum + cat.products.filter(prod => prod.status === 'critical').length, 0);
+
+    // Tarjetas de métricas
+    let yPos = 210;
+    const cardWidth = 80;
+    const cardHeight = 35;
+    const margin = 10;
+
+    // Tarjeta 1: Total Productos
+    doc.setFillColor(...accentColor);
+    doc.rect(20, yPos, cardWidth, cardHeight, 'F');
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(16);
+    doc.setFont('helvetica', 'bold');
+    doc.text(totalProducts.toString(), 35, yPos + 15);
+    doc.setFontSize(9);
+    doc.text('📦 Total Productos', 25, yPos + 28);
+
+    // Tarjeta 2: Stock Total
+    doc.setFillColor(...primaryColor);
+    doc.rect(20 + cardWidth + margin, yPos, cardWidth, cardHeight, 'F');
+    doc.text(totalStock.toLocaleString(), 35 + cardWidth + margin, yPos + 15);
+    doc.text('📊 Stock Total', 25 + cardWidth + margin, yPos + 28);
+
+    // Tarjeta 3: Valor Total
+    if (reportType !== 'lowstock') {
+      yPos += cardHeight + margin;
+      doc.setFillColor(...accentColor);
+      doc.rect(20, yPos, cardWidth, cardHeight, 'F');
+      doc.text(`$${(totalValue / 1000000).toFixed(1)}M`, 30, yPos + 15);
+      doc.text('💰 Valor Total', 25, yPos + 28);
+    }
+
+    // Tarjeta 4: Items Críticos
+    doc.setFillColor(...dangerColor);
+    doc.rect(20 + cardWidth + margin, yPos, cardWidth, cardHeight, 'F');
+    doc.text(criticalItems.toString(), 35 + cardWidth + margin, yPos + 15);
+    doc.text('🚨 Stock Crítico', 25 + cardWidth + margin, yPos + 28);
+
+    // PÁGINA 2+: DETALLE POR CATEGORÍAS
+    if (reportType !== 'summary') {
+      data.categories.forEach((category, index) => {
+        if (category.products.length === 0) return;
+        
+        doc.addPage();
+        
+        // Header de categoría
+        doc.setFillColor(...primaryColor);
+        doc.rect(0, 0, 210, 40, 'F');
+        
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(20);
+        doc.setFont('helvetica', 'bold');
+        doc.text(`${category.icon} ${category.name.toUpperCase()}`, 20, 25);
+        
+        doc.setFontSize(11);
+        doc.setFont('helvetica', 'normal');
+        doc.text(category.description, 20, 35);
+
+        // Estadísticas de la categoría
+        const catTotalStock = category.products.reduce((sum, prod) => sum + prod.stock, 0);
+        const catTotalValue = category.products.reduce((sum, prod) => sum + (prod.stock * prod.value), 0);
+        const catLowStock = category.products.filter(prod => prod.status === 'low' || prod.status === 'critical').length;
+
+        doc.setTextColor(0, 0, 0);
+        doc.setFontSize(10);
+        let statsY = 55;
+        doc.text(`📦 Productos en categoría: ${category.products.length.toString()}`, 20, statsY);
+        doc.text(`📊 Stock total: ${catTotalStock.toLocaleString()}`, 80, statsY);
+        doc.text(`💰 Valor: $${catTotalValue.toLocaleString()}`, 140, statsY);
+        if (catLowStock > 0) {
+          doc.setTextColor(...dangerColor);
+          doc.text(`⚠️ Requieren atención: ${catLowStock.toString()}`, 20, statsY + 10);
+        }
+
+        // Tabla de productos con diseño mejorado
+        const tableData = category.products.map(product => [
+          product.sku,
+          product.name,
+          product.stock.toString(),
+          product.min.toString(),
+          product.max.toString(),
+          product.status === 'ok' ? '✅ Óptimo' : 
+          product.status === 'low' ? '⚠️ Bajo' : '🚨 Crítico',
+          product.location,
+          `$${(product.stock * product.value).toLocaleString()}`
+        ]);
+
+        autoTable(doc, {
+          startY: statsY + 20,
+          head: [['SKU', 'Producto', 'Stock', 'Mín', 'Máx', 'Estado', 'Ubicación', 'Valor Total']],
+          body: tableData,
+          theme: 'grid',
+          headStyles: { 
+            fillColor: primaryColor, 
+            textColor: 255,
+            fontSize: 9,
+            fontStyle: 'bold'
+          },
+          alternateRowStyles: { fillColor: secondaryColor },
+          styles: { 
+            fontSize: 8,
+            cellPadding: 3
+          },
+          columnStyles: {
+            0: { cellWidth: 18 },
+            1: { cellWidth: 45 },
+            2: { cellWidth: 15, halign: 'center' },
+            3: { cellWidth: 12, halign: 'center' },
+            4: { cellWidth: 12, halign: 'center' },
+            5: { cellWidth: 20, halign: 'center' },
+            6: { cellWidth: 18, halign: 'center' },
+            7: { cellWidth: 25, halign: 'right' }
+          },
+          didParseCell: function(data) {
+            if (data.row.index >= 0 && data.column.index === 5) {
+              if (data.cell.raw.includes('🚨')) {
+                data.cell.styles.textColor = dangerColor;
+              } else if (data.cell.raw.includes('⚠️')) {
+                data.cell.styles.textColor = warningColor;
+              } else {
+                data.cell.styles.textColor = accentColor;
+              }
+            }
+          }
+        });
+      });
+    }
+
+    // Página final: Recomendaciones
+    doc.addPage();
+    doc.setFillColor(...primaryColor);
+    doc.rect(0, 0, 210, 30, 'F');
+    
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(18);
+    doc.setFont('helvetica', 'bold');
+    doc.text('🎯 RECOMENDACIONES Y ACCIONES', 20, 20);
+
+    doc.setTextColor(0, 0, 0);
+    doc.setFontSize(11);
+    let recY = 50;
+
+    if (criticalItems > 0) {
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(...dangerColor);
+      doc.text('🚨 ACCIONES URGENTES:', 20, recY);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(0, 0, 0);
+      doc.text(`• ${criticalItems.toString()} productos requieren reposición inmediata`, 25, recY + 10);
+      doc.text('• Contactar proveedores para pedidos de emergencia', 25, recY + 20);
+      recY += 35;
+    }
+
+    if (lowStockItems > criticalItems) {
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(...warningColor);
+      doc.text('⚠️ PLANIFICACIÓN A CORTO PLAZO:', 20, recY);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(0, 0, 0);
+      doc.text(`• ${(lowStockItems - criticalItems).toString()} productos necesitan reposición planificada`, 25, recY + 10);
+      doc.text('• Revisar patrones de consumo para optimizar niveles mínimos', 25, recY + 20);
+      recY += 35;
+    }
+
+    // Footer en todas las páginas
     const pageCount = doc.getNumberOfPages();
     for (let i = 1; i <= pageCount; i++) {
       doc.setPage(i);
@@ -171,62 +359,73 @@ const ExportReportDialog: React.FC<ExportReportDialogProps> = ({ open, onOpenCha
       doc.setTextColor(128, 128, 128);
       doc.text('ProSalud - Sistema de Gestión de Inventario', 20, 285);
       doc.text(`Página ${i.toString()} de ${pageCount.toString()}`, 170, 285);
+      if (i > 1) {
+        doc.text(`📅 ${currentDate}`, 20, 290);
+        doc.text(`🆔 ${data.metadata.reportId}`, 170, 290);
+      }
     }
 
     return doc;
   };
 
   const generateExcelReport = () => {
+    const data = getFilteredData();
     const wb = XLSX.utils.book_new();
     
     // Hoja de resumen
     const summaryData = [
       ['REPORTE DE INVENTARIO PROSALUD'],
       [`Fecha de generación: ${new Date().toLocaleDateString('es-ES')}`],
+      [`ID del Reporte: ${data.metadata.reportId}`],
+      [`Tipo de Reporte: ${reportType === 'summary' ? 'Ejecutivo' : reportType === 'lowstock' ? 'Stock Crítico' : 'Completo'}`],
       [''],
       ['RESUMEN GENERAL'],
       ['Métrica', 'Valor'],
-      ['Total de productos', inventoryData.categories.reduce((sum, cat) => sum + cat.products.length, 0)],
-      ['Stock total', inventoryData.categories.reduce((sum, cat) => 
+      ['Total de productos', data.categories.reduce((sum, cat) => sum + cat.products.length, 0)],
+      ['Stock total', data.categories.reduce((sum, cat) => 
         sum + cat.products.reduce((catSum, prod) => catSum + prod.stock, 0), 0)],
-      ['Valor total inventario', inventoryData.categories.reduce((sum, cat) => 
+      ['Valor total inventario', data.categories.reduce((sum, cat) => 
         sum + cat.products.reduce((catSum, prod) => catSum + (prod.stock * prod.value), 0), 0)],
-      ['Productos con stock bajo', inventoryData.categories.reduce((sum, cat) => 
+      ['Productos con stock bajo', data.categories.reduce((sum, cat) => 
         sum + cat.products.filter(prod => prod.status === 'low' || prod.status === 'critical').length, 0)]
     ];
 
     const summaryWs = XLSX.utils.aoa_to_sheet(summaryData);
     XLSX.utils.book_append_sheet(wb, summaryWs, 'Resumen');
 
-    // Hoja detallada
-    const detailData = [
-      ['Categoría', 'Producto', 'Stock Actual', 'Stock Mínimo', 'Stock Máximo', 'Estado', 'Valor Unitario', 'Valor Total']
-    ];
+    if (reportType !== 'summary') {
+      // Hoja detallada con información expandida
+      const detailData = [
+        ['Categoría', 'SKU', 'Producto', 'Stock Actual', 'Stock Mínimo', 'Stock Máximo', 'Estado', 'Ubicación', 'Valor Unitario', 'Valor Total']
+      ];
 
-    inventoryData.categories.forEach(category => {
-      category.products.forEach(product => {
-        detailData.push([
-          category.name,
-          product.name,
-          product.stock,
-          product.min,
-          product.max,
-          product.status === 'ok' ? 'Óptimo' : 
-          product.status === 'low' ? 'Bajo' : 'Crítico',
-          product.value,
-          product.stock * product.value
-        ]);
+      data.categories.forEach(category => {
+        category.products.forEach(product => {
+          detailData.push([
+            category.name,
+            product.sku,
+            product.name,
+            product.stock,
+            product.min,
+            product.max,
+            product.status === 'ok' ? 'Óptimo' : 
+            product.status === 'low' ? 'Bajo' : 'Crítico',
+            product.location,
+            product.value,
+            product.stock * product.value
+          ]);
+        });
       });
-    });
 
-    const detailWs = XLSX.utils.aoa_to_sheet(detailData);
-    XLSX.utils.book_append_sheet(wb, detailWs, 'Detalle Inventario');
+      const detailWs = XLSX.utils.aoa_to_sheet(detailData);
+      XLSX.utils.book_append_sheet(wb, detailWs, 'Detalle Inventario');
+    }
 
-    // Hoja de productos con stock bajo
+    // Hoja de productos con stock bajo (siempre incluida)
     const lowStockData = [
       ['PRODUCTOS CON STOCK BAJO'],
       [''],
-      ['Categoría', 'Producto', 'Stock Actual', 'Stock Mínimo', 'Estado', 'Acción Requerida']
+      ['Categoría', 'SKU', 'Producto', 'Stock Actual', 'Stock Mínimo', 'Estado', 'Ubicación', 'Acción Requerida']
     ];
 
     inventoryData.categories.forEach(category => {
@@ -235,10 +434,12 @@ const ExportReportDialog: React.FC<ExportReportDialogProps> = ({ open, onOpenCha
         .forEach(product => {
           lowStockData.push([
             category.name,
+            product.sku,
             product.name,
             product.stock,
             product.min,
             product.status === 'low' ? 'Stock Bajo' : 'Stock Crítico',
+            product.location,
             product.status === 'critical' ? 'URGENTE - Reposición inmediata' : 'Planificar reposición'
           ]);
         });
@@ -254,24 +455,27 @@ const ExportReportDialog: React.FC<ExportReportDialogProps> = ({ open, onOpenCha
     setIsGenerating(true);
     
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simular procesamiento
+      await new Promise(resolve => setTimeout(resolve, 1500)); // Simular procesamiento
+
+      const reportTypeText = reportType === 'summary' ? 'Ejecutivo' : 
+                            reportType === 'lowstock' ? 'Stock_Critico' : 'Completo';
 
       if (format === 'pdf') {
         const doc = generatePDFReport();
-        doc.save(`Reporte_Inventario_ProSalud_${new Date().toISOString().split('T')[0]}.pdf`);
+        doc.save(`Reporte_${reportTypeText}_ProSalud_${new Date().toISOString().split('T')[0]}.pdf`);
         
         toast({
           title: "Reporte PDF Generado",
-          description: "El reporte de inventario en PDF se ha descargado exitosamente",
+          description: `El reporte ${reportTypeText.toLowerCase()} en PDF se ha descargado exitosamente`,
           variant: "default"
         });
       } else {
         const wb = generateExcelReport();
-        XLSX.writeFile(wb, `Reporte_Inventario_ProSalud_${new Date().toISOString().split('T')[0]}.xlsx`);
+        XLSX.writeFile(wb, `Reporte_${reportTypeText}_ProSalud_${new Date().toISOString().split('T')[0]}.xlsx`);
         
         toast({
           title: "Reporte Excel Generado",
-          description: "El reporte de inventario en Excel se ha descargado exitosamente",
+          description: `El reporte ${reportTypeText.toLowerCase()} en Excel se ha descargado exitosamente`,
           variant: "default"
         });
       }
@@ -297,7 +501,7 @@ const ExportReportDialog: React.FC<ExportReportDialogProps> = ({ open, onOpenCha
             <span>Exportar Reporte de Inventario</span>
           </DialogTitle>
           <DialogDescription>
-            Genera un reporte completo del inventario en el formato de tu preferencia
+            Genera un reporte profesional del inventario en el formato de tu preferencia
           </DialogDescription>
         </DialogHeader>
 
@@ -312,7 +516,7 @@ const ExportReportDialog: React.FC<ExportReportDialogProps> = ({ open, onOpenCha
                 <SelectItem value="pdf">
                   <div className="flex items-center space-x-2">
                     <FileText className="h-4 w-4 text-red-600" />
-                    <span>PDF - Documento</span>
+                    <span>PDF - Documento Profesional</span>
                   </div>
                 </SelectItem>
                 <SelectItem value="excel">
@@ -332,9 +536,24 @@ const ExportReportDialog: React.FC<ExportReportDialogProps> = ({ open, onOpenCha
                 <SelectValue placeholder="Seleccionar tipo" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="full">Reporte Completo</SelectItem>
-                <SelectItem value="summary">Solo Resumen</SelectItem>
-                <SelectItem value="lowstock">Solo Stock Bajo</SelectItem>
+                <SelectItem value="full">
+                  <div className="flex items-center space-x-2">
+                    <span>📊</span>
+                    <span>Reporte Completo</span>
+                  </div>
+                </SelectItem>
+                <SelectItem value="summary">
+                  <div className="flex items-center space-x-2">
+                    <span>📈</span>
+                    <span>Reporte Ejecutivo</span>
+                  </div>
+                </SelectItem>
+                <SelectItem value="lowstock">
+                  <div className="flex items-center space-x-2">
+                    <span>⚠️</span>
+                    <span>Solo Stock Crítico</span>
+                  </div>
+                </SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -346,8 +565,9 @@ const ExportReportDialog: React.FC<ExportReportDialogProps> = ({ open, onOpenCha
                 <div>
                   <h4 className="font-medium text-blue-900">Información del Reporte</h4>
                   <p className="text-sm text-blue-700 mt-1">
-                    El reporte incluirá datos actualizados al {new Date().toLocaleDateString('es-ES')} 
-                    con información detallada de stock, valores y alertas de reposición.
+                    {reportType === 'summary' && 'Reporte ejecutivo con métricas clave y resumen de categorías.'}
+                    {reportType === 'lowstock' && 'Reporte enfocado en productos que requieren reposición urgente.'}
+                    {reportType === 'full' && 'Reporte completo con información detallada de todos los productos, ubicaciones, SKUs y valores.'}
                   </p>
                 </div>
               </div>
