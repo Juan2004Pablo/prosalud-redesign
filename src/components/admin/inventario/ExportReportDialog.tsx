@@ -126,15 +126,15 @@ const ExportReportDialog: React.FC<ExportReportDialogProps> = ({ open, onOpenCha
       minute: '2-digit'
     });
     
-    // Colores ProSalud
-    const primaryColor = [37, 99, 235]; // Azul ProSalud
-    const secondaryColor = [249, 250, 251]; // Gris claro
-    const accentColor = [16, 185, 129]; // Verde
-    const warningColor = [245, 158, 11]; // Amarillo
-    const dangerColor = [239, 68, 68]; // Rojo
+    // Colores ProSalud (properly typed as tuples)
+    const primaryColor: [number, number, number] = [37, 99, 235]; // Azul ProSalud
+    const secondaryColor: [number, number, number] = [249, 250, 251]; // Gris claro
+    const accentColor: [number, number, number] = [16, 185, 129]; // Verde
+    const warningColor: [number, number, number] = [245, 158, 11]; // Amarillo
+    const dangerColor: [number, number, number] = [239, 68, 68]; // Rojo
 
     // PÁGINA 1: PORTADA PROFESIONAL
-    doc.setFillColor(...primaryColor);
+    doc.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]);
     doc.rect(0, 0, 210, 80, 'F');
     
     // Logo y título principal
@@ -157,14 +157,14 @@ const ExportReportDialog: React.FC<ExportReportDialogProps> = ({ open, onOpenCha
     doc.text(reportTitle, 20, 110);
     
     // Metadatos en formato profesional
-    doc.setFillColor(...secondaryColor);
+    doc.setFillColor(secondaryColor[0], secondaryColor[1], secondaryColor[2]);
     doc.rect(20, 130, 170, 60, 'F');
-    doc.setDrawColor(...primaryColor);
+    doc.setDrawColor(primaryColor[0], primaryColor[1], primaryColor[2]);
     doc.rect(20, 130, 170, 60, 'S');
     
     doc.setFontSize(12);
     doc.setFont('helvetica', 'bold');
-    doc.setTextColor(...primaryColor);
+    doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
     doc.text('INFORMACIÓN DEL REPORTE', 25, 145);
     
     doc.setFont('helvetica', 'normal');
@@ -195,7 +195,7 @@ const ExportReportDialog: React.FC<ExportReportDialogProps> = ({ open, onOpenCha
     const margin = 10;
 
     // Tarjeta 1: Total Productos
-    doc.setFillColor(...accentColor);
+    doc.setFillColor(accentColor[0], accentColor[1], accentColor[2]);
     doc.rect(20, yPos, cardWidth, cardHeight, 'F');
     doc.setTextColor(255, 255, 255);
     doc.setFontSize(16);
@@ -205,7 +205,7 @@ const ExportReportDialog: React.FC<ExportReportDialogProps> = ({ open, onOpenCha
     doc.text('📦 Total Productos', 25, yPos + 28);
 
     // Tarjeta 2: Stock Total
-    doc.setFillColor(...primaryColor);
+    doc.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]);
     doc.rect(20 + cardWidth + margin, yPos, cardWidth, cardHeight, 'F');
     doc.text(totalStock.toLocaleString(), 35 + cardWidth + margin, yPos + 15);
     doc.text('📊 Stock Total', 25 + cardWidth + margin, yPos + 28);
@@ -213,14 +213,14 @@ const ExportReportDialog: React.FC<ExportReportDialogProps> = ({ open, onOpenCha
     // Tarjeta 3: Valor Total
     if (reportType !== 'lowstock') {
       yPos += cardHeight + margin;
-      doc.setFillColor(...accentColor);
+      doc.setFillColor(accentColor[0], accentColor[1], accentColor[2]);
       doc.rect(20, yPos, cardWidth, cardHeight, 'F');
       doc.text(`$${(totalValue / 1000000).toFixed(1)}M`, 30, yPos + 15);
       doc.text('💰 Valor Total', 25, yPos + 28);
     }
 
     // Tarjeta 4: Items Críticos
-    doc.setFillColor(...dangerColor);
+    doc.setFillColor(dangerColor[0], dangerColor[1], dangerColor[2]);
     doc.rect(20 + cardWidth + margin, yPos, cardWidth, cardHeight, 'F');
     doc.text(criticalItems.toString(), 35 + cardWidth + margin, yPos + 15);
     doc.text('🚨 Stock Crítico', 25 + cardWidth + margin, yPos + 28);
@@ -233,7 +233,7 @@ const ExportReportDialog: React.FC<ExportReportDialogProps> = ({ open, onOpenCha
         doc.addPage();
         
         // Header de categoría
-        doc.setFillColor(...primaryColor);
+        doc.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]);
         doc.rect(0, 0, 210, 40, 'F');
         
         doc.setTextColor(255, 255, 255);
@@ -257,7 +257,7 @@ const ExportReportDialog: React.FC<ExportReportDialogProps> = ({ open, onOpenCha
         doc.text(`📊 Stock total: ${catTotalStock.toLocaleString()}`, 80, statsY);
         doc.text(`💰 Valor: $${catTotalValue.toLocaleString()}`, 140, statsY);
         if (catLowStock > 0) {
-          doc.setTextColor(...dangerColor);
+          doc.setTextColor(dangerColor[0], dangerColor[1], dangerColor[2]);
           doc.text(`⚠️ Requieren atención: ${catLowStock.toString()}`, 20, statsY + 10);
         }
 
@@ -302,9 +302,10 @@ const ExportReportDialog: React.FC<ExportReportDialogProps> = ({ open, onOpenCha
           },
           didParseCell: function(data) {
             if (data.row.index >= 0 && data.column.index === 5) {
-              if (data.cell.raw.includes('🚨')) {
+              const cellText = data.cell.raw?.toString() || '';
+              if (cellText.includes('🚨')) {
                 data.cell.styles.textColor = dangerColor;
-              } else if (data.cell.raw.includes('⚠️')) {
+              } else if (cellText.includes('⚠️')) {
                 data.cell.styles.textColor = warningColor;
               } else {
                 data.cell.styles.textColor = accentColor;
@@ -317,7 +318,7 @@ const ExportReportDialog: React.FC<ExportReportDialogProps> = ({ open, onOpenCha
 
     // Página final: Recomendaciones
     doc.addPage();
-    doc.setFillColor(...primaryColor);
+    doc.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]);
     doc.rect(0, 0, 210, 30, 'F');
     
     doc.setTextColor(255, 255, 255);
@@ -331,7 +332,7 @@ const ExportReportDialog: React.FC<ExportReportDialogProps> = ({ open, onOpenCha
 
     if (criticalItems > 0) {
       doc.setFont('helvetica', 'bold');
-      doc.setTextColor(...dangerColor);
+      doc.setTextColor(dangerColor[0], dangerColor[1], dangerColor[2]);
       doc.text('🚨 ACCIONES URGENTES:', 20, recY);
       doc.setFont('helvetica', 'normal');
       doc.setTextColor(0, 0, 0);
@@ -342,7 +343,7 @@ const ExportReportDialog: React.FC<ExportReportDialogProps> = ({ open, onOpenCha
 
     if (lowStockItems > criticalItems) {
       doc.setFont('helvetica', 'bold');
-      doc.setTextColor(...warningColor);
+      doc.setTextColor(warningColor[0], warningColor[1], warningColor[2]);
       doc.text('⚠️ PLANIFICACIÓN A CORTO PLAZO:', 20, recY);
       doc.setFont('helvetica', 'normal');
       doc.setTextColor(0, 0, 0);
