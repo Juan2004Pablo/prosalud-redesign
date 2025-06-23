@@ -203,46 +203,47 @@ const ExportReportDialog: React.FC<ExportReportDialogProps> = ({ open, onOpenCha
       ['Categoría', 'Producto', 'Stock Actual', 'Stock Mínimo', 'Stock Máximo', 'Estado', 'Valor Unitario', 'Valor Total']
     ];
 
-    inventoryData.categories.forEach(category => {
-      category.products.forEach(product => {
-        detailData.push([
-          category.name,
-          product.name,
-          product.stock,
-          product.min,
-          product.max,
-          product.status === 'ok' ? 'Óptimo' : 
-          product.status === 'low' ? 'Bajo' : 'Crítico',
-          product.value,
-          product.stock * product.value
-        ]);
-      });
+inventoryData.categories.forEach(category => {
+  category.products.forEach(product => {
+    detailData.push([
+      category.name,
+      product.name,
+      product.stock.toString(),
+      product.min.toString(),
+      product.max.toString(),
+      product.status === 'ok' ? 'Óptimo' : 
+      product.status === 'low' ? 'Bajo' : 'Crítico',
+      product.value.toString(),
+      (product.stock * product.value).toString()
+    ]);
+  });
+});
+
+const detailWs = XLSX.utils.aoa_to_sheet(detailData);
+XLSX.utils.book_append_sheet(wb, detailWs, 'Detalle Inventario');
+
+// Hoja de productos con stock bajo
+const lowStockData = [
+  ['PRODUCTOS CON STOCK BAJO'],
+  [''],
+  ['Categoría', 'Producto', 'Stock Actual', 'Stock Mínimo', 'Estado', 'Acción Requerida']
+];
+
+inventoryData.categories.forEach(category => {
+  category.products
+    .filter(product => product.status === 'low' || product.status === 'critical')
+    .forEach(product => {
+      lowStockData.push([
+        category.name,
+        product.name,
+        product.stock.toString(),
+        product.min.toString(),
+        product.status === 'low' ? 'Stock Bajo' : 'Stock Crítico',
+        product.status === 'critical' ? 'URGENTE - Reposición inmediata' : 'Planificar reposición'
+      ]);
     });
+});
 
-    const detailWs = XLSX.utils.aoa_to_sheet(detailData);
-    XLSX.utils.book_append_sheet(wb, detailWs, 'Detalle Inventario');
-
-    // Hoja de productos con stock bajo
-    const lowStockData = [
-      ['PRODUCTOS CON STOCK BAJO'],
-      [''],
-      ['Categoría', 'Producto', 'Stock Actual', 'Stock Mínimo', 'Estado', 'Acción Requerida']
-    ];
-
-    inventoryData.categories.forEach(category => {
-      category.products
-        .filter(product => product.status === 'low' || product.status === 'critical')
-        .forEach(product => {
-          lowStockData.push([
-            category.name,
-            product.name,
-            product.stock,
-            product.min,
-            product.status === 'low' ? 'Stock Bajo' : 'Stock Crítico',
-            product.status === 'critical' ? 'URGENTE - Reposición inmediata' : 'Planificar reposición'
-          ]);
-        });
-    });
 
     const lowStockWs = XLSX.utils.aoa_to_sheet(lowStockData);
     XLSX.utils.book_append_sheet(wb, lowStockWs, 'Stock Bajo');
