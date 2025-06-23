@@ -163,7 +163,16 @@ const Requests: React.FC = () => {
     toast({
       title: "Solicitud Aprobada",
       description: `La solicitud #${request.id} del ${request.hospitalName} ha sido aprobada exitosamente`,
-      variant: "success"
+      variant: "default"
+    });
+  };
+
+  const handleNewRequestSuccess = () => {
+    setShowNewRequestForm(false);
+    toast({
+      title: "Solicitud Creada",
+      description: "La nueva solicitud ha sido creada exitosamente",
+      variant: "default"
     });
   };
 
@@ -349,7 +358,10 @@ const Requests: React.FC = () => {
       {/* New Request Form Dialog */}
       <Dialog open={showNewRequestForm} onOpenChange={setShowNewRequestForm}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white">
-          <NewRequestForm onClose={() => setShowNewRequestForm(false)} />
+          <NewRequestForm 
+            onClose={() => setShowNewRequestForm(false)} 
+            onSuccess={handleNewRequestSuccess}
+          />
         </DialogContent>
       </Dialog>
 

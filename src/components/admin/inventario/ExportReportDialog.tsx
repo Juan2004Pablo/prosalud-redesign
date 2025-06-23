@@ -7,7 +7,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { FileText, Download, FileSpreadsheet, Calendar } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import autoTable from 'jspdf-autotable';
 import * as XLSX from 'xlsx';
 
 // Extend jsPDF type to include autoTable
@@ -143,7 +143,7 @@ const ExportReportDialog: React.FC<ExportReportDialogProps> = ({ open, onOpenCha
         `$${(product.stock * product.value).toLocaleString()}`
       ]);
 
-      doc.autoTable({
+      autoTable(doc, {
         startY: yPosition,
         head: [['Producto', 'Stock', 'Mín', 'Máx', 'Estado', 'Valor Total']],
         body: tableData,
