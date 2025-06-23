@@ -7,8 +7,16 @@ import { Card, CardContent } from '@/components/ui/card';
 import { FileText, Download, FileSpreadsheet, Calendar } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
+import 'jspdf-autotable';
 import * as XLSX from 'xlsx';
+
+// Extend jsPDF type to include autoTable
+declare module 'jspdf' {
+  interface jsPDF {
+    autoTable: (options: any) => jsPDF;
+    lastAutoTable: { finalY: number };
+  }
+}
 
 interface ExportReportDialogProps {
   open: boolean;
@@ -104,11 +112,11 @@ const ExportReportDialog: React.FC<ExportReportDialogProps> = ({ open, onOpenCha
 
     doc.setFontSize(10);
     doc.setTextColor(0, 0, 0);
-    doc.text(`Total de productos: ${totalProducts}`, 20, yPosition);
+    doc.text(`Total de productos: ${totalProducts.toString()}`, 20, yPosition);
     doc.text(`Stock total: ${totalStock.toLocaleString()}`, 100, yPosition);
     yPosition += 7;
     doc.text(`Valor total inventario: $${totalValue.toLocaleString()}`, 20, yPosition);
-    doc.text(`Productos con stock bajo: ${lowStockItems}`, 100, yPosition);
+    doc.text(`Productos con stock bajo: ${lowStockItems.toString()}`, 100, yPosition);
     yPosition += 15;
 
     // Detalle por categorías
@@ -135,7 +143,7 @@ const ExportReportDialog: React.FC<ExportReportDialogProps> = ({ open, onOpenCha
         `$${(product.stock * product.value).toLocaleString()}`
       ]);
 
-      autoTable(doc, {
+      doc.autoTable({
         startY: yPosition,
         head: [['Producto', 'Stock', 'Mín', 'Máx', 'Estado', 'Valor Total']],
         body: tableData,
@@ -153,7 +161,7 @@ const ExportReportDialog: React.FC<ExportReportDialogProps> = ({ open, onOpenCha
         }
       });
 
-      yPosition = (doc as any).lastAutoTable.finalY + 15;
+      yPosition = doc.lastAutoTable.finalY + 15;
     });
 
     // Footer en la última página
@@ -163,7 +171,7 @@ const ExportReportDialog: React.FC<ExportReportDialogProps> = ({ open, onOpenCha
       doc.setFontSize(8);
       doc.setTextColor(128, 128, 128);
       doc.text('ProSalud - Sistema de Gestión de Inventario', 20, 285);
-      doc.text(`Página ${i} de ${pageCount}`, 170, 285);
+      doc.text(`Página ${i.toString()} de ${pageCount.toString()}`, 170, 285);
     }
 
     return doc;
