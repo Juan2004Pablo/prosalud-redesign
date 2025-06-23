@@ -437,8 +437,8 @@ const ExportReportDialog: React.FC<ExportReportDialogProps> = ({ open, onOpenCha
             category.name,
             product.sku,
             product.name,
-            product.stock,
-            product.min,
+            product.stock.toString(),
+            product.min.toString(),
             product.status === 'low' ? 'Stock Bajo' : 'Stock Crítico',
             product.location,
             product.status === 'critical' ? 'URGENTE - Reposición inmediata' : 'Planificar reposición'
