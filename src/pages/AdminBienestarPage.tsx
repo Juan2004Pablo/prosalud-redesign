@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Plus, Search, Filter, Eye, Edit, EyeOff, Pencil, Calendar } from 'lucide-react';
+import { Plus, Search, Filter, Eye, Edit, EyeOff, Heart, Pencil, Calendar } from 'lucide-react';
 import AdminLayout from '@/components/admin/AdminLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -112,27 +112,33 @@ const AdminBienestarPage: React.FC = () => {
           className="p-6 space-y-8"
         >
           {/* Header */}
-          <motion.div variants={itemVariants} className="relative">
-            <div className="bg-white rounded-xl p-8 border shadow-sm">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h1 className="text-4xl font-bold text-primary-prosalud mb-4">
-                    Galería de Bienestar
-                  </h1>
-                  <p className="text-lg text-text-gray max-w-2xl">
-                    Gestiona los eventos de bienestar que se muestran en la galería del sitio web.
-                  </p>
+          <motion.div variants={itemVariants}>
+            <Card className="border shadow-sm">
+              <CardHeader className="pb-6">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className="bg-primary-prosalud/10 p-3 rounded-lg">
+                      <Heart className="h-8 w-8 text-primary-prosalud" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-3xl font-bold text-primary-prosalud">
+                        Galería de Bienestar
+                      </CardTitle>
+                      <CardDescription className="text-base mt-2">
+                        Administra los eventos y actividades de bienestar de ProSalud
+                      </CardDescription>
+                    </div>
+                  </div>
+                  <Button 
+                    onClick={() => setEventFormOpen(true)}
+                    className="bg-primary-prosalud hover:bg-primary-prosalud-dark text-white"
+                  >
+                    <Plus className="h-4 w-4 mr-2" />
+                    Nuevo Evento
+                  </Button>
                 </div>
-                <Button
-                  onClick={() => setShowForm(true)}
-                  className="bg-primary-prosalud hover:bg-primary-prosalud-dark"
-                  size="lg"
-                >
-                  <Plus className="h-5 w-5 mr-2" />
-                  Nuevo Evento
-                </Button>
-              </div>
-            </div>
+              </CardHeader>
+            </Card>
           </motion.div>
 
           {/* Filters */}
