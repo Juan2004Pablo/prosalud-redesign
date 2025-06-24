@@ -29,7 +29,7 @@ import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/hooks/use-toast';
 import DataPagination from '@/components/ui/data-pagination';
 import { usePagination } from '@/hooks/usePagination';
-import { mockComfenalcoEvents } from '@/data/comfenalcoEventsMock';
+import { comfenalcoEventsMock } from '@/data/comfenalcoEventsMock';
 import { ComfenalcoEvent } from '@/types/comfenalco';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
@@ -60,7 +60,7 @@ const AdminComfenalcoPage: React.FC = () => {
     displaySize: 'carousel',
   });
 
-  const filteredEvents = mockComfenalcoEvents.filter(event => {
+  const filteredEvents = comfenalcoEventsMock.filter(event => {
     const searchTermLower = searchTerm.toLowerCase();
     const titleLower = event.title.toLowerCase();
   
@@ -163,7 +163,7 @@ const AdminComfenalcoPage: React.FC = () => {
   const handleSubmit = () => {
     if (isEditing && selectedEvent) {
       // Update existing event
-      const updatedEvents = mockComfenalcoEvents.map(event =>
+      const updatedEvents = comfenalcoEventsMock.map(event =>
         event.id === selectedEvent.id ? { ...selectedEvent, ...formValues } : event
       );
       // Here you would typically call an API to update the event
@@ -177,7 +177,7 @@ const AdminComfenalcoPage: React.FC = () => {
         id: `event-${Date.now()}`,
         ...formValues,
       };
-      mockComfenalcoEvents.push(newEvent);
+      comfenalcoEventsMock.push(newEvent);
       // Here you would typically call an API to create the event
       toast({
         title: "Evento Creado",
@@ -211,9 +211,9 @@ const AdminComfenalcoPage: React.FC = () => {
 
   const handleDelete = (event: ComfenalcoEvent) => {
     // Implement delete logic here
-    const eventIndex = mockComfenalcoEvents.findIndex(e => e.id === event.id);
+    const eventIndex = comfenalcoEventsMock.findIndex(e => e.id === event.id);
     if (eventIndex > -1) {
-      mockComfenalcoEvents.splice(eventIndex, 1);
+      comfenalcoEventsMock.splice(eventIndex, 1);
       toast({
         title: "Evento Eliminado",
         description: "El evento ha sido eliminado exitosamente.",
