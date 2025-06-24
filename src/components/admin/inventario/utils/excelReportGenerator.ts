@@ -14,13 +14,13 @@ export const generateExcelReport = (data: ReportData, reportType: ReportType): X
     [''],
     ['RESUMEN GENERAL'],
     ['Métrica', 'Valor'],
-    ['Total de productos', data.categories.reduce((sum, cat) => sum + cat.products.length, 0)],
+    ['Total de productos', data.categories.reduce((sum, cat) => sum + cat.products.length, 0).toString()],
     ['Stock total', data.categories.reduce((sum, cat) => 
-      sum + cat.products.reduce((catSum, prod) => catSum + prod.stock, 0), 0)],
+      sum + cat.products.reduce((catSum, prod) => catSum + prod.stock, 0), 0).toString()],
     ['Valor total inventario', data.categories.reduce((sum, cat) => 
-      sum + cat.products.reduce((catSum, prod) => catSum + (prod.stock * prod.value), 0), 0)],
+      sum + cat.products.reduce((catSum, prod) => catSum + (prod.stock * prod.value), 0), 0).toString()],
     ['Productos con stock bajo', data.categories.reduce((sum, cat) => 
-      sum + cat.products.filter(prod => prod.status === 'low' || prod.status === 'critical').length, 0)]
+      sum + cat.products.filter(prod => prod.status === 'low' || prod.status === 'critical').length, 0).toString()]
   ];
 
   const summaryWs = XLSX.utils.aoa_to_sheet(summaryData);
@@ -38,14 +38,14 @@ export const generateExcelReport = (data: ReportData, reportType: ReportType): X
           category.name,
           product.sku,
           product.name,
-          product.stock,
-          product.min,
-          product.max,
+          product.stock.toString(),
+          product.min.toString(),
+          product.max.toString(),
           product.status === 'ok' ? 'Óptimo' : 
           product.status === 'low' ? 'Bajo' : 'Crítico',
           product.location,
-          product.value,
-          product.stock * product.value
+          product.value.toString(),
+          (product.stock * product.value).toString()
         ]);
       });
     });

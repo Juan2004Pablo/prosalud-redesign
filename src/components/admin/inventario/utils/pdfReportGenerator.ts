@@ -68,9 +68,11 @@ export const generatePDFReport = (data: ReportData, reportType: ReportType): jsP
   doc.text(`ID: ${data.metadata.reportId}`, 25, 109);
   doc.text(`Tipo: ${reportTitle}`, 25, 115);
   
-  doc.text(`Versión: ${data.metadata.systemVersion}`, 115, 103);
-  doc.text(`Categorías: ${data.categories.length}`, 115, 109);
-  doc.text(`Por: ${data.metadata.generatedBy}`, 115, 115);
+  if (data.metadata.dateRange) {
+    doc.text(`Período: ${data.metadata.dateRange.start} - ${data.metadata.dateRange.end}`, 115, 103);
+  }
+  doc.text(`Versión: ${data.metadata.systemVersion}`, 115, 109);
+  doc.text(`Generado por: ${data.metadata.generatedBy}`, 115, 115);
 
   // Executive metrics
   const totalProducts = data.categories.reduce((sum, cat) => sum + cat.products.length, 0);
@@ -100,6 +102,17 @@ export const generatePDFReport = (data: ReportData, reportType: ReportType): jsP
     ['Productos con Stock Bajo', lowStockItems.toString()]
   ];
 
+  // Add additional metrics if data is available
+  if (data.requests?.length) {
+    metricsData.push(['Total de Solicitudes', data.requests.length.toString()]);
+  }
+  if (data.returns?.length) {
+    metricsData.push(['Total de Devoluciones', data.returns.length.toString()]);
+  }
+  if (data.deliveries?.length) {
+    metricsData.push(['Total de Entregas', data.deliveries.length.toString()]);
+  }
+
   autoTable(doc, {
     startY: yPos,
     head: [['Métrica', 'Valor']],
@@ -122,6 +135,152 @@ export const generatePDFReport = (data: ReportData, reportType: ReportType): jsP
     },
     margin: { left: 20, right: 20 }
   });
+
+  // REQUESTS SECTION
+  if (data.requests?.length && reportType !== 'summary') {
+    doc.addPage();
+    
+    doc.setFillColor(...primaryColor);
+    doc.rect(0, 0, 210, 30, 'F');
+    
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(16);
+    doc.setFont('helvetica', 'bold');
+    doc.text('SOLICITUDES DE IMPLEMENTOS', 20, 18);
+
+    const requestsData = data.requests.map(request => [
+      request.hospital,
+      request.coordinator,
+      request.date,
+      request.products.join(', '),
+      request.status === 'pending' ? 'Pendiente' :
+      request.status === 'approved' ? 'Aprobada' : 'Entregada',
+      request.priority === 'urgent' ? 'Urgente' :
+      request.priority === 'high' ? 'Alta' :
+      request.priority === 'medium' ? 'Media' : 'Baja'
+    ]);
+
+    autoTable(doc, {
+      startY: 40,
+      head: [['Hospital', 'Coordinadora', 'Fecha', 'Productos', 'Estado', 'Prioridad']],
+      body: requestsData,
+      theme: 'striped',
+      headStyles: { 
+        fillColor: primaryColor, 
+        textColor: [255, 255, 255],
+        fontSize: 8,
+        fontStyle: 'bold'
+      },
+      bodyStyles: { 
+        fontSize: 7,
+        textColor: [0, 0, 0]
+      },
+      alternateRowStyles: { fillColor: lightGray },
+      columnStyles: {
+        0: { cellWidth: 30 },
+        1: { cellWidth: 25 },
+        2: { cellWidth: 20 },
+        3: { cellWidth: 60 },
+        4: { cellWidth: 20 },
+        5: { cellWidth: 15 }
+      }
+    });
+  }
+
+  // RETURNS SECTION
+  if (data.returns?.length && reportType !== 'summary') {
+    doc.addPage();
+    
+    doc.setFillColor(...primaryColor);
+    doc.rect(0, 0, 210, 30, 'F');
+    
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(16);
+    doc.setFont('helvetica', 'bold');
+    doc.text('GESTIÓN DE DEVOLUCIONES', 20, 18);
+
+    const returnsData = data.returns.map(returnItem => [
+      returnItem.hospital,
+      returnItem.coordinator,
+      returnItem.date,
+      returnItem.products.join(', '),
+      returnItem.reason,
+      returnItem.status === 'pending' ? 'Pendiente' : 'Procesada'
+    ]);
+
+    autoTable(doc, {
+      startY: 40,
+      head: [['Hospital', 'Coordinadora', 'Fecha', 'Productos', 'Motivo', 'Estado']],
+      body: returnsData,
+      theme: 'striped',
+      headStyles: { 
+        fillColor: primaryColor, 
+        textColor: [255, 255, 255],
+        fontSize: 8,
+        fontStyle: 'bold'
+      },
+      bodyStyles: { 
+        fontSize: 7,
+        textColor: [0, 0, 0]
+      },
+      alternateRowStyles: { fillColor: lightGray },
+      columnStyles: {
+        0: { cellWidth: 30 },
+        1: { cellWidth: 25 },
+        2: { cellWidth: 20 },
+        3: { cellWidth: 60 },
+        4: { cellWidth: 30 },
+        5: { cellWidth: 25 }
+      }
+    });
+  }
+
+  // DELIVERIES SECTION
+  if (data.deliveries?.length && reportType !== 'summary') {
+    doc.addPage();
+    
+    doc.setFillColor(...primaryColor);
+    doc.rect(0, 0, 210, 30, 'F');
+    
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(16);
+    doc.setFont('helvetica', 'bold');
+    doc.text('ENTREGAS DE PROVEEDORES', 20, 18);
+
+    const deliveriesData = data.deliveries.map(delivery => [
+      delivery.supplier,
+      delivery.date,
+      delivery.products.join(', '),
+      delivery.totalItems.toString(),
+      delivery.status === 'pending' ? 'Pendiente' :
+      delivery.status === 'received' ? 'Recibida' : 'Completada'
+    ]);
+
+    autoTable(doc, {
+      startY: 40,
+      head: [['Proveedor', 'Fecha', 'Productos', 'Total Items', 'Estado']],
+      body: deliveriesData,
+      theme: 'striped',
+      headStyles: { 
+        fillColor: primaryColor, 
+        textColor: [255, 255, 255],
+        fontSize: 8,
+        fontStyle: 'bold'
+      },
+      bodyStyles: { 
+        fontSize: 7,
+        textColor: [0, 0, 0]
+      },
+      alternateRowStyles: { fillColor: lightGray },
+      columnStyles: {
+        0: { cellWidth: 40 },
+        1: { cellWidth: 25 },
+        2: { cellWidth: 70 },
+        3: { cellWidth: 25 },
+        4: { cellWidth: 30 }
+      }
+    });
+  }
 
   // CATEGORY DETAILS
   if (reportType !== 'summary') {

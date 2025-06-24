@@ -1,5 +1,83 @@
 
-import { ReportData } from '../types/reportTypes';
+import { ReportData, RequestRecord, ReturnRecord, DeliveryRecord } from '../types/reportTypes';
+
+const getMockRequests = (): RequestRecord[] => [
+  {
+    id: 'REQ-001',
+    hospital: 'Hospital San Juan',
+    coordinator: 'María González',
+    date: '2024-06-20',
+    products: ['Uniforme Azul - Talla M', 'Tapabocas N95'],
+    status: 'approved',
+    priority: 'high'
+  },
+  {
+    id: 'REQ-002',
+    hospital: 'Hospital La Merced',
+    coordinator: 'Ana Rodríguez',
+    date: '2024-06-18',
+    products: ['Bata Blanca - Talla L', 'Tapabocas Quirúrgico'],
+    status: 'delivered',
+    priority: 'medium'
+  },
+  {
+    id: 'REQ-003',
+    hospital: 'Hospital Marco Fidel',
+    coordinator: 'Carmen López',
+    date: '2024-06-22',
+    products: ['Kit de Bienvenida', 'Termo ProSalud'],
+    status: 'pending',
+    priority: 'low'
+  }
+];
+
+const getMockReturns = (): ReturnRecord[] => [
+  {
+    id: 'RET-001',
+    hospital: 'Hospital San Juan',
+    coordinator: 'María González',
+    date: '2024-06-19',
+    products: ['Uniforme Verde - Talla S'],
+    reason: 'Talla incorrecta',
+    status: 'processed'
+  },
+  {
+    id: 'RET-002',
+    hospital: 'Hospital Santa Elena',
+    coordinator: 'Lucia Martínez',
+    date: '2024-06-21',
+    products: ['Bata de Laboratorio - Talla M'],
+    reason: 'Producto defectuoso',
+    status: 'pending'
+  }
+];
+
+const getMockDeliveries = (): DeliveryRecord[] => [
+  {
+    id: 'DEL-001',
+    supplier: 'Textiles Médicos S.A.',
+    date: '2024-06-15',
+    products: ['Uniformes Azules', 'Uniformes Verdes'],
+    status: 'completed',
+    totalItems: 50
+  },
+  {
+    id: 'DEL-002',
+    supplier: 'Suministros ProSalud',
+    date: '2024-06-20',
+    products: ['Tapabocas N95', 'Tapabocas Quirúrgicos'],
+    status: 'received',
+    totalItems: 1000
+  },
+  {
+    id: 'DEL-003',
+    supplier: 'Distribuciones Médicas',
+    date: '2024-06-23',
+    products: ['Batas Blancas', 'Batas de Laboratorio'],
+    status: 'pending',
+    totalItems: 30
+  }
+];
 
 export const getInventoryData = (): ReportData => {
   return {
@@ -57,7 +135,10 @@ export const getInventoryData = (): ReportData => {
           { name: 'USB Corporativo', stock: 3, min: 6, max: 25, status: 'low', value: 15000, sku: 'REG-USB', location: 'D-2-02' }
         ]
       }
-    ]
+    ],
+    requests: getMockRequests(),
+    returns: getMockReturns(),
+    deliveries: getMockDeliveries()
   };
 };
 
