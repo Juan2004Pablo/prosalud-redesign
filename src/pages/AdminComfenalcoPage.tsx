@@ -29,7 +29,7 @@ import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/hooks/use-toast';
 import DataPagination from '@/components/ui/data-pagination';
 import { usePagination } from '@/hooks/usePagination';
-import { mockComfenalcoEvents } from '@/data/comfenalcoMock';
+import { mockComfenalcoEvents } from '@/data/comfenalcoEventsMock';
 import { ComfenalcoEvent } from '@/types/comfenalco';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
