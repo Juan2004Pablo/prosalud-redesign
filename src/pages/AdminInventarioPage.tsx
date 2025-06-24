@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import AdminLayout from '@/components/admin/AdminLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { 
   Package, 
   Truck, 
@@ -65,40 +65,42 @@ const AdminInventarioPage: React.FC = () => {
           className="p-4 sm:p-6 space-y-6 max-w-7xl mx-auto"
         >
           {/* Header */}
-          <motion.div variants={itemVariants} className="relative">
-            <div className="bg-gradient-to-r from-primary-prosalud to-primary-prosalud-dark rounded-xl p-6 sm:p-8 text-white shadow-lg">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div className="flex items-center gap-3">
-                  <Package className="h-8 w-8" />
-                  <div>
-                    <h1 className="text-2xl sm:text-3xl font-bold">
-                      Gestión de Inventario
-                    </h1>
-                    <p className="text-blue-100 mt-2">
-                      Administra productos, entregas, solicitudes y devoluciones del inventario ProSalud
-                    </p>
+          <motion.div variants={itemVariants}>
+            <Card className="border shadow-sm">
+              <CardHeader className="pb-6">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className="bg-primary-prosalud/10 p-3 rounded-lg">
+                      <Package className="h-8 w-8 text-primary-prosalud" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-3xl font-bold text-primary-prosalud">
+                        Gestión de Inventario
+                      </CardTitle>
+                      <CardDescription className="text-base mt-2">
+                        Administra productos, entregas, solicitudes y devoluciones del inventario ProSalud
+                      </CardDescription>
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button 
+                      variant="outline"
+                      onClick={() => setExportReportOpen(true)}
+                    >
+                      <FileText className="h-4 w-4 mr-2" />
+                      Exportar Reporte
+                    </Button>
+                    <Button 
+                      onClick={() => setQuickActionsOpen(true)}
+                      className="bg-primary-prosalud hover:bg-primary-prosalud-dark text-white"
+                    >
+                      <Plus className="h-4 w-4 mr-2" />
+                      Acción Rápida
+                    </Button>
                   </div>
                 </div>
-                <div className="flex gap-2">
-                  <Button 
-                    variant="secondary"
-                    className="bg-white/10 hover:bg-white/20 text-white border-white/20"
-                    onClick={() => setExportReportOpen(true)}
-                  >
-                    <FileText className="h-4 w-4 mr-2" />
-                    Exportar Reporte
-                  </Button>
-                  <Button 
-                    variant="secondary"
-                    className="bg-white/10 hover:bg-white/20 text-white border-white/20"
-                    onClick={() => setQuickActionsOpen(true)}
-                  >
-                    <Plus className="h-4 w-4 mr-2" />
-                    Acción Rápida
-                  </Button>
-                </div>
-              </div>
-            </div>
+              </CardHeader>
+            </Card>
           </motion.div>
 
           {/* Main Content */}

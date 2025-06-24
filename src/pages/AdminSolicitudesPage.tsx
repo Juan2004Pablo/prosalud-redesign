@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
@@ -20,11 +21,13 @@ import DataPagination from '@/components/ui/data-pagination';
 import { usePagination } from '@/hooks/usePagination';
 import { mockRequests, mockRequestStats, requestTypeLabels, statusLabels, statusColors } from '@/data/requestsMock';
 import { Request, RequestFilters } from '@/types/requests';
+import ExportRequestsDialog from '@/components/admin/solicitudes/ExportRequestsDialog';
 
 const AdminSolicitudesPage: React.FC = () => {
   const [selectedRequest, setSelectedRequest] = useState<Request | null>(null);
   const [filters, setFilters] = useState<RequestFilters>({});
   const [searchTerm, setSearchTerm] = useState('');
+  const [exportDialogOpen, setExportDialogOpen] = useState(false);
 
   const filteredRequests = mockRequests.filter(request => {
     if (filters.status && request.status !== filters.status) return false;
@@ -113,29 +116,33 @@ const AdminSolicitudesPage: React.FC = () => {
           className="p-4 sm:p-6 space-y-6 max-w-7xl mx-auto"
         >
           {/* Header */}
-          <motion.div variants={itemVariants} className="relative">
-            <div className="bg-gradient-to-r from-primary-prosalud to-primary-prosalud-dark rounded-xl p-6 sm:p-8 text-white shadow-lg">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div className="flex items-center gap-3">
-                  <FileText className="h-8 w-8" />
-                  <div>
-                    <h1 className="text-2xl sm:text-3xl font-bold">
-                      Gestión de Solicitudes
-                    </h1>
-                    <p className="text-blue-100 mt-2">
-                      Administra y da seguimiento a todas las solicitudes realizadas por los afiliados
-                    </p>
+          <motion.div variants={itemVariants}>
+            <Card className="border shadow-sm">
+              <CardHeader className="pb-6">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className="bg-primary-prosalud/10 p-3 rounded-lg">
+                      <FileText className="h-8 w-8 text-primary-prosalud" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-3xl font-bold text-primary-prosalud">
+                        Gestión de Solicitudes
+                      </CardTitle>
+                      <CardDescription className="text-base mt-2">
+                        Administra y da seguimiento a todas las solicitudes realizadas por los afiliados
+                      </CardDescription>
+                    </div>
                   </div>
+                  <Button
+                    onClick={() => setExportDialogOpen(true)}
+                    className="bg-primary-prosalud hover:bg-primary-prosalud-dark text-white"
+                  >
+                    <Download className="h-4 w-4 mr-2" />
+                    Exportar Datos
+                  </Button>
                 </div>
-                <Button
-                  variant="secondary"
-                  className="bg-white/10 hover:bg-white/20 text-white border-white/20"
-                >
-                  <Download className="h-4 w-4 mr-2" />
-                  Exportar Datos
-                </Button>
-              </div>
-            </div>
+              </CardHeader>
+            </Card>
           </motion.div>
 
           {/* Stats Cards */}
@@ -537,6 +544,9 @@ const AdminSolicitudesPage: React.FC = () => {
               </CardContent>
             </Card>
           </motion.div>
+
+          {/* Export Dialog */}
+          <ExportRequestsDialog open={exportDialogOpen} onOpenChange={setExportDialogOpen} />
         </motion.div>
       </div>
     </AdminLayout>
