@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { DatePicker } from '@/components/ui/date-picker';
+import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { Calendar } from 'lucide-react';
 import { DateRangeFilter } from '../types/reportTypes';
@@ -21,19 +21,28 @@ const DateRangeSelector: React.FC<DateRangeSelectorProps> = ({ value, onChange }
     });
   };
 
-  const handleStartDateChange = (start: Date | undefined) => {
+  const handleStartDateChange = (dateString: string) => {
+    const start = dateString ? new Date(dateString) : undefined;
     onChange({
       ...value,
       start
     });
   };
 
-  const handleEndDateChange = (end: Date | undefined) => {
+  const handleEndDateChange = (dateString: string) => {
+    const end = dateString ? new Date(dateString) : undefined;
     onChange({
       ...value,
       end
     });
   };
+
+  const formatDateForInput = (date: Date | undefined): string => {
+    if (!date) return '';
+    return date.toISOString().split('T')[0];
+  };
+
+  const today = new Date().toISOString().split('T')[0];
 
   return (
     <Card className="border border-gray-200">
@@ -62,21 +71,23 @@ const DateRangeSelector: React.FC<DateRangeSelectorProps> = ({ value, onChange }
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <label className="text-sm font-medium text-gray-700">Fecha Desde</label>
-              <DatePicker
-                value={value.start}
-                onChange={handleStartDateChange}
-                placeholder="Seleccionar fecha inicio"
-                maxDate={value.end || new Date()}
+              <Input
+                type="date"
+                value={formatDateForInput(value.start)}
+                onChange={(e) => handleStartDateChange(e.target.value)}
+                max={value.end ? formatDateForInput(value.end) : today}
+                className="w-full"
               />
             </div>
             <div className="space-y-2">
               <label className="text-sm font-medium text-gray-700">Fecha Hasta</label>
-              <DatePicker
-                value={value.end}
-                onChange={handleEndDateChange}
-                placeholder="Seleccionar fecha fin"
-                minDate={value.start}
-                maxDate={new Date()}
+              <Input
+                type="date"
+                value={formatDateForInput(value.end)}
+                onChange={(e) => handleEndDateChange(e.target.value)}
+                min={value.start ? formatDateForInput(value.start) : undefined}
+                max={today}
+                className="w-full"
               />
             </div>
           </div>

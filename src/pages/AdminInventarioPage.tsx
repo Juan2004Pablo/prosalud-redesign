@@ -35,36 +35,62 @@ const AdminInventarioPage: React.FC = () => {
     { id: 'returns', label: 'Devoluciones', icon: RotateCcw }
   ];
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: { type: "spring", stiffness: 100 }
+    }
+  };
+
   return (
     <AdminLayout>
-      <div className="p-6 space-y-6 bg-slate-50 min-h-screen">
-        {/* Header Card */}
+      <div className="min-h-screen bg-slate-50">
         <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="p-4 sm:p-6 space-y-6 max-w-7xl mx-auto"
         >
-          <Card className="bg-white shadow-sm">
-            <CardHeader className="pb-4">
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <div>
-                  <CardTitle className="text-2xl font-bold text-gray-900 mb-2">
-                    Gestión de Inventario
-                  </CardTitle>
-                  <p className="text-gray-600">
-                    Administra productos, entregas, solicitudes y devoluciones del inventario ProSalud
-                  </p>
+          {/* Header */}
+          <motion.div variants={itemVariants} className="relative">
+            <div className="bg-gradient-to-r from-primary-prosalud to-primary-prosalud-dark rounded-xl p-6 sm:p-8 text-white shadow-lg">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <Package className="h-8 w-8" />
+                  <div>
+                    <h1 className="text-2xl sm:text-3xl font-bold">
+                      Gestión de Inventario
+                    </h1>
+                    <p className="text-blue-100 mt-2">
+                      Administra productos, entregas, solicitudes y devoluciones del inventario ProSalud
+                    </p>
+                  </div>
                 </div>
                 <div className="flex gap-2">
                   <Button 
-                    variant="outline" 
-                    className="hover:bg-primary-prosalud hover:text-white transition-all duration-200"
+                    variant="secondary"
+                    className="bg-white/10 hover:bg-white/20 text-white border-white/20"
                     onClick={() => setExportReportOpen(true)}
                   >
                     <FileText className="h-4 w-4 mr-2" />
                     Exportar Reporte
                   </Button>
                   <Button 
-                    className="bg-primary-prosalud hover:bg-primary-prosalud-dark text-white"
+                    variant="secondary"
+                    className="bg-white/10 hover:bg-white/20 text-white border-white/20"
                     onClick={() => setQuickActionsOpen(true)}
                   >
                     <Plus className="h-4 w-4 mr-2" />
@@ -72,63 +98,59 @@ const AdminInventarioPage: React.FC = () => {
                   </Button>
                 </div>
               </div>
-            </CardHeader>
-          </Card>
+            </div>
+          </motion.div>
+
+          {/* Main Content */}
+          <motion.div variants={itemVariants}>
+            <Card className="bg-white shadow-sm">
+              <CardContent className="p-0">
+                <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+                  <div className="p-6 pb-0">
+                    <TabsList className="grid w-full grid-cols-5 bg-gray-50 border p-1">
+                      {tabs.map((tab) => (
+                        <TabsTrigger
+                          key={tab.id}
+                          value={tab.id}
+                          className="flex items-center space-x-2 data-[state=active]:bg-primary-prosalud data-[state=active]:text-white transition-all duration-200"
+                        >
+                          <tab.icon className="h-4 w-4" />
+                          <span className="hidden sm:inline">{tab.label}</span>
+                        </TabsTrigger>
+                      ))}
+                    </TabsList>
+                  </div>
+
+                  <div className="p-6 pt-0">
+                    <TabsContent value="overview" className="space-y-6 mt-0">
+                      <InventoryOverview />
+                    </TabsContent>
+
+                    <TabsContent value="products" className="space-y-6 mt-0">
+                      <ProductManagement />
+                    </TabsContent>
+
+                    <TabsContent value="deliveries" className="space-y-6 mt-0">
+                      <SupplierDeliveries />
+                    </TabsContent>
+
+                    <TabsContent value="requests" className="space-y-6 mt-0">
+                      <Requests />
+                    </TabsContent>
+
+                    <TabsContent value="returns" className="space-y-6 mt-0">
+                      <Returns />
+                    </TabsContent>
+                  </div>
+                </Tabs>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {/* Dialogs */}
+          <QuickActionsDialog open={quickActionsOpen} onOpenChange={setQuickActionsOpen} />
+          <ExportReportDialog open={exportReportOpen} onOpenChange={setExportReportOpen} />
         </motion.div>
-
-        {/* Main Content */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-        >
-          <Card className="bg-white shadow-sm">
-            <CardContent className="p-0">
-              <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-                <div className="p-6 pb-0">
-                  <TabsList className="grid w-full grid-cols-5 bg-gray-50 border p-1">
-                    {tabs.map((tab) => (
-                      <TabsTrigger
-                        key={tab.id}
-                        value={tab.id}
-                        className="flex items-center space-x-2 data-[state=active]:bg-primary-prosalud data-[state=active]:text-white transition-all duration-200"
-                      >
-                        <tab.icon className="h-4 w-4" />
-                        <span className="hidden sm:inline">{tab.label}</span>
-                      </TabsTrigger>
-                    ))}
-                  </TabsList>
-                </div>
-
-                <div className="p-6 pt-0">
-                  <TabsContent value="overview" className="space-y-6 mt-0">
-                    <InventoryOverview />
-                  </TabsContent>
-
-                  <TabsContent value="products" className="space-y-6 mt-0">
-                    <ProductManagement />
-                  </TabsContent>
-
-                  <TabsContent value="deliveries" className="space-y-6 mt-0">
-                    <SupplierDeliveries />
-                  </TabsContent>
-
-                  <TabsContent value="requests" className="space-y-6 mt-0">
-                    <Requests />
-                  </TabsContent>
-
-                  <TabsContent value="returns" className="space-y-6 mt-0">
-                    <Returns />
-                  </TabsContent>
-                </div>
-              </Tabs>
-            </CardContent>
-          </Card>
-        </motion.div>
-
-        {/* Dialogs */}
-        <QuickActionsDialog open={quickActionsOpen} onOpenChange={setQuickActionsOpen} />
-        <ExportReportDialog open={exportReportOpen} onOpenChange={setExportReportOpen} />
       </div>
     </AdminLayout>
   );

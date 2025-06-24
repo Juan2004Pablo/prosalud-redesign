@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
@@ -54,8 +53,6 @@ const AdminSolicitudesPage: React.FC = () => {
     data: filteredRequests,
     initialItemsPerPage: 10
   });
-
-  // ... keep existing code (containerVariants, itemVariants, formatDate, getStatusIcon)
 
   const containerVariants = {
     hidden: { opacity: 0 },
