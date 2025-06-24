@@ -1,94 +1,224 @@
-
 import React, { useState } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import { Plus, Search, Filter, Edit, Eye, EyeOff } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { 
+  Sparkles, 
+  Plus, 
+  Search, 
+  Filter, 
+  Eye, 
+  Edit, 
+  Trash2, 
+  Calendar,
+  MoreHorizontal,
+  ExternalLink,
+  Gift,
+  GraduationCap
+} from 'lucide-react';
+import AdminLayout from '@/components/admin/AdminLayout';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription as DialogDescriptionUI } from '@/components/ui/dialog';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/hooks/use-toast';
-import AdminLayout from '@/components/admin/AdminLayout';
-import ComfenalcoEventForm from '@/components/admin/comfenalco/ComfenalcoEventForm';
-import { comfenalcoApi } from '@/services/adminApi';
-import { ComfenalcoEvent } from '@/types/admin';
+import DataPagination from '@/components/ui/data-pagination';
+import { usePagination } from '@/hooks/usePagination';
+import { mockComfenalcoEvents } from '@/data/comfenalcoMock';
+import { ComfenalcoEvent } from '@/types/comfenalco';
+import { format } from 'date-fns';
+import { es } from 'date-fns/locale';
+import { DatePicker } from "@/components/ui/date-picker"
 
 const AdminComfenalcoPage: React.FC = () => {
-  const [showForm, setShowForm] = useState(false);
-  const [editingEvent, setEditingEvent] = useState<ComfenalcoEvent | null>(null);
+  const [eventFormOpen, setEventFormOpen] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState<ComfenalcoEvent | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [categoryFilter, setCategoryFilter] = useState('');
-
+  const [filters, setFilters] = useState({
+    category: 'all',
+    displaySize: 'all',
+  });
   const { toast } = useToast();
-  const queryClient = useQueryClient();
 
-  const { data: events = [], isLoading, refetch } = useQuery({
-    queryKey: ['comfenalco-events'],
-    queryFn: comfenalcoApi.getEvents
+  const [formValues, setFormValues] = useState<Omit<ComfenalcoEvent, 'id'>>({
+    title: '',
+    bannerImage: '',
+    description: '',
+    publishDate: new Date().toISOString().split('T')[0],
+    registrationDeadline: new Date().toISOString().split('T')[0],
+    eventDate: new Date().toISOString().split('T')[0],
+    registrationLink: '',
+    formLink: '',
+    isNew: false,
+    category: 'curso',
+    displaySize: 'carousel',
   });
 
-  const toggleVisibilityMutation = useMutation({
-    mutationFn: async (event: ComfenalcoEvent) => {
-      return comfenalcoApi.updateEvent(event.id, { isVisible: !event.isVisible });
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['comfenalco-events'] });
-      toast({
-        title: "Estado actualizado",
-        description: "La visibilidad de la experiencia ha sido actualizada.",
-        variant: "success"
-      });
-    },
-    onError: () => {
-      toast({
-        title: "Error",
-        description: "No se pudo actualizar el estado. Inténtalo de nuevo.",
-        variant: "destructive"
-      });
-    }
+  const filteredEvents = mockComfenalcoEvents.filter(event => {
+    const searchTermLower = searchTerm.toLowerCase();
+    const titleLower = event.title.toLowerCase();
+  
+    const matchesSearchTerm = titleLower.includes(searchTermLower);
+    const matchesCategory = filters.category === 'all' || event.category === filters.category;
+    const matchesDisplaySize = filters.displaySize === 'all' || event.displaySize === filters.displaySize;
+  
+    return matchesSearchTerm && matchesCategory && matchesDisplaySize;
   });
 
-  const filteredEvents = events.filter(event => {
-    const matchesSearch = event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         (event.description || '').toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = !categoryFilter || event.category === categoryFilter;
-    return matchesSearch && matchesCategory;
+  const {
+    currentPage,
+    itemsPerPage,
+    totalPages,
+    totalItems,
+    paginatedData: paginatedEvents,
+    goToPage,
+    setItemsPerPage
+  } = usePagination({
+    data: filteredEvents,
+    initialItemsPerPage: 10
   });
-
-  const categories = [...new Set(events.map(event => event.category))];
-
-  const handleEdit = (event: ComfenalcoEvent) => {
-    setEditingEvent(event);
-    setShowForm(true);
-  };
-
-  const handleCreate = () => {
-    setEditingEvent(null);
-    setShowForm(true);
-  };
-
-  const handleCloseForm = () => {
-    setShowForm(false);
-    setEditingEvent(null);
-    refetch();
-  };
-
-  if (showForm) {
-    return <ComfenalcoEventForm event={editingEvent} onClose={handleCloseForm} />;
-  }
 
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.1 }
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2
+      }
     }
   };
 
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
-    visible: { y: 0, opacity: 1 }
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: { type: "spring", stiffness: 100 }
+    }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormValues(prevValues => ({
+      ...prevValues,
+      [name]: value
+    }));
+  };
+
+  const handleSwitchChange = (checked: boolean) => {
+    setFormValues(prevValues => ({
+      ...prevValues,
+      isNew: checked
+    }));
+  };
+
+  const handleCategoryChange = (value: string) => {
+    setFormValues(prevValues => ({
+      ...prevValues,
+      category: value as ComfenalcoEvent['category']
+    }));
+  };
+
+  const handleDisplaySizeChange = (value: string) => {
+    setFormValues(prevValues => ({
+      ...prevValues,
+      displaySize: value as ComfenalcoEvent['displaySize']
+    }));
+  };
+
+  const handlePublishDateChange = (date: Date | undefined) => {
+    if (date) {
+      setFormValues(prevValues => ({
+        ...prevValues,
+        publishDate: format(date, 'yyyy-MM-dd', { locale: es }),
+      }));
+    }
+  };
+
+  const handleRegistrationDeadlineChange = (date: Date | undefined) => {
+    if (date) {
+      setFormValues(prevValues => ({
+        ...prevValues,
+        registrationDeadline: format(date, 'yyyy-MM-dd', { locale: es }),
+      }));
+    }
+  };
+
+  const handleEventDateChange = (date: Date | undefined) => {
+    if (date) {
+      setFormValues(prevValues => ({
+        ...prevValues,
+        eventDate: format(date, 'yyyy-MM-dd', { locale: es }),
+      }));
+    }
+  };
+
+  const handleSubmit = () => {
+    if (isEditing && selectedEvent) {
+      // Update existing event
+      const updatedEvents = mockComfenalcoEvents.map(event =>
+        event.id === selectedEvent.id ? { ...selectedEvent, ...formValues } : event
+      );
+      // Here you would typically call an API to update the event
+      toast({
+        title: "Evento Actualizado",
+        description: "El evento ha sido actualizado exitosamente.",
+      });
+    } else {
+      // Create new event
+      const newEvent: ComfenalcoEvent = {
+        id: `event-${Date.now()}`,
+        ...formValues,
+      };
+      mockComfenalcoEvents.push(newEvent);
+      // Here you would typically call an API to create the event
+      toast({
+        title: "Evento Creado",
+        description: "El evento ha sido creado exitosamente.",
+      });
+    }
+
+    setEventFormOpen(false);
+    setSelectedEvent(null);
+    setIsEditing(false);
+  };
+
+  const handleEdit = (event: ComfenalcoEvent) => {
+    setSelectedEvent(event);
+    setFormValues({
+      title: event.title,
+      bannerImage: event.bannerImage,
+      description: event.description || '',
+      publishDate: event.publishDate,
+      registrationDeadline: event.registrationDeadline || '',
+      eventDate: event.eventDate || '',
+      registrationLink: event.registrationLink || '',
+      formLink: event.formLink,
+      isNew: event.isNew,
+      category: event.category,
+      displaySize: event.displaySize,
+    });
+    setIsEditing(true);
+    setEventFormOpen(true);
+  };
+
+  const handleDelete = (event: ComfenalcoEvent) => {
+    // Implement delete logic here
+    const eventIndex = mockComfenalcoEvents.findIndex(e => e.id === event.id);
+    if (eventIndex > -1) {
+      mockComfenalcoEvents.splice(eventIndex, 1);
+      toast({
+        title: "Evento Eliminado",
+        description: "El evento ha sido eliminado exitosamente.",
+      });
+    }
   };
 
   return (
@@ -98,168 +228,292 @@ const AdminComfenalcoPage: React.FC = () => {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="p-4 sm:p-6 space-y-6 sm:space-y-8 max-w-7xl mx-auto"
+          className="p-4 sm:p-6 space-y-6 max-w-7xl mx-auto"
         >
           {/* Header */}
-          <motion.div variants={itemVariants} className="relative">
-            <div className="bg-white rounded-xl p-6 sm:p-8 border shadow-sm">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-4">
-                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary-prosalud">
-                  Experiencias Comfenalco
-                </h1>
-                <Button
-                  onClick={handleCreate}
-                  className="bg-primary-prosalud hover:bg-primary-prosalud-dark w-full sm:w-auto"
-                >
-                  <Plus className="h-4 w-4 mr-2" />
-                  Nueva Experiencia
-                </Button>
-              </div>
-              <p className="text-base sm:text-lg text-text-gray">
-                Gestiona las experiencias y servicios de Comfenalco disponibles para los afiliados
-              </p>
-            </div>
+          <motion.div variants={itemVariants}>
+            <Card className="border shadow-sm">
+              <CardHeader className="pb-6">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className="bg-primary-prosalud/10 p-3 rounded-lg">
+                      <GraduationCap className="h-8 w-8 text-primary-prosalud" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-3xl font-bold text-primary-prosalud">
+                        Experiencias Comfenalco
+                      </CardTitle>
+                      <CardDescription className="text-base mt-2">
+                        Administra las experiencias y beneficios de Comfenalco para los afiliados
+                      </CardDescription>
+                    </div>
+                  </div>
+                  <Button 
+                    onClick={() => setEventFormOpen(true)}
+                    className="bg-primary-prosalud hover:bg-primary-prosalud-dark text-white"
+                  >
+                    <Plus className="h-4 w-4 mr-2" />
+                    Nueva Experiencia
+                  </Button>
+                </div>
+              </CardHeader>
+            </Card>
           </motion.div>
 
           {/* Filters */}
           <motion.div variants={itemVariants}>
-            <Card className="bg-white border shadow-sm">
+            <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Filter className="h-5 w-5" />
-                  Filtros
+                  Filtros y Búsqueda
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <div className="flex-1">
-                    <div className="relative">
-                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                      <Input
-                        placeholder="Buscar experiencias..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="pl-10"
-                      />
-                    </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                    <Input
+                      placeholder="Buscar por título..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="pl-10"
+                    />
                   </div>
-                  <select
-                    value={categoryFilter}
-                    onChange={(e) => setCategoryFilter(e.target.value)}
-                    className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-prosalud w-full sm:w-auto"
-                  >
-                    <option value="">Todas las categorías</option>
-                    {categories.map(category => (
-                      <option key={category} value={category}>{category}</option>
-                    ))}
-                  </select>
+                  
+                  <Select value={filters.category} onValueChange={(value) => setFilters({...filters, category: value})}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Categoría" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Todas las categorías</SelectItem>
+                      <SelectItem value="curso">Curso</SelectItem>
+                      <SelectItem value="experiencia">Experiencia</SelectItem>
+                      <SelectItem value="beneficio">Beneficio</SelectItem>
+                      <SelectItem value="regalo">Regalo</SelectItem>
+                      <SelectItem value="recreacion">Recreación</SelectItem>
+                    </SelectContent>
+                  </Select>
+
+                  <Select value={filters.displaySize} onValueChange={(value) => setFilters({...filters, displaySize: value})}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Tamaño de Visualización" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Todos los tamaños</SelectItem>
+                      <SelectItem value="carousel">Carousel</SelectItem>
+                      <SelectItem value="mosaic">Mosaic</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
               </CardContent>
             </Card>
           </motion.div>
 
-          {/* Events Grid */}
+          {/* Events Table */}
           <motion.div variants={itemVariants}>
-            {isLoading ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
-                {[...Array(6)].map((_, i) => (
-                  <div key={i} className="h-64 bg-gray-200 rounded-xl animate-pulse"></div>
-                ))}
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
-                {filteredEvents.map((event) => (
-                  <motion.div
-                    key={event.id}
-                    variants={itemVariants}
-                    whileHover={{ y: -5 }}
-                    className="group"
-                  >
-                    <Card className="border shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden bg-white h-full flex flex-col">
-                      <div className="relative h-48">
-                        <img
-                          src={event.bannerImage}
-                          alt={event.title}
-                          className="w-full h-full object-cover"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                        <div className="absolute top-4 left-4">
-                          <Badge variant={event.isVisible ? "default" : "secondary"}>
-                            {event.isVisible ? 'Visible' : 'Oculto'}
-                          </Badge>
-                        </div>
-                        <div className="absolute top-4 right-4 flex gap-2">
-                          {event.isNew && (
-                            <Badge className="bg-orange-500">Nuevo</Badge>
-                          )}
-                          <Badge variant="outline" className="bg-white/80">
-                            {event.displaySize}
-                          </Badge>
-                        </div>
-                      </div>
-                      
-                      <CardContent className="p-6 flex-1 flex flex-col">
-                        <h3 className="font-bold text-lg mb-2 text-text-dark">
-                          {event.title}
-                        </h3>
-                        
-                        <div className="space-y-2 text-sm text-gray-600 mb-4 flex-1">
-                          <p><strong>Categoría:</strong> {event.category}</p>
-                          <p><strong>Publicado:</strong> {event.publishDate}</p>
-                          {event.registrationDeadline && (
-                            <p><strong>Fecha límite:</strong> {event.registrationDeadline}</p>
-                          )}
-                        </div>
-
-                        <div className="space-y-3 mt-auto">
-                          {/* Visibility Toggle */}
-                          <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
-                            <div className="flex items-center gap-2">
-                              {event.isVisible ? (
-                                <Eye className="h-4 w-4 text-green-600" />
-                              ) : (
-                                <EyeOff className="h-4 w-4 text-gray-400" />
-                              )}
-                              <span className="text-sm font-medium">
-                                {event.isVisible ? 'Visible en web' : 'Oculto en web'}
-                              </span>
+            <Card>
+              <CardHeader>
+                <CardTitle>Eventos Comfenalco ({totalItems})</CardTitle>
+                <CardDescription>
+                  Lista completa de eventos y beneficios de Comfenalco para los afiliados
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Título</TableHead>
+                        <TableHead>Categoría</TableHead>
+                        <TableHead>Fecha de Publicación</TableHead>
+                        <TableHead>Tamaño de Visualización</TableHead>
+                        <TableHead>Acciones</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {paginatedEvents.map((event) => (
+                        <TableRow key={event.id} className="hover:bg-gray-50">
+                          <TableCell>
+                            <div className="flex items-center gap-3">
+                              <img src={event.bannerImage} alt={event.title} className="h-8 w-8 rounded-full object-cover" />
+                              <div>
+                                <p className="font-medium">{event.title}</p>
+                              </div>
                             </div>
-                            <Switch
-                              checked={event.isVisible}
-                              onCheckedChange={() => toggleVisibilityMutation.mutate(event)}
-                              disabled={toggleVisibilityMutation.isPending}
-                            />
-                          </div>
+                          </TableCell>
+                          <TableCell>
+                            <Badge className="w-fit">{event.category}</Badge>
+                          </TableCell>
+                          <TableCell>{event.publishDate}</TableCell>
+                          <TableCell>{event.displaySize}</TableCell>
+                          <TableCell>
+                            <div className="flex items-center gap-2">
+                              <Button variant="ghost" size="sm" onClick={() => handleEdit(event)}>
+                                <Edit className="h-4 w-4" />
+                              </Button>
+                              <Button variant="ghost" size="sm" onClick={() => handleDelete(event)}>
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                              <a href={event.formLink} target="_blank" rel="noopener noreferrer">
+                                <Button variant="ghost" size="sm">
+                                  <ExternalLink className="h-4 w-4" />
+                                </Button>
+                              </a>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
 
-                          {/* Edit Button */}
-                          <Button
-                            variant="outline"
-                            onClick={() => handleEdit(event)}
-                            className="w-full"
-                          >
-                            <Edit className="h-4 w-4 mr-2" />
-                            Editar Experiencia
-                          </Button>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                ))}
-              </div>
-            )}
-
-            {filteredEvents.length === 0 && !isLoading && (
-              <Card className="bg-white border shadow-sm">
-                <CardContent className="p-12 text-center">
-                  <p className="text-lg text-gray-500 mb-4">No se encontraron experiencias</p>
-                  <Button onClick={handleCreate}>
-                    <Plus className="h-4 w-4 mr-2" />
-                    Crear primera experiencia
-                  </Button>
-                </CardContent>
-              </Card>
-            )}
+                {/* Pagination */}
+                <DataPagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  totalItems={totalItems}
+                  itemsPerPage={itemsPerPage}
+                  onPageChange={goToPage}
+                  onItemsPerPageChange={setItemsPerPage}
+                  className="mt-4"
+                />
+              </CardContent>
+            </Card>
           </motion.div>
+
+          {/* Event Form Dialog */}
+          <Dialog open={eventFormOpen} onOpenChange={setEventFormOpen}>
+            <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle>{isEditing ? 'Editar Evento' : 'Nuevo Evento'}</DialogTitle>
+                <DialogDescriptionUI>
+                  {isEditing ? 'Edita los detalles del evento.' : 'Crea un nuevo evento para mostrar a los afiliados.'}
+                </DialogDescriptionUI>
+              </DialogHeader>
+              <div className="grid gap-4 py-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="title">Título</Label>
+                    <Input
+                      type="text"
+                      id="title"
+                      name="title"
+                      value={formValues.title}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="bannerImage">URL de la Imagen del Banner</Label>
+                    <Input
+                      type="text"
+                      id="bannerImage"
+                      name="bannerImage"
+                      value={formValues.bannerImage}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <Label htmlFor="description">Descripción</Label>
+                  <Textarea
+                    id="description"
+                    name="description"
+                    value={formValues.description}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                    <Label htmlFor="publishDate">Fecha de Publicación</Label>
+                    <DatePicker
+                      onSelect={handlePublishDateChange}
+                      defaultMonth={new Date(formValues.publishDate)}
+                      value={formValues.publishDate ? new Date(formValues.publishDate) : undefined}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="registrationDeadline">Fecha Límite de Registro</Label>
+                    <DatePicker
+                      onSelect={handleRegistrationDeadlineChange}
+                      defaultMonth={new Date(formValues.registrationDeadline || '')}
+                      value={formValues.registrationDeadline ? new Date(formValues.registrationDeadline) : undefined}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="eventDate">Fecha del Evento</Label>
+                    <DatePicker
+                      onSelect={handleEventDateChange}
+                      defaultMonth={new Date(formValues.eventDate || '')}
+                      value={formValues.eventDate ? new Date(formValues.eventDate) : undefined}
+                    />
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="registrationLink">Enlace de Registro</Label>
+                    <Input
+                      type="text"
+                      id="registrationLink"
+                      name="registrationLink"
+                      value={formValues.registrationLink}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="formLink">Enlace del Formulario</Label>
+                    <Input
+                      type="text"
+                      id="formLink"
+                      name="formLink"
+                      value={formValues.formLink}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Label htmlFor="isNew">Es Nuevo</Label>
+                  <Switch
+                    id="isNew"
+                    checked={formValues.isNew}
+                    onCheckedChange={handleSwitchChange}
+                  />
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="category">Categoría</Label>
+                    <Select value={formValues.category} onValueChange={handleCategoryChange}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selecciona una categoría" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="curso">Curso</SelectItem>
+                        <SelectItem value="experiencia">Experiencia</SelectItem>
+                        <SelectItem value="beneficio">Beneficio</SelectItem>
+                        <SelectItem value="regalo">Regalo</SelectItem>
+                        <SelectItem value="recreacion">Recreación</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label htmlFor="displaySize">Tamaño de Visualización</Label>
+                    <Select value={formValues.displaySize} onValueChange={handleDisplaySizeChange}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selecciona un tamaño" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="carousel">Carousel</SelectItem>
+                        <SelectItem value="mosaic">Mosaic</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              </div>
+              <Button onClick={handleSubmit}>
+                {isEditing ? 'Actualizar Evento' : 'Crear Evento'}
+              </Button>
+            </DialogContent>
+          </Dialog>
         </motion.div>
       </div>
     </AdminLayout>

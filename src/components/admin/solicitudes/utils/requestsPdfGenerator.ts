@@ -13,6 +13,7 @@ interface DateRangeFilter {
 declare module 'jspdf' {
   interface jsPDF {
     autoTable: (options: any) => jsPDF;
+    lastAutoTable: { finalY: number };
   }
 }
 
@@ -133,14 +134,14 @@ export const generateRequestsPDFReport = (requests: Request[], dateRange: DateRa
     });
   }
 
-  // Footer
-  const pageCount = doc.internal.getNumberOfPages();
+  // Footer - Corregido para evitar el error
+  const pageCount = (doc as any).internal.getNumberOfPages();
   for (let i = 1; i <= pageCount; i++) {
     doc.setPage(i);
     doc.setFontSize(8);
     doc.setTextColor(150, 150, 150);
-    doc.text(`Página ${i} de ${pageCount}`, doc.internal.pageSize.width - 30, doc.internal.pageSize.height - 10);
-    doc.text('ProSalud - Sistema de Gestión de Solicitudes', 20, doc.internal.pageSize.height - 10);
+    doc.text(`Página ${i} de ${pageCount}`, (doc as any).internal.pageSize.width - 30, (doc as any).internal.pageSize.height - 10);
+    doc.text('ProSalud - Sistema de Gestión de Solicitudes', 20, (doc as any).internal.pageSize.height - 10);
   }
 
   return doc;

@@ -1,103 +1,152 @@
-
-import React, { useState, useEffect } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useSearchParams } from 'react-router-dom';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Plus, Search, Edit, Eye, EyeOff } from 'lucide-react';
+import { 
+  Handshake, 
+  Plus, 
+  Search, 
+  Filter, 
+  Eye, 
+  Edit, 
+  Trash2, 
+  FileText, 
+  Mail, 
+  Phone, 
+  MapPin,
+  MoreHorizontal,
+  ExternalLink
+} from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { Switch } from '@/components/ui/switch';
-import { useToast } from '@/hooks/use-toast';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Separator } from '@/components/ui/separator';
 import AdminLayout from '@/components/admin/AdminLayout';
-import ConvenioForm from '@/components/admin/convenios/ConvenioForm';
-import { conveniosApi } from '@/services/adminApi';
-import { Convenio } from '@/types/admin';
+import DataPagination from '@/components/ui/data-pagination';
+import { usePagination } from '@/hooks/usePagination';
+
+interface Convenio {
+  id: string;
+  title: string;
+  description: string;
+  imageUrl: string;
+  contactName: string;
+  contactEmail: string;
+  contactPhone: string;
+  address: string;
+  website: string;
+  createdAt: string;
+}
+
+const mockConvenios: Convenio[] = [
+  {
+    id: 'conv-001',
+    title: 'Clínica del Occidente',
+    description: 'Descuentos en servicios de salud para afiliados ProSalud',
+    imageUrl: '/images/convenios/clinica_occidente.webp',
+    contactName: 'Dra. Ana Pérez',
+    contactEmail: 'ana.perez@clinicadeloccidente.com',
+    contactPhone: '+57 310 123 4567',
+    address: 'Calle 5 # 39-12, Cali',
+    website: 'https://www.clinicadeloccidente.com',
+    createdAt: '2024-01-15T10:00:00Z'
+  },
+  {
+    id: 'conv-002',
+    title: 'Óptica CaliVisión',
+    description: 'Exámenes de la vista y lentes a precios especiales',
+    imageUrl: '/images/convenios/optica_calivision.webp',
+    contactName: 'Carlos Gómez',
+    contactEmail: 'carlos.gomez@calivision.com',
+    contactPhone: '+57 315 987 6543',
+    address: 'Carrera 100 # 11-60, Cali',
+    website: 'https://www.calivision.com',
+    createdAt: '2024-02-20T14:30:00Z'
+  },
+  {
+    id: 'conv-003',
+    title: 'Gimnasio FitLife',
+    description: 'Planes de entrenamiento personalizados con descuento',
+    imageUrl: '/images/convenios/gimnasio_fitlife.webp',
+    contactName: 'Sofía Vargas',
+    contactEmail: 'sofia.vargas@fitlife.com',
+    contactPhone: '+57 320 555 7890',
+    address: 'Avenida 6 Norte # 25-100, Cali',
+    website: 'https://www.fitlife.com',
+    createdAt: '2024-03-10T09:15:00Z'
+  },
+];
 
 const AdminConveniosPage: React.FC = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [showForm, setShowForm] = useState(false);
+  const [convenios, setConvenios] = useState<Convenio[]>(mockConvenios);
   const [selectedConvenio, setSelectedConvenio] = useState<Convenio | null>(null);
+  const [convenioFormOpen, setConvenioFormOpen] = useState(false);
+  const [editConvenioOpen, setEditConvenioOpen] = useState(false);
+  const [deleteConvenioOpen, setDeleteConvenioOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState('all');
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 9;
+  const [filters, setFilters] = useState<{ category?: string }>({});
 
-  const { toast } = useToast();
-  const queryClient = useQueryClient();
-
-  // Check if we should open the create form based on URL params
-  useEffect(() => {
-    if (searchParams.get('action') === 'create') {
-      setShowForm(true);
-      setSelectedConvenio(null);
-      // Remove the action param after opening the form
-      setSearchParams({});
+  const filteredConvenios = convenios.filter(convenio => {
+    if (searchTerm) {
+      const searchLower = searchTerm.toLowerCase();
+      return (
+        convenio.title.toLowerCase().includes(searchLower) ||
+        convenio.description.toLowerCase().includes(searchLower) ||
+        convenio.contactName.toLowerCase().includes(searchLower)
+      );
     }
-  }, [searchParams, setSearchParams]);
-
-  const { data: convenios = [], isLoading, refetch } = useQuery({
-    queryKey: ['convenios'],
-    queryFn: conveniosApi.getConvenios
+    return true;
   });
 
-  const toggleVisibilityMutation = useMutation({
-    mutationFn: async (convenio: Convenio) => {
-      return conveniosApi.updateConvenio(convenio.id, { isVisible: !convenio.isVisible });
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['convenios'] });
-      toast({
-        title: "Estado actualizado",
-        description: "La visibilidad del convenio ha sido actualizada.",
-        variant: "success"
-      });
-    },
-    onError: () => {
-      toast({
-        title: "Error",
-        description: "No se pudo actualizar el estado. Inténtalo de nuevo.",
-        variant: "destructive"
-      });
-    }
+  const {
+    currentPage,
+    itemsPerPage,
+    totalPages,
+    totalItems,
+    paginatedData: paginatedConvenios,
+    goToPage,
+    setItemsPerPage
+  } = usePagination({
+    data: filteredConvenios,
+    initialItemsPerPage: 10
   });
-
-  const filteredConvenios = convenios.filter(convenio =>
-    convenio.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  const handleEdit = (convenio: Convenio) => {
-    setSelectedConvenio(convenio);
-    setShowForm(true);
-  };
-
-  const handleCreate = () => {
-    setSelectedConvenio(null);
-    setShowForm(true);
-  };
-
-  const handleCloseForm = () => {
-    setShowForm(false);
-    setSelectedConvenio(null);
-    refetch();
-  };
-
-  if (showForm) {
-    return <ConvenioForm convenio={selectedConvenio} onClose={handleCloseForm} />;
-  }
 
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.1 }
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2
+      }
     }
   };
 
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
-    visible: { y: 0, opacity: 1 }
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: { type: "spring", stiffness: 100 }
+    }
+  };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('es-CO', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
+  const handleDeleteConvenio = (convenioId: string) => {
+    setConvenios(convenios.filter(convenio => convenio.id !== convenioId));
+    setDeleteConvenioOpen(false);
   };
 
   return (
@@ -107,150 +156,292 @@ const AdminConveniosPage: React.FC = () => {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="p-4 sm:p-6 space-y-6 sm:space-y-8 max-w-7xl mx-auto"
+          className="p-4 sm:p-6 space-y-6 max-w-7xl mx-auto"
         >
           {/* Header */}
-          <motion.div variants={itemVariants} className="relative">
-            <div className="bg-white rounded-xl p-6 sm:p-8 border shadow-sm">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-4">
-                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary-prosalud">
-                  Gestión de Convenios
-                </h1>
-                <Button
-                  onClick={handleCreate}
-                  className="bg-primary-prosalud hover:bg-primary-prosalud-dark w-full sm:w-auto"
-                >
-                  <Plus className="h-4 w-4 mr-2" />
-                  Nuevo Convenio
-                </Button>
-              </div>
-              <p className="text-base sm:text-lg text-text-gray">
-                Administra los convenios y alianzas estratégicas de ProSalud
-              </p>
-            </div>
+          <motion.div variants={itemVariants}>
+            <Card className="border shadow-sm">
+              <CardHeader className="pb-6">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className="bg-primary-prosalud/10 p-3 rounded-lg">
+                      <Handshake className="h-8 w-8 text-primary-prosalud" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-3xl font-bold text-primary-prosalud">
+                        Gestión de Convenios
+                      </CardTitle>
+                      <CardDescription className="text-base mt-2">
+                        Administra los convenios y alianzas estratégicas de ProSalud
+                      </CardDescription>
+                    </div>
+                  </div>
+                  <Button 
+                    onClick={() => setConvenioFormOpen(true)}
+                    className="bg-primary-prosalud hover:bg-primary-prosalud-dark text-white"
+                  >
+                    <Plus className="h-4 w-4 mr-2" />
+                    Nuevo Convenio
+                  </Button>
+                </div>
+              </CardHeader>
+            </Card>
           </motion.div>
 
-          {/* Search */}
+          {/* Filters */}
           <motion.div variants={itemVariants}>
-            <Card className="bg-white border shadow-sm">
+            <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Search className="h-5 w-5" />
-                  Buscar Convenios
+                  <Filter className="h-5 w-5" />
+                  Filtros y Búsqueda
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                  <Input
-                    placeholder="Buscar por nombre del convenio..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10"
-                  />
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                    <Input
+                      placeholder="Buscar por título o contacto..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="pl-10"
+                    />
+                  </div>
+                  
+                  {/* Add category filter if needed */}
+
+                  <Button 
+                    variant="outline" 
+                    onClick={() => {setFilters({}); setSearchTerm('');}}
+                    className="w-full"
+                  >
+                    Limpiar Filtros
+                  </Button>
                 </div>
               </CardContent>
             </Card>
           </motion.div>
 
-          {/* Convenios Grid */}
+          {/* Convenios Table */}
           <motion.div variants={itemVariants}>
-            {isLoading ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
-                {[...Array(6)].map((_, i) => (
-                  <div key={i} className="h-80 bg-gray-200 rounded-xl animate-pulse"></div>
-                ))}
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
-                {filteredConvenios.map((convenio) => (
-                  <motion.div
-                    key={convenio.id}
-                    variants={itemVariants}
-                    whileHover={{ y: -5 }}
-                    className="group"
-                  >
-                    <Card className="border shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden bg-white h-full flex flex-col">
-                      <div className="relative h-48">
-                        <img
-                          src={convenio.image}
-                          alt={convenio.name}
-                          className="w-full h-full object-cover"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                        <div className="absolute top-4 left-4">
-                          <Badge variant={convenio.isVisible ? "default" : "secondary"}>
-                            {convenio.isVisible ? 'Visible' : 'Oculto'}
-                          </Badge>
-                        </div>
-                        <div className="absolute bottom-4 left-4 right-4">
-                          <h3 className="font-bold text-lg text-white mb-2">
-                            {convenio.name}
-                          </h3>
-                        </div>
-                      </div>
-                      
-                      <CardContent className="p-6 flex-1 flex flex-col">
-                        <div className="space-y-2 text-sm text-gray-600 mb-4 flex-1">
-                          <p><strong>Creado:</strong> {convenio.createdAt}</p>
-                          <p><strong>Estado:</strong> 
-                            <span className={`ml-1 ${convenio.isVisible ? 'text-green-600' : 'text-red-600'}`}>
-                              {convenio.isVisible ? 'Activo' : 'Inactivo'}
-                            </span>
-                          </p>
-                        </div>
-
-                        <div className="space-y-3 mt-auto">
-                          {/* Visibility Toggle */}
-                          <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
-                            <div className="flex items-center gap-2">
-                              {convenio.isVisible ? (
-                                <Eye className="h-4 w-4 text-green-600" />
-                              ) : (
-                                <EyeOff className="h-4 w-4 text-gray-400" />
-                              )}
-                              <span className="text-sm font-medium">
-                                {convenio.isVisible ? 'Visible en web' : 'Oculto en web'}
-                              </span>
+            <Card>
+              <CardHeader>
+                <CardTitle>Convenios ({totalItems})</CardTitle>
+                <CardDescription>
+                  Lista completa de convenios y alianzas estratégicas
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Título</TableHead>
+                        <TableHead>Contacto</TableHead>
+                        <TableHead>Fecha Creación</TableHead>
+                        <TableHead>Acciones</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {paginatedConvenios.map((convenio) => (
+                        <TableRow key={convenio.id} className="hover:bg-gray-50">
+                          <TableCell>
+                            <div className="flex items-center gap-3">
+                              <img
+                                src={convenio.imageUrl}
+                                alt={convenio.title}
+                                className="h-8 w-8 rounded-full object-cover"
+                              />
+                              <div>
+                                <p className="font-medium">{convenio.title}</p>
+                                <p className="text-sm text-gray-500">{convenio.description}</p>
+                              </div>
                             </div>
-                            <Switch
-                              checked={convenio.isVisible}
-                              onCheckedChange={() => toggleVisibilityMutation.mutate(convenio)}
-                              disabled={toggleVisibilityMutation.isPending}
-                            />
-                          </div>
+                          </TableCell>
+                          <TableCell>
+                            <div className="space-y-1">
+                              <p className="font-medium">{convenio.contactName}</p>
+                              <p className="text-sm text-gray-500">{convenio.contactEmail}</p>
+                              <p className="text-sm text-gray-500">{convenio.contactPhone}</p>
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <p className="text-sm">{formatDate(convenio.createdAt)}</p>
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex items-center gap-2">
+                              <Dialog>
+                                <DialogTrigger asChild>
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => setSelectedConvenio(convenio)}
+                                  >
+                                    <Eye className="h-4 w-4" />
+                                  </Button>
+                                </DialogTrigger>
+                                <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                                  <DialogHeader className="space-y-3">
+                                    <DialogTitle className="text-xl font-bold">
+                                      Detalles del Convenio
+                                    </DialogTitle>
+                                    <Separator />
+                                  </DialogHeader>
+                                  {selectedConvenio && (
+                                    <div className="space-y-6">
+                                      {/* Convenio Information Section */}
+                                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                        <Card>
+                                          <CardHeader className="pb-3">
+                                            <CardTitle className="text-lg flex items-center gap-2">
+                                              <Handshake className="h-5 w-5" />
+                                              Información del Convenio
+                                            </CardTitle>
+                                          </CardHeader>
+                                          <CardContent className="space-y-4">
+                                            <div className="space-y-3">
+                                              <div>
+                                                <label className="text-sm font-medium text-gray-600">Título</label>
+                                                <p className="text-sm">{selectedConvenio.title}</p>
+                                              </div>
+                                              <div>
+                                                <label className="text-sm font-medium text-gray-600">Descripción</label>
+                                                <p className="text-sm">{selectedConvenio.description}</p>
+                                              </div>
+                                              <div>
+                                                <label className="text-sm font-medium text-gray-600">Sitio Web</label>
+                                                <a href={selectedConvenio.website} target="_blank" rel="noopener noreferrer" className="text-sm text-blue-500 hover:underline flex items-center gap-1">
+                                                  Visitar <ExternalLink className="h-4 w-4" />
+                                                </a>
+                                              </div>
+                                            </div>
+                                          </CardContent>
+                                        </Card>
 
-                          {/* Edit Button */}
-                          <Button
-                            variant="outline"
-                            onClick={() => handleEdit(convenio)}
-                            className="w-full"
-                          >
-                            <Edit className="h-4 w-4 mr-2" />
-                            Editar Convenio
-                          </Button>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                ))}
-              </div>
-            )}
+                                        <Card>
+                                          <CardHeader className="pb-3">
+                                            <CardTitle className="text-lg flex items-center gap-2">
+                                              <MapPin className="h-5 w-5" />
+                                              Información de Contacto
+                                            </CardTitle>
+                                          </CardHeader>
+                                          <CardContent className="space-y-4">
+                                            <div className="space-y-3">
+                                              <div>
+                                                <label className="text-sm font-medium text-gray-600">Nombre de Contacto</label>
+                                                <p className="text-sm">{selectedConvenio.contactName}</p>
+                                              </div>
+                                              <div>
+                                                <label className="text-sm font-medium text-gray-600">Email</label>
+                                                <p className="text-sm">{selectedConvenio.contactEmail}</p>
+                                              </div>
+                                              <div>
+                                                <label className="text-sm font-medium text-gray-600">Teléfono</label>
+                                                <p className="text-sm">{selectedConvenio.contactPhone}</p>
+                                              </div>
+                                              <div>
+                                                <label className="text-sm font-medium text-gray-600">Dirección</label>
+                                                <p className="text-sm">{selectedConvenio.address}</p>
+                                              </div>
+                                            </div>
+                                          </CardContent>
+                                        </Card>
+                                      </div>
+                                    </div>
+                                  )}
+                                </DialogContent>
+                              </Dialog>
 
-            {filteredConvenios.length === 0 && !isLoading && (
-              <Card className="bg-white border shadow-sm">
-                <CardContent className="p-12 text-center">
-                  <p className="text-lg text-gray-500 mb-4">
-                    {searchTerm ? 'No se encontraron convenios que coincidan con la búsqueda' : 'No hay convenios registrados'}
-                  </p>
-                  <Button onClick={handleCreate}>
-                    <Plus className="h-4 w-4 mr-2" />
-                    Crear primer convenio
-                  </Button>
-                </CardContent>
-              </Card>
-            )}
+                              <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                  <Button variant="ghost" size="sm">
+                                    <MoreHorizontal className="h-4 w-4" />
+                                  </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent>
+                                  <DropdownMenuItem onClick={() => { setSelectedConvenio(convenio); setEditConvenioOpen(true); }}>
+                                    <Edit className="h-4 w-4 mr-2" />
+                                    Editar
+                                  </DropdownMenuItem>
+                                  <DropdownMenuItem onClick={() => { setSelectedConvenio(convenio); setDeleteConvenioOpen(true); }}>
+                                    <Trash2 className="h-4 w-4 mr-2" />
+                                    Eliminar
+                                  </DropdownMenuItem>
+                                </DropdownMenuContent>
+                              </DropdownMenu>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+
+                {/* Pagination */}
+                <DataPagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  totalItems={totalItems}
+                  itemsPerPage={itemsPerPage}
+                  onPageChange={goToPage}
+                  onItemsPerPageChange={setItemsPerPage}
+                  className="mt-4"
+                />
+              </CardContent>
+            </Card>
           </motion.div>
+
+          {/* New Convenio Dialog */}
+          <Dialog open={convenioFormOpen} onOpenChange={setConvenioFormOpen}>
+            <DialogContent className="max-w-md bg-white">
+              <DialogHeader>
+                <DialogTitle>Nuevo Convenio</DialogTitle>
+                <DialogDescription>
+                  Completa el formulario para agregar un nuevo convenio.
+                </DialogDescription>
+              </DialogHeader>
+              {/* Add form fields here */}
+              <Button type="submit">Guardar</Button>
+            </DialogContent>
+          </Dialog>
+
+          {/* Edit Convenio Dialog */}
+          <Dialog open={editConvenioOpen} onOpenChange={setEditConvenioOpen}>
+            <DialogContent className="max-w-md bg-white">
+              <DialogHeader>
+                <DialogTitle>Editar Convenio</DialogTitle>
+                <DialogDescription>
+                  Modifica la información del convenio seleccionado.
+                </DialogDescription>
+              </DialogHeader>
+              {/* Add form fields here */}
+              <Button type="submit">Guardar Cambios</Button>
+            </DialogContent>
+          </Dialog>
+
+          {/* Delete Convenio Dialog */}
+          <Dialog open={deleteConvenioOpen} onOpenChange={setDeleteConvenioOpen}>
+            <DialogContent className="max-w-md bg-white">
+              <DialogHeader>
+                <DialogTitle>Eliminar Convenio</DialogTitle>
+                <DialogDescription>
+                  ¿Estás seguro de que quieres eliminar este convenio?
+                </DialogDescription>
+              </DialogHeader>
+              <div className="py-4">
+                <p>Esta acción no se puede deshacer.</p>
+              </div>
+              <div className="flex justify-end space-x-2">
+                <Button variant="secondary" onClick={() => setDeleteConvenioOpen(false)}>
+                  Cancelar
+                </Button>
+                <Button variant="destructive" onClick={() => handleDeleteConvenio(selectedConvenio!.id)}>
+                  Eliminar
+                </Button>
+              </div>
+            </DialogContent>
+          </Dialog>
         </motion.div>
       </div>
     </AdminLayout>
