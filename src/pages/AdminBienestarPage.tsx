@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
@@ -130,7 +129,7 @@ const AdminBienestarPage: React.FC = () => {
                     </div>
                   </div>
                   <Button 
-                    onClick={() => setEventFormOpen(true)}
+                    onClick={() => setShowForm(true)}
                     className="bg-primary-prosalud hover:bg-primary-prosalud-dark text-white"
                   >
                     <Plus className="h-4 w-4 mr-2" />
