@@ -9,10 +9,6 @@ import {
   Eye, 
   Edit, 
   Trash2, 
-  FileText, 
-  Mail, 
-  Phone, 
-  MapPin,
   MoreHorizontal,
   ExternalLink
 } from 'lucide-react';
@@ -24,58 +20,41 @@ import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from '@/components/ui/dialog';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Separator } from '@/components/ui/separator';
+import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
 import AdminLayout from '@/components/admin/AdminLayout';
 import DataPagination from '@/components/ui/data-pagination';
 import { usePagination } from '@/hooks/usePagination';
+import { useToast } from '@/hooks/use-toast';
 
 interface Convenio {
   id: string;
-  title: string;
-  description: string;
+  name: string;
   imageUrl: string;
-  contactName: string;
-  contactEmail: string;
-  contactPhone: string;
-  address: string;
-  website: string;
+  isVisible: boolean;
   createdAt: string;
 }
 
 const mockConvenios: Convenio[] = [
   {
     id: 'conv-001',
-    title: 'Clínica del Occidente',
-    description: 'Descuentos en servicios de salud para afiliados ProSalud',
+    name: 'Clínica del Occidente',
     imageUrl: '/images/convenios/clinica_occidente.webp',
-    contactName: 'Dra. Ana Pérez',
-    contactEmail: 'ana.perez@clinicadeloccidente.com',
-    contactPhone: '+57 310 123 4567',
-    address: 'Calle 5 # 39-12, Cali',
-    website: 'https://www.clinicadeloccidente.com',
+    isVisible: true,
     createdAt: '2024-01-15T10:00:00Z'
   },
   {
     id: 'conv-002',
-    title: 'Óptica CaliVisión',
-    description: 'Exámenes de la vista y lentes a precios especiales',
+    name: 'Óptica CaliVisión',
     imageUrl: '/images/convenios/optica_calivision.webp',
-    contactName: 'Carlos Gómez',
-    contactEmail: 'carlos.gomez@calivision.com',
-    contactPhone: '+57 315 987 6543',
-    address: 'Carrera 100 # 11-60, Cali',
-    website: 'https://www.calivision.com',
+    isVisible: false,
     createdAt: '2024-02-20T14:30:00Z'
   },
   {
     id: 'conv-003',
-    title: 'Gimnasio FitLife',
-    description: 'Planes de entrenamiento personalizados con descuento',
+    name: 'Gimnasio FitLife',
     imageUrl: '/images/convenios/gimnasio_fitlife.webp',
-    contactName: 'Sofía Vargas',
-    contactEmail: 'sofia.vargas@fitlife.com',
-    contactPhone: '+57 320 555 7890',
-    address: 'Avenida 6 Norte # 25-100, Cali',
-    website: 'https://www.fitlife.com',
+    isVisible: true,
     createdAt: '2024-03-10T09:15:00Z'
   },
 ];
@@ -88,16 +67,19 @@ const AdminConveniosPage: React.FC = () => {
   const [deleteConvenioOpen, setDeleteConvenioOpen] = useState(false);
   const [viewConvenioOpen, setViewConvenioOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [filters, setFilters] = useState<{ category?: string }>({});
+  const [isEditing, setIsEditing] = useState(false);
+  const { toast } = useToast();
+
+  const [formValues, setFormValues] = useState({
+    name: '',
+    imageUrl: '',
+    isVisible: true
+  });
 
   const filteredConvenios = convenios.filter(convenio => {
     if (searchTerm) {
       const searchLower = searchTerm.toLowerCase();
-      return (
-        convenio.title.toLowerCase().includes(searchLower) ||
-        convenio.description.toLowerCase().includes(searchLower) ||
-        convenio.contactName.toLowerCase().includes(searchLower)
-      );
+      return convenio.name.toLowerCase().includes(searchLower);
     }
     return true;
   });
@@ -145,9 +127,75 @@ const AdminConveniosPage: React.FC = () => {
     });
   };
 
-  const handleDeleteConvenio = (convenioId: string) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormValues(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSwitchChange = (checked: boolean) => {
+    setFormValues(prev => ({
+      ...prev,
+      isVisible: checked
+    }));
+  };
+
+  const handleSubmit = () => {
+    if (isEditing && selectedConvenio) {
+      const updatedConvenios = convenios.map(convenio =>
+        convenio.id === selectedConvenio.id ? { ...selectedConvenio, ...formValues } : convenio
+      );
+      setConvenios(updatedConvenios);
+      toast({
+        title: "Convenio Actualizado",
+        description: "El convenio ha sido actualizado exitosamente.",
+      });
+    } else {
+      const newConvenio: Convenio = {
+        id: `conv-${Date.now()}`,
+        ...formValues,
+        createdAt: new Date().toISOString()
+      };
+      setConvenios([...convenios, newConvenio]);
+      toast({
+        title: "Convenio Creado",
+        description: "El convenio ha sido creado exitosamente.",
+      });
+    }
+
+    setConvenioFormOpen(false);
+    setEditConvenioOpen(false);
+    setSelectedConvenio(null);
+    setIsEditing(false);
+    setFormValues({ name: '', imageUrl: '', isVisible: true });
+  };
+
+  const handleEdit = (convenio: Convenio) => {
+    setSelectedConvenio(convenio);
+    setFormValues({
+      name: convenio.name,
+      imageUrl: convenio.imageUrl,
+      isVisible: convenio.isVisible
+    });
+    setIsEditing(true);
+    setEditConvenioOpen(true);
+  };
+
+  const handleDelete = (convenioId: string) => {
     setConvenios(convenios.filter(convenio => convenio.id !== convenioId));
     setDeleteConvenioOpen(false);
+    toast({
+      title: "Convenio Eliminado",
+      description: "El convenio ha sido eliminado exitosamente.",
+    });
+  };
+
+  const resetForm = () => {
+    setFormValues({ name: '', imageUrl: '', isVisible: true });
+    setIsEditing(false);
+    setSelectedConvenio(null);
   };
 
   return (
@@ -178,7 +226,10 @@ const AdminConveniosPage: React.FC = () => {
                     </div>
                   </div>
                   <Button 
-                    onClick={() => setConvenioFormOpen(true)}
+                    onClick={() => {
+                      resetForm();
+                      setConvenioFormOpen(true);
+                    }}
                     className="bg-primary-prosalud hover:bg-primary-prosalud-dark text-white"
                   >
                     <Plus className="h-4 w-4 mr-2" />
@@ -203,7 +254,7 @@ const AdminConveniosPage: React.FC = () => {
                   <div className="relative">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                     <Input
-                      placeholder="Buscar por título o contacto..."
+                      placeholder="Buscar por nombre..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                       className="pl-10"
@@ -214,7 +265,7 @@ const AdminConveniosPage: React.FC = () => {
 
                   <Button 
                     variant="outline" 
-                    onClick={() => {setFilters({}); setSearchTerm('');}}
+                    onClick={() => setSearchTerm('')}
                     className="w-full"
                   >
                     Limpiar Filtros
@@ -240,36 +291,36 @@ const AdminConveniosPage: React.FC = () => {
                       <CardHeader className="p-0">
                         <img
                           src={convenio.imageUrl}
-                          alt={convenio.title}
+                          alt={convenio.name}
                           className="w-full h-48 object-cover rounded-t-lg"
                         />
                       </CardHeader>
                       <CardContent className="p-4">
+                        <div className="flex items-center justify-between mb-2">
+                          <Badge variant={convenio.isVisible ? "default" : "secondary"} className="text-xs">
+                            {convenio.isVisible ? "Visible" : "Oculto"}
+                          </Badge>
+                        </div>
                         <CardTitle className="text-lg font-semibold mb-2 line-clamp-2">
-                          {convenio.title}
+                          {convenio.name}
                         </CardTitle>
-                        <p className="text-sm text-gray-600 mb-3 line-clamp-2">
-                          {convenio.description}
-                        </p>
                         <div className="space-y-1 mb-4">
-                          <p className="text-sm font-medium">{convenio.contactName}</p>
-                          <p className="text-xs text-gray-500">{convenio.contactEmail}</p>
+                          <p className="text-xs text-gray-500">
+                            Creado: {formatDate(convenio.createdAt)}
+                          </p>
                         </div>
                         <div className="flex items-center justify-between">
-                          <p className="text-xs text-gray-400">
-                            {formatDate(convenio.createdAt)}
-                          </p>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => {
+                              setSelectedConvenio(convenio);
+                              setViewConvenioOpen(true);
+                            }}
+                          >
+                            <Eye className="h-4 w-4" />
+                          </Button>
                           <div className="flex items-center gap-1">
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => {
-                                setSelectedConvenio(convenio);
-                                setViewConvenioOpen(true);
-                              }}
-                            >
-                              <Eye className="h-4 w-4" />
-                            </Button>
                             <DropdownMenu>
                               <DropdownMenuTrigger asChild>
                                 <Button variant="ghost" size="sm">
@@ -277,7 +328,7 @@ const AdminConveniosPage: React.FC = () => {
                                 </Button>
                               </DropdownMenuTrigger>
                               <DropdownMenuContent>
-                                <DropdownMenuItem onClick={() => { setSelectedConvenio(convenio); setEditConvenioOpen(true); }}>
+                                <DropdownMenuItem onClick={() => handleEdit(convenio)}>
                                   <Edit className="h-4 w-4 mr-2" />
                                   Editar
                                 </DropdownMenuItem>
@@ -330,18 +381,18 @@ const AdminConveniosPage: React.FC = () => {
                       <CardContent className="space-y-4">
                         <div className="space-y-3">
                           <div>
-                            <label className="text-sm font-medium text-gray-600">Título</label>
-                            <p className="text-sm">{selectedConvenio.title}</p>
+                            <label className="text-sm font-medium text-gray-600">Nombre</label>
+                            <p className="text-sm">{selectedConvenio.name}</p>
                           </div>
                           <div>
-                            <label className="text-sm font-medium text-gray-600">Descripción</label>
-                            <p className="text-sm">{selectedConvenio.description}</p>
+                            <label className="text-sm font-medium text-gray-600">Estado</label>
+                            <Badge variant={selectedConvenio.isVisible ? "default" : "secondary"}>
+                              {selectedConvenio.isVisible ? "Visible en web" : "Oculto en web"}
+                            </Badge>
                           </div>
                           <div>
-                            <label className="text-sm font-medium text-gray-600">Sitio Web</label>
-                            <a href={selectedConvenio.website} target="_blank" rel="noopener noreferrer" className="text-sm text-blue-500 hover:underline flex items-center gap-1">
-                              Visitar <ExternalLink className="h-4 w-4" />
-                            </a>
+                            <label className="text-sm font-medium text-gray-600">Fecha de Creación</label>
+                            <p className="text-sm">{formatDate(selectedConvenio.createdAt)}</p>
                           </div>
                         </div>
                       </CardContent>
@@ -349,30 +400,16 @@ const AdminConveniosPage: React.FC = () => {
 
                     <Card>
                       <CardHeader className="pb-3">
-                        <CardTitle className="text-lg flex items-center gap-2">
-                          <MapPin className="h-5 w-5" />
-                          Información de Contacto
+                        <CardTitle className="text-lg">
+                          Imagen del Convenio
                         </CardTitle>
                       </CardHeader>
-                      <CardContent className="space-y-4">
-                        <div className="space-y-3">
-                          <div>
-                            <label className="text-sm font-medium text-gray-600">Nombre de Contacto</label>
-                            <p className="text-sm">{selectedConvenio.contactName}</p>
-                          </div>
-                          <div>
-                            <label className="text-sm font-medium text-gray-600">Email</label>
-                            <p className="text-sm">{selectedConvenio.contactEmail}</p>
-                          </div>
-                          <div>
-                            <label className="text-sm font-medium text-gray-600">Teléfono</label>
-                            <p className="text-sm">{selectedConvenio.contactPhone}</p>
-                          </div>
-                          <div>
-                            <label className="text-sm font-medium text-gray-600">Dirección</label>
-                            <p className="text-sm">{selectedConvenio.address}</p>
-                          </div>
-                        </div>
+                      <CardContent>
+                        <img
+                          src={selectedConvenio.imageUrl}
+                          alt={selectedConvenio.name}
+                          className="w-full h-48 object-cover rounded-lg"
+                        />
                       </CardContent>
                     </Card>
                   </div>
@@ -383,29 +420,101 @@ const AdminConveniosPage: React.FC = () => {
 
           {/* New Convenio Dialog */}
           <Dialog open={convenioFormOpen} onOpenChange={setConvenioFormOpen}>
-            <DialogContent className="max-w-md bg-white">
+            <DialogContent className="max-w-2xl bg-white">
               <DialogHeader>
                 <DialogTitle>Nuevo Convenio</DialogTitle>
                 <DialogDescription>
                   Completa el formulario para agregar un nuevo convenio.
                 </DialogDescription>
               </DialogHeader>
-              {/* Add form fields here */}
-              <Button type="submit">Guardar</Button>
+              <div className="grid gap-4 py-4">
+                <div className="grid gap-2">
+                  <Label htmlFor="name">Nombre del Convenio</Label>
+                  <Input
+                    id="name"
+                    name="name"
+                    value={formValues.name}
+                    onChange={handleInputChange}
+                    placeholder="Ej. Clínica del Occidente"
+                  />
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="imageUrl">URL de la Imagen</Label>
+                  <Input
+                    id="imageUrl"
+                    name="imageUrl"
+                    value={formValues.imageUrl}
+                    onChange={handleInputChange}
+                    placeholder="https://ejemplo.com/imagen.jpg"
+                  />
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="isVisible"
+                    checked={formValues.isVisible}
+                    onCheckedChange={handleSwitchChange}
+                  />
+                  <Label htmlFor="isVisible">Visible en la web</Label>
+                </div>
+              </div>
+              <div className="flex justify-end space-x-2">
+                <Button variant="outline" onClick={() => setConvenioFormOpen(false)}>
+                  Cancelar
+                </Button>
+                <Button onClick={handleSubmit}>
+                  Crear Convenio
+                </Button>
+              </div>
             </DialogContent>
           </Dialog>
 
           {/* Edit Convenio Dialog */}
           <Dialog open={editConvenioOpen} onOpenChange={setEditConvenioOpen}>
-            <DialogContent className="max-w-md bg-white">
+            <DialogContent className="max-w-2xl bg-white">
               <DialogHeader>
                 <DialogTitle>Editar Convenio</DialogTitle>
                 <DialogDescription>
                   Modifica la información del convenio seleccionado.
                 </DialogDescription>
               </DialogHeader>
-              {/* Add form fields here */}
-              <Button type="submit">Guardar Cambios</Button>
+              <div className="grid gap-4 py-4">
+                <div className="grid gap-2">
+                  <Label htmlFor="edit-name">Nombre del Convenio</Label>
+                  <Input
+                    id="edit-name"
+                    name="name"
+                    value={formValues.name}
+                    onChange={handleInputChange}
+                    placeholder="Ej. Clínica del Occidente"
+                  />
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="edit-imageUrl">URL de la Imagen</Label>
+                  <Input
+                    id="edit-imageUrl"
+                    name="imageUrl"
+                    value={formValues.imageUrl}
+                    onChange={handleInputChange}
+                    placeholder="https://ejemplo.com/imagen.jpg"
+                  />
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="edit-isVisible"
+                    checked={formValues.isVisible}
+                    onCheckedChange={handleSwitchChange}
+                  />
+                  <Label htmlFor="edit-isVisible">Visible en la web</Label>
+                </div>
+              </div>
+              <div className="flex justify-end space-x-2">
+                <Button variant="outline" onClick={() => setEditConvenioOpen(false)}>
+                  Cancelar
+                </Button>
+                <Button onClick={handleSubmit}>
+                  Guardar Cambios
+                </Button>
+              </div>
             </DialogContent>
           </Dialog>
 
@@ -425,7 +534,7 @@ const AdminConveniosPage: React.FC = () => {
                 <Button variant="secondary" onClick={() => setDeleteConvenioOpen(false)}>
                   Cancelar
                 </Button>
-                <Button variant="destructive" onClick={() => handleDeleteConvenio(selectedConvenio!.id)}>
+                <Button variant="destructive" onClick={() => handleDelete(selectedConvenio!.id)}>
                   Eliminar
                 </Button>
               </div>

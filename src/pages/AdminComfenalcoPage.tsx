@@ -60,6 +60,7 @@ const AdminComfenalcoPage: React.FC = () => {
     isNew: false,
     category: 'curso',
     displaySize: 'carousel',
+    isVisible: true,
   });
 
   const filteredEvents = comfenalcoEventsMock.filter(event => {
@@ -114,10 +115,10 @@ const AdminComfenalcoPage: React.FC = () => {
     }));
   };
 
-  const handleSwitchChange = (checked: boolean) => {
+  const handleSwitchChange = (name: string, checked: boolean) => {
     setFormValues(prevValues => ({
       ...prevValues,
-      isNew: checked
+      [name]: checked
     }));
   };
 
@@ -190,6 +191,7 @@ const AdminComfenalcoPage: React.FC = () => {
     setEventFormOpen(false);
     setSelectedEvent(null);
     setIsEditing(false);
+    resetForm();
   };
 
   const handleEdit = (event: ComfenalcoEvent) => {
@@ -206,6 +208,7 @@ const AdminComfenalcoPage: React.FC = () => {
       isNew: event.isNew,
       category: event.category,
       displaySize: event.displaySize,
+      isVisible: event.isVisible || true,
     });
     setIsEditing(true);
     setEventFormOpen(true);
@@ -221,6 +224,25 @@ const AdminComfenalcoPage: React.FC = () => {
         description: "El evento ha sido eliminado exitosamente.",
       });
     }
+  };
+
+  const resetForm = () => {
+    setFormValues({
+      title: '',
+      bannerImage: '',
+      description: '',
+      publishDate: new Date().toISOString().split('T')[0],
+      registrationDeadline: new Date().toISOString().split('T')[0],
+      eventDate: new Date().toISOString().split('T')[0],
+      registrationLink: '',
+      formLink: '',
+      isNew: false,
+      category: 'curso',
+      displaySize: 'carousel',
+      isVisible: true,
+    });
+    setIsEditing(false);
+    setSelectedEvent(null);
   };
 
   return (
@@ -251,7 +273,10 @@ const AdminComfenalcoPage: React.FC = () => {
                     </div>
                   </div>
                   <Button 
-                    onClick={() => setEventFormOpen(true)}
+                    onClick={() => {
+                      resetForm();
+                      setEventFormOpen(true);
+                    }}
                     className="bg-primary-prosalud hover:bg-primary-prosalud-dark text-white"
                   >
                     <Plus className="h-4 w-4 mr-2" />
@@ -272,7 +297,7 @@ const AdminComfenalcoPage: React.FC = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                   <div className="relative">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                     <Input
@@ -307,6 +332,14 @@ const AdminComfenalcoPage: React.FC = () => {
                       <SelectItem value="mosaic">Mosaic</SelectItem>
                     </SelectContent>
                   </Select>
+
+                  <Button 
+                    variant="outline" 
+                    onClick={() => {setFilters({category: 'all', displaySize: 'all'}); setSearchTerm('');}}
+                    className="w-full"
+                  >
+                    Limpiar Filtros
+                  </Button>
                 </div>
               </CardContent>
             </Card>
@@ -337,11 +370,16 @@ const AdminComfenalcoPage: React.FC = () => {
                           <Badge variant="outline" className="text-xs">
                             {event.category}
                           </Badge>
-                          {event.isNew && (
-                            <Badge className="bg-green-100 text-green-800 text-xs">
-                              Nuevo
+                          <div className="flex gap-1">
+                            {event.isNew && (
+                              <Badge className="bg-green-100 text-green-800 text-xs">
+                                Nuevo
+                              </Badge>
+                            )}
+                            <Badge variant={event.isVisible ? "default" : "secondary"} className="text-xs">
+                              {event.isVisible ? "Visible" : "Oculto"}
                             </Badge>
-                          )}
+                          </div>
                         </div>
                         <CardTitle className="text-lg font-semibold mb-2 line-clamp-2">
                           {event.title}
@@ -452,6 +490,12 @@ const AdminComfenalcoPage: React.FC = () => {
                           <div>
                             <label className="text-sm font-medium text-gray-600">Tamaño de Visualización</label>
                             <Badge variant="secondary" className="text-xs">{selectedEvent.displaySize}</Badge>
+                          </div>
+                          <div>
+                            <label className="text-sm font-medium text-gray-600">Estado</label>
+                            <Badge variant={selectedEvent.isVisible ? "default" : "secondary"}>
+                              {selectedEvent.isVisible ? "Visible en web" : "Oculto en web"}
+                            </Badge>
                           </div>
                         </div>
                       </CardContent>
@@ -586,13 +630,23 @@ const AdminComfenalcoPage: React.FC = () => {
                     />
                   </div>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <Label htmlFor="isNew">Es Nuevo</Label>
-                  <Switch
-                    id="isNew"
-                    checked={formValues.isNew}
-                    onCheckedChange={handleSwitchChange}
-                  />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="flex items-center space-x-2">
+                    <Switch
+                      id="isNew"
+                      checked={formValues.isNew}
+                      onCheckedChange={(checked) => handleSwitchChange('isNew', checked)}
+                    />
+                    <Label htmlFor="isNew">Es Nuevo</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Switch
+                      id="isVisible"
+                      checked={formValues.isVisible}
+                      onCheckedChange={(checked) => handleSwitchChange('isVisible', checked)}
+                    />
+                    <Label htmlFor="isVisible">Visible en la web</Label>
+                  </div>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
@@ -624,9 +678,14 @@ const AdminComfenalcoPage: React.FC = () => {
                   </div>
                 </div>
               </div>
-              <Button onClick={handleSubmit}>
-                {isEditing ? 'Actualizar Evento' : 'Crear Evento'}
-              </Button>
+              <div className="flex justify-end space-x-2">
+                <Button variant="outline" onClick={() => setEventFormOpen(false)}>
+                  Cancelar
+                </Button>
+                <Button onClick={handleSubmit}>
+                  {isEditing ? 'Actualizar Evento' : 'Crear Evento'}
+                </Button>
+              </div>
             </DialogContent>
           </Dialog>
         </motion.div>
