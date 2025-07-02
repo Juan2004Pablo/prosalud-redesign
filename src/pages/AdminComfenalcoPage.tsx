@@ -21,7 +21,6 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
@@ -33,10 +32,13 @@ import { comfenalcoEventsMock } from '@/data/comfenalcoEventsMock';
 import { ComfenalcoEvent } from '@/types/comfenalco';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
-import { DatePicker } from "@/components/ui/date-picker"
+import { DatePicker } from "@/components/ui/date-picker";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Separator } from '@/components/ui/separator';
 
 const AdminComfenalcoPage: React.FC = () => {
   const [eventFormOpen, setEventFormOpen] = useState(false);
+  const [viewEventOpen, setViewEventOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<ComfenalcoEvent | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -81,7 +83,7 @@ const AdminComfenalcoPage: React.FC = () => {
     setItemsPerPage
   } = usePagination({
     data: filteredEvents,
-    initialItemsPerPage: 10
+    initialItemsPerPage: 12
   });
 
   const containerVariants = {
@@ -310,7 +312,7 @@ const AdminComfenalcoPage: React.FC = () => {
             </Card>
           </motion.div>
 
-          {/* Events Table */}
+          {/* Events Grid */}
           <motion.div variants={itemVariants}>
             <Card>
               <CardHeader>
@@ -320,52 +322,82 @@ const AdminComfenalcoPage: React.FC = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="overflow-x-auto">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Título</TableHead>
-                        <TableHead>Categoría</TableHead>
-                        <TableHead>Fecha de Publicación</TableHead>
-                        <TableHead>Tamaño de Visualización</TableHead>
-                        <TableHead>Acciones</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {paginatedEvents.map((event) => (
-                        <TableRow key={event.id} className="hover:bg-gray-50">
-                          <TableCell>
-                            <div className="flex items-center gap-3">
-                              <img src={event.bannerImage} alt={event.title} className="h-8 w-8 rounded-full object-cover" />
-                              <div>
-                                <p className="font-medium">{event.title}</p>
-                              </div>
-                            </div>
-                          </TableCell>
-                          <TableCell>
-                            <Badge className="w-fit">{event.category}</Badge>
-                          </TableCell>
-                          <TableCell>{event.publishDate}</TableCell>
-                          <TableCell>{event.displaySize}</TableCell>
-                          <TableCell>
-                            <div className="flex items-center gap-2">
-                              <Button variant="ghost" size="sm" onClick={() => handleEdit(event)}>
-                                <Edit className="h-4 w-4" />
-                              </Button>
-                              <Button variant="ghost" size="sm" onClick={() => handleDelete(event)}>
-                                <Trash2 className="h-4 w-4" />
-                              </Button>
-                              <a href={event.formLink} target="_blank" rel="noopener noreferrer">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                  {paginatedEvents.map((event) => (
+                    <Card key={event.id} className="hover:shadow-lg transition-shadow duration-300">
+                      <CardHeader className="p-0">
+                        <img
+                          src={event.bannerImage}
+                          alt={event.title}
+                          className="w-full h-48 object-cover rounded-t-lg"
+                        />
+                      </CardHeader>
+                      <CardContent className="p-4">
+                        <div className="flex items-center justify-between mb-2">
+                          <Badge variant="outline" className="text-xs">
+                            {event.category}
+                          </Badge>
+                          {event.isNew && (
+                            <Badge className="bg-green-100 text-green-800 text-xs">
+                              Nuevo
+                            </Badge>
+                          )}
+                        </div>
+                        <CardTitle className="text-lg font-semibold mb-2 line-clamp-2">
+                          {event.title}
+                        </CardTitle>
+                        {event.description && (
+                          <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+                            {event.description}
+                          </p>
+                        )}
+                        <div className="space-y-1 mb-4">
+                          <p className="text-xs text-gray-500">
+                            Publicado: {event.publishDate}
+                          </p>
+                          <Badge variant="secondary" className="text-xs">
+                            {event.displaySize}
+                          </Badge>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => {
+                              setSelectedEvent(event);
+                              setViewEventOpen(true);
+                            }}
+                          >
+                            <Eye className="h-4 w-4" />
+                          </Button>
+                          <div className="flex items-center gap-1">
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
                                 <Button variant="ghost" size="sm">
-                                  <ExternalLink className="h-4 w-4" />
+                                  <MoreHorizontal className="h-4 w-4" />
                                 </Button>
-                              </a>
-                            </div>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent>
+                                <DropdownMenuItem onClick={() => handleEdit(event)}>
+                                  <Edit className="h-4 w-4 mr-2" />
+                                  Editar
+                                </DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => handleDelete(event)}>
+                                  <Trash2 className="h-4 w-4 mr-2" />
+                                  Eliminar
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                            <a href={event.formLink} target="_blank" rel="noopener noreferrer">
+                              <Button variant="ghost" size="sm">
+                                <ExternalLink className="h-4 w-4" />
+                              </Button>
+                            </a>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
                 </div>
 
                 {/* Pagination */}
@@ -376,15 +408,98 @@ const AdminComfenalcoPage: React.FC = () => {
                   itemsPerPage={itemsPerPage}
                   onPageChange={goToPage}
                   onItemsPerPageChange={setItemsPerPage}
-                  className="mt-4"
+                  className="mt-6"
                 />
               </CardContent>
             </Card>
           </motion.div>
 
+          {/* View Event Dialog */}
+          <Dialog open={viewEventOpen} onOpenChange={setViewEventOpen}>
+            <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white">
+              <DialogHeader className="space-y-3">
+                <DialogTitle className="text-xl font-bold">
+                  Detalles del Evento
+                </DialogTitle>
+                <Separator />
+              </DialogHeader>
+              {selectedEvent && (
+                <div className="space-y-6">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <Card>
+                      <CardHeader className="pb-3">
+                        <CardTitle className="text-lg flex items-center gap-2">
+                          <GraduationCap className="h-5 w-5" />
+                          Información del Evento
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div className="space-y-3">
+                          <div>
+                            <label className="text-sm font-medium text-gray-600">Título</label>
+                            <p className="text-sm">{selectedEvent.title}</p>
+                          </div>
+                          {selectedEvent.description && (
+                            <div>
+                              <label className="text-sm font-medium text-gray-600">Descripción</label>
+                              <p className="text-sm">{selectedEvent.description}</p>
+                            </div>
+                          )}
+                          <div>
+                            <label className="text-sm font-medium text-gray-600">Categoría</label>
+                            <Badge variant="outline" className="text-xs">{selectedEvent.category}</Badge>
+                          </div>
+                          <div>
+                            <label className="text-sm font-medium text-gray-600">Tamaño de Visualización</label>
+                            <Badge variant="secondary" className="text-xs">{selectedEvent.displaySize}</Badge>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    <Card>
+                      <CardHeader className="pb-3">
+                        <CardTitle className="text-lg flex items-center gap-2">
+                          <Calendar className="h-5 w-5" />
+                          Fechas y Enlaces
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div className="space-y-3">
+                          <div>
+                            <label className="text-sm font-medium text-gray-600">Fecha de Publicación</label>
+                            <p className="text-sm">{selectedEvent.publishDate}</p>
+                          </div>
+                          {selectedEvent.registrationDeadline && (
+                            <div>
+                              <label className="text-sm font-medium text-gray-600">Fecha Límite de Registro</label>
+                              <p className="text-sm">{selectedEvent.registrationDeadline}</p>
+                            </div>
+                          )}
+                          {selectedEvent.eventDate && (
+                            <div>
+                              <label className="text-sm font-medium text-gray-600">Fecha del Evento</label>
+                              <p className="text-sm">{selectedEvent.eventDate}</p>
+                            </div>
+                          )}
+                          <div>
+                            <label className="text-sm font-medium text-gray-600">Enlace del Formulario</label>
+                            <a href={selectedEvent.formLink} target="_blank" rel="noopener noreferrer" className="text-sm text-blue-500 hover:underline flex items-center gap-1">
+                              Ver formulario <ExternalLink className="h-4 w-4" />
+                            </a>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </div>
+              )}
+            </DialogContent>
+          </Dialog>
+
           {/* Event Form Dialog */}
           <Dialog open={eventFormOpen} onOpenChange={setEventFormOpen}>
-            <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+            <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto bg-white">
               <DialogHeader>
                 <DialogTitle>{isEditing ? 'Editar Evento' : 'Nuevo Evento'}</DialogTitle>
                 <DialogDescription>

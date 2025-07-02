@@ -21,7 +21,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from '@/components/ui/dialog';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Separator } from '@/components/ui/separator';
@@ -87,6 +86,7 @@ const AdminConveniosPage: React.FC = () => {
   const [convenioFormOpen, setConvenioFormOpen] = useState(false);
   const [editConvenioOpen, setEditConvenioOpen] = useState(false);
   const [deleteConvenioOpen, setDeleteConvenioOpen] = useState(false);
+  const [viewConvenioOpen, setViewConvenioOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [filters, setFilters] = useState<{ category?: string }>({});
 
@@ -112,7 +112,7 @@ const AdminConveniosPage: React.FC = () => {
     setItemsPerPage
   } = usePagination({
     data: filteredConvenios,
-    initialItemsPerPage: 10
+    initialItemsPerPage: 12
   });
 
   const containerVariants = {
@@ -210,7 +210,7 @@ const AdminConveniosPage: React.FC = () => {
                     />
                   </div>
                   
-                  {/* Add category filter if needed */}
+                  <div></div>
 
                   <Button 
                     variant="outline" 
@@ -224,7 +224,7 @@ const AdminConveniosPage: React.FC = () => {
             </Card>
           </motion.div>
 
-          {/* Convenios Table */}
+          {/* Convenios Grid */}
           <motion.div variants={itemVariants}>
             <Card>
               <CardHeader>
@@ -234,149 +234,64 @@ const AdminConveniosPage: React.FC = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="overflow-x-auto">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Título</TableHead>
-                        <TableHead>Contacto</TableHead>
-                        <TableHead>Fecha Creación</TableHead>
-                        <TableHead>Acciones</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {paginatedConvenios.map((convenio) => (
-                        <TableRow key={convenio.id} className="hover:bg-gray-50">
-                          <TableCell>
-                            <div className="flex items-center gap-3">
-                              <img
-                                src={convenio.imageUrl}
-                                alt={convenio.title}
-                                className="h-8 w-8 rounded-full object-cover"
-                              />
-                              <div>
-                                <p className="font-medium">{convenio.title}</p>
-                                <p className="text-sm text-gray-500">{convenio.description}</p>
-                              </div>
-                            </div>
-                          </TableCell>
-                          <TableCell>
-                            <div className="space-y-1">
-                              <p className="font-medium">{convenio.contactName}</p>
-                              <p className="text-sm text-gray-500">{convenio.contactEmail}</p>
-                              <p className="text-sm text-gray-500">{convenio.contactPhone}</p>
-                            </div>
-                          </TableCell>
-                          <TableCell>
-                            <p className="text-sm">{formatDate(convenio.createdAt)}</p>
-                          </TableCell>
-                          <TableCell>
-                            <div className="flex items-center gap-2">
-                              <Dialog>
-                                <DialogTrigger asChild>
-                                  <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    onClick={() => setSelectedConvenio(convenio)}
-                                  >
-                                    <Eye className="h-4 w-4" />
-                                  </Button>
-                                </DialogTrigger>
-                                <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-                                  <DialogHeader className="space-y-3">
-                                    <DialogTitle className="text-xl font-bold">
-                                      Detalles del Convenio
-                                    </DialogTitle>
-                                    <Separator />
-                                  </DialogHeader>
-                                  {selectedConvenio && (
-                                    <div className="space-y-6">
-                                      {/* Convenio Information Section */}
-                                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                                        <Card>
-                                          <CardHeader className="pb-3">
-                                            <CardTitle className="text-lg flex items-center gap-2">
-                                              <Handshake className="h-5 w-5" />
-                                              Información del Convenio
-                                            </CardTitle>
-                                          </CardHeader>
-                                          <CardContent className="space-y-4">
-                                            <div className="space-y-3">
-                                              <div>
-                                                <label className="text-sm font-medium text-gray-600">Título</label>
-                                                <p className="text-sm">{selectedConvenio.title}</p>
-                                              </div>
-                                              <div>
-                                                <label className="text-sm font-medium text-gray-600">Descripción</label>
-                                                <p className="text-sm">{selectedConvenio.description}</p>
-                                              </div>
-                                              <div>
-                                                <label className="text-sm font-medium text-gray-600">Sitio Web</label>
-                                                <a href={selectedConvenio.website} target="_blank" rel="noopener noreferrer" className="text-sm text-blue-500 hover:underline flex items-center gap-1">
-                                                  Visitar <ExternalLink className="h-4 w-4" />
-                                                </a>
-                                              </div>
-                                            </div>
-                                          </CardContent>
-                                        </Card>
-
-                                        <Card>
-                                          <CardHeader className="pb-3">
-                                            <CardTitle className="text-lg flex items-center gap-2">
-                                              <MapPin className="h-5 w-5" />
-                                              Información de Contacto
-                                            </CardTitle>
-                                          </CardHeader>
-                                          <CardContent className="space-y-4">
-                                            <div className="space-y-3">
-                                              <div>
-                                                <label className="text-sm font-medium text-gray-600">Nombre de Contacto</label>
-                                                <p className="text-sm">{selectedConvenio.contactName}</p>
-                                              </div>
-                                              <div>
-                                                <label className="text-sm font-medium text-gray-600">Email</label>
-                                                <p className="text-sm">{selectedConvenio.contactEmail}</p>
-                                              </div>
-                                              <div>
-                                                <label className="text-sm font-medium text-gray-600">Teléfono</label>
-                                                <p className="text-sm">{selectedConvenio.contactPhone}</p>
-                                              </div>
-                                              <div>
-                                                <label className="text-sm font-medium text-gray-600">Dirección</label>
-                                                <p className="text-sm">{selectedConvenio.address}</p>
-                                              </div>
-                                            </div>
-                                          </CardContent>
-                                        </Card>
-                                      </div>
-                                    </div>
-                                  )}
-                                </DialogContent>
-                              </Dialog>
-
-                              <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                  <Button variant="ghost" size="sm">
-                                    <MoreHorizontal className="h-4 w-4" />
-                                  </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent>
-                                  <DropdownMenuItem onClick={() => { setSelectedConvenio(convenio); setEditConvenioOpen(true); }}>
-                                    <Edit className="h-4 w-4 mr-2" />
-                                    Editar
-                                  </DropdownMenuItem>
-                                  <DropdownMenuItem onClick={() => { setSelectedConvenio(convenio); setDeleteConvenioOpen(true); }}>
-                                    <Trash2 className="h-4 w-4 mr-2" />
-                                    Eliminar
-                                  </DropdownMenuItem>
-                                </DropdownMenuContent>
-                              </DropdownMenu>
-                            </div>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                  {paginatedConvenios.map((convenio) => (
+                    <Card key={convenio.id} className="hover:shadow-lg transition-shadow duration-300">
+                      <CardHeader className="p-0">
+                        <img
+                          src={convenio.imageUrl}
+                          alt={convenio.title}
+                          className="w-full h-48 object-cover rounded-t-lg"
+                        />
+                      </CardHeader>
+                      <CardContent className="p-4">
+                        <CardTitle className="text-lg font-semibold mb-2 line-clamp-2">
+                          {convenio.title}
+                        </CardTitle>
+                        <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+                          {convenio.description}
+                        </p>
+                        <div className="space-y-1 mb-4">
+                          <p className="text-sm font-medium">{convenio.contactName}</p>
+                          <p className="text-xs text-gray-500">{convenio.contactEmail}</p>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <p className="text-xs text-gray-400">
+                            {formatDate(convenio.createdAt)}
+                          </p>
+                          <div className="flex items-center gap-1">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => {
+                                setSelectedConvenio(convenio);
+                                setViewConvenioOpen(true);
+                              }}
+                            >
+                              <Eye className="h-4 w-4" />
+                            </Button>
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" size="sm">
+                                  <MoreHorizontal className="h-4 w-4" />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent>
+                                <DropdownMenuItem onClick={() => { setSelectedConvenio(convenio); setEditConvenioOpen(true); }}>
+                                  <Edit className="h-4 w-4 mr-2" />
+                                  Editar
+                                </DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => { setSelectedConvenio(convenio); setDeleteConvenioOpen(true); }}>
+                                  <Trash2 className="h-4 w-4 mr-2" />
+                                  Eliminar
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
                 </div>
 
                 {/* Pagination */}
@@ -387,11 +302,84 @@ const AdminConveniosPage: React.FC = () => {
                   itemsPerPage={itemsPerPage}
                   onPageChange={goToPage}
                   onItemsPerPageChange={setItemsPerPage}
-                  className="mt-4"
+                  className="mt-6"
                 />
               </CardContent>
             </Card>
           </motion.div>
+
+          {/* View Convenio Dialog */}
+          <Dialog open={viewConvenioOpen} onOpenChange={setViewConvenioOpen}>
+            <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white">
+              <DialogHeader className="space-y-3">
+                <DialogTitle className="text-xl font-bold">
+                  Detalles del Convenio
+                </DialogTitle>
+                <Separator />
+              </DialogHeader>
+              {selectedConvenio && (
+                <div className="space-y-6">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <Card>
+                      <CardHeader className="pb-3">
+                        <CardTitle className="text-lg flex items-center gap-2">
+                          <Handshake className="h-5 w-5" />
+                          Información del Convenio
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div className="space-y-3">
+                          <div>
+                            <label className="text-sm font-medium text-gray-600">Título</label>
+                            <p className="text-sm">{selectedConvenio.title}</p>
+                          </div>
+                          <div>
+                            <label className="text-sm font-medium text-gray-600">Descripción</label>
+                            <p className="text-sm">{selectedConvenio.description}</p>
+                          </div>
+                          <div>
+                            <label className="text-sm font-medium text-gray-600">Sitio Web</label>
+                            <a href={selectedConvenio.website} target="_blank" rel="noopener noreferrer" className="text-sm text-blue-500 hover:underline flex items-center gap-1">
+                              Visitar <ExternalLink className="h-4 w-4" />
+                            </a>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    <Card>
+                      <CardHeader className="pb-3">
+                        <CardTitle className="text-lg flex items-center gap-2">
+                          <MapPin className="h-5 w-5" />
+                          Información de Contacto
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div className="space-y-3">
+                          <div>
+                            <label className="text-sm font-medium text-gray-600">Nombre de Contacto</label>
+                            <p className="text-sm">{selectedConvenio.contactName}</p>
+                          </div>
+                          <div>
+                            <label className="text-sm font-medium text-gray-600">Email</label>
+                            <p className="text-sm">{selectedConvenio.contactEmail}</p>
+                          </div>
+                          <div>
+                            <label className="text-sm font-medium text-gray-600">Teléfono</label>
+                            <p className="text-sm">{selectedConvenio.contactPhone}</p>
+                          </div>
+                          <div>
+                            <label className="text-sm font-medium text-gray-600">Dirección</label>
+                            <p className="text-sm">{selectedConvenio.address}</p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </div>
+              )}
+            </DialogContent>
+          </Dialog>
 
           {/* New Convenio Dialog */}
           <Dialog open={convenioFormOpen} onOpenChange={setConvenioFormOpen}>
