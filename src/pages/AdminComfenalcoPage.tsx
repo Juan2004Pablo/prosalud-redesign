@@ -22,7 +22,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription as DialogDescriptionUI } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
@@ -387,9 +387,9 @@ const AdminComfenalcoPage: React.FC = () => {
             <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
               <DialogHeader>
                 <DialogTitle>{isEditing ? 'Editar Evento' : 'Nuevo Evento'}</DialogTitle>
-                <DialogDescriptionUI>
+                <DialogDescription>
                   {isEditing ? 'Edita los detalles del evento.' : 'Crea un nuevo evento para mostrar a los afiliados.'}
-                </DialogDescriptionUI>
+                </DialogDescription>
               </DialogHeader>
               <div className="grid gap-4 py-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -427,25 +427,25 @@ const AdminComfenalcoPage: React.FC = () => {
                   <div>
                     <Label htmlFor="publishDate">Fecha de Publicación</Label>
                     <DatePicker
-                      onSelect={handlePublishDateChange}
-                      defaultMonth={new Date(formValues.publishDate)}
                       value={formValues.publishDate ? new Date(formValues.publishDate) : undefined}
+                      onChange={handlePublishDateChange}
+                      placeholder="Seleccionar fecha"
                     />
                   </div>
                   <div>
                     <Label htmlFor="registrationDeadline">Fecha Límite de Registro</Label>
                     <DatePicker
-                      onSelect={handleRegistrationDeadlineChange}
-                      defaultMonth={new Date(formValues.registrationDeadline || '')}
                       value={formValues.registrationDeadline ? new Date(formValues.registrationDeadline) : undefined}
+                      onChange={handleRegistrationDeadlineChange}
+                      placeholder="Seleccionar fecha"
                     />
                   </div>
                   <div>
                     <Label htmlFor="eventDate">Fecha del Evento</Label>
                     <DatePicker
-                      onSelect={handleEventDateChange}
-                      defaultMonth={new Date(formValues.eventDate || '')}
                       value={formValues.eventDate ? new Date(formValues.eventDate) : undefined}
+                      onChange={handleEventDateChange}
+                      placeholder="Seleccionar fecha"
                     />
                   </div>
                 </div>
