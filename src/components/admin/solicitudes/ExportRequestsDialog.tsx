@@ -67,6 +67,7 @@ const ExportRequestsDialog: React.FC<ExportRequestsDialogProps> = ({ open, onOpe
     setIsGenerating(true);
     
     try {
+      console.log('Starting export process...');
       await new Promise(resolve => setTimeout(resolve, 1500));
 
       let filteredRequests = mockRequests;
@@ -79,9 +80,11 @@ const ExportRequestsDialog: React.FC<ExportRequestsDialogProps> = ({ open, onOpe
         });
       }
 
+      console.log('Filtered requests:', filteredRequests.length);
       const today = new Date().toISOString().split('T')[0];
 
       if (format === 'pdf') {
+        console.log('Generating PDF report...');
         const doc = generateRequestsPDFReport(filteredRequests, dateRange);
         doc.save(`Reporte_Solicitudes_ProSalud_${today}.pdf`);
         
@@ -91,6 +94,7 @@ const ExportRequestsDialog: React.FC<ExportRequestsDialogProps> = ({ open, onOpe
           duration: 4000,
         });
       } else {
+        console.log('Generating Excel report...');
         const wb = generateRequestsExcelReport(filteredRequests, dateRange);
         XLSX.writeFile(wb, `Reporte_Solicitudes_ProSalud_${today}.xlsx`);
         
@@ -101,11 +105,13 @@ const ExportRequestsDialog: React.FC<ExportRequestsDialogProps> = ({ open, onOpe
         });
       }
 
+      console.log('Export completed successfully');
       onOpenChange(false);
     } catch (error) {
+      console.error('Export error:', error);
       toast({
         title: "Error al Generar Reporte",
-        description: "Hubo un problema al generar el reporte. Inténtalo de nuevo.",
+        description: error instanceof Error ? error.message : "Hubo un problema al generar el reporte. Inténtalo de nuevo.",
         variant: "destructive",
         duration: 4000,
       });
