@@ -10,6 +10,7 @@ export interface ComfenalcoEvent {
   registrationLink?: string;
   formLink: string; // Nuevo campo para el enlace del formulario de Comfenalco
   isNew: boolean;
+  isVisible: boolean; // Nueva propiedad para controlar la visibilidad
   category: 'curso' | 'experiencia' | 'beneficio' | 'regalo' | 'recreacion';
   displaySize: 'carousel' | 'mosaic'; // Nueva propiedad para controlar dónde se muestra
 }
