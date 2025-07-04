@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
@@ -10,7 +9,8 @@ import {
   Edit, 
   Trash2, 
   MoreHorizontal,
-  ExternalLink
+  Upload,
+  X
 } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -68,11 +68,12 @@ const AdminConveniosPage: React.FC = () => {
   const [viewConvenioOpen, setViewConvenioOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [isEditing, setIsEditing] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string>('');
   const { toast } = useToast();
 
   const [formValues, setFormValues] = useState({
     name: '',
-    imageUrl: '',
     isVisible: true
   });
 
@@ -142,10 +143,71 @@ const AdminConveniosPage: React.FC = () => {
     }));
   };
 
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // Validar tamaño del archivo (máximo 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        toast({
+          title: "Archivo muy grande",
+          description: "La imagen debe ser menor a 5MB.",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      // Validar tipo de archivo
+      if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
+        toast({
+          title: "Formato no válido",
+          description: "Solo se permiten archivos JPG, PNG o WebP.",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      setSelectedImage(file);
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setImagePreview(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const removeImage = () => {
+    setSelectedImage(null);
+    setImagePreview('');
+  };
+
   const handleSubmit = () => {
+    if (!formValues.name.trim()) {
+      toast({
+        title: "Nombre requerido",
+        description: "Debes ingresar un nombre para el convenio.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (!isEditing && !selectedImage) {
+      toast({
+        title: "Imagen requerida",
+        description: "Debes seleccionar una imagen para el convenio.",
+        variant: "destructive"
+      });
+      return;
+    }
+
     if (isEditing && selectedConvenio) {
       const updatedConvenios = convenios.map(convenio =>
-        convenio.id === selectedConvenio.id ? { ...selectedConvenio, ...formValues } : convenio
+        convenio.id === selectedConvenio.id ? { 
+          ...convenio, 
+          name: formValues.name,
+          isVisible: formValues.isVisible,
+          // Solo actualizar imageUrl si se seleccionó una nueva imagen
+          ...(selectedImage && { imageUrl: URL.createObjectURL(selectedImage) })
+        } : convenio
       );
       setConvenios(updatedConvenios);
       toast({
@@ -155,7 +217,9 @@ const AdminConveniosPage: React.FC = () => {
     } else {
       const newConvenio: Convenio = {
         id: `conv-${Date.now()}`,
-        ...formValues,
+        name: formValues.name,
+        imageUrl: selectedImage ? URL.createObjectURL(selectedImage) : '',
+        isVisible: formValues.isVisible,
         createdAt: new Date().toISOString()
       };
       setConvenios([...convenios, newConvenio]);
@@ -165,20 +229,25 @@ const AdminConveniosPage: React.FC = () => {
       });
     }
 
+    // Resetear formulario
     setConvenioFormOpen(false);
     setEditConvenioOpen(false);
     setSelectedConvenio(null);
     setIsEditing(false);
-    setFormValues({ name: '', imageUrl: '', isVisible: true });
+    setFormValues({ name: '', isVisible: true });
+    setSelectedImage(null);
+    setImagePreview('');
   };
 
   const handleEdit = (convenio: Convenio) => {
     setSelectedConvenio(convenio);
     setFormValues({
       name: convenio.name,
-      imageUrl: convenio.imageUrl,
       isVisible: convenio.isVisible
     });
+    // Cargar la imagen actual como preview
+    setImagePreview(convenio.imageUrl);
+    setSelectedImage(null); // No hay archivo seleccionado inicialmente
     setIsEditing(true);
     setEditConvenioOpen(true);
   };
@@ -192,8 +261,20 @@ const AdminConveniosPage: React.FC = () => {
     });
   };
 
+  const toggleVisibility = (convenioId: string) => {
+    setConvenios(convenios.map(convenio =>
+      convenio.id === convenioId ? { ...convenio, isVisible: !convenio.isVisible } : convenio
+    ));
+    toast({
+      title: "Estado Actualizado",
+      description: "El estado de visibilidad del convenio ha sido actualizado.",
+    });
+  };
+
   const resetForm = () => {
-    setFormValues({ name: '', imageUrl: '', isVisible: true });
+    setFormValues({ name: '', isVisible: true });
+    setSelectedImage(null);
+    setImagePreview('');
     setIsEditing(false);
     setSelectedConvenio(null);
   };
@@ -300,6 +381,11 @@ const AdminConveniosPage: React.FC = () => {
                           <Badge variant={convenio.isVisible ? "default" : "secondary"} className="text-xs">
                             {convenio.isVisible ? "Visible" : "Oculto"}
                           </Badge>
+                          <Switch
+                            checked={convenio.isVisible}
+                            onCheckedChange={() => toggleVisibility(convenio.id)}
+                            className="scale-75"
+                          />
                         </div>
                         <CardTitle className="text-lg font-semibold mb-2 line-clamp-2">
                           {convenio.name}
@@ -438,16 +524,44 @@ const AdminConveniosPage: React.FC = () => {
                     placeholder="Ej. Clínica del Occidente"
                   />
                 </div>
+                
                 <div className="grid gap-2">
-                  <Label htmlFor="imageUrl">URL de la Imagen</Label>
-                  <Input
-                    id="imageUrl"
-                    name="imageUrl"
-                    value={formValues.imageUrl}
-                    onChange={handleInputChange}
-                    placeholder="https://ejemplo.com/imagen.jpg"
-                  />
+                  <Label>Imagen del Convenio</Label>
+                  {!imagePreview ? (
+                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-gray-400 transition-colors">
+                      <input
+                        type="file"
+                        accept="image/jpeg,image/png,image/webp"
+                        onChange={handleImageUpload}
+                        className="hidden"
+                        id="image-upload"
+                      />
+                      <label htmlFor="image-upload" className="cursor-pointer">
+                        <Upload className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                        <p className="text-lg font-medium text-gray-600 mb-2">Seleccionar imagen</p>
+                        <p className="text-sm text-gray-500">JPG, PNG o WebP hasta 5MB</p>
+                      </label>
+                    </div>
+                  ) : (
+                    <div className="relative rounded-lg overflow-hidden">
+                      <img
+                        src={imagePreview}
+                        alt="Preview"
+                        className="w-full h-48 object-cover bg-gray-50 rounded-lg border"
+                      />
+                      <Button
+                        type="button"
+                        variant="destructive"
+                        size="sm"
+                        onClick={removeImage}
+                        className="absolute top-2 right-2"
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  )}
                 </div>
+
                 <div className="flex items-center space-x-2">
                   <Switch
                     id="isVisible"
@@ -488,16 +602,47 @@ const AdminConveniosPage: React.FC = () => {
                     placeholder="Ej. Clínica del Occidente"
                   />
                 </div>
+
                 <div className="grid gap-2">
-                  <Label htmlFor="edit-imageUrl">URL de la Imagen</Label>
-                  <Input
-                    id="edit-imageUrl"
-                    name="imageUrl"
-                    value={formValues.imageUrl}
-                    onChange={handleInputChange}
-                    placeholder="https://ejemplo.com/imagen.jpg"
-                  />
+                  <Label>Imagen del Convenio</Label>
+                  <div className="space-y-2">
+                    <div className="relative rounded-lg overflow-hidden">
+                      <img
+                        src={imagePreview}
+                        alt="Imagen actual"
+                        className="w-full h-48 object-cover bg-gray-50 rounded-lg border"
+                      />
+                      {selectedImage && (
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          size="sm"
+                          onClick={removeImage}
+                          className="absolute top-2 right-2"
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      )}
+                    </div>
+                    <div className="border-2 border-dashed border-gray-200 rounded-lg p-4 text-center">
+                      <input
+                        type="file"
+                        accept="image/jpeg,image/png,image/webp"
+                        onChange={handleImageUpload}
+                        className="hidden"
+                        id="edit-image-upload"
+                      />
+                      <label htmlFor="edit-image-upload" className="cursor-pointer">
+                        <Upload className="h-8 w-8 text-gray-400 mx-auto mb-2" />
+                        <p className="text-sm text-gray-600">
+                          {selectedImage ? 'Cambiar imagen' : 'Subir nueva imagen (opcional)'}
+                        </p>
+                        <p className="text-xs text-gray-500">JPG, PNG o WebP hasta 5MB</p>
+                      </label>
+                    </div>
+                  </div>
                 </div>
+
                 <div className="flex items-center space-x-2">
                   <Switch
                     id="edit-isVisible"
