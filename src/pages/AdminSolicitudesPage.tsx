@@ -1,11 +1,12 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import ReactJson from 'react-json-view';
 import {
   FileText, Search, Filter, Download, Eye, Clock,
   Users, CheckCircle, AlertCircle, XCircle, Calendar,
   TrendingUp, MoreHorizontal, User, Edit, Trash2,
-  MapPin, Phone, Mail, Copy
+  MapPin, Phone, Mail, Copy, Database
 } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -479,19 +480,37 @@ const AdminSolicitudesPage: React.FC = () => {
                                         </CardContent>
                                       </Card>
                                       
-                                      {/* Request Details Section */}
+                                      {/* Request Details Section - Improved with react-json-view */}
                                       <Card>
                                         <CardHeader>
                                           <CardTitle className="text-lg flex items-center gap-2">
-                                            <FileText className="h-5 w-5" />
+                                            <Database className="h-5 w-5" />
                                             Detalles Específicos de la Solicitud
                                           </CardTitle>
+                                          <CardDescription>
+                                            Información detallada y estructurada de la solicitud
+                                          </CardDescription>
                                         </CardHeader>
                                         <CardContent>
-                                          <div className="bg-gray-50 p-4 rounded-lg border">
-                                            <pre className="text-sm whitespace-pre-wrap overflow-x-auto">
-                                              {JSON.stringify(selectedRequest.payload, null, 2)}
-                                            </pre>
+                                          <div className="bg-slate-50 p-4 rounded-lg border">
+                                            <ReactJson
+                                              src={selectedRequest.payload}
+                                              theme="rjv-default"
+                                              style={{
+                                                backgroundColor: 'transparent',
+                                                fontSize: '14px'
+                                              }}
+                                              displayDataTypes={false}
+                                              displayObjectSize={false}
+                                              enableClipboard={true}
+                                              collapsed={false}
+                                              collapseStringsAfterLength={50}
+                                              iconStyle="triangle"
+                                              indentWidth={4}
+                                              name="solicitud_datos"
+                                              quotesOnKeys={false}
+                                              sortKeys={true}
+                                            />
                                           </div>
                                         </CardContent>
                                       </Card>
