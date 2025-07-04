@@ -5,6 +5,7 @@ import type React from "react"
 import { useState, useMemo, useEffect } from "react"
 import MainLayout from "@/components/layout/MainLayout"
 import EventCard from "@/components/galeria-bienestar/EventCard"
+import EventsPagination from "@/components/galeria-bienestar/EventsPagination"
 import { mockEvents } from "@/data/eventosMock"
 import { Link } from "react-router-dom"
 import {
@@ -18,12 +19,12 @@ import {
 import { Image, GalleryVertical, Home, ArrowDownUp, FilterIcon } from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Label } from "@/components/ui/label"
-import DataPagination from "@/components/ui/data-pagination"
-import { usePagination } from "@/hooks/usePagination"
 
 const GaleriaBienestarPage: React.FC = () => {
   const [sortOrder, setSortOrder] = useState<"date-desc" | "date-asc">("date-desc")
   const [filterCategory, setFilterCategory] = useState<string>("all")
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 12
 
   const uniqueCategories = useMemo(() => {
     const categories = new Set(mockEvents.map((event) => event.category).filter(Boolean) as string[])
@@ -49,22 +50,19 @@ const GaleriaBienestarPage: React.FC = () => {
     }))
   }, [sortOrder, filterCategory])
 
-  const {
-    currentPage,
-    itemsPerPage,
-    totalPages,
-    totalItems,
-    paginatedData: eventsToDisplay,
-    goToPage,
-    setItemsPerPage
-  } = usePagination({
-    data: processedEvents,
-    initialItemsPerPage: 12
-  });
+  const totalPages = Math.ceil(processedEvents.length / itemsPerPage)
+  const startIndex = (currentPage - 1) * itemsPerPage
+  const eventsToDisplay = processedEvents.slice(startIndex, startIndex + itemsPerPage)
 
   useEffect(() => {
     window.scrollTo(0, 0)
-  }, [currentPage, sortOrder, filterCategory])
+    setCurrentPage(1) // Reset to first page when filters change
+  }, [sortOrder, filterCategory])
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page)
+    window.scrollTo(0, 0)
+  }
 
   return (
     <MainLayout>
@@ -154,15 +152,13 @@ const GaleriaBienestarPage: React.FC = () => {
           </div>
         )}
 
-        <DataPagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          totalItems={totalItems}
-          itemsPerPage={itemsPerPage}
-          onPageChange={goToPage}
-          onItemsPerPageChange={setItemsPerPage}
-          className="mt-12"
-        />
+        {totalPages > 1 && (
+          <EventsPagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
+        )}
       </div>
     </MainLayout>
   )

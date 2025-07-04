@@ -11,9 +11,7 @@ import {
   ClipboardList, 
   Plus,
   BarChart3,
-  FileText,
-  ArrowRight,
-  Users
+  FileText
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import InventoryOverview from '@/components/admin/inventario/InventoryOverview';
@@ -112,50 +110,36 @@ const AdminInventarioPage: React.FC = () => {
             </Card>
           </motion.div>
 
-          {/* Destacar Solicitudes - Nueva Sección Prominente */}
+          {/* Nueva Solicitud - Sección más sutil */}
           <motion.div variants={itemVariants}>
-            <Card className="border-2 border-primary-prosalud bg-gradient-to-r from-primary-prosalud/5 to-primary-prosalud/10 shadow-lg">
-              <CardHeader className="pb-4">
-                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-3">
-                      <div className="bg-primary-prosalud p-3 rounded-lg">
-                        <ClipboardList className="h-6 w-6 text-white" />
-                      </div>
-                      <div>
-                        <CardTitle className="text-2xl font-bold text-primary-prosalud">
-                          Solicitar Productos del Inventario
-                        </CardTitle>
-                        <CardDescription className="text-base">
-                          Realiza una nueva solicitud de productos para tu hospital o área de trabajo
-                        </CardDescription>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2 text-sm text-gray-600 mt-2">
-                      <Users className="h-4 w-4" />
-                      <span>Acceso principal para usuarios de hospitales</span>
+            <Card className="border border-primary-prosalud/20 bg-primary-prosalud/5 shadow-sm">
+              <CardContent className="p-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div className="flex items-center gap-3">
+                    <ClipboardList className="h-5 w-5 text-primary-prosalud" />
+                    <div>
+                      <h3 className="font-semibold text-primary-prosalud">Solicitar Productos</h3>
+                      <p className="text-sm text-gray-600 mt-0.5">Crea una nueva solicitud de productos para hospitales</p>
                     </div>
                   </div>
-                  <div className="flex flex-col sm:flex-row gap-3">
+                  <div className="flex gap-2">
                     <Button 
                       onClick={() => setNewRequestOpen(true)}
-                      className="bg-primary-prosalud hover:bg-primary-prosalud-dark text-white text-lg px-8 py-3 h-auto shadow-lg hover:shadow-xl transition-all duration-200"
+                      className="bg-primary-prosalud hover:bg-primary-prosalud-dark text-white"
                     >
-                      <Plus className="h-5 w-5 mr-2" />
+                      <Plus className="h-4 w-4 mr-2" />
                       Nueva Solicitud
-                      <ArrowRight className="h-5 w-5 ml-2" />
                     </Button>
                     <Button 
                       variant="outline"
                       onClick={() => setActiveTab('requests')}
                       className="border-primary-prosalud text-primary-prosalud hover:bg-primary-prosalud hover:text-white"
                     >
-                      <ClipboardList className="h-4 w-4 mr-2" />
                       Ver Solicitudes
                     </Button>
                   </div>
                 </div>
-              </CardHeader>
+              </CardContent>
             </Card>
           </motion.div>
 
