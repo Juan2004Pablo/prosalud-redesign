@@ -5,12 +5,13 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ClipboardList, Search, Hospital, Clock, AlertTriangle, Plus } from 'lucide-react';
+import { ClipboardList, Search, Hospital, Clock, AlertTriangle, Plus, Eye, CheckCircle, XCircle, MoreHorizontal } from 'lucide-react';
 import { motion } from 'framer-motion';
 import DataPagination from '@/components/ui/data-pagination';
 import { usePagination } from '@/hooks/usePagination';
 import NewRequestForm from './NewRequestForm';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useToast } from '@/hooks/use-toast';
 
 interface Request {
@@ -144,11 +145,6 @@ const Requests: React.FC = () => {
 
   const handleViewRequest = (request: Request) => {
     setSelectedRequest(request);
-    toast({
-      title: "Solicitud Visualizada",
-      description: `Mostrando detalles de la solicitud #${request.id}`,
-      variant: "default"
-    });
   };
 
   const handleApproveRequest = (request: Request) => {
@@ -164,6 +160,22 @@ const Requests: React.FC = () => {
       title: "Solicitud Aprobada",
       description: `La solicitud #${request.id} del ${request.hospitalName} ha sido aprobada exitosamente`,
       variant: "default"
+    });
+  };
+
+  const handleRejectRequest = (request: Request) => {
+    setRequests(prevRequests => 
+      prevRequests.map(r => 
+        r.id === request.id 
+          ? { ...r, status: 'rejected' as const }
+          : r
+      )
+    );
+    
+    toast({
+      title: "Solicitud Rechazada",
+      description: `La solicitud #${request.id} ha sido rechazada`,
+      variant: "destructive"
     });
   };
 
@@ -276,7 +288,7 @@ const Requests: React.FC = () => {
                     <TableHead>Items</TableHead>
                     <TableHead>Prioridad</TableHead>
                     <TableHead>Estado</TableHead>
-                    <TableHead className="text-right">Acciones</TableHead>
+                    <TableHead className="text-center">Acciones</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -314,26 +326,39 @@ const Requests: React.FC = () => {
                           {getStatusLabel(request.status)}
                         </Badge>
                       </TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex justify-end space-x-2">
-                          <Button 
-                            variant="ghost" 
-                            size="sm" 
-                            onClick={() => handleViewRequest(request)}
-                            className="text-gray-600 hover:text-gray-600 hover:bg-gray-100"
-                          >
-                            Ver
-                          </Button>
-                          {request.status === 'pending' && (
-                            <Button 
-                              variant="ghost" 
-                              size="sm" 
-                              onClick={() => handleApproveRequest(request)}
-                              className="text-green-600 hover:text-green-600 hover:bg-green-50"
-                            >
-                              Aprobar
-                            </Button>
-                          )}
+                      <TableCell>
+                        <div className="flex justify-center">
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                <MoreHorizontal className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" className="w-48">
+                              <DropdownMenuItem onClick={() => handleViewRequest(request)}>
+                                <Eye className="h-4 w-4 mr-2" />
+                                Ver Detalles
+                              </DropdownMenuItem>
+                              {request.status === 'pending' && (
+                                <>
+                                  <DropdownMenuItem 
+                                    onClick={() => handleApproveRequest(request)}
+                                    className="text-green-600 focus:text-green-600"
+                                  >
+                                    <CheckCircle className="h-4 w-4 mr-2" />
+                                    Aprobar
+                                  </DropdownMenuItem>
+                                  <DropdownMenuItem 
+                                    onClick={() => handleRejectRequest(request)}
+                                    className="text-red-600 focus:text-red-600"
+                                  >
+                                    <XCircle className="h-4 w-4 mr-2" />
+                                    Rechazar
+                                  </DropdownMenuItem>
+                                </>
+                              )}
+                            </DropdownMenuContent>
+                          </DropdownMenu>
                         </div>
                       </TableCell>
                     </TableRow>

@@ -324,7 +324,7 @@ const AdminSolicitudesPage: React.FC = () => {
                                     <Eye className="h-4 w-4" />
                                   </Button>
                                 </DialogTrigger>
-                                <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                                <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
                                   <DialogHeader className="space-y-3">
                                     <div className="flex items-center justify-between">
                                       <DialogTitle className="text-xl font-bold">
@@ -340,7 +340,7 @@ const AdminSolicitudesPage: React.FC = () => {
                                   {selectedRequest && (
                                     <div className="space-y-6">
                                       {/* Personal Information Section */}
-                                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                                         <Card>
                                           <CardHeader className="pb-3">
                                             <CardTitle className="text-lg flex items-center gap-2">
@@ -349,40 +349,49 @@ const AdminSolicitudesPage: React.FC = () => {
                                             </CardTitle>
                                           </CardHeader>
                                           <CardContent className="space-y-4">
-                                            <div className="grid grid-cols-2 gap-4">
-                                              <div>
-                                                <label className="text-sm font-medium text-gray-600">Nombre Completo</label>
-                                                <div className="flex items-center gap-2 mt-1">
-                                                  <p className="text-sm">{selectedRequest.name} {selectedRequest.last_name}</p>
-                                                  <Button
-                                                    variant="ghost"
-                                                    size="sm"
-                                                    onClick={() => copyToClipboard(`${selectedRequest.name} ${selectedRequest.last_name}`)}
-                                                    className="h-6 w-6 p-0"
-                                                  >
-                                                    <Copy className="h-3 w-3" />
-                                                  </Button>
-                                                </div>
-                                              </div>
-                                              <div>
-                                                <label className="text-sm font-medium text-gray-600">Documento</label>
-                                                <div className="flex items-center gap-2 mt-1">
-                                                  <p className="text-sm">{selectedRequest.id_type} {selectedRequest.id_number}</p>
-                                                  <Button
-                                                    variant="ghost"
-                                                    size="sm"
-                                                    onClick={() => copyToClipboard(selectedRequest.id_number)}
-                                                    className="h-6 w-6 p-0"
-                                                  >
-                                                    <Copy className="h-3 w-3" />
-                                                  </Button>
-                                                </div>
+                                            <div>
+                                              <label className="text-sm font-medium text-gray-600">Nombre Completo</label>
+                                              <div className="flex items-center gap-2 mt-1">
+                                                <p className="text-sm">{selectedRequest.name} {selectedRequest.last_name}</p>
+                                                <Button
+                                                  variant="ghost"
+                                                  size="sm"
+                                                  onClick={() => copyToClipboard(`${selectedRequest.name} ${selectedRequest.last_name}`)}
+                                                  className="h-6 w-6 p-0"
+                                                >
+                                                  <Copy className="h-3 w-3" />
+                                                </Button>
                                               </div>
                                             </div>
-                                            <div className="space-y-3">
-                                              <div className="flex items-center gap-3">
-                                                <Mail className="h-4 w-4 text-gray-500" />
-                                                <span className="text-sm">{selectedRequest.email}</span>
+                                            <div>
+                                              <label className="text-sm font-medium text-gray-600">Documento</label>
+                                              <div className="flex items-center gap-2 mt-1">
+                                                <p className="text-sm">{selectedRequest.id_type} {selectedRequest.id_number}</p>
+                                                <Button
+                                                  variant="ghost"
+                                                  size="sm"
+                                                  onClick={() => copyToClipboard(selectedRequest.id_number)}
+                                                  className="h-6 w-6 p-0"
+                                                >
+                                                  <Copy className="h-3 w-3" />
+                                                </Button>
+                                              </div>
+                                            </div>
+                                          </CardContent>
+                                        </Card>
+
+                                        <Card>
+                                          <CardHeader className="pb-3">
+                                            <CardTitle className="text-lg flex items-center gap-2">
+                                              <Mail className="h-5 w-5" />
+                                              Contacto
+                                            </CardTitle>
+                                          </CardHeader>
+                                          <CardContent className="space-y-4">
+                                            <div>
+                                              <label className="text-sm font-medium text-gray-600">Email</label>
+                                              <div className="flex items-center gap-2 mt-1">
+                                                <p className="text-sm">{selectedRequest.email}</p>
                                                 <Button
                                                   variant="ghost"
                                                   size="sm"
@@ -392,9 +401,11 @@ const AdminSolicitudesPage: React.FC = () => {
                                                   <Copy className="h-3 w-3" />
                                                 </Button>
                                               </div>
-                                              <div className="flex items-center gap-3">
-                                                <Phone className="h-4 w-4 text-gray-500" />
-                                                <span className="text-sm">{selectedRequest.phone_number}</span>
+                                            </div>
+                                            <div>
+                                              <label className="text-sm font-medium text-gray-600">Teléfono</label>
+                                              <div className="flex items-center gap-2 mt-1">
+                                                <p className="text-sm">{selectedRequest.phone_number}</p>
                                                 <Button
                                                   variant="ghost"
                                                   size="sm"
@@ -434,27 +445,39 @@ const AdminSolicitudesPage: React.FC = () => {
                                                 </Button>
                                               </div>
                                             </div>
-                                            <div className="grid grid-cols-1 gap-3">
-                                              <div>
-                                                <label className="text-sm font-medium text-gray-600">Fecha de Creación</label>
-                                                <p className="text-sm mt-1">{formatDate(selectedRequest.created_at)}</p>
-                                              </div>
-                                              {selectedRequest.processed_at && (
-                                                <div>
-                                                  <label className="text-sm font-medium text-gray-600">Fecha de Procesamiento</label>
-                                                  <p className="text-sm mt-1">{formatDate(selectedRequest.processed_at)}</p>
-                                                </div>
-                                              )}
-                                              {selectedRequest.resolved_at && (
-                                                <div>
-                                                  <label className="text-sm font-medium text-gray-600">Fecha de Resolución</label>
-                                                  <p className="text-sm mt-1 text-green-600">{formatDate(selectedRequest.resolved_at)}</p>
-                                                </div>
-                                              )}
-                                            </div>
                                           </CardContent>
                                         </Card>
                                       </div>
+
+                                      {/* Fechas en una sola fila */}
+                                      <Card>
+                                        <CardHeader className="pb-3">
+                                          <CardTitle className="text-lg flex items-center gap-2">
+                                            <Clock className="h-5 w-5" />
+                                            Timeline de la Solicitud
+                                          </CardTitle>
+                                        </CardHeader>
+                                        <CardContent>
+                                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                            <div>
+                                              <label className="text-sm font-medium text-gray-600">Fecha de Creación</label>
+                                              <p className="text-sm mt-1">{formatDate(selectedRequest.created_at)}</p>
+                                            </div>
+                                            {selectedRequest.processed_at && (
+                                              <div>
+                                                <label className="text-sm font-medium text-gray-600">Fecha de Procesamiento</label>
+                                                <p className="text-sm mt-1">{formatDate(selectedRequest.processed_at)}</p>
+                                              </div>
+                                            )}
+                                            {selectedRequest.resolved_at && (
+                                              <div>
+                                                <label className="text-sm font-medium text-gray-600">Fecha de Resolución</label>
+                                                <p className="text-sm mt-1 text-green-600">{formatDate(selectedRequest.resolved_at)}</p>
+                                              </div>
+                                            )}
+                                          </div>
+                                        </CardContent>
+                                      </Card>
                                       
                                       {/* Request Details Section */}
                                       <Card>
