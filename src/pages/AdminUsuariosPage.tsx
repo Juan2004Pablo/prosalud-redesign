@@ -186,7 +186,7 @@ const AdminUsuariosPage: React.FC = () => {
                             <h3 className="font-semibold text-text-dark">
                               {user.firstName} {user.lastName}
                             </h3>
-                            <Badge variant={user.isActive ? "default" : "secondary"}>
+                            <Badge variant={user.isActive ? "secondary" : "destructive"}>
                               {user.isActive ? "Activo" : "Inactivo"}
                             </Badge>
                           </div>
