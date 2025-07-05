@@ -331,8 +331,8 @@ const AdminConveniosPage: React.FC = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="relative">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="relative md:col-span-1">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                     <Input
                       placeholder="Buscar por nombre..."
@@ -342,8 +342,6 @@ const AdminConveniosPage: React.FC = () => {
                     />
                   </div>
                   
-                  <div></div>
-
                   <Button 
                     variant="outline" 
                     onClick={() => setSearchTerm('')}

@@ -4,7 +4,8 @@
 import type React from "react"
 import { useState, useMemo, useEffect } from "react"
 import MainLayout from "@/components/layout/MainLayout"
-import EventCard from "@/components/galeria-bienestar/EventCard"
+import EventsGrid from "@/components/galeria-bienestar/EventsGrid"
+import EventFilters from "@/components/galeria-bienestar/EventFilters"
 import EventsPagination from "@/components/galeria-bienestar/EventsPagination"
 import { mockEvents } from "@/data/eventosMock"
 import { Link } from "react-router-dom"
@@ -16,14 +17,12 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
-import { Image, GalleryVertical, Home, ArrowDownUp, FilterIcon } from "lucide-react"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Label } from "@/components/ui/label"
+import { Image, GalleryVertical, Home } from "lucide-react"
+import { usePagination } from "@/hooks/usePagination"
 
 const GaleriaBienestarPage: React.FC = () => {
   const [sortOrder, setSortOrder] = useState<"date-desc" | "date-asc">("date-desc")
   const [filterCategory, setFilterCategory] = useState<string>("all")
-  const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 12
 
   const uniqueCategories = useMemo(() => {
@@ -50,17 +49,23 @@ const GaleriaBienestarPage: React.FC = () => {
     }))
   }, [sortOrder, filterCategory])
 
-  const totalPages = Math.ceil(processedEvents.length / itemsPerPage)
-  const startIndex = (currentPage - 1) * itemsPerPage
-  const eventsToDisplay = processedEvents.slice(startIndex, startIndex + itemsPerPage)
+  const {
+    currentPage,
+    totalPages,
+    paginatedData: eventsToDisplay,
+    goToPage
+  } = usePagination({
+    data: processedEvents,
+    initialItemsPerPage: itemsPerPage
+  })
 
   useEffect(() => {
     window.scrollTo(0, 0)
-    setCurrentPage(1) // Reset to first page when filters change
-  }, [sortOrder, filterCategory])
+    goToPage(1) // Reset to first page when filters change
+  }, [sortOrder, filterCategory, goToPage])
 
   const handlePageChange = (page: number) => {
-    setCurrentPage(page)
+    goToPage(page)
     window.scrollTo(0, 0)
   }
 
@@ -103,54 +108,15 @@ const GaleriaBienestarPage: React.FC = () => {
           </p>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-4 mb-8 justify-center sm:justify-start items-center">
-          <div className="flex flex-col items-start gap-1.5 w-full sm:w-auto">
-            <Label htmlFor="sort-order" className="text-sm font-medium text-muted-foreground flex items-center">
-              <ArrowDownUp className="h-4 w-4 mr-2" />
-              Ordenar por
-            </Label>
-            <Select value={sortOrder} onValueChange={(value) => setSortOrder(value as "date-desc" | "date-asc")}>
-              <SelectTrigger id="sort-order" className="w-full sm:w-[180px] bg-background">
-                <SelectValue placeholder="Seleccionar orden..." />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="date-desc">Más recientes</SelectItem>
-                <SelectItem value="date-asc">Más antiguos</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+        <EventFilters
+          sortOrder={sortOrder}
+          setSortOrder={setSortOrder}
+          filterCategory={filterCategory}
+          setFilterCategory={setFilterCategory}
+          uniqueCategories={uniqueCategories}
+        />
 
-          <div className="flex flex-col items-start gap-1.5 w-full sm:w-auto">
-            <Label htmlFor="filter-category" className="text-sm font-medium text-muted-foreground flex items-center">
-              <FilterIcon className="h-4 w-4 mr-2" />
-              Filtrar por categoría
-            </Label>
-            <Select value={filterCategory} onValueChange={(value) => setFilterCategory(value)}>
-              <SelectTrigger id="filter-category" className="w-full sm:w-[220px] bg-background">
-                <SelectValue placeholder="Seleccionar categoría..." />
-              </SelectTrigger>
-              <SelectContent>
-                {uniqueCategories.map((category) => (
-                  <SelectItem key={category} value={category}>
-                    {category === "all" ? "Todas las categorías" : category}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-
-        {eventsToDisplay.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
-            {eventsToDisplay.map((event) => (
-              <EventCard key={`${event.id}-${event._sortKey}`} event={event} />
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-10">
-            <p className="text-xl text-muted-foreground">No hay eventos para mostrar con los filtros seleccionados.</p>
-          </div>
-        )}
+        <EventsGrid events={eventsToDisplay} />
 
         {totalPages > 1 && (
           <EventsPagination
