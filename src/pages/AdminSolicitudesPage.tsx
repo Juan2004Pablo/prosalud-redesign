@@ -11,7 +11,10 @@ import {
   FileText,
   Download,
   Filter,
-  X
+  X,
+  User,
+  Eye,
+  MoreHorizontal
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useToast } from '@/hooks/use-toast';
@@ -20,14 +23,18 @@ import { usePagination } from '@/hooks/usePagination';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import ReactJson from 'react-json-view';
 
 interface SolicitudDetallada {
   id: string;
-  usuario: string;
+  nombre: string;
+  email: string;
+  cedula: string;
   tipo: string;
+  tipoId: string;
   fechaCreacion: Date;
-  estado: 'pendiente' | 'aprobada' | 'rechazada';
+  estado: 'pendiente' | 'en_proceso' | 'resuelto' | 'rechazada';
   detalles: any;
   observaciones?: string;
 }
@@ -40,42 +47,110 @@ const AdminSolicitudesPage: React.FC = () => {
   const [selectedStatus, setSelectedStatus] = useState<string>('all');
   const [solicitudes, setSolicitudes] = useState<SolicitudDetallada[]>([
     {
-      id: '1',
-      usuario: 'Juan Pérez',
-      tipo: 'Insumos Médicos',
-      fechaCreacion: new Date(),
-      estado: 'pendiente',
+      id: 'req-001',
+      nombre: 'María González Rodríguez',
+      email: 'maria.gonzalez@hospital.com',
+      cedula: '123456789',
+      tipo: 'Certificado de Convenio',
+      tipoId: 'req-001',
+      fechaCreacion: new Date('2024-12-10T03:30:00'),
+      estado: 'resuelto',
       detalles: {
-        producto: 'Tapabocas N95',
-        cantidad: 100,
-        prioridad: 'alta'
+        convenio: 'Hospital Marco Fidel Suárez',
+        fechaInicio: '2024-01-15',
+        fechaFin: '2024-12-31'
       },
-      observaciones: 'Solicitud urgente para el área de emergencias'
+      observaciones: 'Certificado generado exitosamente'
     },
     {
-      id: '2',
-      usuario: 'María Gómez',
-      tipo: 'Equipamiento',
-      fechaCreacion: new Date(),
-      estado: 'aprobada',
+      id: 'req-002',
+      nombre: 'Carlos Martínez Silva',
+      email: 'carlos.martinez@clinica.com',
+      cedula: '987654321',
+      tipo: 'Compensación Anual Diferida',
+      tipoId: 'req-002',
+      fechaCreacion: new Date('2024-12-15T04:45:00'),
+      estado: 'en_proceso',
       detalles: {
-        equipo: 'Monitor Multiparámetro',
-        modelo: 'XYZ-2000',
-        cantidad: 1
+        año: '2024',
+        monto: 2500000,
+        concepto: 'Vacaciones no disfrutadas'
       }
     },
     {
-      id: '3',
-      usuario: 'Carlos Rodríguez',
-      tipo: 'Mantenimiento',
-      fechaCreacion: new Date(),
-      estado: 'rechazada',
+      id: 'req-003',
+      nombre: 'Ana López Herrera',
+      email: 'ana.lopez@enfermeria.com',
+      cedula: '112233445',
+      tipo: 'Verificación de Pagos',
+      tipoId: 'req-003',
+      fechaCreacion: new Date('2024-12-16T11:20:00'),
+      estado: 'pendiente',
       detalles: {
-        equipo: 'Resonancia Magnética',
-        motivo: 'Falla en el sistema de enfriamiento'
-      },
-      observaciones: 'No hay presupuesto disponible para la reparación'
+        periodo: 'Noviembre 2024',
+        concepto: 'Horas extras',
+        valor: 850000
+      }
     },
+    {
+      id: 'req-004',
+      nombre: 'Roberto Jiménez Castro',
+      email: 'roberto.jimenez@urgencias.com',
+      cedula: '556677889',
+      tipo: 'Solicitud de Descanso',
+      tipoId: 'req-004',
+      fechaCreacion: new Date('2024-12-17T06:15:00'),
+      estado: 'pendiente',
+      detalles: {
+        fechaInicio: '2024-12-20',
+        fechaFin: '2024-12-27',
+        motivo: 'Descanso médico'
+      }
+    },
+    {
+      id: 'req-005',
+      nombre: 'Elena Ramírez Vega',
+      email: 'elena.ramirez@laboratorio.com',
+      cedula: '778899001',
+      tipo: 'Actualizar Cuenta Bancaria',
+      tipoId: 'req-005',
+      fechaCreacion: new Date('2024-12-12T09:30:00'),
+      estado: 'resuelto',
+      detalles: {
+        banco: 'Bancolombia',
+        tipoCuenta: 'Ahorros',
+        numeroCuenta: '****7890'
+      }
+    },
+    {
+      id: 'req-006',
+      nombre: 'Alejandro Torres Mendoza',
+      email: 'alejandro.torres@radiologia.com',
+      cedula: '102345679',
+      tipo: 'Retiro Sindical',
+      tipoId: 'req-006',
+      fechaCreacion: new Date('2024-12-14T08:45:00'),
+      estado: 'en_proceso',
+      detalles: {
+        fechaRetiro: '2024-12-31',
+        motivo: 'Pensión por vejez'
+      }
+    },
+    {
+      id: 'req-007',
+      nombre: 'Patricia Sánchez Morales',
+      email: 'patricia.sanchez@farmacia.com',
+      cedula: '334556677',
+      tipo: 'Microcrédito CEII',
+      tipoId: 'req-007',
+      fechaCreacion: new Date('2024-12-16T05:00:00'),
+      estado: 'pendiente',
+      detalles: {
+        monto: 5000000,
+        plazo: '36 meses',
+        destino: 'Mejoras en vivienda'
+      }
+    }
   ]);
 
   const { toast } = useToast();
@@ -105,19 +180,27 @@ const AdminSolicitudesPage: React.FC = () => {
     setSelectedSolicitud(solicitud);
   };
 
-  const handleChangeStatus = (id: string, newStatus: 'aprobada' | 'rechazada') => {
+  const handleChangeStatus = (id: string, newStatus: 'en_proceso' | 'resuelto' | 'rechazada') => {
     setSolicitudes(solicitudes.map(solicitud =>
       solicitud.id === id ? { ...solicitud, estado: newStatus } : solicitud
     ));
+    
+    const statusLabels = {
+      'en_proceso': 'Marcada en Proceso',
+      'resuelto': 'Marcada como Resuelta',
+      'rechazada': 'Rechazada'
+    };
+    
     toast({
-      title: `Solicitud ${newStatus === 'aprobada' ? 'Aprobada' : 'Rechazada'}`,
-      description: `La solicitud #${id} ha sido ${newStatus === 'aprobada' ? 'aprobada' : 'rechazada'} exitosamente.`,
+      title: `Solicitud ${statusLabels[newStatus]}`,
+      description: `La solicitud #${id} ha sido ${statusLabels[newStatus].toLowerCase()} exitosamente.`,
     });
     setSelectedSolicitud(null);
   };
 
   const filteredSolicitudes = solicitudes.filter(solicitud => {
-    const matchesSearch = solicitud.usuario.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    const matchesSearch = solicitud.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                           solicitud.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
                            solicitud.tipo.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = selectedStatus === 'all' || solicitud.estado === selectedStatus;
     return matchesSearch && matchesStatus;
@@ -139,7 +222,8 @@ const AdminSolicitudesPage: React.FC = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'pendiente': return 'bg-yellow-100 text-yellow-700';
-      case 'aprobada': return 'bg-green-100 text-green-700';
+      case 'en_proceso': return 'bg-blue-100 text-blue-700';
+      case 'resuelto': return 'bg-green-100 text-green-700';
       case 'rechazada': return 'bg-red-100 text-red-700';
       default: return 'bg-gray-100 text-gray-700';
     }
@@ -148,8 +232,9 @@ const AdminSolicitudesPage: React.FC = () => {
   const getStatusLabel = (status: string) => {
     switch (status) {
       case 'pendiente': return 'Pendiente';
-      case 'aprobada': return 'Aprobada';
-      case 'rechazada': return 'Rechazada';
+      case 'en_proceso': return 'En Proceso';
+      case 'resuelto': return 'Resuelto';
+      case 'rechazada': return 'Rechazado';
       default: return status;
     }
   };
@@ -216,21 +301,21 @@ const AdminSolicitudesPage: React.FC = () => {
 
             <Card className="border shadow-sm">
               <CardHeader>
-                <CardTitle className="text-xl font-bold">Solicitudes Aprobadas</CardTitle>
-                <CardDescription>Número de solicitudes que han sido aprobadas</CardDescription>
+                <CardTitle className="text-xl font-bold">Solicitudes Resueltas</CardTitle>
+                <CardDescription>Número de solicitudes que han sido resueltas</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="text-4xl font-bold text-green-500">{solicitudes.filter(s => s.estado === 'aprobada').length}</div>
+                <div className="text-4xl font-bold text-green-500">{solicitudes.filter(s => s.estado === 'resuelto').length}</div>
               </CardContent>
             </Card>
 
             <Card className="border shadow-sm">
               <CardHeader>
-                <CardTitle className="text-xl font-bold">Solicitudes Rechazadas</CardTitle>
-                <CardDescription>Número de solicitudes que han sido rechazadas</CardDescription>
+                <CardTitle className="text-xl font-bold">En Proceso</CardTitle>
+                <CardDescription>Número de solicitudes en proceso</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="text-4xl font-bold text-red-500">{solicitudes.filter(s => s.estado === 'rechazada').length}</div>
+                <div className="text-4xl font-bold text-blue-500">{solicitudes.filter(s => s.estado === 'en_proceso').length}</div>
               </CardContent>
             </Card>
           </motion.div>
@@ -263,8 +348,9 @@ const AdminSolicitudesPage: React.FC = () => {
                       <SelectContent>
                         <SelectItem value="all">Todos los estados</SelectItem>
                         <SelectItem value="pendiente">Pendiente</SelectItem>
-                        <SelectItem value="aprobada">Aprobada</SelectItem>
-                        <SelectItem value="rechazada">Rechazada</SelectItem>
+                        <SelectItem value="en_proceso">En Proceso</SelectItem>
+                        <SelectItem value="resuelto">Resuelto</SelectItem>
+                        <SelectItem value="rechazada">Rechazado</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -281,12 +367,11 @@ const AdminSolicitudesPage: React.FC = () => {
           >
             <Card className="border shadow-sm">
               <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <FileText className="h-5 w-5" />
-                  <span>Solicitudes ({totalItems})</span>
+                <CardTitle className="text-2xl font-bold text-gray-900">
+                  Solicitudes ({totalItems})
                 </CardTitle>
-                <CardDescription>
-                  Lista completa de solicitudes
+                <CardDescription className="text-gray-600 mt-1">
+                  Lista completa de solicitudes realizadas por los afiliados
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -294,44 +379,106 @@ const AdminSolicitudesPage: React.FC = () => {
                   <Table>
                     <TableHeader>
                       <TableRow className="bg-gray-50">
-                        <TableHead>ID</TableHead>
-                        <TableHead>Usuario</TableHead>
-                        <TableHead>Tipo</TableHead>
-                        <TableHead>Fecha Creación</TableHead>
-                        <TableHead>Estado</TableHead>
-                        <TableHead className="text-right">Acciones</TableHead>
+                        <TableHead className="w-1/4">Solicitante</TableHead>
+                        <TableHead className="w-1/5">Tipo</TableHead>
+                        <TableHead className="w-1/6">Estado</TableHead>
+                        <TableHead className="w-1/6">Fecha</TableHead>
+                        <TableHead className="w-1/4">Acciones</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {paginatedData.map((solicitud) => (
                         <TableRow key={solicitud.id} className="hover:bg-gray-50 transition-colors">
                           <TableCell>
-                            <span className="font-mono text-sm">#{solicitud.id}</span>
+                            <div className="flex items-center space-x-3">
+                              <div className="bg-gray-100 p-2 rounded-full">
+                                <User className="h-4 w-4 text-gray-600" />
+                              </div>
+                              <div>
+                                <p className="font-medium text-gray-900">{solicitud.nombre}</p>
+                                <p className="text-sm text-gray-600">{solicitud.email}</p>
+                                <p className="text-xs text-gray-500">CC: {solicitud.cedula}</p>
+                              </div>
+                            </div>
                           </TableCell>
                           <TableCell>
-                            <span className="font-medium text-gray-900">{solicitud.usuario}</span>
-                          </TableCell>
-                          <TableCell>
-                            <span className="text-gray-600">{solicitud.tipo}</span>
-                          </TableCell>
-                          <TableCell>
-                            {new Date(solicitud.fechaCreacion).toLocaleDateString()}
+                            <div>
+                              <p className="font-medium text-gray-900">{solicitud.tipo}</p>
+                              <p className="text-sm text-gray-500">ID: {solicitud.tipoId}</p>
+                            </div>
                           </TableCell>
                           <TableCell>
                             <Badge className={getStatusColor(solicitud.estado)}>
                               {getStatusLabel(solicitud.estado)}
                             </Badge>
                           </TableCell>
-                          <TableCell className="text-right">
-                            <div className="flex justify-end space-x-2">
-                              <Button 
-                                variant="ghost" 
-                                size="sm"
-                                onClick={() => handleViewDetails(solicitud)}
-                                className="hover:bg-gray-100 text-gray-700 hover:text-gray-900"
-                              >
-                                Ver
-                              </Button>
+                          <TableCell>
+                            <div>
+                              <p className="text-sm text-gray-900">
+                                {solicitud.fechaCreacion.toLocaleDateString('es-ES', {
+                                  day: '2-digit',
+                                  month: 'short',
+                                  year: 'numeric'
+                                })}
+                              </p>
+                              <p className="text-xs text-gray-500">
+                                {solicitud.fechaCreacion.toLocaleTimeString('es-ES', {
+                                  hour: '2-digit',
+                                  minute: '2-digit'
+                                })}
+                              </p>
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex items-center space-x-2">
+                              {solicitud.estado === 'pendiente' && (
+                                <>
+                                  <Button 
+                                    size="sm"
+                                    onClick={() => handleChangeStatus(solicitud.id, 'en_proceso')}
+                                    className="bg-blue-600 hover:bg-blue-700 text-white text-xs px-2 py-1 h-7"
+                                  >
+                                    Marcar en Proceso
+                                  </Button>
+                                  <Button 
+                                    size="sm"
+                                    onClick={() => handleChangeStatus(solicitud.id, 'resuelto')}
+                                    className="bg-green-600 hover:bg-green-700 text-white text-xs px-2 py-1 h-7"
+                                  >
+                                    Marcar como Resuelto
+                                  </Button>
+                                  <Button 
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={() => handleChangeStatus(solicitud.id, 'rechazada')}
+                                    className="text-red-600 border-red-200 hover:bg-red-50 text-xs px-2 py-1 h-7"
+                                  >
+                                    Rechazar
+                                  </Button>
+                                </>
+                              )}
+                              {solicitud.estado === 'en_proceso' && (
+                                <Button 
+                                  size="sm"
+                                  onClick={() => handleChangeStatus(solicitud.id, 'resuelto')}
+                                  className="bg-green-600 hover:bg-green-700 text-white text-xs px-2 py-1 h-7"
+                                >
+                                  Marcar como Resuelto
+                                </Button>
+                              )}
+                              <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                  <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+                                    <MoreHorizontal className="h-4 w-4" />
+                                  </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end" className="w-48">
+                                  <DropdownMenuItem onClick={() => handleViewDetails(solicitud)}>
+                                    <Eye className="h-4 w-4 mr-2" />
+                                    Ver Detalles
+                                  </DropdownMenuItem>
+                                </DropdownMenuContent>
+                              </DropdownMenu>
                             </div>
                           </TableCell>
                         </TableRow>
@@ -420,7 +567,7 @@ const AdminSolicitudesPage: React.FC = () => {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div className="space-y-2">
                             <label className="text-sm font-medium text-gray-700">Usuario Solicitante</label>
-                            <p className="text-gray-900 bg-gray-50 p-2 rounded border">{selectedSolicitud.usuario}</p>
+                            <p className="text-gray-900 bg-gray-50 p-2 rounded border">{selectedSolicitud.nombre}</p>
                           </div>
                           <div className="space-y-2">
                             <label className="text-sm font-medium text-gray-700">Tipo de Solicitud</label>
@@ -500,10 +647,10 @@ const AdminSolicitudesPage: React.FC = () => {
                             Rechazar
                           </Button>
                           <Button 
-                            onClick={() => handleChangeStatus(selectedSolicitud.id, 'aprobada')}
+                            onClick={() => handleChangeStatus(selectedSolicitud.id, 'resuelto')}
                             className="bg-primary-prosalud hover:bg-primary-prosalud-dark text-white"
                           >
-                            Aprobar
+                            Resolver
                           </Button>
                         </>
                       )}
