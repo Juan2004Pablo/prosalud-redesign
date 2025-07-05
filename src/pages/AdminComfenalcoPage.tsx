@@ -35,10 +35,12 @@ import { es } from 'date-fns/locale';
 import { DatePicker } from "@/components/ui/date-picker";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Separator } from '@/components/ui/separator';
+import DeleteComfenalcoEventDialog from '@/components/admin/comfenalco/DeleteComfenalcoEventDialog';
 
 const AdminComfenalcoPage: React.FC = () => {
   const [eventFormOpen, setEventFormOpen] = useState(false);
   const [viewEventOpen, setViewEventOpen] = useState(false);
+  const [deleteEventOpen, setDeleteEventOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<ComfenalcoEvent | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -215,15 +217,23 @@ const AdminComfenalcoPage: React.FC = () => {
   };
 
   const handleDelete = (event: ComfenalcoEvent) => {
-    // Implement delete logic here
-    const eventIndex = comfenalcoEventsMock.findIndex(e => e.id === event.id);
-    if (eventIndex > -1) {
-      comfenalcoEventsMock.splice(eventIndex, 1);
-      toast({
-        title: "Evento Eliminado",
-        description: "El evento ha sido eliminado exitosamente.",
-      });
+    setSelectedEvent(event);
+    setDeleteEventOpen(true);
+  };
+
+  const confirmDelete = () => {
+    if (selectedEvent) {
+      const eventIndex = comfenalcoEventsMock.findIndex(e => e.id === selectedEvent.id);
+      if (eventIndex > -1) {
+        comfenalcoEventsMock.splice(eventIndex, 1);
+        toast({
+          title: "Evento Eliminado",
+          description: "El evento ha sido eliminado exitosamente.",
+        });
+      }
     }
+    setDeleteEventOpen(false);
+    setSelectedEvent(null);
   };
 
   const resetForm = () => {
@@ -420,7 +430,10 @@ const AdminComfenalcoPage: React.FC = () => {
                                   <Edit className="h-4 w-4 mr-2" />
                                   Editar
                                 </DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => handleDelete(event)}>
+                                <DropdownMenuItem 
+                                  onClick={() => handleDelete(event)}
+                                  className="text-red-600"
+                                >
                                   <Trash2 className="h-4 w-4 mr-2" />
                                   Eliminar
                                 </DropdownMenuItem>
@@ -484,15 +497,15 @@ const AdminComfenalcoPage: React.FC = () => {
                             </div>
                           )}
                           <div>
-                            <label className="text-sm font-medium text-gray-600">Categoría</label>
+                            <label className="text-sm font-medium text-gray-600 block mb-1">Categoría</label>
                             <Badge variant="outline" className="text-xs">{selectedEvent.category}</Badge>
                           </div>
                           <div>
-                            <label className="text-sm font-medium text-gray-600">Tamaño de Visualización</label>
+                            <label className="text-sm font-medium text-gray-600 block mb-1">Tamaño de Visualización</label>
                             <Badge variant="secondary" className="text-xs">{selectedEvent.displaySize}</Badge>
                           </div>
                           <div>
-                            <label className="text-sm font-medium text-gray-600">Estado</label>
+                            <label className="text-sm font-medium text-gray-600 block mb-1">Estado</label>
                             <Badge variant={selectedEvent.isVisible ? "default" : "secondary"}>
                               {selectedEvent.isVisible ? "Visible en web" : "Oculto en web"}
                             </Badge>
@@ -631,24 +644,6 @@ const AdminComfenalcoPage: React.FC = () => {
                   </div>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="flex items-center space-x-2">
-                    <Switch
-                      id="isNew"
-                      checked={formValues.isNew}
-                      onCheckedChange={(checked) => handleSwitchChange('isNew', checked)}
-                    />
-                    <Label htmlFor="isNew">Es Nuevo</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Switch
-                      id="isVisible"
-                      checked={formValues.isVisible}
-                      onCheckedChange={(checked) => handleSwitchChange('isVisible', checked)}
-                    />
-                    <Label htmlFor="isVisible">Visible en la web</Label>
-                  </div>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="category">Categoría</Label>
                     <Select value={formValues.category} onValueChange={handleCategoryChange}>
@@ -677,6 +672,26 @@ const AdminComfenalcoPage: React.FC = () => {
                     </Select>
                   </div>
                 </div>
+                
+                <Separator className="my-4" />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="flex items-center space-x-2">
+                    <Switch
+                      id="isNew"
+                      checked={formValues.isNew}
+                      onCheckedChange={(checked) => handleSwitchChange('isNew', checked)}
+                    />
+                    <Label htmlFor="isNew">Es Nuevo</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Switch
+                      id="isVisible"
+                      checked={formValues.isVisible}
+                      onCheckedChange={(checked) => handleSwitchChange('isVisible', checked)}
+                    />
+                    <Label htmlFor="isVisible">Visible en la web</Label>
+                  </div>
+                </div>
               </div>
               <div className="flex justify-end space-x-2">
                 <Button variant="outline" onClick={() => setEventFormOpen(false)}>
@@ -688,6 +703,14 @@ const AdminComfenalcoPage: React.FC = () => {
               </div>
             </DialogContent>
           </Dialog>
+
+          {/* Delete Confirmation Dialog */}
+          <DeleteComfenalcoEventDialog
+            open={deleteEventOpen}
+            onOpenChange={setDeleteEventOpen}
+            event={selectedEvent}
+            onConfirm={confirmDelete}
+          />
         </motion.div>
       </div>
     </AdminLayout>
