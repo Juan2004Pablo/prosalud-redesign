@@ -6,7 +6,7 @@ import { useState, useMemo, useEffect } from "react"
 import MainLayout from "@/components/layout/MainLayout"
 import EventsGrid from "@/components/galeria-bienestar/EventsGrid"
 import EventFilters from "@/components/galeria-bienestar/EventFilters"
-import EventsPagination from "@/components/galeria-bienestar/EventsPagination"
+import DataPagination from "@/components/ui/data-pagination"
 import { mockEvents } from "@/data/eventosMock"
 import { Link } from "react-router-dom"
 import {
@@ -23,7 +23,6 @@ import { usePagination } from "@/hooks/usePagination"
 const GaleriaBienestarPage: React.FC = () => {
   const [sortOrder, setSortOrder] = useState<"date-desc" | "date-asc">("date-desc")
   const [filterCategory, setFilterCategory] = useState<string>("all")
-  const itemsPerPage = 12
 
   const uniqueCategories = useMemo(() => {
     const categories = new Set(mockEvents.map((event) => event.category).filter(Boolean) as string[])
@@ -51,12 +50,15 @@ const GaleriaBienestarPage: React.FC = () => {
 
   const {
     currentPage,
+    itemsPerPage,
     totalPages,
+    totalItems,
     paginatedData: eventsToDisplay,
-    goToPage
+    goToPage,
+    setItemsPerPage
   } = usePagination({
     data: processedEvents,
-    initialItemsPerPage: itemsPerPage
+    initialItemsPerPage: 12
   })
 
   useEffect(() => {
@@ -119,10 +121,14 @@ const GaleriaBienestarPage: React.FC = () => {
         <EventsGrid events={eventsToDisplay} />
 
         {totalPages > 1 && (
-          <EventsPagination
+          <DataPagination
             currentPage={currentPage}
             totalPages={totalPages}
+            totalItems={totalItems}
+            itemsPerPage={itemsPerPage}
             onPageChange={handlePageChange}
+            onItemsPerPageChange={setItemsPerPage}
+            className="mt-12"
           />
         )}
       </div>

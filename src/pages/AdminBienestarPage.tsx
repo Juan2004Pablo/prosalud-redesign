@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
@@ -9,6 +10,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
+import DataPagination from '@/components/ui/data-pagination';
+import { usePagination } from '@/hooks/usePagination';
 import { useToast } from '@/hooks/use-toast';
 import { bienestarApi } from '@/services/adminApi';
 import { BienestarEvent } from '@/types/admin';
@@ -20,8 +23,6 @@ const AdminBienestarPage: React.FC = () => {
   const [selectedEvent, setSelectedEvent] = useState<BienestarEvent | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 9;
   
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -62,6 +63,19 @@ const AdminBienestarPage: React.FC = () => {
   });
 
   const categories = ['all', ...new Set(events.map(event => event.category))];
+
+  const {
+    currentPage,
+    itemsPerPage,
+    totalPages,
+    totalItems,
+    paginatedData: paginatedEvents,
+    goToPage,
+    setItemsPerPage
+  } = usePagination({
+    data: filteredEvents,
+    initialItemsPerPage: 9
+  });
 
   const handleEdit = (event: BienestarEvent) => {
     setSelectedEvent(event);
@@ -190,7 +204,7 @@ const AdminBienestarPage: React.FC = () => {
                   </Card>
                 ))}
               </div>
-            ) : filteredEvents.length === 0 ? (
+            ) : totalItems === 0 ? (
               <Card className="border shadow-sm bg-white">
                 <CardContent className="text-center py-12">
                   <Calendar className="h-16 w-16 text-gray-400 mx-auto mb-4" />
@@ -203,81 +217,94 @@ const AdminBienestarPage: React.FC = () => {
                 </CardContent>
               </Card>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredEvents.map((event, index) => (
-                  <motion.div
-                    key={event.id}
-                    variants={itemVariants}
-                    initial="hidden"
-                    animate="visible"
-                    transition={{ delay: index * 0.1 }}
-                  >
-                    <Card className="group relative overflow-hidden border shadow-sm hover:shadow-lg transition-all duration-300 bg-white">
-                      <div className="relative h-48 overflow-hidden">
-                        <img
-                          src={event.images.find(img => img.isMain)?.url || event.images[0]?.url || '/placeholder.svg'}
-                          alt={event.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        />
-                        <div className="absolute top-2 right-2 flex gap-2">
-                          <Badge variant={event.isVisible ? "default" : "secondary"}>
-                            {event.isVisible ? 'Visible' : 'Oculto'}
-                          </Badge>
-                          <Badge variant="outline">{event.category}</Badge>
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {paginatedEvents.map((event, index) => (
+                    <motion.div
+                      key={event.id}
+                      variants={itemVariants}
+                      initial="hidden"
+                      animate="visible"
+                      transition={{ delay: index * 0.1 }}
+                    >
+                      <Card className="group relative overflow-hidden border shadow-sm hover:shadow-lg transition-all duration-300 bg-white">
+                        <div className="relative h-48 overflow-hidden">
+                          <img
+                            src={event.images.find(img => img.isMain)?.url || event.images[0]?.url || '/placeholder.svg'}
+                            alt={event.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          />
+                          <div className="absolute top-2 right-2 flex gap-2">
+                            <Badge variant={event.isVisible ? "default" : "secondary"}>
+                              {event.isVisible ? 'Visible' : 'Oculto'}
+                            </Badge>
+                            <Badge variant="outline">{event.category}</Badge>
+                          </div>
                         </div>
-                      </div>
-                      <CardContent className="p-4">
-                        <h3 className="font-semibold text-lg text-text-dark mb-2 line-clamp-2">
-                          {event.title}
-                        </h3>
-                        <div className="space-y-1 text-sm text-text-gray">
-                          <p className="flex items-center gap-2">
-                            <Calendar className="h-4 w-4" />
-                            {new Date(event.date).toLocaleDateString('es-ES')}
-                          </p>
-                          {event.location && (
-                            <p className="truncate">{event.location}</p>
-                          )}
-                          {event.attendees && (
-                            <p>{event.attendees} asistentes</p>
-                          )}
-                        </div>
-
-                        <div className="space-y-3 mt-4">
-                          {/* Visibility Toggle */}
-                          <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
-                            <div className="flex items-center gap-2">
-                              {event.isVisible ? (
-                                <Eye className="h-4 w-4 text-green-600" />
-                              ) : (
-                                <EyeOff className="h-4 w-4 text-gray-400" />
-                              )}
-                              <span className="text-sm font-medium">
-                                {event.isVisible ? 'Visible en web' : 'Oculto en web'}
-                              </span>
-                            </div>
-                            <Switch
-                              checked={event.isVisible}
-                              onCheckedChange={() => toggleVisibilityMutation.mutate(event)}
-                              disabled={toggleVisibilityMutation.isPending}
-                            />
+                        <CardContent className="p-4">
+                          <h3 className="font-semibold text-lg text-text-dark mb-2 line-clamp-2">
+                            {event.title}
+                          </h3>
+                          <div className="space-y-1 text-sm text-text-gray">
+                            <p className="flex items-center gap-2">
+                              <Calendar className="h-4 w-4" />
+                              {new Date(event.date).toLocaleDateString('es-ES')}
+                            </p>
+                            {event.location && (
+                              <p className="truncate">{event.location}</p>
+                            )}
+                            {event.attendees && (
+                              <p>{event.attendees} asistentes</p>
+                            )}
                           </div>
 
-                          {/* Edit Button */}
-                          <Button
-                            variant="outline"
-                            onClick={() => handleEdit(event)}
-                            className="w-full"
-                          >
-                            <Edit className="h-4 w-4 mr-2" />
-                            Editar
-                          </Button>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                ))}
-              </div>
+                          <div className="space-y-3 mt-4">
+                            {/* Visibility Toggle */}
+                            <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+                              <div className="flex items-center gap-2">
+                                {event.isVisible ? (
+                                  <Eye className="h-4 w-4 text-green-600" />
+                                ) : (
+                                  <EyeOff className="h-4 w-4 text-gray-400" />
+                                )}
+                                <span className="text-sm font-medium">
+                                  {event.isVisible ? 'Visible en web' : 'Oculto en web'}
+                                </span>
+                              </div>
+                              <Switch
+                                checked={event.isVisible}
+                                onCheckedChange={() => toggleVisibilityMutation.mutate(event)}
+                                disabled={toggleVisibilityMutation.isPending}
+                              />
+                            </div>
+
+                            {/* Edit Button */}
+                            <Button
+                              variant="outline"
+                              onClick={() => handleEdit(event)}
+                              className="w-full"
+                            >
+                              <Edit className="h-4 w-4 mr-2" />
+                              Editar
+                            </Button>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </motion.div>
+                  ))}
+                </div>
+
+                {/* Pagination */}
+                <DataPagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  totalItems={totalItems}
+                  itemsPerPage={itemsPerPage}
+                  onPageChange={goToPage}
+                  onItemsPerPageChange={setItemsPerPage}
+                  className="mt-8"
+                />
+              </>
             )}
           </motion.div>
         </motion.div>
