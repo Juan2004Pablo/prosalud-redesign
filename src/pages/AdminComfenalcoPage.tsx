@@ -497,15 +497,15 @@ const AdminComfenalcoPage: React.FC = () => {
                             </div>
                           )}
                           <div>
-                            <label className="text-sm font-medium text-gray-600 block mb-1">Categoría</label>
+                            <label className="text-sm font-medium text-gray-600 block mb-2">Categoría</label>
                             <Badge variant="outline" className="text-xs">{selectedEvent.category}</Badge>
                           </div>
                           <div>
-                            <label className="text-sm font-medium text-gray-600 block mb-1">Tamaño de Visualización</label>
+                            <label className="text-sm font-medium text-gray-600 block mb-2">Tamaño de Visualización</label>
                             <Badge variant="secondary" className="text-xs">{selectedEvent.displaySize}</Badge>
                           </div>
                           <div>
-                            <label className="text-sm font-medium text-gray-600 block mb-1">Estado</label>
+                            <label className="text-sm font-medium text-gray-600 block mb-2">Estado</label>
                             <Badge variant={selectedEvent.isVisible ? "default" : "secondary"}>
                               {selectedEvent.isVisible ? "Visible en web" : "Oculto en web"}
                             </Badge>
