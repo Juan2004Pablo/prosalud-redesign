@@ -1,13 +1,44 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from './Header';
 import Footer from './Footer';
-import Bot from '@/components/chatbot/bot';
+import ProSaludChatbot from '@/components/chatbot/bot';
+import ChatbotFab from '@/components/home/ChatbotFab';
 
 interface MainLayoutProps {
   children: React.ReactNode;
 }
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
+  const [isChatbotOpen, setIsChatbotOpen] = useState(false);
+  const [isChatbotMinimized, setIsChatbotMinimized] = useState(false);
+
+  const handleOpenChatbot = () => {
+    setIsChatbotOpen(true);
+    setIsChatbotMinimized(false);
+  };
+
+  const handleCloseChatbot = () => {
+    setIsChatbotOpen(false);
+    setIsChatbotMinimized(false);
+  };
+
+  const handleToggleChatbotSize = () => {
+    setIsChatbotMinimized(!isChatbotMinimized);
+  };
+
+  // Listen for custom chatbot events
+  useEffect(() => {
+    const handleOpenChatbotEvent = () => {
+      handleOpenChatbot();
+    };
+
+    window.addEventListener('openChatbot', handleOpenChatbotEvent);
+    
+    return () => {
+      window.removeEventListener('openChatbot', handleOpenChatbotEvent);
+    };
+  }, []);
+
   // Security: Add security headers and basic protections
   useEffect(() => {
     // Security: Add meta tags for security
@@ -91,7 +122,19 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         {children}
       </main>
       <Footer />
-      <Bot />
+      
+      {/* Chatbot FAB - only show when chatbot is closed */}
+      {!isChatbotOpen && (
+        <ChatbotFab onOpenChatbot={handleOpenChatbot} />
+      )}
+      
+      {/* Chatbot Component */}
+      <ProSaludChatbot
+        isOpen={isChatbotOpen}
+        onClose={handleCloseChatbot}
+        onToggleSize={handleToggleChatbotSize}
+        isMinimized={isChatbotMinimized}
+      />
     </div>
   );
 };
