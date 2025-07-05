@@ -95,26 +95,29 @@ const ConvenioFormModal: React.FC<ConvenioFormModalProps> = ({
 
           <ConvenioForm 
             onClose={handleClose} 
-            onSuccess={handleSuccess}
             convenio={convenio}
           />
         </DialogContent>
       </Dialog>
 
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>¿Eliminar Convenio?</AlertDialogTitle>
-            <AlertDialogDescription>
+        <AlertDialogContent className="sm:max-w-md">
+          <AlertDialogHeader className="text-center sm:text-left">
+            <AlertDialogTitle className="text-xl font-semibold text-gray-900">
+              ¿Eliminar Convenio?
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-sm text-gray-600 mt-2">
               Esta acción no se puede deshacer. Se eliminará permanentemente el convenio{' '}
-              <strong>"{convenio?.name}"</strong> y todos sus datos asociados.
+              <span className="font-medium text-gray-900">"{convenio?.name}"</span> y todos sus datos asociados.
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+          <AlertDialogFooter className="flex flex-col sm:flex-row gap-2 sm:gap-0">
+            <AlertDialogCancel className="mt-0 sm:mt-0">
+              Cancelar
+            </AlertDialogCancel>
             <AlertDialogAction 
               onClick={handleDelete}
-              className="bg-red-600 hover:bg-red-700"
+              className="bg-red-600 hover:bg-red-700 focus:ring-red-600"
             >
               Eliminar Convenio
             </AlertDialogAction>
