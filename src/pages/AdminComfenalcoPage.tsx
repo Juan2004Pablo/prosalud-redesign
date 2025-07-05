@@ -469,86 +469,88 @@ const AdminComfenalcoPage: React.FC = () => {
           <Dialog open={viewEventOpen} onOpenChange={setViewEventOpen}>
             <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white">
               <DialogHeader className="space-y-3">
-                <DialogTitle className="text-xl font-bold">
-                  Detalles del Evento
-                </DialogTitle>
+                <DialogTitle className="text-xl font-bold">Detalles del Evento</DialogTitle>
                 <Separator />
               </DialogHeader>
+          
               {selectedEvent && (
-                <div className="space-y-6">
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <Card>
-                      <CardHeader className="pb-3">
-                        <CardTitle className="text-lg flex items-center gap-2">
-                          <GraduationCap className="h-5 w-5" />
-                          Información del Evento
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent className="space-y-4">
-                        <div className="space-y-3">
-                          <div>
-                            <label className="text-sm font-medium text-gray-600">Título</label>
-                            <p className="text-sm">{selectedEvent.title}</p>
-                          </div>
-                          {selectedEvent.description && (
-                            <div>
-                              <label className="text-sm font-medium text-gray-600">Descripción</label>
-                              <p className="text-sm">{selectedEvent.description}</p>
-                            </div>
-                          )}
-                          <div>
-                            <label className="text-sm font-medium text-gray-600 block mb-2">Categoría</label>
-                            <Badge variant="outline" className="text-xs">{selectedEvent.category}</Badge>
-                          </div>
-                          <div>
-                            <label className="text-sm font-medium text-gray-600 block mb-2">Tamaño de Visualización</label>
-                            <Badge variant="secondary" className="text-xs">{selectedEvent.displaySize}</Badge>
-                          </div>
-                          <div>
-                            <label className="text-sm font-medium text-gray-600 block mb-2">Estado</label>
-                            <Badge variant={selectedEvent.isVisible ? "default" : "secondary"}>
-                              {selectedEvent.isVisible ? "Visible en web" : "Oculto en web"}
-                            </Badge>
-                          </div>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <Card className="h-full flex flex-col">
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-lg flex items-center gap-2">
+                        <GraduationCap className="h-5 w-5" />
+                        Información del Evento
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4 flex-grow">
+                      <div className="space-y-3">
+                        <div>
+                          <label className="text-sm font-medium text-gray-600">Título</label>
+                          <p className="text-sm">{selectedEvent.title}</p>
                         </div>
-                      </CardContent>
-                    </Card>
-
-                    <Card>
-                      <CardHeader className="pb-3">
-                        <CardTitle className="text-lg flex items-center gap-2">
-                          <Calendar className="h-5 w-5" />
-                          Fechas y Enlaces
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent className="space-y-4">
-                        <div className="space-y-3">
+                        {selectedEvent.description && (
                           <div>
-                            <label className="text-sm font-medium text-gray-600">Fecha de Publicación</label>
-                            <p className="text-sm">{selectedEvent.publishDate}</p>
+                            <label className="text-sm font-medium text-gray-600">Descripción</label>
+                            <p className="text-sm">{selectedEvent.description}</p>
                           </div>
-                          {selectedEvent.registrationDeadline && (
-                            <div>
-                              <label className="text-sm font-medium text-gray-600">Fecha Límite de Registro</label>
-                              <p className="text-sm">{selectedEvent.registrationDeadline}</p>
-                            </div>
-                          )}
-                          {selectedEvent.eventDate && (
-                            <div>
-                              <label className="text-sm font-medium text-gray-600">Fecha del Evento</label>
-                              <p className="text-sm">{selectedEvent.eventDate}</p>
-                            </div>
-                          )}
-                          <div>
-                            <label className="text-sm font-medium text-gray-600">Enlace del Formulario</label>
-                            <a href={selectedEvent.formLink} target="_blank" rel="noopener noreferrer" className="text-sm text-blue-500 hover:underline flex items-center gap-1">
-                              Ver formulario <ExternalLink className="h-4 w-4" />
-                            </a>
-                          </div>
+                        )}
+                        <div>
+                          <label className="text-sm font-medium text-gray-600 block mb-2">Categoría</label>
+                          <Badge variant="outline" className="text-xs">{selectedEvent.category}</Badge>
                         </div>
-                      </CardContent>
-                    </Card>
-                  </div>
+                        <div>
+                          <label className="text-sm font-medium text-gray-600 block mb-2">Tamaño de Visualización</label>
+                          <Badge variant="secondary" className="text-xs">{selectedEvent.displaySize}</Badge>
+                        </div>
+                        <div>
+                          <label className="text-sm font-medium text-gray-600 block mb-2">Estado</label>
+                          <Badge variant={selectedEvent.isVisible ? "default" : "secondary"}>
+                            {selectedEvent.isVisible ? "Visible en web" : "Oculto en web"}
+                          </Badge>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+          
+                  <Card className="h-full flex flex-col">
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-lg flex items-center gap-2">
+                        <Calendar className="h-5 w-5" />
+                        Fechas y Enlaces
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4 flex-grow">
+                      <div className="space-y-3">
+                        <div>
+                          <label className="text-sm font-medium text-gray-600">Fecha de Publicación</label>
+                          <p className="text-sm">{selectedEvent.publishDate}</p>
+                        </div>
+                        {selectedEvent.registrationDeadline && (
+                          <div>
+                            <label className="text-sm font-medium text-gray-600">Fecha Límite de Registro</label>
+                            <p className="text-sm">{selectedEvent.registrationDeadline}</p>
+                          </div>
+                        )}
+                        {selectedEvent.eventDate && (
+                          <div>
+                            <label className="text-sm font-medium text-gray-600">Fecha del Evento</label>
+                            <p className="text-sm">{selectedEvent.eventDate}</p>
+                          </div>
+                        )}
+                        <div>
+                          <label className="text-sm font-medium text-gray-600">Enlace del Formulario</label>
+                          <a
+                            href={selectedEvent.formLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm text-blue-500 hover:underline flex items-center gap-1"
+                          >
+                            Ver formulario <ExternalLink className="h-4 w-4" />
+                          </a>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
                 </div>
               )}
             </DialogContent>
