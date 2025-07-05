@@ -3,14 +3,16 @@ import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Users, Plus, Search, Filter, Edit, Trash2 } from 'lucide-react';
+import { Users, Plus, Search, Filter, Edit, UserX, UserCheck, MoreVertical } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import AdminLayout from '@/components/admin/AdminLayout';
-import UserForm from '@/components/admin/usuarios/UserForm';
+import UserFormModal from '@/components/admin/usuarios/UserFormModal';
+import DeactivateUserDialog from '@/components/admin/usuarios/DeactivateUserDialog';
 import UserAvatar from '@/components/admin/UserAvatar';
 import DataPagination from '@/components/ui/data-pagination';
 import { usePagination } from '@/hooks/usePagination';
@@ -20,6 +22,7 @@ import { User } from '@/types/admin';
 const AdminUsuariosPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [showForm, setShowForm] = useState(false);
+  const [showDeactivateDialog, setShowDeactivateDialog] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
@@ -36,13 +39,12 @@ const AdminUsuariosPage: React.FC = () => {
     queryKey: ['users', searchTerm, statusFilter],
     queryFn: () => {
       const status = statusFilter === 'all' ? undefined : statusFilter;
-      return usersApi.getUsers(1, 1000, searchTerm, status); // Get all users for client-side pagination
+      return usersApi.getUsers(1, 1000, searchTerm, status);
     }
   });
 
   const users = usersResponse?.data || [];
   
-  // Filter users based on search and status
   const filteredUsers = users.filter(user => {
     const matchesSearch = !searchTerm || 
       user.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -79,19 +81,15 @@ const AdminUsuariosPage: React.FC = () => {
     setShowForm(true);
   };
 
+  const handleToggleStatus = (user: User) => {
+    setSelectedUser(user);
+    setShowDeactivateDialog(true);
+  };
+
   const handleCloseForm = () => {
     setShowForm(false);
     setSelectedUser(null);
   };
-
-  if (showForm) {
-    return (
-      <UserForm
-        user={selectedUser}
-        onClose={handleCloseForm}
-      />
-    );
-  }
 
   return (
     <AdminLayout>
@@ -199,21 +197,35 @@ const AdminUsuariosPage: React.FC = () => {
                         </div>
                       </div>
                       <div className="flex items-center gap-2 w-full sm:w-auto">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleEdit(user)}
-                          className="flex-1 sm:flex-none"
-                        >
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="text-red-600 hover:text-red-700 flex-1 sm:flex-none"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="sm">
+                              <MoreVertical className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem onClick={() => handleEdit(user)}>
+                              <Edit className="h-4 w-4 mr-2" />
+                              Editar
+                            </DropdownMenuItem>
+                            <DropdownMenuItem 
+                              onClick={() => handleToggleStatus(user)}
+                              className={user.isActive ? "text-red-600" : "text-green-600"}
+                            >
+                              {user.isActive ? (
+                                <>
+                                  <UserX className="h-4 w-4 mr-2" />
+                                  Desactivar
+                                </>
+                              ) : (
+                                <>
+                                  <UserCheck className="h-4 w-4 mr-2" />
+                                  Activar
+                                </>
+                              )}
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
                       </div>
                     </div>
                   ))}
@@ -233,6 +245,19 @@ const AdminUsuariosPage: React.FC = () => {
           </Card>
         </motion.div>
       </div>
+
+      {/* Modals */}
+      <UserFormModal
+        open={showForm}
+        onOpenChange={handleCloseForm}
+        user={selectedUser}
+      />
+
+      <DeactivateUserDialog
+        open={showDeactivateDialog}
+        onOpenChange={setShowDeactivateDialog}
+        user={selectedUser}
+      />
     </AdminLayout>
   );
 };
