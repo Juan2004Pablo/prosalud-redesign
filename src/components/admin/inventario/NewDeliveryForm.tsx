@@ -1,11 +1,11 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
-import { Card, CardContent } from '@/components/ui/card';
-import { Plus, Minus, Package, Truck } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Plus, Minus, Truck } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface DeliveryItem {
@@ -44,7 +44,6 @@ const NewDeliveryForm: React.FC<NewDeliveryFormProps> = ({ onClose, onSuccess })
     updatedItems[index][field] = value;
     setItems(updatedItems);
 
-    // Recalculate total amount when quantity or unit price changes
     if (field === 'quantity' || field === 'unitPrice') {
       recalculateTotalAmount(updatedItems);
     }
@@ -68,7 +67,7 @@ const NewDeliveryForm: React.FC<NewDeliveryFormProps> = ({ onClose, onSuccess })
   const removeItem = (index: number) => {
     const updatedItems = items.filter((_, i) => i !== index);
     setItems(updatedItems);
-    recalculateTotalAmount(updatedItems); // Recalculate total amount after removing item
+    recalculateTotalAmount(updatedItems);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -83,7 +82,6 @@ const NewDeliveryForm: React.FC<NewDeliveryFormProps> = ({ onClose, onSuccess })
       return;
     }
 
-    // Simulate API call
     console.log('Registrando nueva entrega:', { formData, items });
     
     if (onSuccess) {
@@ -92,30 +90,33 @@ const NewDeliveryForm: React.FC<NewDeliveryFormProps> = ({ onClose, onSuccess })
       toast({
         title: "Entrega Registrada",
         description: "La nueva entrega ha sido registrada exitosamente",
-        variant: "success"
+        variant: "default"
       });
       onClose();
     }
   };
 
-  return (
-    <>
-      <DialogHeader>
-        <DialogTitle className="flex items-center space-x-2">
-          <Truck className="h-5 w-5" />
-          <span>Registrar Nueva Entrega</span>
-        </DialogTitle>
-        <DialogDescription>
-          Registra una nueva entrega de proveedor al inventario
-        </DialogDescription>
-      </DialogHeader>
+  const isFormValid = formData.supplierName && formData.deliveryDate && items.some(item => item.productName && item.quantity > 0);
 
-      <Card className="border-none shadow-none">
-        <CardContent className="p-0">
-          <form onSubmit={handleSubmit} className="space-y-4">
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center space-x-2 mb-6">
+        <Truck className="h-6 w-6 text-primary-prosalud" />
+        <h2 className="text-2xl font-bold text-gray-900">Registrar Nueva Entrega</h2>
+      </div>
+
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Información Básica */}
+        <Card className="border border-gray-200 shadow-sm">
+          <CardHeader className="bg-gray-50 border-b border-gray-200">
+            <CardTitle className="text-lg font-semibold text-gray-900">Información Básica</CardTitle>
+          </CardHeader>
+          <CardContent className="p-6 space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="supplierName">Proveedor</Label>
+              <div className="space-y-2">
+                <Label htmlFor="supplierName" className="text-sm font-medium text-gray-700">
+                  Proveedor *
+                </Label>
                 <Input
                   type="text"
                   id="supplierName"
@@ -123,23 +124,31 @@ const NewDeliveryForm: React.FC<NewDeliveryFormProps> = ({ onClose, onSuccess })
                   value={formData.supplierName}
                   onChange={handleInputChange}
                   placeholder="Nombre del proveedor"
+                  className="bg-gray-50 border-gray-300"
+                  required
                 />
               </div>
-              <div>
-                <Label htmlFor="deliveryDate">Fecha de Entrega</Label>
+              <div className="space-y-2">
+                <Label htmlFor="deliveryDate" className="text-sm font-medium text-gray-700">
+                  Fecha de Entrega *
+                </Label>
                 <Input
                   type="date"
                   id="deliveryDate"
                   name="deliveryDate"
                   value={formData.deliveryDate}
                   onChange={handleInputChange}
+                  className="bg-gray-50 border-gray-300"
+                  required
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="invoiceNumber">Número de Factura</Label>
+              <div className="space-y-2">
+                <Label htmlFor="invoiceNumber" className="text-sm font-medium text-gray-700">
+                  Número de Factura
+                </Label>
                 <Input
                   type="text"
                   id="invoiceNumber"
@@ -147,91 +156,117 @@ const NewDeliveryForm: React.FC<NewDeliveryFormProps> = ({ onClose, onSuccess })
                   value={formData.invoiceNumber}
                   onChange={handleInputChange}
                   placeholder="Número de factura"
+                  className="bg-gray-50 border-gray-300"
                 />
               </div>
-              <div>
-                <Label htmlFor="totalAmount">Monto Total</Label>
+              <div className="space-y-2">
+                <Label htmlFor="totalAmount" className="text-sm font-medium text-gray-700">
+                  Monto Total
+                </Label>
                 <Input
                   type="number"
                   id="totalAmount"
                   name="totalAmount"
                   value={formData.totalAmount}
                   readOnly
-                  placeholder="Monto total"
+                  placeholder="Monto total calculado"
+                  className="bg-gray-100 border-gray-300"
                 />
               </div>
             </div>
+          </CardContent>
+        </Card>
 
-            <div className="space-y-2">
-              <Label>Items Entregados</Label>
-              {items.map((item, index) => (
-                <div key={index} className="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
-                  <div>
-                    <Label htmlFor={`productName-${index}`}>Producto</Label>
-                    <Input
-                      type="text"
-                      id={`productName-${index}`}
-                      placeholder="Nombre del producto"
-                      value={item.productName}
-                      onChange={(e) => handleItemChange(index, 'productName', e.target.value)}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor={`quantity-${index}`}>Cantidad</Label>
-                    <Input
-                      type="number"
-                      id={`quantity-${index}`}
-                      placeholder="Cantidad"
-                      value={item.quantity}
-                      onChange={(e) => handleItemChange(index, 'quantity', Number(e.target.value))}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor={`unitPrice-${index}`}>Precio Unitario</Label>
-                    <Input
-                      type="number"
-                      id={`unitPrice-${index}`}
-                      placeholder="Precio"
-                      value={item.unitPrice}
-                      onChange={(e) => handleItemChange(index, 'unitPrice', Number(e.target.value))}
-                    />
-                  </div>
-                  <div className="flex justify-end">
+        {/* Items Entregados */}
+        <Card className="border border-gray-200 shadow-sm">
+          <CardHeader className="bg-gray-50 border-b border-gray-200">
+            <CardTitle className="text-lg font-semibold text-gray-900">Items Entregados</CardTitle>
+          </CardHeader>
+          <CardContent className="p-6 space-y-4">
+            {items.map((item, index) => (
+              <div key={index} className="p-4 bg-gray-50 border border-gray-200 rounded-lg space-y-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium text-gray-700">Item {index + 1}</span>
+                  {items.length > 1 && (
                     <Button 
                       type="button" 
                       variant="ghost" 
-                      size="icon" 
+                      size="sm" 
                       onClick={() => removeItem(index)}
-                      className="hover:bg-red-50 hover:text-red-500"
+                      className="text-red-600 hover:text-red-700 hover:bg-red-50"
                     >
                       <Minus className="h-4 w-4" />
                     </Button>
+                  )}
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium text-gray-700">Producto *</Label>
+                    <Input
+                      type="text"
+                      placeholder="Nombre del producto"
+                      value={item.productName}
+                      onChange={(e) => handleItemChange(index, 'productName', e.target.value)}
+                      className="bg-white border-gray-300"
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium text-gray-700">Cantidad *</Label>
+                    <Input
+                      type="number"
+                      placeholder="Cantidad"
+                      value={item.quantity}
+                      onChange={(e) => handleItemChange(index, 'quantity', Number(e.target.value))}
+                      className="bg-white border-gray-300"
+                      min="1"
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium text-gray-700">Precio Unitario</Label>
+                    <Input
+                      type="number"
+                      placeholder="Precio"
+                      value={item.unitPrice}
+                      onChange={(e) => handleItemChange(index, 'unitPrice', Number(e.target.value))}
+                      className="bg-white border-gray-300"
+                      min="0"
+                      step="0.01"
+                    />
                   </div>
                 </div>
-              ))}
-              <Button 
-                type="button" 
-                variant="secondary" 
-                onClick={addItem}
-                className="w-full justify-center"
-              >
-                <Plus className="h-4 w-4 mr-2" />
-                Agregar Item
-              </Button>
-            </div>
+              </div>
+            ))}
+            
+            <Button 
+              type="button" 
+              variant="outline" 
+              onClick={addItem}
+              className="w-full border-primary-prosalud text-primary-prosalud hover:bg-primary-prosalud hover:text-white"
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              Agregar Item
+            </Button>
+          </CardContent>
+        </Card>
 
-            <div className="flex justify-end space-x-2">
-              <Button type="button" variant="ghost" onClick={onClose}>
-                Cancelar
-              </Button>
-              <Button type="submit">
-                Registrar Entrega
-              </Button>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
-    </>
+        {/* Acciones */}
+        <div className="flex justify-end space-x-3 pt-4">
+          <Button type="button" variant="outline" onClick={onClose}>
+            Cancelar
+          </Button>
+          <Button 
+            type="submit"
+            disabled={!isFormValid}
+            className="bg-primary-prosalud hover:bg-primary-prosalud-dark text-white"
+          >
+            Registrar Entrega
+          </Button>
+        </div>
+      </form>
+    </div>
   );
 };
 
