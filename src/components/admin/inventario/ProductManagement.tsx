@@ -16,7 +16,8 @@ import {
   Package,
   Shirt,
   Gift,
-  Shield
+  Shield,
+  X
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import ProductForm from './ProductForm';
@@ -44,6 +45,7 @@ const ProductManagement: React.FC = () => {
   const [showLowStock, setShowLowStock] = useState(false);
   const [isProductDialogOpen, setIsProductDialogOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<ProductWithVariants | null>(null);
+  const [viewMode, setViewMode] = useState<'form' | 'details'>('form');
 
   // Mock data - en producción vendría de una API
   const mockProducts: ProductWithVariants[] = [
@@ -156,11 +158,106 @@ const ProductManagement: React.FC = () => {
 
   const handleViewProduct = (product: ProductWithVariants) => {
     console.log('Ver producto:', product);
+    setSelectedProduct(product);
+    setViewMode('details');
+    setIsProductDialogOpen(true);
   };
 
   const handleEditProduct = (product: ProductWithVariants) => {
     setSelectedProduct(product);
+    setViewMode('form');
     setIsProductDialogOpen(true);
+  };
+
+  const handleNewProduct = () => {
+    setSelectedProduct(null);
+    setViewMode('form');
+    setIsProductDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setIsProductDialogOpen(false);
+    setSelectedProduct(null);
+    setViewMode('form');
+  };
+
+  const renderDialogContent = () => {
+    if (viewMode === 'details' && selectedProduct) {
+      return (
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700">Nombre del Producto</label>
+              <p className="text-gray-900 bg-gray-50 p-3 rounded border">{selectedProduct.name}</p>
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700">Categoría</label>
+              <p className="text-gray-900 bg-gray-50 p-3 rounded border">{getCategoryLabel(selectedProduct.category)}</p>
+            </div>
+          </div>
+          
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-gray-700">Descripción</label>
+            <p className="text-gray-900 bg-gray-50 p-3 rounded border">{selectedProduct.description}</p>
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-gray-700">Stock Total</label>
+            <p className="text-gray-900 bg-gray-50 p-3 rounded border font-semibold">{selectedProduct.totalStock} unidades</p>
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-gray-700">Variantes del Producto</label>
+            <div className="space-y-3">
+              {selectedProduct.variants.map((variant, index) => (
+                <div key={index} className="bg-gray-50 p-4 rounded border">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {variant.size && (
+                      <div>
+                        <span className="text-sm font-medium text-gray-600">Talla:</span>
+                        <p className="text-gray-900">{variant.size}</p>
+                      </div>
+                    )}
+                    {variant.color && (
+                      <div>
+                        <span className="text-sm font-medium text-gray-600">Color:</span>
+                        <p className="text-gray-900">{variant.color}</p>
+                      </div>
+                    )}
+                    <div>
+                      <span className="text-sm font-medium text-gray-600">Stock:</span>
+                      <p className={`font-semibold ${variant.stock <= variant.minStock ? 'text-red-600' : 'text-green-600'}`}>
+                        {variant.stock} / {variant.minStock} min
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex justify-end space-x-3 pt-4 border-t border-gray-200">
+            <Button variant="outline" onClick={handleCloseDialog}>
+              Cerrar
+            </Button>
+            <Button 
+              onClick={() => setViewMode('form')}
+              className="bg-primary-prosalud hover:bg-primary-prosalud-dark text-white"
+            >
+              <Edit className="h-4 w-4 mr-2" />
+              Editar Producto
+            </Button>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <ProductForm 
+        product={selectedProduct}
+        onClose={handleCloseDialog}
+      />
+    );
   };
 
   return (
@@ -175,31 +272,13 @@ const ProductManagement: React.FC = () => {
           <h2 className="text-2xl font-bold text-gray-900">Gestión de Productos</h2>
           <p className="text-gray-600">Administra el catálogo de productos del inventario</p>
         </div>
-        <Dialog open={isProductDialogOpen} onOpenChange={setIsProductDialogOpen}>
-          <DialogTrigger asChild>
-            <Button className="bg-gradient-to-r from-primary-prosalud to-primary-prosalud-dark hover:shadow-lg transition-all duration-200">
-              <Plus className="h-4 w-4 mr-2" />
-              Nuevo Producto
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle>
-                {selectedProduct ? 'Editar Producto' : 'Nuevo Producto'}
-              </DialogTitle>
-              <DialogDescription>
-                {selectedProduct ? 'Modifica la información del producto' : 'Agrega un nuevo producto al inventario'}
-              </DialogDescription>
-            </DialogHeader>
-            <ProductForm 
-              product={selectedProduct}
-              onClose={() => {
-                setIsProductDialogOpen(false);
-                setSelectedProduct(null);
-              }}
-            />
-          </DialogContent>
-        </Dialog>
+        <Button 
+          onClick={handleNewProduct}
+          className="bg-gradient-to-r from-primary-prosalud to-primary-prosalud-dark hover:shadow-lg transition-all duration-200"
+        >
+          <Plus className="h-4 w-4 mr-2" />
+          Nuevo Producto
+        </Button>
       </motion.div>
 
       {/* Filters */}
@@ -353,6 +432,24 @@ const ProductManagement: React.FC = () => {
           </CardContent>
         </Card>
       </motion.div>
+
+      <Dialog open={isProductDialogOpen} onOpenChange={setIsProductDialogOpen}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white">
+          <div className="absolute top-4 right-4 z-10">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleCloseDialog}
+              className="h-8 w-8 p-0 hover:bg-gray-100"
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
+          <div className="p-6">
+            {renderDialogContent()}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

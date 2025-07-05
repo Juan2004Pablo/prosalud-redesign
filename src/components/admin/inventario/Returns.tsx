@@ -294,7 +294,7 @@ const Returns: React.FC = () => {
       {/* Return Details Dialog */}
       {selectedReturn && (
         <Dialog open={!!selectedReturn} onOpenChange={() => setSelectedReturn(null)}>
-          <DialogContent className="max-w-2xl bg-white">
+          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-white">
             <div className="bg-white min-h-full">
               <div className="flex items-center justify-between p-6 border-b border-gray-200">
                 <div className="flex items-center space-x-3">

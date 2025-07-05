@@ -2,13 +2,41 @@
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
-import { Hospital, Search, Clock, CheckCircle, X, Eye, MessageSquare } from 'lucide-react';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { 
+  Hospital, 
+  Search, 
+  Calendar, 
+  Package, 
+  AlertTriangle, 
+  Eye,
+  CheckCircle,
+  XCircle,
+  MoreHorizontal,
+  Clock,
+  X
+} from 'lucide-react';
 import { motion } from 'framer-motion';
+import DataPagination from '@/components/ui/data-pagination';
+import { usePagination } from '@/hooks/usePagination';
+import { useToast } from '@/hooks/use-toast';
+
+interface HospitalRequest {
+  id: string;
+  hospitalName: string;
+  coordinatorName: string;
+  requestDate: string;
+  totalItems: number;
+  priority: 'low' | 'medium' | 'high' | 'urgent';
+  status: 'pending' | 'approved' | 'preparing' | 'shipped' | 'delivered' | 'rejected';
+  items: Array<{
+    productName: string;
+    quantity: number;
+  }>;
+}
 
 interface HospitalRequestsDialogProps {
   open: boolean;
@@ -17,97 +45,75 @@ interface HospitalRequestsDialogProps {
 
 const HospitalRequestsDialog: React.FC<HospitalRequestsDialogProps> = ({ open, onOpenChange }) => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState('all');
-  const [priorityFilter, setPriorityFilter] = useState('all');
-  const [selectedRequest, setSelectedRequest] = useState<string | null>(null);
-  const [notes, setNotes] = useState('');
-
-  const hospitalRequests = [
+  const [selectedRequest, setSelectedRequest] = useState<HospitalRequest | null>(null);
+  const [requests, setRequests] = useState<HospitalRequest[]>([
     {
-      id: 'REQ-001',
-      hospital: 'Hospital Marco Fidel Suárez',
-      coordinator: 'María González',
+      id: '1',
+      hospitalName: 'Hospital Marco Fidel Suárez',
+      coordinatorName: 'María González',
       requestDate: '2024-01-18',
-      items: [
-        { product: 'Uniforme Azul - Talla M', quantity: 15, available: 12 },
-        { product: 'Bata Blanca - Talla L', quantity: 10, available: 10 }
-      ],
+      totalItems: 25,
       priority: 'high',
       status: 'pending',
-      totalItems: 25,
-      justification: 'Nuevos ingresos de personal médico para el área de urgencias'
+      items: [
+        { productName: 'Uniforme Azul - Talla M', quantity: 15 },
+        { productName: 'Bata Blanca - Talla L', quantity: 10 }
+      ]
     },
     {
-      id: 'REQ-002',
-      hospital: 'Hospital San Juan de Dios',
-      coordinator: 'Carlos Pérez',
+      id: '2',
+      hospitalName: 'Hospital San Juan de Dios',
+      coordinatorName: 'Carlos Pérez',
       requestDate: '2024-01-17',
-      items: [
-        { product: 'Tapabocas N95', quantity: 50, available: 45 }
-      ],
+      totalItems: 50,
       priority: 'medium',
       status: 'approved',
-      totalItems: 50,
-      justification: 'Reposición mensual para área de cuidados intensivos'
-    },
-    {
-      id: 'REQ-003',
-      hospital: 'Hospital La Merced',
-      coordinator: 'Ana Martínez',
-      requestDate: '2024-01-16',
       items: [
-        { product: 'Kit de Bienvenida', quantity: 8, available: 8 }
-      ],
-      priority: 'low',
-      status: 'delivered',
-      totalItems: 8,
-      justification: 'Personal nuevo en el área administrativa'
-    },
-    {
-      id: 'REQ-004',
-      hospital: 'Hospital Venancio Díaz',
-      coordinator: 'Luis Ramírez',
-      requestDate: '2024-01-19',
-      items: [
-        { product: 'Uniforme Verde - Talla S', quantity: 5, available: 1 },
-        { product: 'Bata de Laboratorio - Talla M', quantity: 8, available: 8 }
-      ],
-      priority: 'urgent',
-      status: 'pending',
-      totalItems: 13,
-      justification: 'Urgente para cubrir turno nocturno con personal faltante'
+        { productName: 'Tapabocas N95', quantity: 50 }
+      ]
     }
-  ];
+  ]);
 
-  const filteredRequests = hospitalRequests.filter(request => {
-    const matchesSearch = request.hospital.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         request.coordinator.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         request.id.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = statusFilter === 'all' || request.status === statusFilter;
-    const matchesPriority = priorityFilter === 'all' || request.priority === priorityFilter;
-    
-    return matchesSearch && matchesStatus && matchesPriority;
+  const { toast } = useToast();
+
+  const filteredRequests = requests.filter(request =>
+    request.hospitalName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    request.coordinatorName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    request.id.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const {
+    currentPage,
+    itemsPerPage,
+    totalPages,
+    totalItems,
+    paginatedData,
+    goToPage,
+    setItemsPerPage
+  } = usePagination({
+    data: filteredRequests,
+    initialItemsPerPage: 10
   });
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'pending': return 'bg-yellow-100 text-yellow-800';
-      case 'approved': return 'bg-blue-100 text-blue-800';
-      case 'preparing': return 'bg-purple-100 text-purple-800';
-      case 'shipped': return 'bg-orange-100 text-orange-800';
-      case 'delivered': return 'bg-primary-prosalud text-white';
-      case 'rejected': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'pending': return 'bg-yellow-100 text-yellow-700';
+      case 'approved': return 'bg-blue-100 text-blue-700';
+      case 'preparing': return 'bg-purple-100 text-purple-700';
+      case 'shipped': return 'bg-orange-100 text-orange-700';
+      case 'delivered': return 'bg-green-100 text-green-700';
+      case 'rejected': return 'bg-red-100 text-red-700';
+      default: return 'bg-gray-100 text-gray-700';
     }
   };
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'urgent': return 'bg-red-100 text-red-800';
-      case 'high': return 'bg-orange-100 text-orange-800';
-      case 'medium': return 'bg-yellow-100 text-yellow-800';
-      case 'low': return 'bg-primary-prosalud text-white';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'urgent': return 'bg-red-100 text-red-700';
+      case 'high': return 'bg-orange-100 text-orange-700';
+      case 'medium': return 'bg-yellow-100 text-yellow-700';
+      case 'low': return 'bg-green-100 text-green-700';
+      default: return 'bg-gray-100 text-gray-700';
     }
   };
 
@@ -133,299 +139,311 @@ const HospitalRequestsDialog: React.FC<HospitalRequestsDialogProps> = ({ open, o
     }
   };
 
-  const handleApprove = (requestId: string) => {
-    console.log(`Aprobando solicitud: ${requestId}`, { notes });
-    setSelectedRequest(null);
-    setNotes('');
+  const handleViewRequest = (request: HospitalRequest) => {
+    setSelectedRequest(request);
   };
 
-  const handleReject = (requestId: string) => {
-    console.log(`Rechazando solicitud: ${requestId}`, { notes });
-    setSelectedRequest(null);
-    setNotes('');
+  const handleApproveRequest = (request: HospitalRequest) => {
+    setRequests(prevRequests => 
+      prevRequests.map(r => 
+        r.id === request.id 
+          ? { ...r, status: 'approved' as const }
+          : r
+      )
+    );
+    
+    toast({
+      title: "Solicitud Aprobada",
+      description: `La solicitud #${request.id} del ${request.hospitalName} ha sido aprobada exitosamente`,
+      variant: "default"
+    });
   };
 
-  const canFulfillRequest = (request: any) => {
-    return request.items.every((item: any) => item.available >= item.quantity);
+  const handleRejectRequest = (request: HospitalRequest) => {
+    setRequests(prevRequests => 
+      prevRequests.map(r => 
+        r.id === request.id 
+          ? { ...r, status: 'rejected' as const }
+          : r
+      )
+    );
+    
+    toast({
+      title: "Solicitud Rechazada",
+      description: `La solicitud #${request.id} ha sido rechazada`,
+      variant: "destructive"
+    });
+  };
+
+  const handlePrepareRequest = (request: HospitalRequest) => {
+    setRequests(prevRequests => 
+      prevRequests.map(r => 
+        r.id === request.id 
+          ? { ...r, status: 'preparing' as const }
+          : r
+      )
+    );
+    
+    toast({
+      title: "Solicitud en Preparación",
+      description: `La solicitud #${request.id} está siendo preparada`,
+      variant: "default"
+    });
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-7xl max-h-[90vh] overflow-y-auto bg-white">
-        <DialogHeader>
-          <DialogTitle className="flex items-center space-x-2">
-            <Hospital className="h-6 w-6 text-primary-prosalud" />
-            <span>Gestión de Solicitudes de Hospitales</span>
-          </DialogTitle>
-          <DialogDescription>
-            Administra las solicitudes de implementos de los diferentes hospitales
-          </DialogDescription>
-        </DialogHeader>
+    <>
+      <Dialog open={open && !selectedRequest} onOpenChange={onOpenChange}>
+        <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto bg-white">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold text-primary-prosalud">
+              Gestión de Solicitudes de Hospitales
+            </DialogTitle>
+            <DialogDescription>
+              Administra las solicitudes de implementos de los hospitales afiliados
+            </DialogDescription>
+          </DialogHeader>
 
-        {/* Filters */}
-        <div className="flex flex-col lg:flex-row gap-4 p-4 bg-gray-50 rounded-lg">
-          <div className="flex-1">
+          <div className="space-y-6">
+            {/* Search */}
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
               <Input
-                placeholder="Buscar por hospital, coordinador o ID..."
+                placeholder="Buscar solicitudes..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
+                className="pl-10 bg-gray-50"
               />
             </div>
+
+            {/* Requests Table */}
+            <div className="rounded-md border overflow-hidden">
+              <Table>
+                <TableHeader>
+                  <TableRow className="bg-gray-50">
+                    <TableHead>ID</TableHead>
+                    <TableHead>Hospital</TableHead>
+                    <TableHead>Coordinador</TableHead>
+                    <TableHead>Fecha</TableHead>
+                    <TableHead>Items</TableHead>
+                    <TableHead>Prioridad</TableHead>
+                    <TableHead>Estado</TableHead>
+                    <TableHead className="text-center">Acciones</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {paginatedData.map((request) => (
+                    <TableRow key={request.id} className="hover:bg-gray-50 transition-colors">
+                      <TableCell>
+                        <span className="font-mono text-sm">#{request.id}</span>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center space-x-2">
+                          <Hospital className="h-4 w-4 text-gray-400" />
+                          <span className="font-medium text-gray-900">{request.hospitalName}</span>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <span className="text-gray-600">{request.coordinatorName}</span>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center space-x-2">
+                          <Calendar className="h-4 w-4 text-gray-400" />
+                          <span>{new Date(request.requestDate).toLocaleDateString()}</span>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <span className="font-medium">{request.totalItems}</span>
+                      </TableCell>
+                      <TableCell>
+                        <Badge className={getPriorityColor(request.priority)}>
+                          {request.priority === 'urgent' && <AlertTriangle className="h-3 w-3 mr-1" />}
+                          {getPriorityLabel(request.priority)}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <Badge className={getStatusColor(request.status)}>
+                          {getStatusLabel(request.status)}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex justify-center">
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                <MoreHorizontal className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" className="w-48">
+                              <DropdownMenuItem onClick={() => handleViewRequest(request)}>
+                                <Eye className="h-4 w-4 mr-2" />
+                                Ver Detalles
+                              </DropdownMenuItem>
+                              {request.status === 'pending' && (
+                                <>
+                                  <DropdownMenuItem 
+                                    onClick={() => handleApproveRequest(request)}
+                                    className="text-green-600 focus:text-green-600"
+                                  >
+                                    <CheckCircle className="h-4 w-4 mr-2" />
+                                    Aprobar
+                                  </DropdownMenuItem>
+                                  <DropdownMenuItem 
+                                    onClick={() => handleRejectRequest(request)}
+                                    className="text-red-600 focus:text-red-600"
+                                  >
+                                    <XCircle className="h-4 w-4 mr-2" />
+                                    Rechazar
+                                  </DropdownMenuItem>
+                                </>
+                              )}
+                              {request.status === 'approved' && (
+                                <DropdownMenuItem 
+                                  onClick={() => handlePrepareRequest(request)}
+                                  className="text-blue-600 focus:text-blue-600"
+                                >
+                                  <Clock className="h-4 w-4 mr-2" />
+                                  Preparar
+                                </DropdownMenuItem>
+                              )}
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+
+            <DataPagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              totalItems={totalItems}
+              itemsPerPage={itemsPerPage}
+              onPageChange={goToPage}
+              onItemsPerPageChange={setItemsPerPage}
+            />
           </div>
-          <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="w-full lg:w-[200px]">
-              <SelectValue placeholder="Estado" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Todos los estados</SelectItem>
-              <SelectItem value="pending">Pendiente</SelectItem>
-              <SelectItem value="approved">Aprobado</SelectItem>
-              <SelectItem value="preparing">Preparando</SelectItem>
-              <SelectItem value="shipped">Enviado</SelectItem>
-              <SelectItem value="delivered">Entregado</SelectItem>
-              <SelectItem value="rejected">Rechazado</SelectItem>
-            </SelectContent>
-          </Select>
-          <Select value={priorityFilter} onValueChange={setPriorityFilter}>
-            <SelectTrigger className="w-full lg:w-[200px]">
-              <SelectValue placeholder="Prioridad" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Todas las prioridades</SelectItem>
-              <SelectItem value="urgent">Urgente</SelectItem>
-              <SelectItem value="high">Alta</SelectItem>
-              <SelectItem value="medium">Media</SelectItem>
-              <SelectItem value="low">Baja</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+        </DialogContent>
+      </Dialog>
 
-        {/* Summary Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="bg-yellow-50 border border-yellow-200 rounded-lg p-4"
-          >
-            <div className="flex items-center space-x-3">
-              <Clock className="h-8 w-8 text-yellow-600" />
-              <div>
-                <p className="text-sm text-yellow-600">Pendientes</p>
-                <p className="text-2xl font-bold text-yellow-800">
-                  {filteredRequests.filter(req => req.status === 'pending').length}
-                </p>
-              </div>
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="bg-blue-50 border border-blue-200 rounded-lg p-4"
-          >
-            <div className="flex items-center space-x-3">
-              <CheckCircle className="h-8 w-8 text-blue-600" />
-              <div>
-                <p className="text-sm text-blue-600">Aprobadas</p>
-                <p className="text-2xl font-bold text-blue-800">
-                  {filteredRequests.filter(req => req.status === 'approved').length}
-                </p>
-              </div>
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="bg-red-50 border border-red-200 rounded-lg p-4"
-          >
-            <div className="flex items-center space-x-3">
-              <Hospital className="h-8 w-8 text-red-600" />
-              <div>
-                <p className="text-sm text-red-600">Urgentes</p>
-                <p className="text-2xl font-bold text-red-800">
-                  {filteredRequests.filter(req => req.priority === 'urgent').length}
-                </p>
-              </div>
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="bg-primary-prosalud-light border border-primary-prosalud-light rounded-lg p-4"
-          >
-            <div className="flex items-center space-x-3">
-              <CheckCircle className="h-8 w-8 text-primary-prosalud" />
-              <div>
-                <p className="text-sm text-primary-prosalud">Entregadas</p>
-                <p className="text-2xl font-bold text-primary-prosalud">
-                  {filteredRequests.filter(req => req.status === 'delivered').length}
-                </p>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-
-        {/* Requests Table */}
-        <div className="rounded-md border overflow-hidden">
-          <Table>
-            <TableHeader>
-              <TableRow className="bg-gray-50">
-                <TableHead>ID</TableHead>
-                <TableHead>Hospital</TableHead>
-                <TableHead>Coordinador</TableHead>
-                <TableHead>Fecha</TableHead>
-                <TableHead>Items</TableHead>
-                <TableHead>Prioridad</TableHead>
-                <TableHead>Estado</TableHead>
-                <TableHead>Disponibilidad</TableHead>
-                <TableHead className="text-right">Acciones</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredRequests.map((request) => (
-                <TableRow key={request.id} className="hover:bg-gray-50">
-                  <TableCell>
-                    <span className="font-mono text-sm">{request.id}</span>
-                  </TableCell>
-                  <TableCell>
-                    <div>
-                      <p className="font-medium text-gray-900">{request.hospital}</p>
-                      <p className="text-sm text-gray-600">{request.coordinator}</p>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <span className="text-gray-600">{request.coordinator}</span>
-                  </TableCell>
-                  <TableCell>
-                    <span className="text-sm text-gray-600">
-                      {new Date(request.requestDate).toLocaleDateString()}
-                    </span>
-                  </TableCell>
-                  <TableCell>
-                    <span className="font-medium">{request.totalItems}</span>
-                  </TableCell>
-                  <TableCell>
-                    <Badge className={getPriorityColor(request.priority)}>
-                      {getPriorityLabel(request.priority)}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    <Badge className={getStatusColor(request.status)}>
-                      {getStatusLabel(request.status)}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    {canFulfillRequest(request) ? (
-                      <Badge className="bg-primary-prosalud text-white">
-                        <CheckCircle className="h-3 w-3 mr-1" />
-                        Disponible
-                      </Badge>
-                    ) : (
-                      <Badge className="bg-red-100 text-red-800">
-                        <X className="h-3 w-3 mr-1" />
-                        Parcial
-                      </Badge>
-                    )}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex justify-end space-x-2">
-                      <Button variant="ghost" size="sm" className="hover:bg-gray-100 text-gray-700 hover:text-gray-700">
-                        <Eye className="h-3 w-3 mr-1" />
-                        Ver
-                      </Button>
-                      {request.status === 'pending' && (
-                        <>
-                          <Button 
-                            variant="ghost" 
-                            size="sm" 
-                            className="hover:bg-green-50 text-green-700 hover:text-green-700"
-                            onClick={() => setSelectedRequest(request.id)}
-                          >
-                            <CheckCircle className="h-3 w-3 mr-1" />
-                            Aprobar
-                          </Button>
-                          <Button 
-                            variant="ghost" 
-                            size="sm" 
-                            className="hover:bg-red-50 text-red-700 hover:text-red-700"
-                            onClick={() => setSelectedRequest(request.id)}
-                          >
-                            <X className="h-3 w-3 mr-1" />
-                            Rechazar
-                          </Button>
-                        </>
-                      )}
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-
-        {/* Action Dialog */}
-        {selectedRequest && (
-          <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-            <h4 className="font-medium text-gray-900 mb-3">
-              Procesar Solicitud: {selectedRequest}
-            </h4>
-            <div className="space-y-3">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Notas (opcional)
-                </label>
-                <Textarea
-                  placeholder="Agregar comentarios sobre la decisión..."
-                  value={notes}
-                  onChange={(e) => setNotes(e.target.value)}
-                  className="w-full"
-                />
-              </div>
-              <div className="flex space-x-2">
-                <Button 
-                  variant="outline" 
+      {/* Request Details Dialog */}
+      {selectedRequest && (
+        <Dialog open={!!selectedRequest} onOpenChange={() => setSelectedRequest(null)}>
+          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-white">
+            <div className="bg-white min-h-full">
+              <div className="flex items-center justify-between p-6 border-b border-gray-200">
+                <div className="flex items-center space-x-3">
+                  <div className="bg-primary-prosalud/10 p-2 rounded-lg">
+                    <Hospital className="h-6 w-6 text-primary-prosalud" />
+                  </div>
+                  <div>
+                    <h2 className="text-2xl font-bold text-gray-900">
+                      Detalles de Solicitud #{selectedRequest.id}
+                    </h2>
+                    <p className="text-sm text-gray-600">
+                      Información detallada de la solicitud
+                    </p>
+                  </div>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
                   onClick={() => setSelectedRequest(null)}
+                  className="h-8 w-8 p-0 hover:bg-gray-100"
                 >
-                  Cancelar
-                </Button>
-                <Button 
-                  className="bg-green-600 hover:bg-green-700 text-white"
-                  onClick={() => handleApprove(selectedRequest)}
-                >
-                  <CheckCircle className="h-4 w-4 mr-2" />
-                  Aprobar
-                </Button>
-                <Button 
-                  variant="outline"
-                  className="border-red-200 text-red-700 hover:bg-red-50 hover:text-red-700"
-                  onClick={() => handleReject(selectedRequest)}
-                >
-                  <X className="h-4 w-4 mr-2" />
-                  Rechazar
+                  <X className="h-4 w-4" />
                 </Button>
               </div>
-            </div>
-          </div>
-        )}
 
-        <div className="flex justify-between items-center pt-4">
-          <p className="text-sm text-gray-600">
-            Mostrando {filteredRequests.length} solicitudes
-          </p>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Cerrar
-          </Button>
-        </div>
-      </DialogContent>
-    </Dialog>
+              <div className="p-6 space-y-6">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700">Hospital</label>
+                    <p className="text-gray-900 bg-gray-50 p-3 rounded border">{selectedRequest.hospitalName}</p>
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700">Coordinador</label>
+                    <p className="text-gray-900 bg-gray-50 p-3 rounded border">{selectedRequest.coordinatorName}</p>
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700">Fecha de Solicitud</label>
+                    <p className="text-gray-900 bg-gray-50 p-3 rounded border">{new Date(selectedRequest.requestDate).toLocaleDateString()}</p>
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700">Estado</label>
+                    <div className="bg-gray-50 p-3 rounded border">
+                      <Badge className={getStatusColor(selectedRequest.status)}>
+                        {getStatusLabel(selectedRequest.status)}
+                      </Badge>
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700">Prioridad</label>
+                    <div className="bg-gray-50 p-3 rounded border">
+                      <Badge className={getPriorityColor(selectedRequest.priority)}>
+                        {selectedRequest.priority === 'urgent' && <AlertTriangle className="h-3 w-3 mr-1" />}
+                        {getPriorityLabel(selectedRequest.priority)}
+                      </Badge>
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700">Total de Items</label>
+                    <p className="text-gray-900 bg-gray-50 p-3 rounded border font-medium">{selectedRequest.totalItems}</p>
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-700">Productos Solicitados</label>
+                  <div className="space-y-2">
+                    {selectedRequest.items.map((item, index) => (
+                      <div key={index} className="flex justify-between items-center p-3 bg-gray-50 rounded border">
+                        <span className="font-medium">{item.productName}</span>
+                        <span className="text-sm text-gray-600 bg-white px-2 py-1 rounded">
+                          Cantidad: {item.quantity}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="flex justify-end space-x-3 pt-4 border-t border-gray-200">
+                  <Button variant="outline" onClick={() => setSelectedRequest(null)}>
+                    Cerrar
+                  </Button>
+                  {selectedRequest.status === 'pending' && (
+                    <>
+                      <Button 
+                        onClick={() => {
+                          handleRejectRequest(selectedRequest);
+                          setSelectedRequest(null);
+                        }}
+                        variant="outline"
+                        className="text-red-600 border-red-200 hover:bg-red-50"
+                      >
+                        <XCircle className="h-4 w-4 mr-2" />
+                        Rechazar
+                      </Button>
+                      <Button 
+                        onClick={() => {
+                          handleApproveRequest(selectedRequest);
+                          setSelectedRequest(null);
+                        }}
+                        className="bg-primary-prosalud hover:bg-primary-prosalud-dark text-white"
+                      >
+                        <CheckCircle className="h-4 w-4 mr-2" />
+                        Aprobar
+                      </Button>
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
+    </>
   );
 };
 
