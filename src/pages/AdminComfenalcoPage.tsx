@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
@@ -338,8 +339,8 @@ const AdminComfenalcoPage: React.FC = () => {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">Todos los tamaños</SelectItem>
-                      <SelectItem value="carousel">Carousel</SelectItem>
-                      <SelectItem value="mosaic">Mosaic</SelectItem>
+                      <SelectItem value="carousel">Carrusel</SelectItem>
+                      <SelectItem value="mosaic">Mosaico</SelectItem>
                     </SelectContent>
                   </Select>
 
@@ -404,7 +405,7 @@ const AdminComfenalcoPage: React.FC = () => {
                             Publicado: {event.publishDate}
                           </p>
                           <Badge variant="secondary" className="text-xs">
-                            {event.displaySize}
+                            {event.displaySize === 'carousel' ? 'Carrusel' : 'Mosaico'}
                           </Badge>
                         </div>
                         <div className="flex items-center justify-between">
@@ -496,15 +497,17 @@ const AdminComfenalcoPage: React.FC = () => {
                         )}
                         <div>
                           <label className="text-sm font-medium text-gray-600 block mb-2">Categoría</label>
-                          <Badge variant="outline" className="text-xs">{selectedEvent.category}</Badge>
+                          <Badge variant="outline" className="text-xs ml-2">{selectedEvent.category}</Badge>
                         </div>
                         <div>
                           <label className="text-sm font-medium text-gray-600 block mb-2">Tamaño de Visualización</label>
-                          <Badge variant="secondary" className="text-xs">{selectedEvent.displaySize}</Badge>
+                          <Badge variant="secondary" className="text-xs ml-2">
+                            {selectedEvent.displaySize === 'carousel' ? 'Carrusel' : 'Mosaico'}
+                          </Badge>
                         </div>
                         <div>
                           <label className="text-sm font-medium text-gray-600 block mb-2">Estado</label>
-                          <Badge variant={selectedEvent.isVisible ? "default" : "secondary"}>
+                          <Badge variant={selectedEvent.isVisible ? "default" : "secondary"} className="ml-2">
                             {selectedEvent.isVisible ? "Visible en web" : "Oculto en web"}
                           </Badge>
                         </div>
@@ -668,8 +671,8 @@ const AdminComfenalcoPage: React.FC = () => {
                         <SelectValue placeholder="Selecciona un tamaño" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="carousel">Carousel</SelectItem>
-                        <SelectItem value="mosaic">Mosaic</SelectItem>
+                        <SelectItem value="carousel">Carrusel</SelectItem>
+                        <SelectItem value="mosaic">Mosaico</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>

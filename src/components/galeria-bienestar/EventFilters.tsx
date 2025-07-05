@@ -30,7 +30,7 @@ const EventFilters: React.FC<EventFiltersProps> = ({
           value={sortOrder} 
           onValueChange={(value) => setSortOrder(value as 'date-desc' | 'date-asc')}
         >
-          <SelectTrigger id="sort-order" className="w-full sm:w-[180px] bg-background">
+          <SelectTrigger id="sort-order" className="w-full sm:w-[180px]">
             <SelectValue placeholder="Seleccionar orden..." />
           </SelectTrigger>
           <SelectContent>
@@ -46,7 +46,7 @@ const EventFilters: React.FC<EventFiltersProps> = ({
           Filtrar por categoría
         </Label>
         <Select value={filterCategory} onValueChange={setFilterCategory}>
-          <SelectTrigger id="filter-category" className="w-full sm:w-[220px] bg-background">
+          <SelectTrigger id="filter-category" className="w-full sm:w-[220px]">
             <SelectValue placeholder="Seleccionar categoría..." />
           </SelectTrigger>
           <SelectContent>

@@ -1,190 +1,127 @@
 
-import React from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { Trophy, MapPin, Phone, Mail, FileText } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { 
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+import { Plus, Trash2, X } from 'lucide-react';
+import ConvenioForm from './ConvenioForm';
+import { motion } from 'framer-motion';
 import { useToast } from '@/hooks/use-toast';
-import AdminModal from '@/components/admin/common/AdminModal';
-
-const convenioSchema = z.object({
-  name: z.string().min(2, 'El nombre debe tener al menos 2 caracteres'),
-  description: z.string().min(10, 'La descripción debe tener al menos 10 caracteres'),
-  location: z.string().min(2, 'La ubicación es requerida'),
-  phone: z.string().optional(),
-  email: z.string().email('Email inválido').optional().or(z.literal('')),
-  website: z.string().url('URL inválida').optional().or(z.literal('')),
-});
-
-type ConvenioFormData = z.infer<typeof convenioSchema>;
 
 interface ConvenioFormModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  convenio?: any | null;
 }
 
-const ConvenioFormModal: React.FC<ConvenioFormModalProps> = ({ open, onOpenChange }) => {
+const ConvenioFormModal: React.FC<ConvenioFormModalProps> = ({ 
+  open, 
+  onOpenChange,
+  convenio = null 
+}) => {
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const { toast } = useToast();
 
-  const form = useForm<ConvenioFormData>({
-    resolver: zodResolver(convenioSchema),
-    defaultValues: {
-      name: '',
-      description: '',
-      location: '',
-      phone: '',
-      email: '',
-      website: '',
-    }
-  });
-
-  const onSubmit = (data: ConvenioFormData) => {
-    // Aquí iría la lógica para crear el convenio
-    console.log('Crear convenio:', data);
-    toast({
-      title: "Convenio creado",
-      description: "El convenio ha sido creado exitosamente."
-    });
-    form.reset();
+  const handleClose = () => {
     onOpenChange(false);
   };
 
-  const handleOpenChange = (newOpen: boolean) => {
-    if (!newOpen) {
-      form.reset();
-    }
-    onOpenChange(newOpen);
+  const handleSuccess = () => {
+    toast({
+      title: convenio ? "Convenio Actualizado" : "Convenio Creado",
+      description: convenio 
+        ? "El convenio ha sido actualizado exitosamente." 
+        : "El convenio ha sido creado exitosamente.",
+    });
+    handleClose();
+  };
+
+  const handleDelete = () => {
+    // Here you would typically call an API to delete the convenio
+    toast({
+      title: "Convenio Eliminado",
+      description: "El convenio ha sido eliminado exitosamente.",
+    });
+    setDeleteDialogOpen(false);
+    handleClose();
   };
 
   return (
-    <AdminModal
-      open={open}
-      onOpenChange={handleOpenChange}
-      title="Nuevo Convenio"
-      description="Crea un nuevo convenio para la organización"
-      size="lg"
-      actions={
-        <>
-          <Button 
-            type="button" 
-            variant="outline" 
-            onClick={() => onOpenChange(false)}
-          >
-            Cancelar
-          </Button>
-          <Button
-            onClick={form.handleSubmit(onSubmit)}
-            className="bg-primary-prosalud hover:bg-primary-prosalud-dark"
-          >
-            Crear Convenio
-          </Button>
-        </>
-      }
-    >
-      <div className="space-y-6">
-        <div className="text-center">
-          <div className="mx-auto w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mb-4">
-            <Trophy className="h-8 w-8 text-yellow-600" />
-          </div>
-          <h3 className="text-lg font-semibold">Información del Convenio</h3>
-          <p className="text-sm text-muted-foreground">Datos básicos del nuevo convenio</p>
-        </div>
-
-        <div className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="name" className="text-sm font-semibold">
-              Nombre del Convenio *
-            </Label>
-            <Input
-              id="name"
-              {...form.register('name')}
-              placeholder="Ej: Hospital La Merced"
-            />
-            {form.formState.errors.name && (
-              <p className="text-destructive text-sm">{form.formState.errors.name.message}</p>
+    <>
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white">
+          <div className="absolute top-4 right-4 z-10 flex gap-2">
+            {convenio && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setDeleteDialogOpen(true)}
+                className="h-8 w-8 p-0 hover:bg-red-100 hover:text-red-600"
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
             )}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleClose}
+              className="h-8 w-8 p-0 hover:bg-gray-100"
+            >
+              <X className="h-4 w-4" />
+            </Button>
           </div>
+          
+          <DialogHeader className="pr-16">
+            <DialogTitle className="text-2xl font-bold text-primary-prosalud">
+              {convenio ? 'Editar Convenio' : 'Nuevo Convenio'}
+            </DialogTitle>
+            <DialogDescription>
+              {convenio 
+                ? 'Modifica los detalles del convenio existente.' 
+                : 'Crea un nuevo convenio para mostrar en el sitio web.'
+              }
+            </DialogDescription>
+          </DialogHeader>
 
-          <div className="space-y-2">
-            <Label htmlFor="description" className="text-sm font-semibold">
-              Descripción *
-            </Label>
-            <Textarea
-              id="description"
-              {...form.register('description')}
-              placeholder="Describe los servicios y beneficios del convenio..."
-              rows={3}
-            />
-            {form.formState.errors.description && (
-              <p className="text-destructive text-sm">{form.formState.errors.description.message}</p>
-            )}
-          </div>
+          <ConvenioForm 
+            onClose={handleClose} 
+            onSuccess={handleSuccess}
+            convenio={convenio}
+          />
+        </DialogContent>
+      </Dialog>
 
-          <div className="space-y-2">
-            <Label htmlFor="location" className="text-sm font-semibold flex items-center gap-2">
-              <MapPin className="h-4 w-4" />
-              Ubicación *
-            </Label>
-            <Input
-              id="location"
-              {...form.register('location')}
-              placeholder="Ej: Ciudad Bolívar, Antioquia"
-            />
-            {form.formState.errors.location && (
-              <p className="text-destructive text-sm">{form.formState.errors.location.message}</p>
-            )}
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="phone" className="text-sm font-semibold flex items-center gap-2">
-                <Phone className="h-4 w-4" />
-                Teléfono
-              </Label>
-              <Input
-                id="phone"
-                {...form.register('phone')}
-                placeholder="Ej: (604) 123-4567"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="email" className="text-sm font-semibold flex items-center gap-2">
-                <Mail className="h-4 w-4" />
-                Email
-              </Label>
-              <Input
-                id="email"
-                type="email"
-                {...form.register('email')}
-                placeholder="contacto@convenio.com"
-              />
-              {form.formState.errors.email && (
-                <p className="text-destructive text-sm">{form.formState.errors.email.message}</p>
-              )}
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="website" className="text-sm font-semibold flex items-center gap-2">
-              <FileText className="h-4 w-4" />
-              Sitio Web
-            </Label>
-            <Input
-              id="website"
-              {...form.register('website')}
-              placeholder="https://www.convenio.com"
-            />
-            {form.formState.errors.website && (
-              <p className="text-destructive text-sm">{form.formState.errors.website.message}</p>
-            )}
-          </div>
-        </div>
-      </div>
-    </AdminModal>
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>¿Eliminar Convenio?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Esta acción no se puede deshacer. Se eliminará permanentemente el convenio{' '}
+              <strong>"{convenio?.name}"</strong> y todos sus datos asociados.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={handleDelete}
+              className="bg-red-600 hover:bg-red-700"
+            >
+              Eliminar Convenio
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 };
 

@@ -9,10 +9,12 @@ import {
   Truck, 
   Eye,
   ArrowRight,
-  X
+  X,
+  FileText
 } from 'lucide-react';
 import ProductForm from './ProductForm';
 import NewDeliveryForm from './NewDeliveryForm';
+import NewRequestForm from './NewRequestForm';
 import { motion } from 'framer-motion';
 
 interface QuickActionsDialogProps {
@@ -39,6 +41,13 @@ const QuickActionsDialog: React.FC<QuickActionsDialogProps> = ({ open, onOpenCha
       color: 'bg-green-500',
     },
     {
+      id: 'new-request',
+      title: 'Nueva Solicitud',
+      description: 'Crear una nueva solicitud de productos',
+      icon: FileText,
+      color: 'bg-purple-500',
+    },
+    {
       id: 'view-low-stock',
       title: 'Ver Stock Bajo',
       description: 'Revisar productos con stock bajo',
@@ -62,6 +71,8 @@ const QuickActionsDialog: React.FC<QuickActionsDialogProps> = ({ open, onOpenCha
         return <ProductForm onClose={handleClose} />;
       case 'new-delivery':
         return <NewDeliveryForm onClose={handleClose} onSuccess={handleClose} />;
+      case 'new-request':
+        return <NewRequestForm onClose={handleClose} onSuccess={handleClose} />;
       case 'view-low-stock':
         // This would typically show a low stock component
         return (
