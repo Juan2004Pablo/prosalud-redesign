@@ -474,7 +474,7 @@ const AdminComfenalcoPage: React.FC = () => {
               </DialogHeader>
           
               {selectedEvent && (
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
                   <Card className="h-full flex flex-col">
                     <CardHeader className="pb-3">
                       <CardTitle className="text-lg flex items-center gap-2">
