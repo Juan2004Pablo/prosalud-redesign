@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -10,7 +11,7 @@ import { motion } from 'framer-motion';
 import DataPagination from '@/components/ui/data-pagination';
 import { usePagination } from '@/hooks/usePagination';
 import NewRequestForm from './NewRequestForm';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import AdminModal from '../common/AdminModal';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useToast } from '@/hooks/use-toast';
 
@@ -186,6 +187,29 @@ const Requests: React.FC = () => {
       description: "La nueva solicitud ha sido creada exitosamente",
       variant: "default"
     });
+  };
+
+  const renderRequestActions = () => {
+    if (!selectedRequest || selectedRequest.status !== 'pending') return null;
+    
+    return (
+      <>
+        <Button 
+          onClick={() => handleApproveRequest(selectedRequest)}
+          className="bg-green-600 hover:bg-green-700"
+        >
+          <CheckCircle className="h-4 w-4 mr-2" />
+          Aprobar
+        </Button>
+        <Button 
+          onClick={() => handleRejectRequest(selectedRequest)}
+          variant="destructive"
+        >
+          <XCircle className="h-4 w-4 mr-2" />
+          Rechazar
+        </Button>
+      </>
+    );
   };
 
   return (
@@ -380,54 +404,79 @@ const Requests: React.FC = () => {
         </Card>
       </motion.div>
 
-      {/* New Request Form Dialog */}
-      <Dialog open={showNewRequestForm} onOpenChange={setShowNewRequestForm}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white">
-          <NewRequestForm 
-            onClose={() => setShowNewRequestForm(false)} 
-            onSuccess={handleNewRequestSuccess}
-          />
-        </DialogContent>
-      </Dialog>
+      {/* New Request Form Modal - Using standardized AdminModal */}
+      <AdminModal
+        open={showNewRequestForm}
+        onOpenChange={setShowNewRequestForm}
+        title="Nueva Solicitud de Implementos"
+        description="Crear una nueva solicitud para el hospital"
+        size="4xl"
+      >
+        <NewRequestForm 
+          onClose={() => setShowNewRequestForm(false)} 
+          onSuccess={handleNewRequestSuccess}
+        />
+      </AdminModal>
 
-      {/* Request Details Dialog */}
-      {selectedRequest && (
-        <Dialog open={!!selectedRequest} onOpenChange={() => setSelectedRequest(null)}>
-          <DialogContent className="max-w-2xl bg-white">
-            <DialogHeader>
-              <DialogTitle>Detalles de Solicitud #{selectedRequest.id}</DialogTitle>
-              <DialogDescription>
-                Información detallada de la solicitud
-              </DialogDescription>
-            </DialogHeader>
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm font-medium text-gray-700">Hospital</label>
-                  <p className="text-gray-900">{selectedRequest.hospitalName}</p>
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-gray-700">Coordinador</label>
-                  <p className="text-gray-900">{selectedRequest.coordinatorName}</p>
-                </div>
+      {/* Request Details Modal - Using standardized AdminModal */}
+      <AdminModal
+        open={!!selectedRequest}
+        onOpenChange={() => setSelectedRequest(null)}
+        title={`Detalles de Solicitud #${selectedRequest?.id}`}
+        description="Información detallada de la solicitud"
+        size="2xl"
+        actions={renderRequestActions()}
+      >
+        {selectedRequest && (
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="text-sm font-medium text-gray-700">Hospital</label>
+                <p className="text-gray-900">{selectedRequest.hospitalName}</p>
               </div>
               <div>
-                <label className="text-sm font-medium text-gray-700">Productos Solicitados</label>
-                <div className="mt-2 space-y-2">
-                  {selectedRequest.items.map((item, index) => (
-                    <div key={index} className="flex justify-between items-center p-2 bg-gray-50 rounded">
-                      <span>{item.productName}</span>
-                      <span className="text-sm text-gray-600">
-                        Cantidad: {item.quantity}
-                      </span>
-                    </div>
-                  ))}
-                </div>
+                <label className="text-sm font-medium text-gray-700">Coordinador</label>
+                <p className="text-gray-900">{selectedRequest.coordinatorName}</p>
+              </div>
+              <div>
+                <label className="text-sm font-medium text-gray-700">Fecha de Solicitud</label>
+                <p className="text-gray-900">{new Date(selectedRequest.requestDate).toLocaleDateString()}</p>
+              </div>
+              <div>
+                <label className="text-sm font-medium text-gray-700">Estado</label>
+                <Badge className={getStatusColor(selectedRequest.status)}>
+                  {getStatusLabel(selectedRequest.status)}
+                </Badge>
+              </div>
+              <div>
+                <label className="text-sm font-medium text-gray-700">Prioridad</label>
+                <Badge className={getPriorityColor(selectedRequest.priority)}>
+                  {selectedRequest.priority === 'urgent' && <AlertTriangle className="h-3 w-3 mr-1" />}
+                  {getPriorityLabel(selectedRequest.priority)}
+                </Badge>
+              </div>
+              <div>
+                <label className="text-sm font-medium text-gray-700">Total de Items</label>
+                <p className="text-gray-900 font-medium">{selectedRequest.totalItems}</p>
               </div>
             </div>
-          </DialogContent>
-        </Dialog>
-      )}
+            
+            <div>
+              <label className="text-sm font-medium text-gray-700">Productos Solicitados</label>
+              <div className="mt-2 space-y-2">
+                {selectedRequest.items.map((item, index) => (
+                  <div key={index} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg border">
+                    <span className="font-medium">{item.productName}</span>
+                    <span className="text-sm text-gray-600 bg-white px-2 py-1 rounded">
+                      Cantidad: {item.quantity}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+      </AdminModal>
     </div>
   );
 };

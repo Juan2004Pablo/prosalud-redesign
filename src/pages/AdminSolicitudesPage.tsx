@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import ReactJson from 'react-json-view';
@@ -14,10 +13,9 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Separator } from '@/components/ui/separator';
 import AdminLayout from '@/components/admin/AdminLayout';
+import AdminModal from '@/components/admin/common/AdminModal';
 import DataPagination from '@/components/ui/data-pagination';
 import { usePagination } from '@/hooks/usePagination';
 import { mockRequests, mockRequestStats, requestTypeLabels, statusLabels, statusColors } from '@/data/requestsMock';
@@ -106,6 +104,35 @@ const AdminSolicitudesPage: React.FC = () => {
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
   };
+
+  const renderRequestActions = () => (
+    <>
+      <Button
+        onClick={() => selectedRequest && handleStatusUpdate(selectedRequest.id, 'in_progress')}
+        className="bg-blue-600 hover:bg-blue-700"
+        disabled={selectedRequest?.status === 'in_progress'}
+      >
+        <Edit className="h-4 w-4 mr-2" />
+        Marcar en Proceso
+      </Button>
+      <Button
+        onClick={() => selectedRequest && handleStatusUpdate(selectedRequest.id, 'resolved')}
+        className="bg-green-600 hover:bg-green-700"
+        disabled={selectedRequest?.status === 'resolved'}
+      >
+        <CheckCircle className="h-4 w-4 mr-2" />
+        Marcar como Resuelto
+      </Button>
+      <Button
+        onClick={() => selectedRequest && handleStatusUpdate(selectedRequest.id, 'rejected')}
+        variant="destructive"
+        disabled={selectedRequest?.status === 'rejected'}
+      >
+        <XCircle className="h-4 w-4 mr-2" />
+        Rechazar
+      </Button>
+    </>
+  );
 
   return (
     <AdminLayout>
@@ -315,237 +342,13 @@ const AdminSolicitudesPage: React.FC = () => {
                           </TableCell>
                           <TableCell>
                             <div className="flex items-center gap-2">
-                              <Dialog>
-                                <DialogTrigger asChild>
-                                  <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    onClick={() => setSelectedRequest(request)}
-                                  >
-                                    <Eye className="h-4 w-4" />
-                                  </Button>
-                                </DialogTrigger>
-                                <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
-                                  <DialogHeader className="space-y-3">
-                                    <div className="flex items-center justify-between">
-                                      <DialogTitle className="text-xl font-bold">
-                                        Detalles de la Solicitud
-                                      </DialogTitle>
-                                      <Badge className={`${statusColors[selectedRequest?.status || 'pending']} flex items-center gap-1`}>
-                                        {selectedRequest && getStatusIcon(selectedRequest.status)}
-                                        {selectedRequest && statusLabels[selectedRequest.status]}
-                                      </Badge>
-                                    </div>
-                                    <Separator />
-                                  </DialogHeader>
-                                  {selectedRequest && (
-                                    <div className="space-y-6">
-                                      {/* Personal Information Section */}
-                                      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                                        <Card>
-                                          <CardHeader className="pb-3">
-                                            <CardTitle className="text-lg flex items-center gap-2">
-                                              <User className="h-5 w-5" />
-                                              Información Personal
-                                            </CardTitle>
-                                          </CardHeader>
-                                          <CardContent className="space-y-4">
-                                            <div>
-                                              <label className="text-sm font-medium text-gray-600">Nombre Completo</label>
-                                              <div className="flex items-center gap-2 mt-1">
-                                                <p className="text-sm">{selectedRequest.name} {selectedRequest.last_name}</p>
-                                                <Button
-                                                  variant="ghost"
-                                                  size="sm"
-                                                  onClick={() => copyToClipboard(`${selectedRequest.name} ${selectedRequest.last_name}`)}
-                                                  className="h-6 w-6 p-0"
-                                                >
-                                                  <Copy className="h-3 w-3" />
-                                                </Button>
-                                              </div>
-                                            </div>
-                                            <div>
-                                              <label className="text-sm font-medium text-gray-600">Documento</label>
-                                              <div className="flex items-center gap-2 mt-1">
-                                                <p className="text-sm">{selectedRequest.id_type} {selectedRequest.id_number}</p>
-                                                <Button
-                                                  variant="ghost"
-                                                  size="sm"
-                                                  onClick={() => copyToClipboard(selectedRequest.id_number)}
-                                                  className="h-6 w-6 p-0"
-                                                >
-                                                  <Copy className="h-3 w-3" />
-                                                </Button>
-                                              </div>
-                                            </div>
-                                          </CardContent>
-                                        </Card>
-
-                                        <Card>
-                                          <CardHeader className="pb-3">
-                                            <CardTitle className="text-lg flex items-center gap-2">
-                                              <Mail className="h-5 w-5" />
-                                              Contacto
-                                            </CardTitle>
-                                          </CardHeader>
-                                          <CardContent className="space-y-4">
-                                            <div>
-                                              <label className="text-sm font-medium text-gray-600">Email</label>
-                                              <div className="flex items-center gap-2 mt-1">
-                                                <p className="text-sm">{selectedRequest.email}</p>
-                                                <Button
-                                                  variant="ghost"
-                                                  size="sm"
-                                                  onClick={() => copyToClipboard(selectedRequest.email)}
-                                                  className="h-6 w-6 p-0"
-                                                >
-                                                  <Copy className="h-3 w-3" />
-                                                </Button>
-                                              </div>
-                                            </div>
-                                            <div>
-                                              <label className="text-sm font-medium text-gray-600">Teléfono</label>
-                                              <div className="flex items-center gap-2 mt-1">
-                                                <p className="text-sm">{selectedRequest.phone_number}</p>
-                                                <Button
-                                                  variant="ghost"
-                                                  size="sm"
-                                                  onClick={() => copyToClipboard(selectedRequest.phone_number)}
-                                                  className="h-6 w-6 p-0"
-                                                >
-                                                  <Copy className="h-3 w-3" />
-                                                </Button>
-                                              </div>
-                                            </div>
-                                          </CardContent>
-                                        </Card>
-
-                                        <Card>
-                                          <CardHeader className="pb-3">
-                                            <CardTitle className="text-lg flex items-center gap-2">
-                                              <Calendar className="h-5 w-5" />
-                                              Estado de la Solicitud
-                                            </CardTitle>
-                                          </CardHeader>
-                                          <CardContent className="space-y-4">
-                                            <div>
-                                              <label className="text-sm font-medium text-gray-600">Tipo de Solicitud</label>
-                                              <p className="text-sm mt-1 font-medium">{requestTypeLabels[selectedRequest.request_type]}</p>
-                                            </div>
-                                            <div>
-                                              <label className="text-sm font-medium text-gray-600">ID de Solicitud</label>
-                                              <div className="flex items-center gap-2 mt-1">
-                                                <p className="text-sm font-mono bg-gray-100 px-2 py-1 rounded">{selectedRequest.id}</p>
-                                                <Button
-                                                  variant="ghost"
-                                                  size="sm"
-                                                  onClick={() => copyToClipboard(selectedRequest.id)}
-                                                  className="h-6 w-6 p-0"
-                                                >
-                                                  <Copy className="h-3 w-3" />
-                                                </Button>
-                                              </div>
-                                            </div>
-                                          </CardContent>
-                                        </Card>
-                                      </div>
-
-                                      {/* Fechas en una sola fila */}
-                                      <Card>
-                                        <CardHeader className="pb-3">
-                                          <CardTitle className="text-lg flex items-center gap-2">
-                                            <Clock className="h-5 w-5" />
-                                            Timeline de la Solicitud
-                                          </CardTitle>
-                                        </CardHeader>
-                                        <CardContent>
-                                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                            <div>
-                                              <label className="text-sm font-medium text-gray-600">Fecha de Creación</label>
-                                              <p className="text-sm mt-1">{formatDate(selectedRequest.created_at)}</p>
-                                            </div>
-                                            {selectedRequest.processed_at && (
-                                              <div>
-                                                <label className="text-sm font-medium text-gray-600">Fecha de Procesamiento</label>
-                                                <p className="text-sm mt-1">{formatDate(selectedRequest.processed_at)}</p>
-                                              </div>
-                                            )}
-                                            {selectedRequest.resolved_at && (
-                                              <div>
-                                                <label className="text-sm font-medium text-gray-600">Fecha de Resolución</label>
-                                                <p className="text-sm mt-1 text-green-600">{formatDate(selectedRequest.resolved_at)}</p>
-                                              </div>
-                                            )}
-                                          </div>
-                                        </CardContent>
-                                      </Card>
-                                      
-                                      {/* Request Details Section - Improved with react-json-view */}
-                                      <Card>
-                                        <CardHeader>
-                                          <CardTitle className="text-lg flex items-center gap-2">
-                                            <Database className="h-5 w-5" />
-                                            Detalles Específicos de la Solicitud
-                                          </CardTitle>
-                                          <CardDescription>
-                                            Información detallada y estructurada de la solicitud
-                                          </CardDescription>
-                                        </CardHeader>
-                                        <CardContent>
-                                          <div className="bg-slate-50 p-4 rounded-lg border">
-                                            <ReactJson
-                                              src={selectedRequest.payload}
-                                              theme="rjv-default"
-                                              style={{
-                                                backgroundColor: 'transparent',
-                                                fontSize: '14px'
-                                              }}
-                                              displayDataTypes={false}
-                                              displayObjectSize={false}
-                                              enableClipboard={true}
-                                              collapsed={false}
-                                              collapseStringsAfterLength={50}
-                                              iconStyle="triangle"
-                                              indentWidth={4}
-                                              name="solicitud_datos"
-                                              quotesOnKeys={false}
-                                              sortKeys={true}
-                                            />
-                                          </div>
-                                        </CardContent>
-                                      </Card>
-
-                                      {/* Action Buttons */}
-                                      <div className="flex flex-wrap gap-3 pt-4 border-t">
-                                        <Button
-                                          onClick={() => handleStatusUpdate(selectedRequest.id, 'in_progress')}
-                                          className="bg-blue-600 hover:bg-blue-700"
-                                          disabled={selectedRequest.status === 'in_progress'}
-                                        >
-                                          <Edit className="h-4 w-4 mr-2" />
-                                          Marcar en Proceso
-                                        </Button>
-                                        <Button
-                                          onClick={() => handleStatusUpdate(selectedRequest.id, 'resolved')}
-                                          className="bg-green-600 hover:bg-green-700"
-                                          disabled={selectedRequest.status === 'resolved'}
-                                        >
-                                          <CheckCircle className="h-4 w-4 mr-2" />
-                                          Marcar como Resuelto
-                                        </Button>
-                                        <Button
-                                          onClick={() => handleStatusUpdate(selectedRequest.id, 'rejected')}
-                                          variant="destructive"
-                                          disabled={selectedRequest.status === 'rejected'}
-                                        >
-                                          <XCircle className="h-4 w-4 mr-2" />
-                                          Rechazar
-                                        </Button>
-                                      </div>
-                                    </div>
-                                  )}
-                                </DialogContent>
-                              </Dialog>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => setSelectedRequest(request)}
+                              >
+                                <Eye className="h-4 w-4" />
+                              </Button>
 
                               <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
@@ -573,7 +376,6 @@ const AdminSolicitudesPage: React.FC = () => {
                   </Table>
                 </div>
 
-                {/* Pagination */}
                 <DataPagination
                   currentPage={currentPage}
                   totalPages={totalPages}
@@ -586,6 +388,202 @@ const AdminSolicitudesPage: React.FC = () => {
               </CardContent>
             </Card>
           </motion.div>
+
+          {/* Request Details Modal - Using standardized AdminModal */}
+          <AdminModal
+            open={!!selectedRequest}
+            onOpenChange={() => setSelectedRequest(null)}
+            title="Detalles de la Solicitud"
+            description="Información detallada de la solicitud"
+            size="6xl"
+            actions={renderRequestActions()}
+          >
+            {selectedRequest && (
+              <div className="space-y-6">
+                {/* Personal Information Section */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  <Card>
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-lg flex items-center gap-2">
+                        <User className="h-5 w-5" />
+                        Información Personal
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div>
+                        <label className="text-sm font-medium text-gray-600">Nombre Completo</label>
+                        <div className="flex items-center gap-2 mt-1">
+                          <p className="text-sm">{selectedRequest.name} {selectedRequest.last_name}</p>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => copyToClipboard(`${selectedRequest.name} ${selectedRequest.last_name}`)}
+                            className="h-6 w-6 p-0"
+                          >
+                            <Copy className="h-3 w-3" />
+                          </Button>
+                        </div>
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-gray-600">Documento</label>
+                        <div className="flex items-center gap-2 mt-1">
+                          <p className="text-sm">{selectedRequest.id_type} {selectedRequest.id_number}</p>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => copyToClipboard(selectedRequest.id_number)}
+                            className="h-6 w-6 p-0"
+                          >
+                            <Copy className="h-3 w-3" />
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-lg flex items-center gap-2">
+                        <Mail className="h-5 w-5" />
+                        Contacto
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div>
+                        <label className="text-sm font-medium text-gray-600">Email</label>
+                        <div className="flex items-center gap-2 mt-1">
+                          <p className="text-sm">{selectedRequest.email}</p>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => copyToClipboard(selectedRequest.email)}
+                            className="h-6 w-6 p-0"
+                          >
+                            <Copy className="h-3 w-3" />
+                          </Button>
+                        </div>
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-gray-600">Teléfono</label>
+                        <div className="flex items-center gap-2 mt-1">
+                          <p className="text-sm">{selectedRequest.phone_number}</p>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => copyToClipboard(selectedRequest.phone_number)}
+                            className="h-6 w-6 p-0"
+                          >
+                            <Copy className="h-3 w-3" />
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-lg flex items-center gap-2">
+                        <Calendar className="h-5 w-5" />
+                        Estado de la Solicitud
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div>
+                        <label className="text-sm font-medium text-gray-600">Tipo de Solicitud</label>
+                        <p className="text-sm mt-1 font-medium">{requestTypeLabels[selectedRequest.request_type]}</p>
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-gray-600">ID de Solicitud</label>
+                        <div className="flex items-center gap-2 mt-1">
+                          <p className="text-sm font-mono bg-gray-100 px-2 py-1 rounded">{selectedRequest.id}</p>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => copyToClipboard(selectedRequest.id)}
+                            className="h-6 w-6 p-0"
+                          >
+                            <Copy className="h-3 w-3" />
+                          </Button>
+                        </div>
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-gray-600">Estado Actual</label>
+                        <Badge className={`${statusColors[selectedRequest.status]} flex items-center gap-1 w-fit mt-1`}>
+                          {getStatusIcon(selectedRequest.status)}
+                          {statusLabels[selectedRequest.status]}
+                        </Badge>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                {/* Timeline Section */}
+                <Card>
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-lg flex items-center gap-2">
+                      <Clock className="h-5 w-5" />
+                      Timeline de la Solicitud
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div>
+                        <label className="text-sm font-medium text-gray-600">Fecha de Creación</label>
+                        <p className="text-sm mt-1">{formatDate(selectedRequest.created_at)}</p>
+                      </div>
+                      {selectedRequest.processed_at && (
+                        <div>
+                          <label className="text-sm font-medium text-gray-600">Fecha de Procesamiento</label>
+                          <p className="text-sm mt-1">{formatDate(selectedRequest.processed_at)}</p>
+                        </div>
+                      )}
+                      {selectedRequest.resolved_at && (
+                        <div>
+                          <label className="text-sm font-medium text-gray-600">Fecha de Resolución</label>
+                          <p className="text-sm mt-1 text-green-600">{formatDate(selectedRequest.resolved_at)}</p>
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+                
+                {/* Request Details Section */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg flex items-center gap-2">
+                      <Database className="h-5 w-5" />
+                      Detalles Específicos de la Solicitud
+                    </CardTitle>
+                    <CardDescription>
+                      Información detallada y estructurada de la solicitud
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="bg-slate-50 p-4 rounded-lg border">
+                      <ReactJson
+                        src={selectedRequest.payload}
+                        theme="rjv-default"
+                        style={{
+                          backgroundColor: 'transparent',
+                          fontSize: '14px'
+                        }}
+                        displayDataTypes={false}
+                        displayObjectSize={false}
+                        enableClipboard={true}
+                        collapsed={false}
+                        collapseStringsAfterLength={50}
+                        iconStyle="triangle"
+                        indentWidth={4}
+                        name="solicitud_datos"
+                        quotesOnKeys={false}
+                        sortKeys={true}
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
+          </AdminModal>
 
           {/* Export Dialog */}
           <ExportRequestsDialog open={exportDialogOpen} onOpenChange={setExportDialogOpen} />
