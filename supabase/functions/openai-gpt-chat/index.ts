@@ -7,7 +7,7 @@ const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-  'Content-Type': 'text/plain',
+  'Content-Type': 'application/json',
 };
 
 serve(async (req) => {
@@ -25,7 +25,7 @@ serve(async (req) => {
       console.error("No se pudo leer JSON de la request", err);
       return new Response(JSON.stringify({ error: 'Solicitud inválida. Debe enviarse JSON.' }), {
         status: 400,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        headers: corsHeaders,
       });
     }
 
@@ -52,7 +52,7 @@ RECUERDA: Tu función es ayudar con TODA la información disponible de ProSalud,
       return msg;
     });
 
-    // Llama OpenAI con streaming habilitado
+    // Llama OpenAI con las instrucciones mejoradas
     let openAIresp;
     try {
       openAIresp = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -64,104 +64,51 @@ RECUERDA: Tu función es ayudar con TODA la información disponible de ProSalud,
         body: JSON.stringify({
           model: 'gpt-4o-mini',
           messages: enhancedMessages,
-          max_tokens: 400,
-          temperature: 0.7,
-          stream: true, // Habilitar streaming
+          max_tokens: 400, // Aumentado para respuestas más completas
+          temperature: 0.7, // Poco de creatividad para respuestas más naturales
         }),
       });
     } catch (e) {
       console.error("Error al llamar API OpenAI:", e);
       return new Response(
         JSON.stringify({ error: 'Error de red contactando OpenAI.' }),
-        { status: 502, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        { status: 502, headers: corsHeaders }
       );
     }
     
-    if (!openAIresp.ok) {
-      const errorText = await openAIresp.text();
-      console.error("OpenAI error:", errorText);
-      return new Response(JSON.stringify({ error: 'Error OpenAI API' }), {
+    let rawText = await openAIresp.text();
+    let data;
+    try {
+      data = JSON.parse(rawText);
+    } catch (err) {
+      console.error("Respuesta OpenAI NO es JSON válido:", rawText);
+      return new Response(JSON.stringify({ error: 'Respuesta inválida desde OpenAI', openaiRaw: rawText }), {
         status: 500,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        headers: corsHeaders,
       });
     }
 
-    // Para streaming, necesitamos crear un ReadableStream
-    const stream = new ReadableStream({
-      async start(controller) {
-        const reader = openAIresp.body?.getReader();
-        if (!reader) {
-          controller.close();
-          return;
-        }
+    if (!openAIresp.ok) {
+      const errMsg = (data && data.error && data.error.message) ? data.error.message : 'Error OpenAI API';
+      console.error("OpenAI error data:", data);
+      return new Response(JSON.stringify({ error: errMsg }), {
+        status: 500,
+        headers: corsHeaders,
+      });
+    }
 
-        const decoder = new TextDecoder();
-        let buffer = '';
-        let fullResponse = '';
+    const generatedText = data.choices?.[0]?.message?.content || '';
 
-        try {
-          while (true) {
-            const { done, value } = await reader.read();
-            
-            if (done) {
-              // Enviar respuesta completa al final
-              const finalData = JSON.stringify({ generatedText: fullResponse.trim() });
-              controller.enqueue(new TextEncoder().encode(finalData + '\n'));
-              controller.close();
-              break;
-            }
-
-            buffer += decoder.decode(value, { stream: true });
-            const lines = buffer.split('\n');
-            buffer = lines.pop() || '';
-
-            for (const line of lines) {
-              const trimmedLine = line.trim();
-              if (trimmedLine.startsWith('data: ')) {
-                const data = trimmedLine.slice(6);
-                
-                if (data === '[DONE]') {
-                  continue;
-                }
-
-                try {
-                  const parsed = JSON.parse(data);
-                  const content = parsed.choices?.[0]?.delta?.content;
-                  
-                  if (content) {
-                    fullResponse += content;
-                    // Enviar chunk al cliente
-                    const chunkData = JSON.stringify({ chunk: content });
-                    controller.enqueue(new TextEncoder().encode(chunkData + '\n'));
-                  }
-                } catch (e) {
-                  console.error('Error parsing streaming data:', e);
-                }
-              }
-            }
-          }
-        } catch (error) {
-          console.error('Error in streaming:', error);
-          controller.error(error);
-        }
-      }
+    return new Response(JSON.stringify({ generatedText }), {
+      headers: corsHeaders,
     });
-
-    return new Response(stream, {
-      headers: {
-        ...corsHeaders,
-        'Content-Type': 'text/plain',
-        'Cache-Control': 'no-cache',
-      },
-    });
-
   } catch (error) {
     console.error('Error in openai-gpt-chat function:', error);
     return new Response(
       JSON.stringify({ error: error.message || 'Error inesperado en función OpenAI.' }),
       {
         status: 500,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        headers: corsHeaders,
       }
     );
   }
