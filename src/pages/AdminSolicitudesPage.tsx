@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import AdminLayout from '@/components/admin/AdminLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -37,6 +36,7 @@ interface SolicitudDetallada {
   estado: 'pendiente' | 'en_proceso' | 'resuelto' | 'rechazada';
   detalles: any;
   observaciones?: string;
+  fechaResolucion?: Date;
 }
 
 const AdminSolicitudesPage: React.FC = () => {
@@ -60,7 +60,8 @@ const AdminSolicitudesPage: React.FC = () => {
         fechaInicio: '2024-01-15',
         fechaFin: '2024-12-31'
       },
-      observaciones: 'Certificado generado exitosamente'
+      observaciones: 'Certificado generado exitosamente',
+      fechaResolucion: new Date('2024-12-10T09:20:00')
     },
     {
       id: 'req-002',
@@ -120,7 +121,8 @@ const AdminSolicitudesPage: React.FC = () => {
         banco: 'Bancolombia',
         tipoCuenta: 'Ahorros',
         numeroCuenta: '****7890'
-      }
+      },
+      fechaResolucion: new Date('2024-12-12T14:15:00')
     },
     {
       id: 'req-006',
@@ -181,8 +183,13 @@ const AdminSolicitudesPage: React.FC = () => {
   };
 
   const handleChangeStatus = (id: string, newStatus: 'en_proceso' | 'resuelto' | 'rechazada') => {
+    const now = new Date();
     setSolicitudes(solicitudes.map(solicitud =>
-      solicitud.id === id ? { ...solicitud, estado: newStatus } : solicitud
+      solicitud.id === id ? { 
+        ...solicitud, 
+        estado: newStatus,
+        fechaResolucion: newStatus === 'resuelto' ? now : undefined
+      } : solicitud
     ));
     
     const statusLabels = {
@@ -383,7 +390,7 @@ const AdminSolicitudesPage: React.FC = () => {
                         <TableHead className="w-1/5">Tipo</TableHead>
                         <TableHead className="w-1/6">Estado</TableHead>
                         <TableHead className="w-1/6">Fecha</TableHead>
-                        <TableHead className="w-1/4">Acciones</TableHead>
+                        <TableHead className="w-16">Acciones</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -427,59 +434,59 @@ const AdminSolicitudesPage: React.FC = () => {
                                   minute: '2-digit'
                                 })}
                               </p>
+                              {solicitud.estado === 'resuelto' && solicitud.fechaResolucion && (
+                                <p className="text-xs text-green-600 font-medium mt-1">
+                                  ✓ Resuelto: {solicitud.fechaResolucion.toLocaleDateString('es-ES', {
+                                    day: '2-digit',
+                                    month: 'short',
+                                    year: 'numeric'
+                                  })}, {solicitud.fechaResolucion.toLocaleTimeString('es-ES', {
+                                    hour: '2-digit',
+                                    minute: '2-digit'
+                                  })}
+                                </p>
+                              )}
                             </div>
                           </TableCell>
                           <TableCell>
-                            <div className="flex items-center space-x-2">
-                              {solicitud.estado === 'pendiente' && (
-                                <>
-                                  <Button 
-                                    size="sm"
-                                    onClick={() => handleChangeStatus(solicitud.id, 'en_proceso')}
-                                    className="bg-blue-600 hover:bg-blue-700 text-white text-xs px-2 py-1 h-7"
-                                  >
-                                    Marcar en Proceso
-                                  </Button>
-                                  <Button 
-                                    size="sm"
-                                    onClick={() => handleChangeStatus(solicitud.id, 'resuelto')}
-                                    className="bg-green-600 hover:bg-green-700 text-white text-xs px-2 py-1 h-7"
-                                  >
-                                    Marcar como Resuelto
-                                  </Button>
-                                  <Button 
-                                    size="sm"
-                                    variant="outline"
-                                    onClick={() => handleChangeStatus(solicitud.id, 'rechazada')}
-                                    className="text-red-600 border-red-200 hover:bg-red-50 text-xs px-2 py-1 h-7"
-                                  >
-                                    Rechazar
-                                  </Button>
-                                </>
-                              )}
-                              {solicitud.estado === 'en_proceso' && (
-                                <Button 
-                                  size="sm"
-                                  onClick={() => handleChangeStatus(solicitud.id, 'resuelto')}
-                                  className="bg-green-600 hover:bg-green-700 text-white text-xs px-2 py-1 h-7"
-                                >
-                                  Marcar como Resuelto
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                  <MoreHorizontal className="h-4 w-4" />
                                 </Button>
-                              )}
-                              <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                  <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
-                                    <MoreHorizontal className="h-4 w-4" />
-                                  </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end" className="w-48">
-                                  <DropdownMenuItem onClick={() => handleViewDetails(solicitud)}>
-                                    <Eye className="h-4 w-4 mr-2" />
-                                    Ver Detalles
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end" className="w-48">
+                                <DropdownMenuItem onClick={() => handleViewDetails(solicitud)}>
+                                  <Eye className="h-4 w-4 mr-2" />
+                                  Ver Detalles
+                                </DropdownMenuItem>
+                                {solicitud.estado === 'pendiente' && (
+                                  <>
+                                    <DropdownMenuItem onClick={() => handleChangeStatus(solicitud.id, 'en_proceso')}>
+                                      <div className="h-4 w-4 mr-2 bg-blue-600 rounded-full"></div>
+                                      Marcar en Proceso
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem onClick={() => handleChangeStatus(solicitud.id, 'resuelto')}>
+                                      <div className="h-4 w-4 mr-2 bg-green-600 rounded-full"></div>
+                                      Marcar como Resuelto
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem 
+                                      onClick={() => handleChangeStatus(solicitud.id, 'rechazada')}
+                                      className="text-red-600 focus:text-red-600"
+                                    >
+                                      <div className="h-4 w-4 mr-2 bg-red-600 rounded-full"></div>
+                                      Rechazar
+                                    </DropdownMenuItem>
+                                  </>
+                                )}
+                                {solicitud.estado === 'en_proceso' && (
+                                  <DropdownMenuItem onClick={() => handleChangeStatus(solicitud.id, 'resuelto')}>
+                                    <div className="h-4 w-4 mr-2 bg-green-600 rounded-full"></div>
+                                    Marcar como Resuelto
                                   </DropdownMenuItem>
-                                </DropdownMenuContent>
-                              </DropdownMenu>
-                            </div>
+                                )}
+                              </DropdownMenuContent>
+                            </DropdownMenu>
                           </TableCell>
                         </TableRow>
                       ))}
