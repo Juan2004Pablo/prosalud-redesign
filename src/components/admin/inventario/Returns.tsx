@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { RotateCcw, Plus, Search, Calendar, Package, AlertTriangle } from 'lucide-react';
+import { RotateCcw, Plus, Search, Calendar, Package, AlertTriangle, X } from 'lucide-react';
 import { motion } from 'framer-motion';
 import DataPagination from '@/components/ui/data-pagination';
 import { usePagination } from '@/hooks/usePagination';
@@ -295,38 +295,87 @@ const Returns: React.FC = () => {
       {selectedReturn && (
         <Dialog open={!!selectedReturn} onOpenChange={() => setSelectedReturn(null)}>
           <DialogContent className="max-w-2xl bg-white">
-            <DialogHeader>
-              <DialogTitle>Detalles de Devolución #{selectedReturn.id}</DialogTitle>
-              <DialogDescription>
-                Información detallada de la devolución
-              </DialogDescription>
-            </DialogHeader>
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm font-medium text-gray-700">Hospital</label>
-                  <p className="text-gray-900">{selectedReturn.hospitalName}</p>
+            <div className="bg-white min-h-full">
+              <div className="flex items-center justify-between p-6 border-b border-gray-200">
+                <div className="flex items-center space-x-3">
+                  <div className="bg-primary-prosalud/10 p-2 rounded-lg">
+                    <RotateCcw className="h-6 w-6 text-primary-prosalud" />
+                  </div>
+                  <div>
+                    <h2 className="text-2xl font-bold text-gray-900">
+                      Detalles de Devolución #{selectedReturn.id}
+                    </h2>
+                    <p className="text-sm text-gray-600">
+                      Información detallada de la devolución
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <label className="text-sm font-medium text-gray-700">Fecha de Devolución</label>
-                  <p className="text-gray-900">{new Date(selectedReturn.returnDate).toLocaleDateString()}</p>
-                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setSelectedReturn(null)}
+                  className="h-8 w-8 p-0 hover:bg-gray-100"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
               </div>
-              <div>
-                <label className="text-sm font-medium text-gray-700">Motivo de la Devolución</label>
-                <p className="text-gray-900">{selectedReturn.reason}</p>
-              </div>
-              <div>
-                <label className="text-sm font-medium text-gray-700">Productos Devueltos</label>
-                <div className="mt-2 space-y-2">
-                  {selectedReturn.items.map((item, index) => (
-                    <div key={index} className="flex justify-between items-center p-2 bg-gray-50 rounded">
-                      <span>{item.productName}</span>
-                      <span className="text-sm text-gray-600">
-                        Cantidad: {item.quantity}
-                      </span>
+
+              <div className="p-6 space-y-6">
+                <Card className="border border-gray-200 shadow-sm">
+                  <CardHeader className="bg-gray-50 border-b border-gray-200">
+                    <CardTitle className="text-lg font-semibold text-gray-900">Información General</CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-6 space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium text-gray-700">Hospital</label>
+                        <p className="text-gray-900 bg-gray-50 p-2 rounded border">{selectedReturn.hospitalName}</p>
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium text-gray-700">Fecha de Devolución</label>
+                        <p className="text-gray-900 bg-gray-50 p-2 rounded border">{new Date(selectedReturn.returnDate).toLocaleDateString()}</p>
+                      </div>
                     </div>
-                  ))}
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-gray-700">Motivo de la Devolución</label>
+                      <p className="text-gray-900 bg-gray-50 p-2 rounded border">{selectedReturn.reason}</p>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="border border-gray-200 shadow-sm">
+                  <CardHeader className="bg-gray-50 border-b border-gray-200">
+                    <CardTitle className="text-lg font-semibold text-gray-900">Productos Devueltos</CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-6">
+                    <div className="space-y-3">
+                      {selectedReturn.items.map((item, index) => (
+                        <div key={index} className="flex justify-between items-center p-3 bg-gray-50 rounded border">
+                          <span className="font-medium text-gray-900">{item.productName}</span>
+                          <span className="text-sm text-gray-600 bg-white px-3 py-1 rounded border">
+                            Cantidad: {item.quantity}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <div className="flex justify-end space-x-3 pt-4 border-t border-gray-200">
+                  <Button variant="outline" onClick={() => setSelectedReturn(null)}>
+                    Cerrar
+                  </Button>
+                  {selectedReturn.status === 'pending' && (
+                    <Button 
+                      onClick={() => {
+                        handleProcessReturn(selectedReturn);
+                        setSelectedReturn(null);
+                      }}
+                      className="bg-primary-prosalud hover:bg-primary-prosalud-dark text-white"
+                    >
+                      Procesar Devolución
+                    </Button>
+                  )}
                 </div>
               </div>
             </div>

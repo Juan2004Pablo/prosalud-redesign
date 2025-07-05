@@ -1,60 +1,80 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import ReactJson from 'react-json-view';
-import {
-  FileText, Search, Filter, Download, Eye, Clock,
-  Users, CheckCircle, AlertCircle, XCircle, Calendar,
-  TrendingUp, MoreHorizontal, User, Edit, Trash2,
-  MapPin, Phone, Mail, Copy, Database
-} from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import AdminLayout from '@/components/admin/AdminLayout';
-import AdminModal from '@/components/admin/common/AdminModal';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { 
+  FileText,
+  Download,
+  Filter,
+  X
+} from 'lucide-react';
+import { motion } from 'framer-motion';
+import { useToast } from '@/hooks/use-toast';
 import DataPagination from '@/components/ui/data-pagination';
 import { usePagination } from '@/hooks/usePagination';
-import { mockRequests, mockRequestStats, requestTypeLabels, statusLabels, statusColors } from '@/data/requestsMock';
-import { Request, RequestFilters } from '@/types/requests';
-import ExportRequestsDialog from '@/components/admin/solicitudes/ExportRequestsDialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import ReactJson from 'react-json-view';
+
+interface SolicitudDetallada {
+  id: string;
+  usuario: string;
+  tipo: string;
+  fechaCreacion: Date;
+  estado: 'pendiente' | 'aprobada' | 'rechazada';
+  detalles: any;
+  observaciones?: string;
+}
 
 const AdminSolicitudesPage: React.FC = () => {
-  const [selectedRequest, setSelectedRequest] = useState<Request | null>(null);
-  const [filters, setFilters] = useState<RequestFilters>({});
-  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedSolicitud, setSelectedSolicitud] = useState<SolicitudDetallada | null>(null);
   const [exportDialogOpen, setExportDialogOpen] = useState(false);
+  const [filterDialogOpen, setFilterDialogOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedStatus, setSelectedStatus] = useState<string>('all');
+  const [solicitudes, setSolicitudes] = useState<SolicitudDetallada[]>([
+    {
+      id: '1',
+      usuario: 'Juan Pérez',
+      tipo: 'Insumos Médicos',
+      fechaCreacion: new Date(),
+      estado: 'pendiente',
+      detalles: {
+        producto: 'Tapabocas N95',
+        cantidad: 100,
+        prioridad: 'alta'
+      },
+      observaciones: 'Solicitud urgente para el área de emergencias'
+    },
+    {
+      id: '2',
+      usuario: 'María Gómez',
+      tipo: 'Equipamiento',
+      fechaCreacion: new Date(),
+      estado: 'aprobada',
+      detalles: {
+        equipo: 'Monitor Multiparámetro',
+        modelo: 'XYZ-2000',
+        cantidad: 1
+      }
+    },
+    {
+      id: '3',
+      usuario: 'Carlos Rodríguez',
+      tipo: 'Mantenimiento',
+      fechaCreacion: new Date(),
+      estado: 'rechazada',
+      detalles: {
+        equipo: 'Resonancia Magnética',
+        motivo: 'Falla en el sistema de enfriamiento'
+      },
+      observaciones: 'No hay presupuesto disponible para la reparación'
+    },
+  ]);
 
-  const filteredRequests = mockRequests.filter(request => {
-    if (filters.status && request.status !== filters.status) return false;
-    if (filters.request_type && request.request_type !== filters.request_type) return false;
-    if (searchTerm) {
-      const searchLower = searchTerm.toLowerCase();
-      return (
-        request.name.toLowerCase().includes(searchLower) ||
-        request.last_name.toLowerCase().includes(searchLower) ||
-        request.email.toLowerCase().includes(searchLower) ||
-        request.id_number.includes(searchLower)
-      );
-    }
-    return true;
-  });
-
-  const {
-    currentPage,
-    itemsPerPage,
-    totalPages,
-    totalItems,
-    paginatedData: paginatedRequests,
-    goToPage,
-    setItemsPerPage
-  } = usePagination({
-    data: filteredRequests,
-    initialItemsPerPage: 10
-  });
+  const { toast } = useToast();
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -76,63 +96,59 @@ const AdminSolicitudesPage: React.FC = () => {
     }
   };
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('es-CO', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
+  const handleViewDetails = (solicitud: SolicitudDetallada) => {
+    console.log('Ver detalles de solicitud:', solicitud);
+    setSelectedSolicitud(solicitud);
   };
 
-  const getStatusIcon = (status: string) => {
+  const handleChangeStatus = (id: string, newStatus: 'aprobada' | 'rechazada') => {
+    setSolicitudes(solicitudes.map(solicitud =>
+      solicitud.id === id ? { ...solicitud, estado: newStatus } : solicitud
+    ));
+    toast({
+      title: `Solicitud ${newStatus === 'aprobada' ? 'Aprobada' : 'Rechazada'}`,
+      description: `La solicitud #${id} ha sido ${newStatus === 'aprobada' ? 'aprobada' : 'rechazada'} exitosamente.`,
+    });
+    setSelectedSolicitud(null);
+  };
+
+  const filteredSolicitudes = solicitudes.filter(solicitud => {
+    const matchesSearch = solicitud.usuario.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                           solicitud.tipo.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus = selectedStatus === 'all' || solicitud.estado === selectedStatus;
+    return matchesSearch && matchesStatus;
+  });
+
+  const {
+    currentPage,
+    itemsPerPage,
+    totalPages,
+    totalItems,
+    paginatedData,
+    goToPage,
+    setItemsPerPage
+  } = usePagination({
+    data: filteredSolicitudes,
+    initialItemsPerPage: 10
+  });
+
+  const getStatusColor = (status: string) => {
     switch (status) {
-      case 'pending': return <Clock className="h-4 w-4" />;
-      case 'in_progress': return <AlertCircle className="h-4 w-4" />;
-      case 'resolved': return <CheckCircle className="h-4 w-4" />;
-      case 'rejected': return <XCircle className="h-4 w-4" />;
-      default: return <Clock className="h-4 w-4" />;
+      case 'pendiente': return 'bg-yellow-100 text-yellow-700';
+      case 'aprobada': return 'bg-green-100 text-green-700';
+      case 'rechazada': return 'bg-red-100 text-red-700';
+      default: return 'bg-gray-100 text-gray-700';
     }
   };
 
-  const handleStatusUpdate = (requestId: string, newStatus: string) => {
-    console.log(`Actualizando solicitud ${requestId} a estado: ${newStatus}`);
-    // Aquí se haría la llamada al API en el futuro
+  const getStatusLabel = (status: string) => {
+    switch (status) {
+      case 'pendiente': return 'Pendiente';
+      case 'aprobada': return 'Aprobada';
+      case 'rechazada': return 'Rechazada';
+      default: return status;
+    }
   };
-
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text);
-  };
-
-  const renderRequestActions = () => (
-    <>
-      <Button
-        onClick={() => selectedRequest && handleStatusUpdate(selectedRequest.id, 'in_progress')}
-        className="bg-blue-600 hover:bg-blue-700"
-        disabled={selectedRequest?.status === 'in_progress'}
-      >
-        <Edit className="h-4 w-4 mr-2" />
-        Marcar en Proceso
-      </Button>
-      <Button
-        onClick={() => selectedRequest && handleStatusUpdate(selectedRequest.id, 'resolved')}
-        className="bg-green-600 hover:bg-green-700"
-        disabled={selectedRequest?.status === 'resolved'}
-      >
-        <CheckCircle className="h-4 w-4 mr-2" />
-        Marcar como Resuelto
-      </Button>
-      <Button
-        onClick={() => selectedRequest && handleStatusUpdate(selectedRequest.id, 'rejected')}
-        variant="destructive"
-        disabled={selectedRequest?.status === 'rejected'}
-      >
-        <XCircle className="h-4 w-4 mr-2" />
-        Rechazar
-      </Button>
-    </>
-  );
 
   return (
     <AdminLayout>
@@ -157,217 +173,161 @@ const AdminSolicitudesPage: React.FC = () => {
                         Gestión de Solicitudes
                       </CardTitle>
                       <CardDescription className="text-base mt-2">
-                        Administra y da seguimiento a todas las solicitudes realizadas por los afiliados
+                        Administra y procesa las solicitudes de los usuarios de ProSalud
                       </CardDescription>
                     </div>
                   </div>
-                  <Button
-                    onClick={() => setExportDialogOpen(true)}
-                    className="bg-primary-prosalud hover:bg-primary-prosalud-dark text-white"
-                  >
-                    <Download className="h-4 w-4 mr-2" />
-                    Exportar Datos
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button 
+                      variant="outline"
+                      onClick={() => setExportDialogOpen(true)}
+                    >
+                      <Download className="h-4 w-4 mr-2" />
+                      Exportar
+                    </Button>
+                    <Button 
+                      onClick={() => setFilterDialogOpen(true)}
+                      className="bg-primary-prosalud hover:bg-primary-prosalud-dark text-white"
+                    >
+                      <Filter className="h-4 w-4 mr-2" />
+                      Filtros Avanzados
+                    </Button>
+                  </div>
                 </div>
               </CardHeader>
             </Card>
           </motion.div>
 
           {/* Stats Cards */}
-          <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Card className="border-l-4 border-l-primary-prosalud">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-gray-600">Total Solicitudes</p>
-                    <p className="text-3xl font-bold text-primary-prosalud">{mockRequestStats.total}</p>
-                  </div>
-                  <Users className="h-8 w-8 text-primary-prosalud" />
-                </div>
+          <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Card className="border shadow-sm">
+              <CardHeader>
+                <CardTitle className="text-xl font-bold">Solicitudes Pendientes</CardTitle>
+                <CardDescription>Número de solicitudes que requieren atención</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="text-4xl font-bold text-primary-prosalud">{solicitudes.filter(s => s.estado === 'pendiente').length}</div>
               </CardContent>
             </Card>
 
-            <Card className="border-l-4 border-l-yellow-500">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-gray-600">Pendientes</p>
-                    <p className="text-3xl font-bold text-yellow-600">{mockRequestStats.pending}</p>
-                  </div>
-                  <Clock className="h-8 w-8 text-yellow-500" />
-                </div>
+            <Card className="border shadow-sm">
+              <CardHeader>
+                <CardTitle className="text-xl font-bold">Solicitudes Aprobadas</CardTitle>
+                <CardDescription>Número de solicitudes que han sido aprobadas</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="text-4xl font-bold text-green-500">{solicitudes.filter(s => s.estado === 'aprobada').length}</div>
               </CardContent>
             </Card>
 
-            <Card className="border-l-4 border-l-green-500">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-gray-600">Resueltas</p>
-                    <p className="text-3xl font-bold text-green-600">{mockRequestStats.resolved}</p>
-                  </div>
-                  <CheckCircle className="h-8 w-8 text-green-500" />
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="border-l-4 border-l-blue-500">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-gray-600">Este Mes</p>
-                    <p className="text-3xl font-bold text-blue-600">{mockRequestStats.this_month}</p>
-                  </div>
-                  <TrendingUp className="h-8 w-8 text-blue-500" />
-                </div>
+            <Card className="border shadow-sm">
+              <CardHeader>
+                <CardTitle className="text-xl font-bold">Solicitudes Rechazadas</CardTitle>
+                <CardDescription>Número de solicitudes que han sido rechazadas</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="text-4xl font-bold text-red-500">{solicitudes.filter(s => s.estado === 'rechazada').length}</div>
               </CardContent>
             </Card>
           </motion.div>
 
           {/* Filters */}
-          <motion.div variants={itemVariants}>
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Filter className="h-5 w-5" />
-                  Filtros y Búsqueda
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                  <div className="relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+          >
+            <Card className="border shadow-sm">
+              <CardContent className="p-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="search" className="text-sm font-medium text-gray-700">Buscar Solicitud</Label>
                     <Input
-                      placeholder="Buscar por nombre, email o ID..."
+                      type="text"
+                      id="search"
+                      placeholder="Buscar por usuario o tipo..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className="pl-10"
                     />
                   </div>
-                  
-                  <Select value={filters.status || "all"} onValueChange={(value) => setFilters({...filters, status: value === "all" ? undefined : value})}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Estado" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">Todos los estados</SelectItem>
-                      <SelectItem value="pending">Pendiente</SelectItem>
-                      <SelectItem value="in_progress">En Proceso</SelectItem>
-                      <SelectItem value="resolved">Resuelto</SelectItem>
-                      <SelectItem value="rejected">Rechazado</SelectItem>
-                    </SelectContent>
-                  </Select>
-
-                  <Select value={filters.request_type || "all"} onValueChange={(value) => setFilters({...filters, request_type: value === "all" ? undefined : value})}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Tipo de Solicitud" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">Todos los tipos</SelectItem>
-                      {Object.entries(requestTypeLabels).map(([key, label]) => (
-                        <SelectItem key={key} value={key}>{label}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-
-                  <Button 
-                    variant="outline" 
-                    onClick={() => {setFilters({}); setSearchTerm('');}}
-                    className="w-full"
-                  >
-                    Limpiar Filtros
-                  </Button>
+                  <div>
+                    <Label htmlFor="status" className="text-sm font-medium text-gray-700">Filtrar por Estado</Label>
+                    <Select value={selectedStatus} onValueChange={setSelectedStatus}>
+                      <SelectTrigger className="bg-gray-50 border-gray-300">
+                        <SelectValue placeholder="Todos los estados" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">Todos los estados</SelectItem>
+                        <SelectItem value="pendiente">Pendiente</SelectItem>
+                        <SelectItem value="aprobada">Aprobada</SelectItem>
+                        <SelectItem value="rechazada">Rechazada</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
               </CardContent>
             </Card>
           </motion.div>
 
           {/* Requests Table */}
-          <motion.div variants={itemVariants}>
-            <Card>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            <Card className="border shadow-sm">
               <CardHeader>
-                <CardTitle>Solicitudes ({totalItems})</CardTitle>
+                <CardTitle className="flex items-center space-x-2">
+                  <FileText className="h-5 w-5" />
+                  <span>Solicitudes ({totalItems})</span>
+                </CardTitle>
                 <CardDescription>
-                  Lista completa de solicitudes realizadas por los afiliados
+                  Lista completa de solicitudes
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="overflow-x-auto">
+                <div className="rounded-md border overflow-hidden">
                   <Table>
                     <TableHeader>
-                      <TableRow>
-                        <TableHead>Solicitante</TableHead>
+                      <TableRow className="bg-gray-50">
+                        <TableHead>ID</TableHead>
+                        <TableHead>Usuario</TableHead>
                         <TableHead>Tipo</TableHead>
+                        <TableHead>Fecha Creación</TableHead>
                         <TableHead>Estado</TableHead>
-                        <TableHead>Fecha</TableHead>
-                        <TableHead>Acciones</TableHead>
+                        <TableHead className="text-right">Acciones</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {paginatedRequests.map((request) => (
-                        <TableRow key={request.id} className="hover:bg-gray-50">
+                      {paginatedData.map((solicitud) => (
+                        <TableRow key={solicitud.id} className="hover:bg-gray-50 transition-colors">
                           <TableCell>
-                            <div className="flex items-center gap-3">
-                              <div className="bg-primary-prosalud-light rounded-full p-2">
-                                <User className="h-4 w-4 text-primary-prosalud" />
-                              </div>
-                              <div>
-                                <p className="font-medium">{request.name} {request.last_name}</p>
-                                <p className="text-sm text-gray-500">{request.email}</p>
-                                <p className="text-xs text-gray-400">{request.id_type}: {request.id_number}</p>
-                              </div>
-                            </div>
+                            <span className="font-mono text-sm">#{solicitud.id}</span>
                           </TableCell>
                           <TableCell>
-                            <div className="space-y-1">
-                              <p className="font-medium text-sm">{requestTypeLabels[request.request_type]}</p>
-                              <p className="text-xs text-gray-500">ID: {request.id}</p>
-                            </div>
+                            <span className="font-medium text-gray-900">{solicitud.usuario}</span>
                           </TableCell>
                           <TableCell>
-                            <Badge className={`${statusColors[request.status]} flex items-center gap-1 w-fit`}>
-                              {getStatusIcon(request.status)}
-                              {statusLabels[request.status]}
+                            <span className="text-gray-600">{solicitud.tipo}</span>
+                          </TableCell>
+                          <TableCell>
+                            {new Date(solicitud.fechaCreacion).toLocaleDateString()}
+                          </TableCell>
+                          <TableCell>
+                            <Badge className={getStatusColor(solicitud.estado)}>
+                              {getStatusLabel(solicitud.estado)}
                             </Badge>
                           </TableCell>
-                          <TableCell>
-                            <div className="space-y-1">
-                              <p className="text-sm">{formatDate(request.created_at)}</p>
-                              {request.resolved_at && (
-                                <p className="text-xs text-green-600">
-                                  ✓ Resuelto: {formatDate(request.resolved_at)}
-                                </p>
-                              )}
-                            </div>
-                          </TableCell>
-                          <TableCell>
-                            <div className="flex items-center gap-2">
-                              <Button
-                                variant="ghost"
+                          <TableCell className="text-right">
+                            <div className="flex justify-end space-x-2">
+                              <Button 
+                                variant="ghost" 
                                 size="sm"
-                                onClick={() => setSelectedRequest(request)}
+                                onClick={() => handleViewDetails(solicitud)}
+                                className="hover:bg-gray-100 text-gray-700 hover:text-gray-900"
                               >
-                                <Eye className="h-4 w-4" />
+                                Ver
                               </Button>
-
-                              <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                  <Button variant="ghost" size="sm">
-                                    <MoreHorizontal className="h-4 w-4" />
-                                  </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent>
-                                  <DropdownMenuItem onClick={() => handleStatusUpdate(request.id, 'in_progress')}>
-                                    Marcar en Proceso
-                                  </DropdownMenuItem>
-                                  <DropdownMenuItem onClick={() => handleStatusUpdate(request.id, 'resolved')}>
-                                    Marcar como Resuelto
-                                  </DropdownMenuItem>
-                                  <DropdownMenuItem onClick={() => handleStatusUpdate(request.id, 'rejected')}>
-                                    Rechazar
-                                  </DropdownMenuItem>
-                                </DropdownMenuContent>
-                              </DropdownMenu>
                             </div>
                           </TableCell>
                         </TableRow>
@@ -389,204 +349,166 @@ const AdminSolicitudesPage: React.FC = () => {
             </Card>
           </motion.div>
 
-          {/* Request Details Modal - Using standardized AdminModal */}
-          <AdminModal
-            open={!!selectedRequest}
-            onOpenChange={() => setSelectedRequest(null)}
-            title="Detalles de la Solicitud"
-            description="Información detallada de la solicitud"
-            size="6xl"
-            actions={renderRequestActions()}
-          >
-            {selectedRequest && (
-              <div className="space-y-6">
-                {/* Personal Information Section */}
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                  <Card>
-                    <CardHeader className="pb-3">
-                      <CardTitle className="text-lg flex items-center gap-2">
-                        <User className="h-5 w-5" />
-                        Información Personal
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div>
-                        <label className="text-sm font-medium text-gray-600">Nombre Completo</label>
-                        <div className="flex items-center gap-2 mt-1">
-                          <p className="text-sm">{selectedRequest.name} {selectedRequest.last_name}</p>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => copyToClipboard(`${selectedRequest.name} ${selectedRequest.last_name}`)}
-                            className="h-6 w-6 p-0"
-                          >
-                            <Copy className="h-3 w-3" />
-                          </Button>
-                        </div>
-                      </div>
-                      <div>
-                        <label className="text-sm font-medium text-gray-600">Documento</label>
-                        <div className="flex items-center gap-2 mt-1">
-                          <p className="text-sm">{selectedRequest.id_type} {selectedRequest.id_number}</p>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => copyToClipboard(selectedRequest.id_number)}
-                            className="h-6 w-6 p-0"
-                          >
-                            <Copy className="h-3 w-3" />
-                          </Button>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  <Card>
-                    <CardHeader className="pb-3">
-                      <CardTitle className="text-lg flex items-center gap-2">
-                        <Mail className="h-5 w-5" />
-                        Contacto
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div>
-                        <label className="text-sm font-medium text-gray-600">Email</label>
-                        <div className="flex items-center gap-2 mt-1">
-                          <p className="text-sm">{selectedRequest.email}</p>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => copyToClipboard(selectedRequest.email)}
-                            className="h-6 w-6 p-0"
-                          >
-                            <Copy className="h-3 w-3" />
-                          </Button>
-                        </div>
-                      </div>
-                      <div>
-                        <label className="text-sm font-medium text-gray-600">Teléfono</label>
-                        <div className="flex items-center gap-2 mt-1">
-                          <p className="text-sm">{selectedRequest.phone_number}</p>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => copyToClipboard(selectedRequest.phone_number)}
-                            className="h-6 w-6 p-0"
-                          >
-                            <Copy className="h-3 w-3" />
-                          </Button>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  <Card>
-                    <CardHeader className="pb-3">
-                      <CardTitle className="text-lg flex items-center gap-2">
-                        <Calendar className="h-5 w-5" />
-                        Estado de la Solicitud
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div>
-                        <label className="text-sm font-medium text-gray-600">Tipo de Solicitud</label>
-                        <p className="text-sm mt-1 font-medium">{requestTypeLabels[selectedRequest.request_type]}</p>
-                      </div>
-                      <div>
-                        <label className="text-sm font-medium text-gray-600">ID de Solicitud</label>
-                        <div className="flex items-center gap-2 mt-1">
-                          <p className="text-sm font-mono bg-gray-100 px-2 py-1 rounded">{selectedRequest.id}</p>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => copyToClipboard(selectedRequest.id)}
-                            className="h-6 w-6 p-0"
-                          >
-                            <Copy className="h-3 w-3" />
-                          </Button>
-                        </div>
-                      </div>
-                      <div>
-                        <label className="text-sm font-medium text-gray-600">Estado Actual</label>
-                        <Badge className={`${statusColors[selectedRequest.status]} flex items-center gap-1 w-fit mt-1`}>
-                          {getStatusIcon(selectedRequest.status)}
-                          {statusLabels[selectedRequest.status]}
-                        </Badge>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
-
-                {/* Timeline Section */}
-                <Card>
-                  <CardHeader className="pb-3">
-                    <CardTitle className="text-lg flex items-center gap-2">
-                      <Clock className="h-5 w-5" />
-                      Timeline de la Solicitud
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <div>
-                        <label className="text-sm font-medium text-gray-600">Fecha de Creación</label>
-                        <p className="text-sm mt-1">{formatDate(selectedRequest.created_at)}</p>
-                      </div>
-                      {selectedRequest.processed_at && (
-                        <div>
-                          <label className="text-sm font-medium text-gray-600">Fecha de Procesamiento</label>
-                          <p className="text-sm mt-1">{formatDate(selectedRequest.processed_at)}</p>
-                        </div>
-                      )}
-                      {selectedRequest.resolved_at && (
-                        <div>
-                          <label className="text-sm font-medium text-gray-600">Fecha de Resolución</label>
-                          <p className="text-sm mt-1 text-green-600">{formatDate(selectedRequest.resolved_at)}</p>
-                        </div>
-                      )}
-                    </div>
-                  </CardContent>
-                </Card>
-                
-                {/* Request Details Section */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg flex items-center gap-2">
-                      <Database className="h-5 w-5" />
-                      Detalles Específicos de la Solicitud
-                    </CardTitle>
-                    <CardDescription>
-                      Información detallada y estructurada de la solicitud
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="bg-slate-50 p-4 rounded-lg border">
-                      <ReactJson
-                        src={selectedRequest.payload}
-                        theme="rjv-default"
-                        style={{
-                          backgroundColor: 'transparent',
-                          fontSize: '14px'
-                        }}
-                        displayDataTypes={false}
-                        displayObjectSize={false}
-                        enableClipboard={true}
-                        collapsed={false}
-                        collapseStringsAfterLength={50}
-                        iconStyle="triangle"
-                        indentWidth={4}
-                        name="solicitud_datos"
-                        quotesOnKeys={false}
-                        sortKeys={true}
-                      />
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            )}
-          </AdminModal>
-
           {/* Export Dialog */}
-          <ExportRequestsDialog open={exportDialogOpen} onOpenChange={setExportDialogOpen} />
+          <Dialog open={exportDialogOpen} onOpenChange={setExportDialogOpen}>
+            <DialogContent className="max-w-md">
+              <DialogHeader>
+                <DialogTitle>Exportar Solicitudes</DialogTitle>
+                <DialogDescription>
+                  Selecciona el formato y rango de fechas para exportar las solicitudes.
+                </DialogDescription>
+              </DialogHeader>
+              {/* Add export options here */}
+              <Button>Exportar</Button>
+            </DialogContent>
+          </Dialog>
+
+          {/* Advanced Filters Dialog */}
+          <Dialog open={filterDialogOpen} onOpenChange={setFilterDialogOpen}>
+            <DialogContent className="max-w-md">
+              <DialogHeader>
+                <DialogTitle>Filtros Avanzados</DialogTitle>
+                <DialogDescription>
+                  Aplica filtros avanzados para refinar la búsqueda de solicitudes.
+                </DialogDescription>
+              </DialogHeader>
+              {/* Add filter options here */}
+              <Button>Aplicar Filtros</Button>
+            </DialogContent>
+          </Dialog>
+
+          {/* Request Details Dialog */}
+          {selectedSolicitud && (
+            <Dialog open={!!selectedSolicitud} onOpenChange={() => setSelectedSolicitud(null)}>
+              <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white">
+                <div className="bg-white min-h-full">
+                  <div className="flex items-center justify-between p-6 border-b border-gray-200">
+                    <div className="flex items-center space-x-3">
+                      <div className="bg-primary-prosalud/10 p-2 rounded-lg">
+                        <FileText className="h-6 w-6 text-primary-prosalud" />
+                      </div>
+                      <div>
+                        <h2 className="text-2xl font-bold text-gray-900">
+                          Detalles de Solicitud #{selectedSolicitud.id}
+                        </h2>
+                        <p className="text-sm text-gray-600">
+                          Información completa de la solicitud
+                        </p>
+                      </div>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setSelectedSolicitud(null)}
+                      className="h-8 w-8 p-0 hover:bg-gray-100"
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
+
+                  <div className="p-6 space-y-6">
+                    {/* Información Básica */}
+                    <Card className="border border-gray-200 shadow-sm">
+                      <CardHeader className="bg-gray-50 border-b border-gray-200">
+                        <CardTitle className="text-lg font-semibold text-gray-900">Información Básica</CardTitle>
+                      </CardHeader>
+                      <CardContent className="p-6 space-y-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium text-gray-700">Usuario Solicitante</label>
+                            <p className="text-gray-900 bg-gray-50 p-2 rounded border">{selectedSolicitud.usuario}</p>
+                          </div>
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium text-gray-700">Tipo de Solicitud</label>
+                            <p className="text-gray-900 bg-gray-50 p-2 rounded border">{selectedSolicitud.tipo}</p>
+                          </div>
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium text-gray-700">Fecha de Creación</label>
+                            <p className="text-gray-900 bg-gray-50 p-2 rounded border">{new Date(selectedSolicitud.fechaCreacion).toLocaleDateString()}</p>
+                          </div>
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium text-gray-700">Estado Actual</label>
+                            <div className="bg-gray-50 p-2 rounded border">
+                              <Badge className={getStatusColor(selectedSolicitud.estado)}>
+                                {getStatusLabel(selectedSolicitud.estado)}
+                              </Badge>
+                            </div>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    {/* Detalles Específicos */}
+                    <Card className="border border-gray-200 shadow-sm">
+                      <CardHeader className="bg-gray-50 border-b border-gray-200">
+                        <CardTitle className="text-lg font-semibold text-gray-900">Detalles Específicos de la Solicitud</CardTitle>
+                      </CardHeader>
+                      <CardContent className="p-6">
+                        <div className="bg-white border border-gray-200 rounded-lg p-4">
+                          <ReactJson 
+                            src={selectedSolicitud.detalles}
+                            theme="bright:inverted"
+                            displayDataTypes={false}
+                            displayObjectSize={false}
+                            enableClipboard={true}
+                            collapsed={1}
+                            name="detalles"
+                            style={{
+                              backgroundColor: '#fafafa',
+                              padding: '16px',
+                              borderRadius: '8px',
+                              fontSize: '14px'
+                            }}
+                          />
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    {/* Observaciones */}
+                    {selectedSolicitud.observaciones && (
+                      <Card className="border border-gray-200 shadow-sm">
+                        <CardHeader className="bg-gray-50 border-b border-gray-200">
+                          <CardTitle className="text-lg font-semibold text-gray-900">Observaciones</CardTitle>
+                        </CardHeader>
+                        <CardContent className="p-6">
+                          <div className="bg-gray-50 p-4 rounded border text-gray-900">
+                            {selectedSolicitud.observaciones}
+                          </div>
+                        </CardContent>
+                      </Card>
+                    )}
+
+                    {/* Acciones */}
+                    <div className="flex justify-end space-x-3 pt-4 border-t border-gray-200">
+                      <Button 
+                        variant="outline" 
+                        onClick={() => setSelectedSolicitud(null)}
+                      >
+                        Cerrar
+                      </Button>
+                      {selectedSolicitud.estado === 'pendiente' && (
+                        <>
+                          <Button 
+                            variant="outline" 
+                            onClick={() => handleChangeStatus(selectedSolicitud.id, 'rechazada')}
+                            className="text-red-600 border-red-200 hover:bg-red-50"
+                          >
+                            Rechazar
+                          </Button>
+                          <Button 
+                            onClick={() => handleChangeStatus(selectedSolicitud.id, 'aprobada')}
+                            className="bg-primary-prosalud hover:bg-primary-prosalud-dark text-white"
+                          >
+                            Aprobar
+                          </Button>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
+          )}
         </motion.div>
       </div>
     </AdminLayout>

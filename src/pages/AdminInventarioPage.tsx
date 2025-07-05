@@ -11,7 +11,8 @@ import {
   ClipboardList, 
   Plus,
   BarChart3,
-  FileText
+  FileText,
+  X
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import InventoryOverview from '@/components/admin/inventario/InventoryOverview';
@@ -196,11 +197,23 @@ const AdminInventarioPage: React.FC = () => {
           {/* Dialog para Nueva Solicitud */}
           {newRequestOpen && (
             <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-              <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-                <NewRequestForm 
-                  onClose={() => setNewRequestOpen(false)} 
-                  onSuccess={handleNewRequestSuccess}
-                />
+              <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto relative">
+                <div className="absolute top-4 right-4 z-10">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setNewRequestOpen(false)}
+                    className="h-8 w-8 p-0 hover:bg-gray-100"
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
+                <div className="p-6">
+                  <NewRequestForm 
+                    onClose={() => setNewRequestOpen(false)} 
+                    onSuccess={handleNewRequestSuccess}
+                  />
+                </div>
               </div>
             </div>
           )}
