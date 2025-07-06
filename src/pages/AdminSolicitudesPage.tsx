@@ -336,9 +336,6 @@ const AdminSolicitudesPage: React.FC = () => {
               <CardContent className="pt-0">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
                   <div className="md:col-span-2">
-                    <Label htmlFor="search" className="text-sm font-medium text-gray-700 mb-2 block">
-                      Buscar solicitudes
-                    </Label>
                     <div className="relative">
                       <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                       <Input
@@ -352,9 +349,6 @@ const AdminSolicitudesPage: React.FC = () => {
                     </div>
                   </div>
                   <div className="md:col-span-1">
-                    <Label htmlFor="status" className="text-sm font-medium text-gray-700 mb-2 block">
-                      Estado
-                    </Label>
                     <Select value={selectedStatus} onValueChange={setSelectedStatus}>
                       <SelectTrigger className="h-10">
                         <SelectValue placeholder="Todos los estados" />
