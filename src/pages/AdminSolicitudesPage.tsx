@@ -453,8 +453,9 @@ const AdminSolicitudesPage: React.FC = () => {
                     <Button 
                       variant="outline" 
                       onClick={clearFilters}
-                      className="h-10 w-full"
+                      className="h-10 w-full flex items-center gap-2"
                     >
+                      <Brush className="w-4 h-4" />
                       Limpiar Filtros
                     </Button>
                   </div>
