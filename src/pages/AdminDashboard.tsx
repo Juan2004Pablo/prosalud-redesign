@@ -108,18 +108,26 @@ const AdminDashboard: React.FC = () => {
           className="p-4 sm:p-6 space-y-6 sm:space-y-8 max-w-7xl mx-auto"
         >
           {/* Header */}
-          <motion.div variants={itemVariants} className="relative">
-            <div className="bg-primary-prosalud/10 p-3 rounded-lg">
-              <CircleGauge className="h-8 w-8 text-primary-prosalud" />
-            </div>
-            <div>
-              <CardTitle className="text-3xl font-bold text-primary-prosalud">
-                Panel Administrativo
-              </CardTitle>
-              <CardDescription className="text-base mt-2">
-                Gestiona usuarios, contenidos y métricas de la plataforma ProSalud desde un solo lugar.
-              </CardDescription>
-            </div>
+          <motion.div variants={itemVariants}>
+            <Card className="border shadow-sm">
+              <CardHeader className="pb-6">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className="bg-primary-prosalud/10 p-3 rounded-lg">
+                      <CircleGauge className="h-8 w-8 text-primary-prosalud" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-3xl font-bold text-primary-prosalud">
+                        Panel Administrativo
+                      </CardTitle>
+                      <CardDescription className="text-base mt-2">
+                        Gestiona usuarios, contenidos y métricas de la plataforma ProSalud desde un solo lugar.
+                      </CardDescription>
+                    </div>
+                  </div>
+                </div>
+              </CardHeader>
+            </Card>
           </motion.div>
 
           {/* Quick Actions */}
