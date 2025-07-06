@@ -335,8 +335,9 @@ const AdminSolicitudesPage: React.FC = () => {
           >
             <Card className="border shadow-sm">
               <CardContent className="p-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="relative md:col-span-2">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                     <Label htmlFor="search" className="text-sm font-medium text-gray-700">Buscar Solicitud</Label>
                     <Input
                       type="text"
@@ -346,7 +347,7 @@ const AdminSolicitudesPage: React.FC = () => {
                       onChange={(e) => setSearchTerm(e.target.value)}
                     />
                   </div>
-                  <div>
+                  <div className="relative md:col-span-1">
                     <Label htmlFor="status" className="text-sm font-medium text-gray-700">Filtrar por Estado</Label>
                     <Select value={selectedStatus} onValueChange={setSelectedStatus}>
                       <SelectTrigger className="bg-gray-50 border-gray-300">
