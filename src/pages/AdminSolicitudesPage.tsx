@@ -274,21 +274,13 @@ const AdminSolicitudesPage: React.FC = () => {
                       </CardDescription>
                     </div>
                   </div>
-                  <div className="flex gap-2">
-                    <Button 
-                      variant="outline"
-                      onClick={() => setExportDialogOpen(true)}
-                    >
-                      <Download className="h-4 w-4 mr-2" />
-                      Exportar
-                    </Button>
-                    <Button 
-                      onClick={() => setFilterDialogOpen(true)}
-                      className="bg-primary-prosalud hover:bg-primary-prosalud-dark text-white"
-                    >
-                      <Filter className="h-4 w-4 mr-2" />
-                      Filtros Avanzados
-                    </Button>
+                  <Button 
+                    variant="outline"
+                    onClick={() => setExportDialogOpen(true)}
+                  >
+                    <Download className="h-4 w-4 mr-2" />
+                    Exportar
+                  </Button>
                   </div>
                 </div>
               </CardHeader>
@@ -337,7 +329,7 @@ const AdminSolicitudesPage: React.FC = () => {
             <Card className="border shadow-sm">
               <CardContent className="p-6">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="relative md:col-span-2">
+                  <div className="flex items-center relative md:col-span-2">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                     <Label htmlFor="search" className="text-sm font-medium text-gray-700">Buscar Solicitud</Label>
                     <Input
