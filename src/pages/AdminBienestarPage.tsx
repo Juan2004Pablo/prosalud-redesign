@@ -174,7 +174,7 @@ const AdminBienestarPage: React.FC = () => {
                       className="pl-10"
                     />
                   </div>
-                  <select
+                  {/*<select
                     value={categoryFilter}
                     onChange={(e) => setCategoryFilter(e.target.value)}
                     className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-prosalud"
@@ -184,7 +184,17 @@ const AdminBienestarPage: React.FC = () => {
                         {category === 'all' ? 'Todas las categorías' : category}
                       </option>
                     ))}
-                  </select>
+                  </select> */ }
+                  <Select value={statusFilter} onValueChange={setStatusFilter}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Estado" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {categories.map(category => (
+                        <SelectItem value={category}>{category === 'all' ? 'Todas las categorías' : category}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
               </CardContent>
             </Card>
