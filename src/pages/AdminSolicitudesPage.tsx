@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import AdminLayout from '@/components/admin/AdminLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -15,7 +14,11 @@ import {
   X,
   User,
   Eye,
-  MoreHorizontal
+  MoreHorizontal,
+  Clock,
+  CheckCircle,
+  TrendingUp,
+  Users
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useToast } from '@/hooks/use-toast';
@@ -47,6 +50,7 @@ const AdminSolicitudesPage: React.FC = () => {
   const [filterDialogOpen, setFilterDialogOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedStatus, setSelectedStatus] = useState<string>('all');
+  const [selectedType, setSelectedType] = useState<string>('all');
   const [solicitudes, setSolicitudes] = useState<SolicitudDetallada[]>([
     {
       id: 'req-001',
@@ -212,7 +216,8 @@ const AdminSolicitudesPage: React.FC = () => {
                            solicitud.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
                            solicitud.tipo.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = selectedStatus === 'all' || solicitud.estado === selectedStatus;
-    return matchesSearch && matchesStatus;
+    const matchesType = selectedType === 'all' || solicitud.tipo === selectedType;
+    return matchesSearch && matchesStatus && matchesType;
   });
 
   const {
@@ -247,6 +252,14 @@ const AdminSolicitudesPage: React.FC = () => {
       default: return status;
     }
   };
+
+  const clearFilters = () => {
+    setSearchTerm('');
+    setSelectedStatus('all');
+    setSelectedType('all');
+  };
+
+  const uniqueTypes = Array.from(new Set(solicitudes.map(s => s.tipo)));
 
   return (
     <AdminLayout>
@@ -288,36 +301,70 @@ const AdminSolicitudesPage: React.FC = () => {
           </motion.div>
 
           {/* Stats Cards */}
-          <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Card className="border shadow-sm">
-              <CardHeader>
-                <CardTitle className="text-xl font-bold">Solicitudes Pendientes</CardTitle>
-                <CardDescription>Número de solicitudes que requieren atención</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="text-4xl font-bold text-primary-prosalud">{solicitudes.filter(s => s.estado === 'pendiente').length}</div>
-              </CardContent>
-            </Card>
+          <motion.div variants={itemVariants}>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <Card className="border-l-4 border-l-blue-500 shadow-sm">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-gray-600 mb-1">Total Solicitudes</p>
+                      <p className="text-3xl font-bold text-blue-600">{solicitudes.length}</p>
+                    </div>
+                    <div className="bg-blue-100 p-3 rounded-full">
+                      <Users className="h-6 w-6 text-blue-600" />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
 
-            <Card className="border shadow-sm">
-              <CardHeader>
-                <CardTitle className="text-xl font-bold">Solicitudes Resueltas</CardTitle>
-                <CardDescription>Número de solicitudes que han sido resueltas</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="text-4xl font-bold text-green-500">{solicitudes.filter(s => s.estado === 'resuelto').length}</div>
-              </CardContent>
-            </Card>
+              <Card className="border-l-4 border-l-yellow-500 shadow-sm">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-gray-600 mb-1">Pendientes</p>
+                      <p className="text-3xl font-bold text-yellow-600">{solicitudes.filter(s => s.estado === 'pendiente').length}</p>
+                    </div>
+                    <div className="bg-yellow-100 p-3 rounded-full">
+                      <Clock className="h-6 w-6 text-yellow-600" />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
 
-            <Card className="border shadow-sm">
-              <CardHeader>
-                <CardTitle className="text-xl font-bold">En Proceso</CardTitle>
-                <CardDescription>Número de solicitudes en proceso</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="text-4xl font-bold text-blue-500">{solicitudes.filter(s => s.estado === 'en_proceso').length}</div>
-              </CardContent>
-            </Card>
+              <Card className="border-l-4 border-l-green-500 shadow-sm">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-gray-600 mb-1">Resueltas</p>
+                      <p className="text-3xl font-bold text-green-600">{solicitudes.filter(s => s.estado === 'resuelto').length}</p>
+                    </div>
+                    <div className="bg-green-100 p-3 rounded-full">
+                      <CheckCircle className="h-6 w-6 text-green-600" />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="border-l-4 border-l-purple-500 shadow-sm">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-gray-600 mb-1">Este Mes</p>
+                      <p className="text-3xl font-bold text-purple-600">
+                        {solicitudes.filter(s => {
+                          const solicitudMonth = s.fechaCreacion.getMonth();
+                          const currentMonth = new Date().getMonth();
+                          return solicitudMonth === currentMonth;
+                        }).length}
+                      </p>
+                    </div>
+                    <div className="bg-purple-100 p-3 rounded-full">
+                      <TrendingUp className="h-6 w-6 text-purple-600" />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </motion.div>
 
           {/* Filters */}
@@ -330,17 +377,16 @@ const AdminSolicitudesPage: React.FC = () => {
               <CardHeader className="pb-4">
                 <CardTitle className="flex items-center gap-2 text-lg font-semibold">
                   <Filter className="h-5 w-5" />
-                  Filtros
+                  Filtros y Búsqueda
                 </CardTitle>
               </CardHeader>
               <CardContent className="pt-0">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
+                <div className="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
                   <div className="md:col-span-2">
                     <div className="relative">
                       <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                       <Input
                         type="text"
-                        id="search"
                         placeholder="Buscar por nombre, email o tipo de solicitud..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
@@ -348,19 +394,75 @@ const AdminSolicitudesPage: React.FC = () => {
                       />
                     </div>
                   </div>
-                  <div className="md:col-span-1">
+                  <div>
                     <Select value={selectedStatus} onValueChange={setSelectedStatus}>
                       <SelectTrigger className="h-10">
                         <SelectValue placeholder="Todos los estados" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="all">Todos los estados</SelectItem>
-                        <SelectItem value="pendiente">Pendiente</SelectItem>
-                        <SelectItem value="en_proceso">En Proceso</SelectItem>
-                        <SelectItem value="resuelto">Resuelto</SelectItem>
-                        <SelectItem value="rechazada">Rechazado</SelectItem>
+                        <SelectItem value="all">
+                          <span className="flex items-center gap-2">
+                            <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                            Todos los estados
+                          </span>
+                        </SelectItem>
+                        <SelectItem value="pendiente">
+                          <span className="flex items-center gap-2">
+                            <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                            Pendiente
+                          </span>
+                        </SelectItem>
+                        <SelectItem value="en_proceso">
+                          <span className="flex items-center gap-2">
+                            <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                            En Proceso
+                          </span>
+                        </SelectItem>
+                        <SelectItem value="resuelto">
+                          <span className="flex items-center gap-2">
+                            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                            Resuelto
+                          </span>
+                        </SelectItem>
+                        <SelectItem value="rechazada">
+                          <span className="flex items-center gap-2">
+                            <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                            Rechazado
+                          </span>
+                        </SelectItem>
                       </SelectContent>
                     </Select>
+                  </div>
+                  <div>
+                    <Select value={selectedType} onValueChange={setSelectedType}>
+                      <SelectTrigger className="h-10">
+                        <SelectValue placeholder="Todos los tipos" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">
+                          <span className="flex items-center gap-2">
+                            <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                            Todos los tipos
+                          </span>
+                        </SelectItem>
+                        <SelectItem value="Certificado de Convenio">Certificado de Convenio</SelectItem>
+                        <SelectItem value="Compensación Anual Diferida">Compensación Anual Diferida</SelectItem>
+                        <SelectItem value="Verificación de Pagos">Verificación de Pagos</SelectItem>
+                        <SelectItem value="Solicitud de Descanso">Solicitud de Descanso</SelectItem>
+                        <SelectItem value="Actualizar Cuenta Bancaria">Actualizar Cuenta Bancaria</SelectItem>
+                        <SelectItem value="Retiro Sindical">Retiro Sindical</SelectItem>
+                        <SelectItem value="Microcrédito CEII">Microcrédito CEII</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Button 
+                      variant="outline" 
+                      onClick={clearFilters}
+                      className="h-10 w-full"
+                    >
+                      Limpiar Filtros
+                    </Button>
                   </div>
                 </div>
               </CardContent>
