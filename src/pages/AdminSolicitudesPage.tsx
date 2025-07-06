@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import ExportRequestsDialog from '@/components/admin/solicitudes/ExportRequestsDialog';
 import { 
   Brush,
   Search,
@@ -607,18 +608,10 @@ const AdminSolicitudesPage: React.FC = () => {
           </motion.div>
 
           {/* Export Dialog */}
-          <Dialog open={exportDialogOpen} onOpenChange={setExportDialogOpen}>
-            <DialogContent className="max-w-md">
-              <DialogHeader>
-                <DialogTitle>Exportar Solicitudes</DialogTitle>
-                <DialogDescription>
-                  Selecciona el formato y rango de fechas para exportar las solicitudes.
-                </DialogDescription>
-              </DialogHeader>
-              {/* Add export options here */}
-              <Button>Exportar</Button>
-            </DialogContent>
-          </Dialog>
+          <ExportRequestsDialog
+            open={exportDialogOpen}
+            onOpenChange={setExportDialogOpen}
+          />
 
           {/* Request Details Dialog */}
           {selectedSolicitud && (
