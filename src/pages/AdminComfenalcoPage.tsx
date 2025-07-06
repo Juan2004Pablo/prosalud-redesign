@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
+  BrushCleaning,
   Sparkles, 
   Plus, 
   Search, 
@@ -347,8 +348,9 @@ const AdminComfenalcoPage: React.FC = () => {
                   <Button 
                     variant="outline" 
                     onClick={() => {setFilters({category: 'all', displaySize: 'all'}); setSearchTerm('');}}
-                    className="w-full"
+                    className="w-full flex items-center gap-2"
                   >
+                    <BrushCleaning className="w-4 h-4" />
                     Limpiar Filtros
                   </Button>
                 </div>
