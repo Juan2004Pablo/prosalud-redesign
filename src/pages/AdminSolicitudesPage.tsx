@@ -326,17 +326,21 @@ const AdminSolicitudesPage: React.FC = () => {
             transition={{ delay: 0.1 }}
           >
             <Card className="border shadow-sm">
+              <CardTitle className="flex items-center gap-2">
+                  <Filter className="h-5 w-5" />
+                  Filtros
+              </CardTitle>
               <CardContent className="p-6">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="flex items-center relative md:col-span-2">
+                  <div className="relative md:col-span-2">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                    <Label htmlFor="search" className="text-sm font-medium text-gray-700">Buscar Solicitud</Label>
                     <Input
                       type="text"
                       id="search"
                       placeholder="Buscar por usuario o tipo..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
+                      className="pl-10"
                     />
                   </div>
                   <div className="relative md:col-span-1">
@@ -511,20 +515,6 @@ const AdminSolicitudesPage: React.FC = () => {
               </DialogHeader>
               {/* Add export options here */}
               <Button>Exportar</Button>
-            </DialogContent>
-          </Dialog>
-
-          {/* Advanced Filters Dialog */}
-          <Dialog open={filterDialogOpen} onOpenChange={setFilterDialogOpen}>
-            <DialogContent className="max-w-md">
-              <DialogHeader>
-                <DialogTitle>Filtros Avanzados</DialogTitle>
-                <DialogDescription>
-                  Aplica filtros avanzados para refinar la búsqueda de solicitudes.
-                </DialogDescription>
-              </DialogHeader>
-              {/* Add filter options here */}
-              <Button>Aplicar Filtros</Button>
             </DialogContent>
           </Dialog>
 

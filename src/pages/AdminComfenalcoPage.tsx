@@ -305,7 +305,7 @@ const AdminComfenalcoPage: React.FC = () => {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Filter className="h-5 w-5" />
-                  Filtros y Búsqueda
+                  Filtros
                 </CardTitle>
               </CardHeader>
               <CardContent>
