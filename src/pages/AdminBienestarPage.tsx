@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
@@ -10,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import DataPagination from '@/components/ui/data-pagination';
 import { usePagination } from '@/hooks/usePagination';
 import { useToast } from '@/hooks/use-toast';
@@ -50,7 +50,7 @@ const AdminBienestarPage: React.FC = () => {
       queryClient.invalidateQueries({ queryKey: ['bienestar-events'] });
       toast({
         title: "Estado actualizado",
-        description: "La visibilidad del evento ha sido actualizada."
+        description: "La visibilibilidad del evento ha sido actualizada."
       });
     }
   });
@@ -174,24 +174,15 @@ const AdminBienestarPage: React.FC = () => {
                       className="pl-10"
                     />
                   </div>
-                  {/*<select
-                    value={categoryFilter}
-                    onChange={(e) => setCategoryFilter(e.target.value)}
-                    className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-prosalud"
-                  >
-                    {categories.map(category => (
-                      <option key={category} value={category}>
-                        {category === 'all' ? 'Todas las categorías' : category}
-                      </option>
-                    ))}
-                  </select> */ }
-                  <Select value={statusFilter} onValueChange={setStatusFilter}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Estado" />
+                  <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+                    <SelectTrigger className="w-full md:w-[220px]">
+                      <SelectValue placeholder="Seleccionar categoría" />
                     </SelectTrigger>
                     <SelectContent>
                       {categories.map(category => (
-                        <SelectItem value={category}>{category === 'all' ? 'Todas las categorías' : category}</SelectItem>
+                        <SelectItem key={category} value={category}>
+                          {category === 'all' ? 'Todas las categorías' : category}
+                        </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
