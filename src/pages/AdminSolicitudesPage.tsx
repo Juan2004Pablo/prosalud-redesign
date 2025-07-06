@@ -310,7 +310,7 @@ const AdminSolicitudesPage: React.FC = () => {
                       <p className="text-sm font-medium text-gray-600 mb-1">Total Solicitudes</p>
                       <p className="text-3xl font-bold text-blue-600">{solicitudes.length}</p>
                     </div>
-                    <div className="bg-blue-100 p-3 rounded-full">
+                    <div className="p-3 rounded-full">
                       <Users className="h-6 w-6 text-blue-600" />
                     </div>
                   </div>
@@ -324,7 +324,7 @@ const AdminSolicitudesPage: React.FC = () => {
                       <p className="text-sm font-medium text-gray-600 mb-1">Pendientes</p>
                       <p className="text-3xl font-bold text-yellow-600">{solicitudes.filter(s => s.estado === 'pendiente').length}</p>
                     </div>
-                    <div className="bg-yellow-100 p-3 rounded-full">
+                    <div className="p-3 rounded-full">
                       <Clock className="h-6 w-6 text-yellow-600" />
                     </div>
                   </div>
@@ -338,7 +338,7 @@ const AdminSolicitudesPage: React.FC = () => {
                       <p className="text-sm font-medium text-gray-600 mb-1">Resueltas</p>
                       <p className="text-3xl font-bold text-green-600">{solicitudes.filter(s => s.estado === 'resuelto').length}</p>
                     </div>
-                    <div className="bg-green-100 p-3 rounded-full">
+                    <div className="p-3 rounded-full">
                       <CheckCircle className="h-6 w-6 text-green-600" />
                     </div>
                   </div>
@@ -358,7 +358,7 @@ const AdminSolicitudesPage: React.FC = () => {
                         }).length}
                       </p>
                     </div>
-                    <div className="bg-purple-100 p-3 rounded-full">
+                    <div className="rounded-full">
                       <TrendingUp className="h-6 w-6 text-purple-600" />
                     </div>
                   </div>
@@ -377,7 +377,7 @@ const AdminSolicitudesPage: React.FC = () => {
               <CardHeader className="pb-4">
                 <CardTitle className="flex items-center gap-2 text-lg font-semibold">
                   <Filter className="h-5 w-5" />
-                  Filtros y Búsqueda
+                  Filtros
                 </CardTitle>
               </CardHeader>
               <CardContent className="pt-0">
@@ -402,7 +402,6 @@ const AdminSolicitudesPage: React.FC = () => {
                       <SelectContent>
                         <SelectItem value="all">
                           <span className="flex items-center gap-2">
-                            <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
                             Todos los estados
                           </span>
                         </SelectItem>
@@ -439,12 +438,7 @@ const AdminSolicitudesPage: React.FC = () => {
                         <SelectValue placeholder="Todos los tipos" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="all">
-                          <span className="flex items-center gap-2">
-                            <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                            Todos los tipos
-                          </span>
-                        </SelectItem>
+                        <SelectItem value="all">Todos los tipos</SelectItem>
                         <SelectItem value="Certificado de Convenio">Certificado de Convenio</SelectItem>
                         <SelectItem value="Compensación Anual Diferida">Compensación Anual Diferida</SelectItem>
                         <SelectItem value="Verificación de Pagos">Verificación de Pagos</SelectItem>
