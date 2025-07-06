@@ -159,7 +159,7 @@ const AdminBienestarPage: React.FC = () => {
             <Card className="border shadow-sm bg-white">
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
-                  <Filter className="h-5 w-5 text-primary-prosalud" />
+                  <Filter className="h-5 w-5" />
                   <span>Filtros</span>
                 </CardTitle>
               </CardHeader>
