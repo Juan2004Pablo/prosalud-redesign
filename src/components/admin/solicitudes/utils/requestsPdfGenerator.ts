@@ -1,6 +1,6 @@
 
 import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import autoTable from 'jspdf-autotable';
 import { Request } from '@/types/requests';
 import { requestTypeLabels, statusLabels } from '@/data/requestsMock';
 
@@ -52,7 +52,7 @@ export const generateRequestsPDFReport = (requests: Request[], dateRange: DateRa
     ['Solicitudes rechazadas', rejectedRequests.toString()]
   ];
 
-  doc.autoTable({
+  autoTable(doc, {
     startY: 60,
     head: [['Métrica', 'Valor']],
     body: summaryData,
@@ -70,10 +70,10 @@ export const generateRequestsPDFReport = (requests: Request[], dateRange: DateRa
 
   const typeData = Object.entries(requestsByType).map(([type, count]) => [type, count.toString()]);
 
-  doc.text('SOLICITUDES POR TIPO', 20, doc.lastAutoTable.finalY + 20);
+  doc.text('SOLICITUDES POR TIPO', 20, (doc as any).lastAutoTable.finalY + 20);
 
-  doc.autoTable({
-    startY: doc.lastAutoTable.finalY + 25,
+  autoTable(doc, {
+    startY: (doc as any).lastAutoTable.finalY + 25,
     head: [['Tipo de Solicitud', 'Cantidad']],
     body: typeData,
     theme: 'grid',
@@ -95,7 +95,7 @@ export const generateRequestsPDFReport = (requests: Request[], dateRange: DateRa
     request.resolved_at ? new Date(request.resolved_at).toLocaleDateString('es-ES') : 'N/A'
   ]);
 
-  doc.autoTable({
+  autoTable(doc, {
     startY: 35,
     head: [['Solicitante', 'Documento', 'Tipo', 'Estado', 'Fecha Creación', 'Fecha Resolución']],
     body: requestsData,
@@ -114,8 +114,8 @@ export const generateRequestsPDFReport = (requests: Request[], dateRange: DateRa
   });
 
   // Requests by Status Chart (text-based)
-  if (doc.lastAutoTable.finalY < 220) {
-    doc.text('DISTRIBUCIÓN POR ESTADO', 20, doc.lastAutoTable.finalY + 20);
+  if ((doc as any).lastAutoTable.finalY < 220) {
+    doc.text('DISTRIBUCIÓN POR ESTADO', 20, (doc as any).lastAutoTable.finalY + 20);
     
     const statusData = [
       ['Pendiente', pendingRequests.toString(), `${((pendingRequests/totalRequests)*100).toFixed(1)}%`],
@@ -124,8 +124,8 @@ export const generateRequestsPDFReport = (requests: Request[], dateRange: DateRa
       ['Rechazado', rejectedRequests.toString(), `${((rejectedRequests/totalRequests)*100).toFixed(1)}%`]
     ];
 
-    doc.autoTable({
-      startY: doc.lastAutoTable.finalY + 25,
+    autoTable(doc, {
+      startY: (doc as any).lastAutoTable.finalY + 25,
       head: [['Estado', 'Cantidad', 'Porcentaje']],
       body: statusData,
       theme: 'grid',
