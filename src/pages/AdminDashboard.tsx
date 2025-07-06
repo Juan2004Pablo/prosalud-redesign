@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import { Users, FileText, Calendar, Trophy, BarChart3, Settings, Edit } from 'lucide-react';
+import { Users, FileText, Calendar, CircleGauge, Trophy, BarChart3, Settings, Edit } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -109,13 +109,16 @@ const AdminDashboard: React.FC = () => {
         >
           {/* Header */}
           <motion.div variants={itemVariants} className="relative">
-            <div className="bg-white rounded-xl p-6 sm:p-8 border shadow-sm">
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary-prosalud mb-4">
+            <div className="bg-primary-prosalud/10 p-3 rounded-lg">
+              <CircleGauge className="h-8 w-8 text-primary-prosalud" />
+            </div>
+            <div>
+              <CardTitle className="text-3xl font-bold text-primary-prosalud">
                 Panel Administrativo
-              </h1>
-              <p className="text-base sm:text-lg text-text-gray max-w-2xl">
+              </CardTitle>
+              <CardDescription className="text-base mt-2">
                 Gestiona usuarios, contenidos y métricas de la plataforma ProSalud desde un solo lugar.
-              </p>
+              </CardDescription>
             </div>
           </motion.div>
 
