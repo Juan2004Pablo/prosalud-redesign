@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import AdminLayout from '@/components/admin/AdminLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -326,27 +327,36 @@ const AdminSolicitudesPage: React.FC = () => {
             transition={{ delay: 0.1 }}
           >
             <Card className="border shadow-sm">
-              <CardTitle className="flex items-center gap-2">
+              <CardHeader className="pb-4">
+                <CardTitle className="flex items-center gap-2 text-lg font-semibold">
                   <Filter className="h-5 w-5" />
                   Filtros
-              </CardTitle>
-              <CardContent className="p-6">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="relative md:col-span-2">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                    <Input
-                      type="text"
-                      id="search"
-                      placeholder="Buscar por usuario o tipo..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      className="pl-10"
-                    />
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="pt-0">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
+                  <div className="md:col-span-2">
+                    <Label htmlFor="search" className="text-sm font-medium text-gray-700 mb-2 block">
+                      Buscar solicitudes
+                    </Label>
+                    <div className="relative">
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                      <Input
+                        type="text"
+                        id="search"
+                        placeholder="Buscar por nombre, email o tipo de solicitud..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="pl-10 h-10"
+                      />
+                    </div>
                   </div>
-                  <div className="relative md:col-span-1">
-                    <Label htmlFor="status" className="text-sm font-medium text-gray-700">Filtrar por Estado</Label>
+                  <div className="md:col-span-1">
+                    <Label htmlFor="status" className="text-sm font-medium text-gray-700 mb-2 block">
+                      Estado
+                    </Label>
                     <Select value={selectedStatus} onValueChange={setSelectedStatus}>
-                      <SelectTrigger className="bg-gray-50 border-gray-300">
+                      <SelectTrigger className="h-10">
                         <SelectValue placeholder="Todos los estados" />
                       </SelectTrigger>
                       <SelectContent>
