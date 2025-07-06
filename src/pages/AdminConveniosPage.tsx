@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
   SquareX,
-  BrushCleaning,
+  Brush,
   Handshake, 
   Plus, 
   Search, 
@@ -349,7 +349,7 @@ const AdminConveniosPage: React.FC = () => {
                     onClick={() => setSearchTerm('')}
                     className="w-full"
                   >
-                    <Plus className="w-4 h-4 mr-2" />
+                    <Brush className="w-4 h-4 mr-2" />
                     Limpiar Filtros
                   </Button>
                 </div>

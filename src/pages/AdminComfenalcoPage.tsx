@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
-  BrushCleaning,
+  Brush,
   Sparkles, 
   Plus, 
   Search, 
@@ -350,7 +350,7 @@ const AdminComfenalcoPage: React.FC = () => {
                     onClick={() => {setFilters({category: 'all', displaySize: 'all'}); setSearchTerm('');}}
                     className="w-full flex items-center gap-2"
                   >
-                    <BrushCleaning className="w-4 h-4" />
+                    <Brush className="w-4 h-4" />
                     Limpiar Filtros
                   </Button>
                 </div>
