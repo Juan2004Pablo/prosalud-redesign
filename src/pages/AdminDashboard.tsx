@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import { Users, FileText, Calendar, CircleGauge, Trophy, BarChart3, Settings, Edit } from 'lucide-react';
+import { Users, FileText, Calendar, BarChart3, Trophy, BarChart3, Settings, Edit } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -114,7 +114,7 @@ const AdminDashboard: React.FC = () => {
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div className="flex items-center gap-3">
                     <div className="bg-primary-prosalud/10 p-3 rounded-lg">
-                      <CircleGauge className="h-8 w-8 text-primary-prosalud" />
+                      <BarChart3 className="h-8 w-8 text-primary-prosalud" />
                     </div>
                     <div>
                       <CardTitle className="text-3xl font-bold text-primary-prosalud">
