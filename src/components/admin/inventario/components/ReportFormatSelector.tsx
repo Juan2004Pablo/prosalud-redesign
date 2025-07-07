@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { FileText, FileSpreadsheet } from 'lucide-react';
 import { ReportFormat } from '../types/reportTypes';
 
@@ -11,27 +10,76 @@ interface ReportFormatSelectorProps {
 
 const ReportFormatSelector: React.FC<ReportFormatSelectorProps> = ({ value, onChange }) => {
   return (
-    <div className="space-y-2">
-      <label className="text-sm font-medium text-gray-700">Formato de Exportación</label>
-      <Select value={value} onValueChange={onChange}>
-        <SelectTrigger>
-          <SelectValue placeholder="Seleccionar formato" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="pdf">
-            <div className="flex items-center space-x-2">
-              <FileText className="h-4 w-4 text-red-600" />
-              <span>PDF - Documento Profesional</span>
+    <div className="space-y-4">
+      <div className="flex items-center gap-2 mb-4">
+        <FileText className="h-5 w-5 text-gray-600" />
+        <div>
+          <h3 className="text-lg font-semibold text-gray-900">Formato del Reporte</h3>
+          <p className="text-sm text-gray-600">Selecciona el formato en el que deseas exportar el reporte</p>
+        </div>
+      </div>
+      
+      <div className="grid grid-cols-2 gap-4">
+        {/* PDF Card */}
+        <div
+          onClick={() => onChange('pdf')}
+          className={`cursor-pointer rounded-lg border-2 p-6 text-center transition-all duration-200 hover:shadow-md ${
+            value === 'pdf'
+              ? 'border-blue-500 bg-blue-50'
+              : 'border-gray-200 bg-white hover:border-gray-300'
+          }`}
+        >
+          <div className="flex flex-col items-center space-y-3">
+            <FileText 
+              className={`h-12 w-12 ${
+                value === 'pdf' ? 'text-blue-600' : 'text-gray-400'
+              }`} 
+            />
+            <div>
+              <h4 className={`font-semibold ${
+                value === 'pdf' ? 'text-blue-900' : 'text-gray-700'
+              }`}>
+                PDF
+              </h4>
+              <p className={`text-sm ${
+                value === 'pdf' ? 'text-blue-700' : 'text-gray-500'
+              }`}>
+                Documento optimizado
+              </p>
             </div>
-          </SelectItem>
-          <SelectItem value="excel">
-            <div className="flex items-center space-x-2">
-              <FileSpreadsheet className="h-4 w-4 text-green-600" />
-              <span>Excel - Hoja de Cálculo</span>
+          </div>
+        </div>
+
+        {/* Excel Card */}
+        <div
+          onClick={() => onChange('excel')}
+          className={`cursor-pointer rounded-lg border-2 p-6 text-center transition-all duration-200 hover:shadow-md ${
+            value === 'excel'
+              ? 'border-green-500 bg-green-50'
+              : 'border-gray-200 bg-white hover:border-gray-300'
+          }`}
+        >
+          <div className="flex flex-col items-center space-y-3">
+            <FileSpreadsheet 
+              className={`h-12 w-12 ${
+                value === 'excel' ? 'text-green-600' : 'text-gray-400'
+              }`} 
+            />
+            <div>
+              <h4 className={`font-semibold ${
+                value === 'excel' ? 'text-green-900' : 'text-gray-700'
+              }`}>
+                Excel
+              </h4>
+              <p className={`text-sm ${
+                value === 'excel' ? 'text-green-700' : 'text-gray-500'
+              }`}>
+                Hoja de cálculo
+              </p>
             </div>
-          </SelectItem>
-        </SelectContent>
-      </Select>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
