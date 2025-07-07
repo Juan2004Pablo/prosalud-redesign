@@ -31,7 +31,7 @@ const ReportFormatSelector: React.FC<ReportFormatSelectorProps> = ({ value, onCh
         >
           <div className="flex flex-col items-center space-y-3">
             <FileText 
-              className={`h-10 w-10 ${
+              className={`h-5 w-5 ${
                 value === 'pdf' ? 'text-red-600' : 'text-gray-400'
               }`} 
             />
@@ -57,7 +57,7 @@ const ReportFormatSelector: React.FC<ReportFormatSelectorProps> = ({ value, onCh
         >
           <div className="flex flex-col items-center space-y-3">
             <FileSpreadsheet 
-              className={`h-10 w-10 ${
+              className={`h-5 w-5 ${
                 value === 'excel' ? 'text-green-600' : 'text-gray-400'
               }`} 
             />
