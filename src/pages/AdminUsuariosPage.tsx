@@ -43,6 +43,15 @@ const AdminUsuariosPage: React.FC = () => {
     }
   });
 
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: { type: "spring", stiffness: 100 }
+    }
+  };
+
   const users = usersResponse?.data || [];
   
   const filteredUsers = users.filter(user => {
