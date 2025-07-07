@@ -25,8 +25,8 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
     { name: 'Inventario', href: '/admin/inventario', icon: Package },
     { name: 'Solicitudes', href: '/admin/solicitudes', icon: ClipboardList },
     { name: 'Convenios', href: '/admin/convenios', icon: Handshake },
-    { name: 'Galería Bienestar', href: '/admin/bienestar', icon: Calendar },
-    { name: 'Experiencias Comfenalco', href: '/admin/comfenalco', icon: FileText },
+    { name: 'Galería Bienestar', href: '/admin/bienestar', icon: Heart },
+    { name: 'Experiencias Comfenalco', href: '/admin/comfenalco', icon: GraduationCap },
     { name: 'Configuración', href: '/admin/configuracion', icon: Settings },
   ];
 
