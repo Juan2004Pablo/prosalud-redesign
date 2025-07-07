@@ -153,11 +153,15 @@ const ExportRequestsDialog: React.FC<ExportRequestsDialogProps> = ({ open, onOpe
                   onClick={() => setFormat('pdf')}
                   className={`p-3 rounded-lg border-2 transition-all ${
                     format === 'pdf'
-                      ? 'border-primary-prosalud bg-primary-prosalud/5'
-                      : 'border-gray-200 hover:border-gray-300'
+                      ? 'border-red-500 bg-red-50'
+                      : 'border-gray-200 bg-white hover:border-gray-300'
                   }`}
                 >
-                  <FileText className="h-6 w-6 mx-auto mb-2 text-primary-prosalud" />
+                  <FileText 
+                    className={`h-6 w-6 ${
+                      value === 'pdf' ? 'text-red-600' : 'text-gray-400'
+                    }`} 
+                  />
                   <p className="text-sm font-medium">PDF</p>
                   <p className="text-xs text-gray-600">Documento optimizado</p>
                 </button>
@@ -165,11 +169,15 @@ const ExportRequestsDialog: React.FC<ExportRequestsDialogProps> = ({ open, onOpe
                   onClick={() => setFormat('excel')}
                   className={`p-3 rounded-lg border-2 transition-all ${
                     format === 'excel'
-                      ? 'border-primary-prosalud bg-primary-prosalud/5'
-                      : 'border-gray-200 hover:border-gray-300'
+                      ? 'border-green-500 bg-green-50'
+                      : 'border-gray-200 bg-white hover:border-gray-300'
                   }`}
                 >
-                  <FileSpreadsheet className="h-6 w-6 mx-auto mb-2 text-green-600" />
+                  <FileSpreadsheet 
+                    className={`h-6 w-6 ${
+                      value === 'excel' ? 'text-green-600' : 'text-gray-400'
+                    }`} 
+                  />
                   <p className="text-sm font-medium">Excel</p>
                   <p className="text-xs text-gray-600">Hoja de cálculo</p>
                 </button>
