@@ -27,6 +27,7 @@ import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import AdminLayout from '@/components/admin/AdminLayout';
 import DataPagination from '@/components/ui/data-pagination';
+import ConfirmationModal from '@/components/admin/common/ConfirmationModal';
 import { usePagination } from '@/hooks/usePagination';
 import { useToast } from '@/hooks/use-toast';
 
@@ -666,28 +667,17 @@ const AdminConveniosPage: React.FC = () => {
             </DialogContent>
           </Dialog>
 
-          {/* Delete Convenio Dialog */}
-          <Dialog open={deleteConvenioOpen} onOpenChange={setDeleteConvenioOpen}>
-            <DialogContent className="max-w-md bg-white">
-              <DialogHeader>
-                <DialogTitle>Eliminar Convenio</DialogTitle>
-                <DialogDescription>
-                  ¿Estás seguro de que quieres eliminar este convenio?
-                </DialogDescription>
-              </DialogHeader>
-              <div className="py-4">
-                <p>Esta acción no se puede deshacer.</p>
-              </div>
-              <div className="flex justify-end space-x-2">
-                <Button variant="secondary" onClick={() => setDeleteConvenioOpen(false)}>
-                  Cancelar
-                </Button>
-                <Button variant="destructive" onClick={() => handleDelete(selectedConvenio!.id)}>
-                  Eliminar
-                </Button>
-              </div>
-            </DialogContent>
-          </Dialog>
+          {/* Delete Convenio Modal */}
+          <ConfirmationModal
+            open={deleteConvenioOpen}
+            onOpenChange={setDeleteConvenioOpen}
+            title="Eliminar Convenio"
+            description="Esta acción no se puede deshacer. Se eliminará permanentemente el convenio"
+            confirmText="Eliminar"
+            confirmVariant="destructive"
+            onConfirm={() => handleDelete(selectedConvenio!.id)}
+            itemName={selectedConvenio?.name}
+          />
         </motion.div>
       </div>
     </AdminLayout>

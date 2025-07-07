@@ -1,15 +1,6 @@
 
 import React from 'react';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
+import ConfirmationModal from '@/components/admin/common/ConfirmationModal';
 import { ComfenalcoEvent } from '@/types/comfenalco';
 
 interface DeleteComfenalcoEventDialogProps {
@@ -26,26 +17,16 @@ const DeleteComfenalcoEventDialog: React.FC<DeleteComfenalcoEventDialogProps> = 
   onConfirm
 }) => {
   return (
-    <AlertDialog open={open} onOpenChange={onOpenChange}>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>¿Eliminar Experiencia?</AlertDialogTitle>
-          <AlertDialogDescription>
-            Esta acción no se puede deshacer. Se eliminará permanentemente la experiencia{' '}
-            <strong>"{event?.title}"</strong> y todos sus datos asociados.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel>Cancelar</AlertDialogCancel>
-          <AlertDialogAction 
-            onClick={onConfirm}
-            className="bg-red-600 hover:bg-red-700"
-          >
-            Eliminar Experiencia
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+    <ConfirmationModal
+      open={open}
+      onOpenChange={onOpenChange}
+      title="¿Eliminar Experiencia?"
+      description="Esta acción no se puede deshacer. Se eliminará permanentemente la experiencia"
+      confirmText="Eliminar Experiencia"
+      confirmVariant="destructive"
+      onConfirm={onConfirm}
+      itemName={event?.title}
+    />
   );
 };
 
