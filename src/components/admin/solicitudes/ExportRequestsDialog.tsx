@@ -163,7 +163,7 @@ const ExportRequestsDialog: React.FC<ExportRequestsDialogProps> = ({ open, onOpe
                       format === 'pdf' ? 'text-red-600' : 'text-gray-400'
                     }`} 
                   />
-                  <p className="text-sm font-medium">PDF</p>
+                  <p className="text-sm font-semibold">PDF</p>
                   <p className="text-xs text-gray-600">Documento optimizado</p>
                 </button>
                 <button
@@ -180,7 +180,7 @@ const ExportRequestsDialog: React.FC<ExportRequestsDialogProps> = ({ open, onOpe
                       format === 'excel' ? 'text-green-600' : 'text-gray-400'
                     }`} 
                   />
-                  <p className="text-sm font-medium">Excel</p>
+                  <p className="text-sm font-semibold">Excel</p>
                   <p className="text-xs text-gray-600">Hoja de cálculo</p>
                 </button>
               </div>
