@@ -128,7 +128,7 @@ const AdminUsuariosPage: React.FC = () => {
                   </div>
                   <Button
                     onClick={handleCreate}
-                    variant="outline"
+                    className="bg-primary-prosalud hover:bg-primary-prosalud-dark text-white"
                   >
                     <Plus className="h-5 w-5 mr-2" />
                     Nuevo Usuario

@@ -291,7 +291,7 @@ const AdminSolicitudesPage: React.FC = () => {
                     </div>
                   </div>
                   <Button 
-                    variant="outline"
+                    className="bg-primary-prosalud hover:bg-primary-prosalud-dark text-white"
                     onClick={() => setExportDialogOpen(true)}
                   >
                     <Download className="h-4 w-4 mr-2" />
