@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Users, Calendar, Trophy, FileText, BarChart3, Settings,
+  Users, Calendar, Handshake, FileText, BarChart3, Settings,
   Menu, X, LogOut, Home, ChevronRight, ClipboardList, Package
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -24,7 +24,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
     { name: 'Usuarios', href: '/admin/usuarios', icon: Users },
     { name: 'Inventario', href: '/admin/inventario', icon: Package },
     { name: 'Solicitudes', href: '/admin/solicitudes', icon: ClipboardList },
-    { name: 'Convenios', href: '/admin/convenios', icon: Trophy },
+    { name: 'Convenios', href: '/admin/convenios', icon: Handshake },
     { name: 'Galería Bienestar', href: '/admin/bienestar', icon: Calendar },
     { name: 'Experiencias Comfenalco', href: '/admin/comfenalco', icon: FileText },
     { name: 'Configuración', href: '/admin/configuracion', icon: Settings },
