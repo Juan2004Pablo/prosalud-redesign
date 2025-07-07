@@ -23,7 +23,7 @@ const ReportFormatSelector: React.FC<ReportFormatSelectorProps> = ({ value, onCh
         {/* PDF Card */}
         <div
           onClick={() => onChange('pdf')}
-          className={`cursor-pointer rounded-lg border-2 p-6 text-center transition-all duration-200 hover:shadow-md ${
+          className={`cursor-pointer rounded-lg border-2 p-4 text-center transition-all duration-200 hover:shadow-md ${
             value === 'pdf'
               ? 'border-red-500 bg-red-50'
               : 'border-gray-200 bg-white hover:border-gray-300'
@@ -31,7 +31,7 @@ const ReportFormatSelector: React.FC<ReportFormatSelectorProps> = ({ value, onCh
         >
           <div className="flex flex-col items-center space-y-3">
             <FileText 
-              className={`h-5 w-5 ${
+              className={`h-6 w-6 ${
                 value === 'pdf' ? 'text-red-600' : 'text-gray-400'
               }`} 
             />
@@ -57,7 +57,7 @@ const ReportFormatSelector: React.FC<ReportFormatSelectorProps> = ({ value, onCh
         >
           <div className="flex flex-col items-center space-y-3">
             <FileSpreadsheet 
-              className={`h-5 w-5 ${
+              className={`h-6 w-6 ${
                 value === 'excel' ? 'text-green-600' : 'text-gray-400'
               }`} 
             />
