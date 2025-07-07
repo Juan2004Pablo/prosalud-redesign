@@ -23,7 +23,7 @@ const ReportFormatSelector: React.FC<ReportFormatSelectorProps> = ({ value, onCh
         {/* PDF Card */}
         <div
           onClick={() => onChange('pdf')}
-          className={`cursor-pointer rounded-lg border-2 p-4 text-center transition-all duration-200 hover:shadow-md ${
+          className={`cursor-pointer rounded-lg border-2 p-3 text-center transition-all duration-200 hover:shadow-md ${
             value === 'pdf'
               ? 'border-red-500 bg-red-50'
               : 'border-gray-200 bg-white hover:border-gray-300'
@@ -49,7 +49,7 @@ const ReportFormatSelector: React.FC<ReportFormatSelectorProps> = ({ value, onCh
         {/* Excel Card */}
         <div
           onClick={() => onChange('excel')}
-          className={`cursor-pointer rounded-lg border-2 p-6 text-center transition-all duration-200 hover:shadow-md ${
+          className={`cursor-pointer rounded-lg border-2 p-3 text-center transition-all duration-200 hover:shadow-md ${
             value === 'excel'
               ? 'border-green-500 bg-green-50'
               : 'border-gray-200 bg-white hover:border-gray-300'

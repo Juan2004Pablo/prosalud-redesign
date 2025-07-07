@@ -159,7 +159,7 @@ const ExportRequestsDialog: React.FC<ExportRequestsDialogProps> = ({ open, onOpe
                 >
                   <FileText 
                     className={`h-6 w-6 ${
-                      value === 'pdf' ? 'text-red-600' : 'text-gray-400'
+                      format === 'pdf' ? 'text-red-600' : 'text-gray-400'
                     }`} 
                   />
                   <p className="text-sm font-medium">PDF</p>
@@ -175,7 +175,7 @@ const ExportRequestsDialog: React.FC<ExportRequestsDialogProps> = ({ open, onOpe
                 >
                   <FileSpreadsheet 
                     className={`h-6 w-6 ${
-                      value === 'excel' ? 'text-green-600' : 'text-gray-400'
+                      format === 'excel' ? 'text-green-600' : 'text-gray-400'
                     }`} 
                   />
                   <p className="text-sm font-medium">Excel</p>
