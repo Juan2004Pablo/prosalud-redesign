@@ -472,9 +472,9 @@ const AdminConveniosPage: React.FC = () => {
                             <label className="text-sm font-medium text-gray-600">Nombre</label>
                             <p className="text-sm">{selectedConvenio.name}</p>
                           </div>
-                          <div className="gap-2">
+                          <div>
                             <label className="text-sm font-medium text-gray-600">Estado</label>
-                            <Badge variant={selectedConvenio.isVisible ? "default" : "secondary"}>
+                            <Badge className="ml-2" variant={selectedConvenio.isVisible ? "default" : "secondary"}>
                               {selectedConvenio.isVisible ? "Visible en web" : "Oculto en web"}
                             </Badge>
                           </div>
