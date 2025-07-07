@@ -7,6 +7,7 @@ import {
   Plus, 
   Search, 
   Filter, 
+  Image,
   Eye, 
   Edit, 
   Trash2, 
@@ -457,7 +458,7 @@ const AdminConveniosPage: React.FC = () => {
               </DialogHeader>
               {selectedConvenio && (
                 <div className="space-y-6">
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <Card>
                       <CardHeader className="pb-3">
                         <CardTitle className="text-lg flex items-center gap-2">
@@ -487,7 +488,8 @@ const AdminConveniosPage: React.FC = () => {
 
                     <Card>
                       <CardHeader className="pb-3">
-                        <CardTitle className="text-lg">
+                        <CardTitle className="text-lg flex items-center gap-2">
+                          <Image className="h-5 w-5" />
                           Imagen del Convenio
                         </CardTitle>
                       </CardHeader>
