@@ -191,6 +191,6 @@ export const searchData: SearchItem[] = [
     description: 'Información completa sobre trámites y procedimientos con EPS Sura: traslados, cambio de IPS, retiro de beneficiarios, UPC adicional, certificados e incapacidades.',
     category: 'Información',
     keywords: ['eps', 'sura', 'traslado', 'ips', 'beneficiarios', 'upc', 'certificados', 'incapacidades', 'afiliación', 'retiro'],
-    path: '/eps-sura'
+    path: '/servicios/eps-sura'
   }
 ];
