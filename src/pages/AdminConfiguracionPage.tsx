@@ -122,18 +122,26 @@ const AdminConfiguracionPage: React.FC = () => {
           className="p-6 space-y-8"
         >
           {/* Header */}
-          <motion.div variants={itemVariants} className="relative">
-            <div className="bg-white rounded-xl p-8 border shadow-sm">
-              <div className="flex items-center gap-3 mb-4">
-                <Settings className="h-8 w-8 text-primary-prosalud" />
-                <h1 className="text-4xl font-bold text-primary-prosalud">
-                  Configuración del Sitio
-                </h1>
-              </div>
-              <p className="text-lg text-text-gray">
-                Gestiona la información general del sitio web y las métricas principales
-              </p>
-            </div>
+          <motion.div variants={itemVariants}>
+            <Card className="border shadow-sm">
+              <CardHeader className="pb-6">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className="bg-primary-prosalud/10 p-3 rounded-lg">
+                      <Settings className="h-8 w-8 text-primary-prosalud" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-3xl font-bold text-primary-prosalud">
+                        Configuración del Sitio
+                      </CardTitle>
+                      <CardDescription className="text-base mt-2">
+                        Gestiona la información general del sitio web y las métricas principales
+                      </CardDescription>
+                    </div>
+                  </div>
+                </div>
+              </CardHeader>
+            </Card>
           </motion.div>
 
           {/* Site Metrics Configuration */}
