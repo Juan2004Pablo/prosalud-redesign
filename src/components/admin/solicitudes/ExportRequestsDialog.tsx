@@ -150,8 +150,9 @@ const ExportRequestsDialog: React.FC<ExportRequestsDialogProps> = ({ open, onOpe
               
               <div className="grid grid-cols-2 gap-3">
                 <button
+                  type="button"
                   onClick={() => setFormat('pdf')}
-                  className={`p-3 rounded-lg border-2 transition-all ${
+                  className={`p-3 flex flex-col items-center space-y-3 rounded-lg border-2 transition-all ${
                     format === 'pdf'
                       ? 'border-red-500 bg-red-50'
                       : 'border-gray-200 bg-white hover:border-gray-300'
@@ -166,8 +167,9 @@ const ExportRequestsDialog: React.FC<ExportRequestsDialogProps> = ({ open, onOpe
                   <p className="text-xs text-gray-600">Documento optimizado</p>
                 </button>
                 <button
+                  type="button"
                   onClick={() => setFormat('excel')}
-                  className={`p-3 rounded-lg border-2 transition-all ${
+                  className={`p-3 flex flex-col items-center space-y-3 rounded-lg border-2 transition-all ${
                     format === 'excel'
                       ? 'border-green-500 bg-green-50'
                       : 'border-gray-200 bg-white hover:border-gray-300'
