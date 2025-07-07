@@ -100,26 +100,34 @@ const AdminUsuariosPage: React.FC = () => {
           className="p-4 sm:p-6 space-y-6 sm:space-y-8 max-w-7xl mx-auto"
         >
           {/* Header */}
-          <div className="bg-white rounded-xl p-6 sm:p-8 border shadow-sm">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-4">
-              <div className="flex items-center gap-3">
-                <Users className="h-8 w-8 text-primary-prosalud" />
-                <h1 className="text-2xl sm:text-3xl font-bold text-primary-prosalud">
-                  Gestión de Usuarios
-                </h1>
-              </div>
-              <Button
-                onClick={handleCreate}
-                className="bg-primary-prosalud hover:bg-primary-prosalud-dark w-full sm:w-auto"
-              >
-                <Plus className="h-5 w-5 mr-2" />
-                Nuevo Usuario
-              </Button>
-            </div>
-            <p className="text-base sm:text-lg text-text-gray">
-              Administra los usuarios del panel administrativo
-            </p>
-          </div>
+          <motion.div variants={itemVariants}>
+            <Card className="border shadow-sm">
+              <CardHeader className="pb-6">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className="bg-primary-prosalud/10 p-3 rounded-lg">
+                      <Users className="h-8 w-8 text-primary-prosalud" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-3xl font-bold text-primary-prosalud">
+                        Gestión de Usuarios
+                      </CardTitle>
+                      <CardDescription className="text-base mt-2">
+                        Administra los usuarios del panel administrativo
+                      </CardDescription>
+                    </div>
+                  </div>
+                  <Button
+                    onClick={handleCreate}
+                    variant="outline"
+                  >
+                    <Plus className="h-5 w-5 mr-2" />
+                    Nuevo Usuario
+                  </Button>
+                </div>
+              </CardHeader>
+            </Card>
+          </motion.div>
 
           {/* Filters */}
           <Card className="bg-white border shadow-sm">
