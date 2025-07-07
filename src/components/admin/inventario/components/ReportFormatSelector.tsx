@@ -25,25 +25,21 @@ const ReportFormatSelector: React.FC<ReportFormatSelectorProps> = ({ value, onCh
           onClick={() => onChange('pdf')}
           className={`cursor-pointer rounded-lg border-2 p-6 text-center transition-all duration-200 hover:shadow-md ${
             value === 'pdf'
-              ? 'border-blue-500 bg-blue-50'
+              ? 'border-red-500 bg-red-50'
               : 'border-gray-200 bg-white hover:border-gray-300'
           }`}
         >
           <div className="flex flex-col items-center space-y-3">
             <FileText 
-              className={`h-12 w-12 ${
-                value === 'pdf' ? 'text-blue-600' : 'text-gray-400'
+              className={`h-10 w-10 ${
+                value === 'pdf' ? 'text-red-600' : 'text-gray-400'
               }`} 
             />
             <div>
-              <h4 className={`font-semibold ${
-                value === 'pdf' ? 'text-blue-900' : 'text-gray-700'
-              }`}>
+              <h4 className={`font-semibold text-gray-700`}>
                 PDF
               </h4>
-              <p className={`text-sm ${
-                value === 'pdf' ? 'text-blue-700' : 'text-gray-500'
-              }`}>
+              <p className={`text-sm text-gray-500`}>
                 Documento optimizado
               </p>
             </div>
@@ -61,19 +57,15 @@ const ReportFormatSelector: React.FC<ReportFormatSelectorProps> = ({ value, onCh
         >
           <div className="flex flex-col items-center space-y-3">
             <FileSpreadsheet 
-              className={`h-12 w-12 ${
+              className={`h-10 w-10 ${
                 value === 'excel' ? 'text-green-600' : 'text-gray-400'
               }`} 
             />
             <div>
-              <h4 className={`font-semibold ${
-                value === 'excel' ? 'text-green-900' : 'text-gray-700'
-              }`}>
+              <h4 className={`font-semibold text-gray-700`}>
                 Excel
               </h4>
-              <p className={`text-sm ${
-                value === 'excel' ? 'text-green-700' : 'text-gray-500'
-              }`}>
+              <p className={`text-sm text-gray-500`}>
                 Hoja de cálculo
               </p>
             </div>
