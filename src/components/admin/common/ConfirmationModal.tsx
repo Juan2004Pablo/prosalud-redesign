@@ -1,14 +1,13 @@
 
 import React from 'react';
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { X } from 'lucide-react';
 
@@ -34,21 +33,21 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
   itemName
 }) => {
   return (
-    <AlertDialog open={open} onOpenChange={onOpenChange}>
-      <AlertDialogContent className="relative">
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="relative">
         {/* Botón X en esquina superior derecha */}
         <Button
           variant="ghost"
           size="sm"
           onClick={() => onOpenChange(false)}
-          className="absolute right-4 top-4 h-8 w-8 p-0 hover:bg-gray-100"
+          className="absolute right-4 top-4 h-8 w-8 p-0 hover:bg-gray-100 z-10"
         >
           <X className="h-4 w-4" />
         </Button>
 
-        <AlertDialogHeader className="pr-10">
-          <AlertDialogTitle>{title}</AlertDialogTitle>
-          <AlertDialogDescription>
+        <DialogHeader className="pr-10">
+          <DialogTitle>{title}</DialogTitle>
+          <DialogDescription>
             {itemName ? (
               <>
                 {description}{' '}
@@ -57,19 +56,26 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
             ) : (
               description
             )}
-          </AlertDialogDescription>
-        </AlertDialogHeader>
+          </DialogDescription>
+        </DialogHeader>
         
-        <AlertDialogFooter>
-          <AlertDialogAction 
+        <DialogFooter>
+          <Button
+            variant="outline"
+            onClick={() => onOpenChange(false)}
+          >
+            Cancelar
+          </Button>
+          <Button 
             onClick={onConfirm}
+            variant={confirmVariant}
             className={confirmVariant === 'destructive' ? 'bg-red-600 hover:bg-red-700' : ''}
           >
             {confirmText}
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 };
 
