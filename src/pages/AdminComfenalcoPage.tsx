@@ -5,6 +5,8 @@ import {
   Sparkles, 
   Plus, 
   Search, 
+  Upload,
+  X,
   Filter, 
   Eye, 
   Edit, 
