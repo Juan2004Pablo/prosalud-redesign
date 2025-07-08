@@ -11,8 +11,7 @@ import {
   ClipboardList, 
   Plus,
   BarChart3,
-  FileText,
-  X
+  FileText
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import InventoryOverview from '@/components/admin/inventario/InventoryOverview';
@@ -22,7 +21,7 @@ import Returns from '@/components/admin/inventario/Returns';
 import Requests from '@/components/admin/inventario/Requests';
 import QuickActionsDialog from '@/components/admin/inventario/QuickActionsDialog';
 import ExportReportDialog from '@/components/admin/inventario/ExportReportDialog';
-import NewRequestForm from '@/components/admin/inventario/NewRequestForm';
+import RequestFormModal from '@/components/admin/inventario/RequestFormModal';
 
 const AdminInventarioPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState('overview');
@@ -194,29 +193,12 @@ const AdminInventarioPage: React.FC = () => {
           <QuickActionsDialog open={quickActionsOpen} onOpenChange={setQuickActionsOpen} />
           <ExportReportDialog open={exportReportOpen} onOpenChange={setExportReportOpen} />
           
-          {/* Dialog para Nueva Solicitud */}
-          {newRequestOpen && (
-            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-              <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto relative">
-                <div className="absolute top-4 right-4 z-10">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setNewRequestOpen(false)}
-                    className="h-8 w-8 p-0 hover:bg-gray-100"
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
-                </div>
-                <div className="p-6">
-                  <NewRequestForm 
-                    onClose={() => setNewRequestOpen(false)} 
-                    onSuccess={handleNewRequestSuccess}
-                  />
-                </div>
-              </div>
-            </div>
-          )}
+          {/* Modal para Nueva Solicitud */}
+          <RequestFormModal 
+            open={newRequestOpen} 
+            onOpenChange={setNewRequestOpen}
+            onSuccess={handleNewRequestSuccess}
+          />
         </motion.div>
       </div>
     </AdminLayout>

@@ -15,6 +15,7 @@ import {
 import ProductForm from './ProductForm';
 import NewDeliveryForm from './NewDeliveryForm';
 import NewRequestForm from './NewRequestForm';
+import LowStockDialog from './LowStockDialog';
 import { motion } from 'framer-motion';
 
 interface QuickActionsDialogProps {
@@ -74,25 +75,18 @@ const QuickActionsDialog: React.FC<QuickActionsDialogProps> = ({ open, onOpenCha
       case 'new-request':
         return <NewRequestForm onClose={handleClose} onSuccess={handleClose} />;
       case 'view-low-stock':
-        // This would typically show a low stock component
-        return (
-          <div className="p-6">
-            <div className="text-center py-8">
-              <Eye className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Productos con Stock Bajo</h3>
-              <p className="text-gray-600">Esta funcionalidad se implementará próximamente.</p>
-              <Button onClick={handleClose} className="mt-4">
-                Cerrar
-              </Button>
-            </div>
-          </div>
-        );
+        return <LowStockDialog open={true} onOpenChange={() => handleClose()} />;
       default:
         return null;
     }
   };
 
   if (selectedAction) {
+    // Para ver stock bajo, renderizar directamente el componente
+    if (selectedAction === 'view-low-stock') {
+      return renderActionForm();
+    }
+    
     return (
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white">
