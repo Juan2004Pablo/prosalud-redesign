@@ -272,14 +272,13 @@ const ProductManagement: React.FC = () => {
           <h2 className="text-2xl font-bold text-gray-900">Gestión de Productos</h2>
           <p className="text-gray-600">Administra el catálogo de productos del inventario</p>
         </div>
-        <ProductForm onClose={handleCloseDialog} />
-        {/*<Button 
+        <Button 
           onClick={handleNewProduct}
           className="bg-gradient-to-r from-primary-prosalud to-primary-prosalud-dark hover:shadow-lg transition-all duration-200"
         >
           <Plus className="h-4 w-4 mr-2" />
           Nuevo Producto
-        </Button>*/}
+        </Button>
       </motion.div>
 
       {/* Filters */}
