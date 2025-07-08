@@ -1,9 +1,7 @@
 
 import React from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { X } from 'lucide-react';
 
 interface AdminModalProps {
   open: boolean;
@@ -42,26 +40,14 @@ const AdminModal: React.FC<AdminModalProps> = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className={`${sizeClasses[size]} max-h-[90vh] overflow-y-auto bg-white`}>
         <DialogHeader className="space-y-3">
-          <div className="flex items-center justify-between">
-            <div className="flex-1">
-              <DialogTitle className="text-xl font-bold text-gray-900">
-                {title}
-              </DialogTitle>
-              {description && (
-                <DialogDescription className="text-sm text-gray-600 mt-2">
-                  {description}
-                </DialogDescription>
-              )}
-            </div>
-            {showCloseButton && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => onOpenChange(false)}
-                className="h-8 w-8 p-0 hover:bg-gray-100"
-              >
-                <X className="h-4 w-4" />
-              </Button>
+          <div className="flex-1">
+            <DialogTitle className="text-xl font-bold text-gray-900">
+              {title}
+            </DialogTitle>
+            {description && (
+              <DialogDescription className="text-sm text-gray-600 mt-2">
+                {description}
+              </DialogDescription>
             )}
           </div>
           <Separator />
