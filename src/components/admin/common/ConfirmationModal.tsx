@@ -18,7 +18,8 @@ interface ConfirmationModalProps {
   confirmText?: string;
   confirmVariant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link';
   onConfirm: () => void;
-  itemName?: string; // Para destacar el nombre del elemento a eliminar
+  itemName?: string; // Para destacar el nombre del elemento
+  showAssociatedDataWarning?: boolean; // Para controlar si mostrar el texto de datos asociados
 }
 
 const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
@@ -29,7 +30,8 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
   confirmText = 'Confirmar',
   confirmVariant = 'destructive',
   onConfirm,
-  itemName
+  itemName,
+  showAssociatedDataWarning = true
 }) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -40,7 +42,8 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
             {itemName ? (
               <>
                 {description}{' '}
-                <strong>"{itemName}"</strong> y todos sus datos asociados.
+                <strong>"{itemName}"</strong>
+                {showAssociatedDataWarning && ' y todos sus datos asociados'}.
               </>
             ) : (
               description

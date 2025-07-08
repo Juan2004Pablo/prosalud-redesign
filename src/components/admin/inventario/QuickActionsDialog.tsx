@@ -1,15 +1,13 @@
 
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { 
   Plus, 
   Package, 
   Truck, 
   Eye,
   ArrowRight,
-  X,
   FileText
 } from 'lucide-react';
 import ProductForm from './ProductForm';
@@ -69,7 +67,13 @@ const QuickActionsDialog: React.FC<QuickActionsDialogProps> = ({ open, onOpenCha
   const renderActionForm = () => {
     switch (selectedAction) {
       case 'add-product':
-        return <ProductForm onClose={handleClose} />;
+        return (
+          <Dialog open={true} onOpenChange={handleClose}>
+            <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white">
+              <ProductForm onClose={handleClose} />
+            </DialogContent>
+          </Dialog>
+        );
       case 'new-delivery':
         return <NewDeliveryForm onClose={handleClose} onSuccess={handleClose} />;
       case 'new-request':
@@ -82,6 +86,11 @@ const QuickActionsDialog: React.FC<QuickActionsDialogProps> = ({ open, onOpenCha
   };
 
   if (selectedAction) {
+    // Para agregar producto, renderizar directamente el diálogo
+    if (selectedAction === 'add-product') {
+      return renderActionForm();
+    }
+    
     // Para ver stock bajo, renderizar directamente el componente
     if (selectedAction === 'view-low-stock') {
       return renderActionForm();
@@ -90,16 +99,6 @@ const QuickActionsDialog: React.FC<QuickActionsDialogProps> = ({ open, onOpenCha
     return (
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white">
-          <div className="absolute top-4 right-4 z-10">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleClose}
-              className="h-8 w-8 p-0 hover:bg-gray-100"
-            >
-              <X className="h-4 w-4" />
-            </Button>
-          </div>
           {renderActionForm()}
         </DialogContent>
       </Dialog>

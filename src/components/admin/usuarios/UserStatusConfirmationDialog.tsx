@@ -60,6 +60,7 @@ const UserStatusConfirmationDialog: React.FC<UserStatusConfirmationDialogProps> 
       confirmVariant={user.isActive ? "destructive" : "default"}
       onConfirm={handleConfirm}
       itemName={`${user.firstName} ${user.lastName}`}
+      showAssociatedDataWarning={false}
     />
   );
 };

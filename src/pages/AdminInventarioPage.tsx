@@ -21,7 +21,8 @@ import Returns from '@/components/admin/inventario/Returns';
 import Requests from '@/components/admin/inventario/Requests';
 import QuickActionsDialog from '@/components/admin/inventario/QuickActionsDialog';
 import ExportReportDialog from '@/components/admin/inventario/ExportReportDialog';
-import RequestFormModal from '@/components/admin/inventario/RequestFormModal';
+import NewRequestForm from '@/components/admin/inventario/NewRequestForm';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
 
 const AdminInventarioPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState('overview');
@@ -60,6 +61,10 @@ const AdminInventarioPage: React.FC = () => {
   const handleNewRequestSuccess = () => {
     setNewRequestOpen(false);
     setActiveTab('requests');
+  };
+
+  const handleNewRequestClose = () => {
+    setNewRequestOpen(false);
   };
 
   return (
@@ -193,12 +198,15 @@ const AdminInventarioPage: React.FC = () => {
           <QuickActionsDialog open={quickActionsOpen} onOpenChange={setQuickActionsOpen} />
           <ExportReportDialog open={exportReportOpen} onOpenChange={setExportReportOpen} />
           
-          {/* Modal para Nueva Solicitud */}
-          <RequestFormModal 
-            open={newRequestOpen} 
-            onOpenChange={setNewRequestOpen}
-            onSuccess={handleNewRequestSuccess}
-          />
+          {/* Modal para Nueva Solicitud usando el mismo componente que las solicitudes */}
+          <Dialog open={newRequestOpen} onOpenChange={setNewRequestOpen}>
+            <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white">
+              <NewRequestForm 
+                onClose={handleNewRequestClose} 
+                onSuccess={handleNewRequestSuccess}
+              />
+            </DialogContent>
+          </Dialog>
         </motion.div>
       </div>
     </AdminLayout>
