@@ -55,11 +55,12 @@ const UserStatusConfirmationDialog: React.FC<UserStatusConfirmationDialogProps> 
       open={open}
       onOpenChange={onOpenChange}
       title={`${actionCapitalized} Usuario`}
-      description={`Confirma si estás seguro de que deseas ${action} al usuario`}
+      description={`¿Estás seguro de que deseas ${action} al usuario`}
       confirmText={toggleStatusMutation.isPending ? 'Procesando...' : `${actionCapitalized} Usuario`}
       confirmVariant={user.isActive ? "destructive" : "default"}
       onConfirm={handleConfirm}
       itemName={`${user.firstName} ${user.lastName}`}
+      showAssociatedDataWarning={false}
     />
   );
 };
