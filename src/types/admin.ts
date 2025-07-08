@@ -97,7 +97,7 @@ export interface CreateBienestarEventData {
 
 export interface CreateComfenalcoEventData {
   title: string;
-  bannerImage: File;
+  bannerImage: string; // Changed from File to string since we store the URL
   description?: string;
   registrationDeadline?: string;
   eventDate?: string;
