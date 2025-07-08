@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
@@ -67,6 +66,9 @@ const AdminComfenalcoPage: React.FC = () => {
     isVisible: true,
   });
 
+  const [bannerImageFile, setBannerImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string>('');
+
   const filteredEvents = comfenalcoEventsMock.filter(event => {
     const searchTermLower = searchTerm.toLowerCase();
     const titleLower = event.title.toLowerCase();
@@ -119,6 +121,45 @@ const AdminComfenalcoPage: React.FC = () => {
     }));
   };
 
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // Validar tamaño del archivo
+      if (file.size > 5 * 1024 * 1024) {
+        toast({
+          title: "Archivo muy grande",
+          description: "La imagen debe ser menor a 5MB.",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      // Validar tipo de archivo
+      if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
+        toast({
+          title: "Formato no válido",
+          description: "Solo se permiten archivos JPG, PNG o WebP.",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      setBannerImageFile(file);
+      
+      // Crear preview local
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setImagePreview(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const removeImage = () => {
+    setBannerImageFile(null);
+    setImagePreview('');
+  };
+
   const handleSwitchChange = (name: string, checked: boolean) => {
     setFormValues(prevValues => ({
       ...prevValues,
@@ -168,6 +209,15 @@ const AdminComfenalcoPage: React.FC = () => {
   };
 
   const handleSubmit = () => {
+    if (!isEditing && !bannerImageFile && !imagePreview) {
+      toast({
+        title: "Imagen requerida",
+        description: "Debes subir una imagen banner.",
+        variant: "destructive"
+      });
+      return;
+    }
+
     if (isEditing && selectedEvent) {
       // Update existing event
       const updatedEvents = comfenalcoEventsMock.map(event =>
@@ -183,6 +233,7 @@ const AdminComfenalcoPage: React.FC = () => {
       const newEvent: ComfenalcoEvent = {
         id: `event-${Date.now()}`,
         ...formValues,
+        bannerImage: imagePreview || formValues.bannerImage,
       };
       comfenalcoEventsMock.push(newEvent);
       // Here you would typically call an API to create the event
@@ -214,6 +265,8 @@ const AdminComfenalcoPage: React.FC = () => {
       displaySize: event.displaySize,
       isVisible: event.isVisible || true,
     });
+    setImagePreview(event.bannerImage);
+    setBannerImageFile(null);
     setIsEditing(true);
     setEventFormOpen(true);
   };
@@ -253,6 +306,8 @@ const AdminComfenalcoPage: React.FC = () => {
       displaySize: 'carousel',
       isVisible: true,
     });
+    setBannerImageFile(null);
+    setImagePreview('');
     setIsEditing(false);
     setSelectedEvent(null);
   };
@@ -571,7 +626,7 @@ const AdminComfenalcoPage: React.FC = () => {
                 </DialogDescription>
               </DialogHeader>
               <div className="grid gap-4 py-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-4">
                   <div>
                     <Label htmlFor="title">Título</Label>
                     <Input
@@ -582,17 +637,51 @@ const AdminComfenalcoPage: React.FC = () => {
                       onChange={handleInputChange}
                     />
                   </div>
+                  
+                  {/* Banner Image Upload */}
                   <div>
-                    <Label htmlFor="bannerImage">URL de la Imagen del Banner</Label>
-                    <Input
-                      type="text"
-                      id="bannerImage"
-                      name="bannerImage"
-                      value={formValues.bannerImage}
-                      onChange={handleInputChange}
-                    />
+                    <Label htmlFor="bannerImage">Imagen del Banner</Label>
+                    <div className="space-y-4">
+                      {!imagePreview ? (
+                        <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-gray-400 transition-colors">
+                          <input
+                            type="file"
+                            accept="image/jpeg,image/png,image/webp"
+                            onChange={handleImageUpload}
+                            className="hidden"
+                            id="banner-upload"
+                          />
+                          <label htmlFor="banner-upload" className="cursor-pointer">
+                            <Upload className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                            <p className="text-lg font-medium text-gray-600 mb-2">Seleccionar imagen banner</p>
+                            <p className="text-sm text-gray-500">JPG, PNG o WebP hasta 5MB</p>
+                          </label>
+                        </div>
+                      ) : (
+                        <div className="relative rounded-lg overflow-hidden">
+                          <img
+                            src={imagePreview}
+                            alt="Preview"
+                            className="w-full h-48 object-cover rounded-lg"
+                          />
+                          <Button
+                            type="button"
+                            variant="destructive"
+                            size="sm"
+                            onClick={removeImage}
+                            className="absolute top-2 right-2"
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                          <div className="absolute bottom-2 left-2 bg-black/50 text-white px-2 py-1 rounded text-sm">
+                            {bannerImageFile ? 'Nueva imagen seleccionada' : 'Imagen actual'}
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
+                
                 <div>
                   <Label htmlFor="description">Descripción</Label>
                   <Textarea
@@ -602,6 +691,7 @@ const AdminComfenalcoPage: React.FC = () => {
                     onChange={handleInputChange}
                   />
                 </div>
+                
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div>
                     <Label htmlFor="publishDate">Fecha de Publicación</Label>
