@@ -108,13 +108,6 @@ const UserForm: React.FC<UserFormProps> = ({ user, onClose }) => {
           {/* Header mejorado */}
           <div className="text-center space-y-4">
             <div className="flex items-center justify-center gap-4 mb-6">
-              <Button
-                variant="ghost"
-                onClick={onClose}
-                className="rounded-full h-12 w-12"
-              >
-                <ArrowLeft className="h-6 w-6" />
-              </Button>
               <div className="flex-1">
                 <h1 className="text-4xl font-bold text-primary-prosalud">
                   {user ? 'Editar Usuario' : 'Nuevo Usuario'}
