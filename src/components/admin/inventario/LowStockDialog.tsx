@@ -5,19 +5,34 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { AlertTriangle, Search, Package, Truck, Plus } from 'lucide-react';
+import { AlertTriangle, Search, Package, Truck, Plus, ShoppingCart } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useToast } from '@/hooks/use-toast';
 
 interface LowStockDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
+interface LowStockItem {
+  id: string;
+  name: string;
+  category: string;
+  current: number;
+  min: number;
+  max: number;
+  status: 'critical' | 'low';
+  lastOrder: string;
+  supplier: string;
+}
+
 const LowStockDialog: React.FC<LowStockDialogProps> = ({ open, onOpenChange }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [isCreatingMassiveOrder, setIsCreatingMassiveOrder] = useState(false);
+  const { toast } = useToast();
 
-  const lowStockItems = [
+  const lowStockItems: LowStockItem[] = [
     { 
       id: '1',
       name: 'Uniforme Azul - Talla M', 
@@ -99,13 +114,74 @@ const LowStockDialog: React.FC<LowStockDialogProps> = ({ open, onOpenChange }) =
     }
   };
 
-  const getRecommendedOrder = (item: any) => {
+  const getRecommendedOrder = (item: LowStockItem) => {
     return Math.ceil((item.max - item.current) / 10) * 10;
   };
 
-  const handleCreateOrder = (item: any) => {
-    console.log(`Creando orden para: ${item.name}`);
-    // Aquí se implementaría la lógica para crear una orden de compra
+  const handleCreateOrder = async (item: LowStockItem) => {
+    try {
+      const recommendedQuantity = getRecommendedOrder(item);
+      
+      // Simulamos la creación de la orden
+      console.log(`Creando orden para: ${item.name}`, {
+        productId: item.id,
+        productName: item.name,
+        supplier: item.supplier,
+        quantity: recommendedQuantity,
+        currentStock: item.current,
+        minStock: item.min
+      });
+
+      toast({
+        title: "Orden creada exitosamente",
+        description: `Se ha creado una orden de ${recommendedQuantity} unidades de ${item.name} con el proveedor ${item.supplier}.`,
+      });
+
+    } catch (error) {
+      toast({
+        title: "Error al crear la orden",
+        description: "No se pudo crear la orden. Inténtalo de nuevo.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleCreateMassiveOrders = async () => {
+    setIsCreatingMassiveOrder(true);
+    
+    try {
+      // Simulamos la creación de órdenes masivas
+      const orders = filteredItems.map(item => ({
+        productId: item.id,
+        productName: item.name,
+        supplier: item.supplier,
+        quantity: getRecommendedOrder(item),
+        currentStock: item.current,
+        minStock: item.min
+      }));
+
+      console.log('Creando órdenes masivas:', orders);
+
+      // Simular tiempo de procesamiento
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
+      toast({
+        title: "Órdenes masivas creadas",
+        description: `Se han creado ${orders.length} órdenes de compra exitosamente.`,
+      });
+
+      // Opcional: cerrar el diálogo después de crear las órdenes
+      // onOpenChange(false);
+
+    } catch (error) {
+      toast({
+        title: "Error al crear órdenes masivas",
+        description: "No se pudieron crear las órdenes. Inténtalo de nuevo.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsCreatingMassiveOrder(false);
+    }
   };
 
   return (
@@ -248,12 +324,11 @@ const LowStockDialog: React.FC<LowStockDialogProps> = ({ open, onOpenChange }) =
                   <TableCell className="text-right">
                     <div className="flex justify-end space-x-2">
                       <Button 
-                        variant="outline" 
                         size="sm"
-                        className="hover:bg-blue-100"
+                        className="bg-primary-prosalud hover:bg-primary-prosalud-dark text-white shadow-sm"
                         onClick={() => handleCreateOrder(item)}
                       >
-                        <Plus className="h-3 w-3 mr-1" />
+                        <ShoppingCart className="h-3 w-3 mr-1" />
                         Pedir {getRecommendedOrder(item)}
                       </Button>
                     </div>
@@ -272,9 +347,13 @@ const LowStockDialog: React.FC<LowStockDialogProps> = ({ open, onOpenChange }) =
             <Button variant="outline" onClick={() => onOpenChange(false)}>
               Cerrar
             </Button>
-            <Button className="bg-primary-prosalud hover:bg-primary-prosalud-dark text-white">
+            <Button 
+              className="bg-primary-prosalud hover:bg-primary-prosalud-dark text-white"
+              onClick={handleCreateMassiveOrders}
+              disabled={isCreatingMassiveOrder || filteredItems.length === 0}
+            >
               <Truck className="h-4 w-4 mr-2" />
-              Crear Órdenes Masivas
+              {isCreatingMassiveOrder ? 'Creando Órdenes...' : 'Crear Órdenes Masivas'}
             </Button>
           </div>
         </div>
