@@ -272,7 +272,7 @@ export const comfenalcoApi = {
     const newEvent: ComfenalcoEvent = {
       id: String(mockComfenalcoEvents.length + 1),
       title: data.title,
-      bannerImage: URL.createObjectURL(data.bannerImage),
+      bannerImage: data.bannerImage,
       description: data.description,
       publishDate: new Date().toISOString().split('T')[0],
       registrationDeadline: data.registrationDeadline,
@@ -294,12 +294,7 @@ export const comfenalcoApi = {
     const eventIndex = mockComfenalcoEvents.findIndex(event => event.id === id);
     if (eventIndex === -1) throw new Error('Evento no encontrado');
     
-    const updatedData: any = { ...data };
-    if (data.bannerImage && data.bannerImage instanceof File) {
-      updatedData.bannerImage = URL.createObjectURL(data.bannerImage);
-    }
-    
-    mockComfenalcoEvents[eventIndex] = { ...mockComfenalcoEvents[eventIndex], ...updatedData };
+    mockComfenalcoEvents[eventIndex] = { ...mockComfenalcoEvents[eventIndex], ...data };
     return mockComfenalcoEvents[eventIndex];
   }
 };
