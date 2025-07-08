@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -15,6 +14,7 @@ import { useToast } from '@/hooks/use-toast';
 import { comfenalcoApi } from '@/services/adminApi';
 import { ComfenalcoEvent, CreateComfenalcoEventData } from '@/types/admin';
 import { baseNameValidation, baseTextValidation, baseUrlValidation, baseCategoryValidation } from '@/hooks/useFormValidation';
+import { storageService } from '@/services/storageService';
 
 const formSchema = z.object({
   title: baseNameValidation.min(5, 'El título debe tener al menos 5 caracteres'),
@@ -37,6 +37,7 @@ interface ComfenalcoEventFormProps {
 const ComfenalcoEventForm: React.FC<ComfenalcoEventFormProps> = ({ event, onClose }) => {
   const [bannerImage, setBannerImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('');
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -99,7 +100,7 @@ const ComfenalcoEventForm: React.FC<ComfenalcoEventFormProps> = ({ event, onClos
     }
   });
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       // Validar tamaño del archivo
@@ -123,6 +124,8 @@ const ComfenalcoEventForm: React.FC<ComfenalcoEventFormProps> = ({ event, onClos
       }
 
       setBannerImage(file);
+      
+      // Crear preview local
       const reader = new FileReader();
       reader.onload = (e) => {
         setImagePreview(e.target?.result as string);
@@ -136,8 +139,8 @@ const ComfenalcoEventForm: React.FC<ComfenalcoEventFormProps> = ({ event, onClos
     setImagePreview('');
   };
 
-  const onSubmit = (data: FormData) => {
-    if (!event && !bannerImage) {
+  const onSubmit = async (data: FormData) => {
+    if (!event && !bannerImage && !imagePreview) {
       toast({
         title: "Imagen requerida",
         description: "Debes subir una imagen banner.",
@@ -146,22 +149,41 @@ const ComfenalcoEventForm: React.FC<ComfenalcoEventFormProps> = ({ event, onClos
       return;
     }
 
-    const eventData: CreateComfenalcoEventData = {
-      title: data.title.trim(),
-      bannerImage: bannerImage!,
-      description: data.description?.trim() || undefined,
-      registrationDeadline: data.registrationDeadline || undefined,
-      eventDate: data.eventDate || undefined,
-      registrationLink: data.registrationLink.trim(),
-      formLink: data.formLink.trim(),
-      category: data.category.trim(),
-      displaySize: data.displaySize
-    };
+    try {
+      setIsUploadingImage(true);
+      
+      let bannerImageUrl = imagePreview;
+      
+      // Solo subir nueva imagen si se seleccionó un archivo
+      if (bannerImage) {
+        bannerImageUrl = await storageService.uploadComfenalcoEventImage(bannerImage);
+      }
 
-    if (event) {
-      updateMutation.mutate(eventData);
-    } else {
-      createMutation.mutate(eventData);
+      const eventData: CreateComfenalcoEventData = {
+        title: data.title.trim(),
+        bannerImage: bannerImageUrl,
+        description: data.description?.trim() || undefined,
+        registrationDeadline: data.registrationDeadline || undefined,
+        eventDate: data.eventDate || undefined,
+        registrationLink: data.registrationLink.trim(),
+        formLink: data.formLink.trim(),
+        category: data.category.trim(),
+        displaySize: data.displaySize
+      };
+
+      if (event) {
+        updateMutation.mutate(eventData);
+      } else {
+        createMutation.mutate(eventData);
+      }
+    } catch (error) {
+      toast({
+        title: "Error al subir imagen",
+        description: "No se pudo subir la imagen. Inténtalo de nuevo.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsUploadingImage(false);
     }
   };
 
@@ -388,6 +410,9 @@ const ComfenalcoEventForm: React.FC<ComfenalcoEventFormProps> = ({ event, onClos
                       >
                         <X className="h-4 w-4" />
                       </Button>
+                      <div className="absolute bottom-4 left-4 bg-black/50 text-white px-3 py-1 rounded-lg text-sm">
+                        {bannerImage ? 'Nueva imagen seleccionada' : 'Imagen actual'}
+                      </div>
                     </div>
                   )}
                 </div>
@@ -406,10 +431,10 @@ const ComfenalcoEventForm: React.FC<ComfenalcoEventFormProps> = ({ event, onClos
               </Button>
               <Button
                 type="submit"
-                disabled={createMutation.isPending || updateMutation.isPending}
+                disabled={createMutation.isPending || updateMutation.isPending || isUploadingImage}
                 className="h-12 px-8 bg-orange-500 hover:bg-orange-600"
               >
-                {createMutation.isPending || updateMutation.isPending
+                {createMutation.isPending || updateMutation.isPending || isUploadingImage
                   ? 'Guardando...'
                   : event ? 'Actualizar Experiencia' : 'Crear Experiencia'
                 }
