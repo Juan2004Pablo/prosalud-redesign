@@ -12,7 +12,7 @@ import { Badge } from '@/components/ui/badge';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import AdminLayout from '@/components/admin/AdminLayout';
 import UserFormModal from '@/components/admin/usuarios/UserFormModal';
-import DeactivateUserDialog from '@/components/admin/usuarios/DeactivateUserDialog';
+import UserStatusConfirmationDialog from '@/components/admin/usuarios/UserStatusConfirmationDialog';
 import UserAvatar from '@/components/admin/UserAvatar';
 import DataPagination from '@/components/ui/data-pagination';
 import { usePagination } from '@/hooks/usePagination';
@@ -22,7 +22,7 @@ import { User } from '@/types/admin';
 const AdminUsuariosPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [showForm, setShowForm] = useState(false);
-  const [showDeactivateDialog, setShowDeactivateDialog] = useState(false);
+  const [showStatusDialog, setShowStatusDialog] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
@@ -92,7 +92,7 @@ const AdminUsuariosPage: React.FC = () => {
 
   const handleToggleStatus = (user: User) => {
     setSelectedUser(user);
-    setShowDeactivateDialog(true);
+    setShowStatusDialog(true);
   };
 
   const handleCloseForm = () => {
@@ -275,9 +275,9 @@ const AdminUsuariosPage: React.FC = () => {
         user={selectedUser}
       />
 
-      <DeactivateUserDialog
-        open={showDeactivateDialog}
-        onOpenChange={setShowDeactivateDialog}
+      <UserStatusConfirmationDialog
+        open={showStatusDialog}
+        onOpenChange={setShowStatusDialog}
         user={selectedUser}
       />
     </AdminLayout>
