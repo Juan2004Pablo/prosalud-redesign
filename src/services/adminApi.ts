@@ -269,10 +269,18 @@ export const comfenalcoApi = {
 
   async createEvent(data: CreateComfenalcoEventData): Promise<ComfenalcoEvent> {
     await delay(1000);
+    
+    // Simular procesamiento del archivo - en el futuro esto se enviará al backend
+    let bannerImageUrl = '';
+    if (data.bannerImage) {
+      // Por ahora crear un URL temporal para mock, el backend procesará el archivo real
+      bannerImageUrl = URL.createObjectURL(data.bannerImage);
+    }
+    
     const newEvent: ComfenalcoEvent = {
       id: String(mockComfenalcoEvents.length + 1),
       title: data.title,
-      bannerImage: data.bannerImage,
+      bannerImage: bannerImageUrl,
       description: data.description,
       publishDate: new Date().toISOString().split('T')[0],
       registrationDeadline: data.registrationDeadline,
@@ -294,7 +302,14 @@ export const comfenalcoApi = {
     const eventIndex = mockComfenalcoEvents.findIndex(event => event.id === id);
     if (eventIndex === -1) throw new Error('Evento no encontrado');
     
-    mockComfenalcoEvents[eventIndex] = { ...mockComfenalcoEvents[eventIndex], ...data };
+    const updatedData: any = { ...data };
+    
+    // Si se proporciona una nueva imagen, procesarla
+    if (data.bannerImage && data.bannerImage instanceof File) {
+      updatedData.bannerImage = URL.createObjectURL(data.bannerImage);
+    }
+    
+    mockComfenalcoEvents[eventIndex] = { ...mockComfenalcoEvents[eventIndex], ...updatedData };
     return mockComfenalcoEvents[eventIndex];
   }
 };

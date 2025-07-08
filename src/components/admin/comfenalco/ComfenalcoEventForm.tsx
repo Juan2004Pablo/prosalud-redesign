@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -14,7 +15,6 @@ import { useToast } from '@/hooks/use-toast';
 import { comfenalcoApi } from '@/services/adminApi';
 import { ComfenalcoEvent, CreateComfenalcoEventData } from '@/types/admin';
 import { baseNameValidation, baseTextValidation, baseUrlValidation, baseCategoryValidation } from '@/hooks/useFormValidation';
-import { storageService } from '@/services/storageService';
 
 const formSchema = z.object({
   title: baseNameValidation.min(5, 'El título debe tener al menos 5 caracteres'),
@@ -37,7 +37,6 @@ interface ComfenalcoEventFormProps {
 const ComfenalcoEventForm: React.FC<ComfenalcoEventFormProps> = ({ event, onClose }) => {
   const [bannerImage, setBannerImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('');
-  const [isUploadingImage, setIsUploadingImage] = useState(false);
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -100,7 +99,7 @@ const ComfenalcoEventForm: React.FC<ComfenalcoEventFormProps> = ({ event, onClos
     }
   });
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       // Validar tamaño del archivo
@@ -150,18 +149,9 @@ const ComfenalcoEventForm: React.FC<ComfenalcoEventFormProps> = ({ event, onClos
     }
 
     try {
-      setIsUploadingImage(true);
-      
-      let bannerImageUrl = imagePreview;
-      
-      // Solo subir nueva imagen si se seleccionó un archivo
-      if (bannerImage) {
-        bannerImageUrl = await storageService.uploadComfenalcoEventImage(bannerImage);
-      }
-
       const eventData: CreateComfenalcoEventData = {
         title: data.title.trim(),
-        bannerImage: bannerImageUrl,
+        bannerImage: bannerImage || null, // Enviar el archivo directamente
         description: data.description?.trim() || undefined,
         registrationDeadline: data.registrationDeadline || undefined,
         eventDate: data.eventDate || undefined,
@@ -178,12 +168,10 @@ const ComfenalcoEventForm: React.FC<ComfenalcoEventFormProps> = ({ event, onClos
       }
     } catch (error) {
       toast({
-        title: "Error al subir imagen",
-        description: "No se pudo subir la imagen. Inténtalo de nuevo.",
+        title: "Error",
+        description: "No se pudo procesar la solicitud. Inténtalo de nuevo.",
         variant: "destructive"
       });
-    } finally {
-      setIsUploadingImage(false);
     }
   };
 
@@ -431,10 +419,10 @@ const ComfenalcoEventForm: React.FC<ComfenalcoEventFormProps> = ({ event, onClos
               </Button>
               <Button
                 type="submit"
-                disabled={createMutation.isPending || updateMutation.isPending || isUploadingImage}
+                disabled={createMutation.isPending || updateMutation.isPending}
                 className="h-12 px-8 bg-orange-500 hover:bg-orange-600"
               >
-                {createMutation.isPending || updateMutation.isPending || isUploadingImage
+                {createMutation.isPending || updateMutation.isPending
                   ? 'Guardando...'
                   : event ? 'Actualizar Experiencia' : 'Crear Experiencia'
                 }
