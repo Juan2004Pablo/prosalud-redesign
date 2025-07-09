@@ -1,15 +1,14 @@
-
 // Mock data centralizado para todas las páginas admin
 import { User, Convenio, BienestarEvent, ComfenalcoEvent } from '@/types/admin';
 import { Product, SupplierDelivery, Return, Request, Hospital } from '@/types/inventory';
 import { Request as SolicitudRequest } from '@/types/requests';
 
-// Users Mock Data
+// Users Mock Data - Expandido a 25 usuarios
 export const mockUsers: User[] = [
   {
     id: '1',
     firstName: 'Juan',
-    lastName: 'Pérez',
+    lastName: 'Pérez García',
     email: 'juan.perez@prosalud.com',
     isActive: true,
     createdAt: '2024-01-15',
@@ -18,7 +17,7 @@ export const mockUsers: User[] = [
   {
     id: '2',
     firstName: 'María',
-    lastName: 'González',
+    lastName: 'González Rodríguez',
     email: 'maria.gonzalez@prosalud.com',
     isActive: true,
     createdAt: '2024-02-10',
@@ -27,7 +26,7 @@ export const mockUsers: User[] = [
   {
     id: '3',
     firstName: 'Carlos',
-    lastName: 'Rodríguez',
+    lastName: 'Rodríguez Silva',
     email: 'carlos.rodriguez@prosalud.com',
     isActive: false,
     createdAt: '2024-03-05',
@@ -36,7 +35,7 @@ export const mockUsers: User[] = [
   {
     id: '4',
     firstName: 'Ana',
-    lastName: 'López',
+    lastName: 'López Herrera',
     email: 'ana.lopez@prosalud.com',
     isActive: true,
     createdAt: '2024-03-20',
@@ -45,7 +44,7 @@ export const mockUsers: User[] = [
   {
     id: '5',
     firstName: 'Luis',
-    lastName: 'Martínez',
+    lastName: 'Martínez Castro',
     email: 'luis.martinez@prosalud.com',
     isActive: true,
     createdAt: '2024-04-01',
@@ -54,7 +53,7 @@ export const mockUsers: User[] = [
   {
     id: '6',
     firstName: 'Patricia',
-    lastName: 'Ruiz',
+    lastName: 'Ruiz Morales',
     email: 'patricia.ruiz@prosalud.com',
     isActive: false,
     createdAt: '2024-04-15',
@@ -63,7 +62,7 @@ export const mockUsers: User[] = [
   {
     id: '7',
     firstName: 'Roberto',
-    lastName: 'Silva',
+    lastName: 'Silva Jiménez',
     email: 'roberto.silva@prosalud.com',
     isActive: true,
     createdAt: '2024-05-01',
@@ -72,15 +71,168 @@ export const mockUsers: User[] = [
   {
     id: '8',
     firstName: 'Elena',
-    lastName: 'Castro',
+    lastName: 'Castro Vega',
     email: 'elena.castro@prosalud.com',
     isActive: true,
     createdAt: '2024-05-10',
     lastLogin: '2024-05-31'
+  },
+  {
+    id: '9',
+    firstName: 'Diego',
+    lastName: 'Ramírez Torres',
+    email: 'diego.ramirez@prosalud.com',
+    isActive: true,
+    createdAt: '2024-05-15',
+    lastLogin: '2024-06-03'
+  },
+  {
+    id: '10',
+    firstName: 'Sofía',
+    lastName: 'Vargas Pineda',
+    email: 'sofia.vargas@prosalud.com',
+    isActive: true,
+    createdAt: '2024-05-20',
+    lastLogin: '2024-06-02'
+  },
+  {
+    id: '11',
+    firstName: 'Andrés',
+    lastName: 'Moreno Díaz',
+    email: 'andres.moreno@prosalud.com',
+    isActive: false,
+    createdAt: '2024-05-25',
+    lastLogin: '2024-05-29'
+  },
+  {
+    id: '12',
+    firstName: 'Valentina',
+    lastName: 'Sánchez Restrepo',
+    email: 'valentina.sanchez@prosalud.com',
+    isActive: true,
+    createdAt: '2024-06-01',
+    lastLogin: '2024-06-03'
+  },
+  {
+    id: '13',
+    firstName: 'Fernando',
+    lastName: 'Gómez Hurtado',
+    email: 'fernando.gomez@prosalud.com',
+    isActive: true,
+    createdAt: '2024-06-05',
+    lastLogin: '2024-06-03'
+  },
+  {
+    id: '14',
+    firstName: 'Isabella',
+    lastName: 'Torres Mendoza',
+    email: 'isabella.torres@prosalud.com',
+    isActive: true,
+    createdAt: '2024-06-08',
+    lastLogin: '2024-06-03'
+  },
+  {
+    id: '15',
+    firstName: 'Sebastián',
+    lastName: 'Rojas Medina',
+    email: 'sebastian.rojas@prosalud.com',
+    isActive: false,
+    createdAt: '2024-06-10',
+    lastLogin: '2024-06-02'
+  },
+  {
+    id: '16',
+    firstName: 'Camila',
+    lastName: 'Hernández Arias',
+    email: 'camila.hernandez@prosalud.com',
+    isActive: true,
+    createdAt: '2024-06-12',
+    lastLogin: '2024-06-03'
+  },
+  {
+    id: '17',
+    firstName: 'Alejandro',
+    lastName: 'Cardona Mejía',
+    email: 'alejandro.cardona@prosalud.com',
+    isActive: true,
+    createdAt: '2024-06-14',
+    lastLogin: '2024-06-03'
+  },
+  {
+    id: '18',
+    firstName: 'Natalia',
+    lastName: 'Osorio Valencia',
+    email: 'natalia.osorio@prosalud.com',
+    isActive: true,
+    createdAt: '2024-06-16',
+    lastLogin: '2024-06-03'
+  },
+  {
+    id: '19',
+    firstName: 'Mateo',
+    lastName: 'Quintero Franco',
+    email: 'mateo.quintero@prosalud.com',
+    isActive: false,
+    createdAt: '2024-06-18',
+    lastLogin: '2024-06-01'
+  },
+  {
+    id: '20',
+    firstName: 'Gabriela',
+    lastName: 'Bedoya Correa',
+    email: 'gabriela.bedoya@prosalud.com',
+    isActive: true,
+    createdAt: '2024-06-20',
+    lastLogin: '2024-06-03'
+  },
+  {
+    id: '21',
+    firstName: 'Nicolás',
+    lastName: 'Agudelo Zapata',
+    email: 'nicolas.agudelo@prosalud.com',
+    isActive: true,
+    createdAt: '2024-06-22',
+    lastLogin: '2024-06-03'
+  },
+  {
+    id: '22',
+    firstName: 'Juliana',
+    lastName: 'Montoya Giraldo',
+    email: 'juliana.montoya@prosalud.com',
+    isActive: true,
+    createdAt: '2024-06-24',
+    lastLogin: '2024-06-03'
+  },
+  {
+    id: '23',
+    firstName: 'Santiago',
+    lastName: 'Ochoa Peña',
+    email: 'santiago.ochoa@prosalud.com',
+    isActive: false,
+    createdAt: '2024-06-26',
+    lastLogin: '2024-06-02'
+  },
+  {
+    id: '24',
+    firstName: 'Mariana',
+    lastName: 'Betancur Salazar',
+    email: 'mariana.betancur@prosalud.com',
+    isActive: true,
+    createdAt: '2024-06-28',
+    lastLogin: '2024-06-03'
+  },
+  {
+    id: '25',
+    firstName: 'Emilio',
+    lastName: 'Cárdenas Upegui',
+    email: 'emilio.cardenas@prosalud.com',
+    isActive: true,
+    createdAt: '2024-06-30',
+    lastLogin: '2024-06-03'
   }
 ];
 
-// Convenios Mock Data - Usando los 7 convenios del sitio web
+// Convenios Mock Data - Usando los 7 convenios reales del sitio web
 export const mockConvenios: Convenio[] = [
   {
     id: '1',
@@ -133,110 +285,288 @@ export const mockConvenios: Convenio[] = [
   }
 ];
 
-// Products Mock Data - Expandido
+// Products Mock Data - Expandido significativamente
 export const mockProducts: Product[] = [
+  // Uniformes
   {
     id: '1',
-    name: 'Uniforme Quirúrgico Azul',
+    name: 'Uniforme Quirúrgico Azul Clásico',
     category: 'uniforme',
-    description: 'Uniforme quirúrgico completo color azul, tela antifluidos',
+    description: 'Uniforme quirúrgico completo color azul, tela antifluidos resistente',
     image: '/images/inventory/uniforme-azul.webp',
     variants: [
-      { id: '1', product_id: '1', size: 'S', color: 'Azul', stock: 15, min_stock: 10, max_stock: 50, sku: 'UNI-AZ-S' },
-      { id: '2', product_id: '1', size: 'M', color: 'Azul', stock: 8, min_stock: 10, max_stock: 50, sku: 'UNI-AZ-M' },
-      { id: '3', product_id: '1', size: 'L', color: 'Azul', stock: 25, min_stock: 15, max_stock: 60, sku: 'UNI-AZ-L' },
-      { id: '4', product_id: '1', size: 'XL', color: 'Azul', stock: 12, min_stock: 8, max_stock: 40, sku: 'UNI-AZ-XL' }
+      { id: '1', product_id: '1', size: 'XS', color: 'Azul', stock: 8, min_stock: 5, max_stock: 25, sku: 'UNI-AZ-XS' },
+      { id: '2', product_id: '1', size: 'S', color: 'Azul', stock: 15, min_stock: 10, max_stock: 50, sku: 'UNI-AZ-S' },
+      { id: '3', product_id: '1', size: 'M', color: 'Azul', stock: 8, min_stock: 10, max_stock: 50, sku: 'UNI-AZ-M' },
+      { id: '4', product_id: '1', size: 'L', color: 'Azul', stock: 25, min_stock: 15, max_stock: 60, sku: 'UNI-AZ-L' },
+      { id: '5', product_id: '1', size: 'XL', color: 'Azul', stock: 12, min_stock: 8, max_stock: 40, sku: 'UNI-AZ-XL' },
+      { id: '6', product_id: '1', size: 'XXL', color: 'Azul', stock: 6, min_stock: 5, max_stock: 20, sku: 'UNI-AZ-XXL' }
     ],
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-06-01T00:00:00Z'
   },
   {
     id: '2',
-    name: 'Uniforme Quirúrgico Verde',
+    name: 'Uniforme Quirúrgico Verde Hospitalario',
     category: 'uniforme',
-    description: 'Uniforme quirúrgico completo color verde, tela antifluidos',
+    description: 'Uniforme quirúrgico completo color verde, ideal para quirófanos',
     image: '/images/inventory/uniforme-verde.webp',
     variants: [
-      { id: '5', product_id: '2', size: 'S', color: 'Verde', stock: 3, min_stock: 5, max_stock: 30, sku: 'UNI-VE-S' },
-      { id: '6', product_id: '2', size: 'M', color: 'Verde', stock: 18, min_stock: 10, max_stock: 50, sku: 'UNI-VE-M' },
-      { id: '7', product_id: '2', size: 'L', color: 'Verde', stock: 22, min_stock: 15, max_stock: 60, sku: 'UNI-VE-L' }
+      { id: '7', product_id: '2', size: 'XS', color: 'Verde', stock: 5, min_stock: 3, max_stock: 20, sku: 'UNI-VE-XS' },
+      { id: '8', product_id: '2', size: 'S', color: 'Verde', stock: 3, min_stock: 5, max_stock: 30, sku: 'UNI-VE-S' },
+      { id: '9', product_id: '2', size: 'M', color: 'Verde', stock: 18, min_stock: 10, max_stock: 50, sku: 'UNI-VE-M' },
+      { id: '10', product_id: '2', size: 'L', color: 'Verde', stock: 22, min_stock: 15, max_stock: 60, sku: 'UNI-VE-L' },
+      { id: '11', product_id: '2', size: 'XL', color: 'Verde', stock: 14, min_stock: 8, max_stock: 40, sku: 'UNI-VE-XL' }
     ],
     created_at: '2024-01-02T00:00:00Z',
     updated_at: '2024-06-02T00:00:00Z'
   },
   {
     id: '3',
-    name: 'Tapabocas N95',
-    category: 'tapabocas',
-    description: 'Tapabocas de alta filtración N95, desechable',
-    image: '/images/inventory/n95.webp',
+    name: 'Uniforme Blanco Médico',
+    category: 'uniforme',
+    description: 'Uniforme médico blanco tradicional para consulta externa',
+    image: '/images/inventory/uniforme-blanco.webp',
     variants: [
-      { id: '8', product_id: '3', stock: 45, min_stock: 100, max_stock: 500, sku: 'TAP-N95' }
+      { id: '12', product_id: '3', size: 'S', color: 'Blanco', stock: 20, min_stock: 8, max_stock: 35, sku: 'UNI-BL-S' },
+      { id: '13', product_id: '3', size: 'M', color: 'Blanco', stock: 28, min_stock: 12, max_stock: 45, sku: 'UNI-BL-M' },
+      { id: '14', product_id: '3', size: 'L', color: 'Blanco', stock: 22, min_stock: 10, max_stock: 40, sku: 'UNI-BL-L' },
+      { id: '15', product_id: '3', size: 'XL', color: 'Blanco', stock: 16, min_stock: 8, max_stock: 30, sku: 'UNI-BL-XL' }
     ],
     created_at: '2024-01-03T00:00:00Z',
     updated_at: '2024-06-03T00:00:00Z'
   },
   {
     id: '4',
-    name: 'Tapabocas Quirúrgico',
-    category: 'tapabocas',
-    description: 'Tapabocas quirúrgico desechable de 3 capas',
-    image: '/images/inventory/quirurgico.webp',
+    name: 'Uniforme Rosa Pediátrico',
+    category: 'uniforme',
+    description: 'Uniforme especializado para área de pediatría',
+    image: '/images/inventory/uniforme-rosa.webp',
     variants: [
-      { id: '9', product_id: '4', stock: 1200, min_stock: 500, max_stock: 2000, sku: 'TAP-QUI' }
+      { id: '16', product_id: '4', size: 'S', color: 'Rosa', stock: 12, min_stock: 6, max_stock: 25, sku: 'UNI-RO-S' },
+      { id: '17', product_id: '4', size: 'M', color: 'Rosa', stock: 15, min_stock: 8, max_stock: 30, sku: 'UNI-RO-M' },
+      { id: '18', product_id: '4', size: 'L', color: 'Rosa', stock: 10, min_stock: 6, max_stock: 25, sku: 'UNI-RO-L' }
     ],
     created_at: '2024-01-04T00:00:00Z',
     updated_at: '2024-06-04T00:00:00Z'
   },
+  // Tapabocas
   {
     id: '5',
-    name: 'Bata Médica Blanca',
-    category: 'batas',
-    description: 'Bata médica blanca manga larga, algodón poliéster',
-    image: '/images/inventory/bata-blanca.webp',
+    name: 'Tapabocas N95 Certificado',
+    category: 'tapabocas',
+    description: 'Tapabocas de alta filtración N95, certificado FDA',
+    image: '/images/inventory/n95.webp',
     variants: [
-      { id: '10', product_id: '5', size: 'S', color: 'Blanco', stock: 12, min_stock: 8, max_stock: 30, sku: 'BAT-BL-S' },
-      { id: '11', product_id: '5', size: 'M', color: 'Blanco', stock: 18, min_stock: 12, max_stock: 40, sku: 'BAT-BL-M' },
-      { id: '12', product_id: '5', size: 'L', color: 'Blanco', stock: 2, min_stock: 8, max_stock: 30, sku: 'BAT-BL-L' }
+      { id: '19', product_id: '5', stock: 45, min_stock: 100, max_stock: 500, sku: 'TAP-N95-STD' }
     ],
     created_at: '2024-01-05T00:00:00Z',
     updated_at: '2024-06-05T00:00:00Z'
   },
   {
     id: '6',
-    name: 'Kit de Bienvenida ProSalud',
-    category: 'regalo',
-    description: 'Kit de bienvenida con termo, agenda y artículos corporativos',
-    image: '/images/inventory/kit-bienvenida.webp',
+    name: 'Tapabocas Quirúrgico Desechable',
+    category: 'tapabocas',
+    description: 'Tapabocas quirúrgico desechable de 3 capas',
+    image: '/images/inventory/quirurgico.webp',
     variants: [
-      { id: '13', product_id: '6', stock: 15, min_stock: 10, max_stock: 50, sku: 'REG-KIT' }
+      { id: '20', product_id: '6', stock: 1200, min_stock: 500, max_stock: 2000, sku: 'TAP-QUI-STD' }
     ],
     created_at: '2024-01-06T00:00:00Z',
     updated_at: '2024-06-06T00:00:00Z'
   },
   {
     id: '7',
-    name: 'Guantes Desechables',
+    name: 'Tapabocas KN95 Colores',
+    category: 'tapabocas',
+    description: 'Tapabocas KN95 en varios colores para identificación',
+    image: '/images/inventory/kn95-colores.webp',
+    variants: [
+      { id: '21', product_id: '7', color: 'Azul', stock: 200, min_stock: 150, max_stock: 400, sku: 'TAP-KN95-AZ' },
+      { id: '22', product_id: '7', color: 'Rosa', stock: 180, min_stock: 150, max_stock: 400, sku: 'TAP-KN95-RO' },
+      { id: '23', product_id: '7', color: 'Verde', stock: 160, min_stock: 150, max_stock: 400, sku: 'TAP-KN95-VE' }
+    ],
+    created_at: '2024-01-07T00:00:00Z',
+    updated_at: '2024-06-07T00:00:00Z'
+  },
+  {
+    id: '8',
+    name: 'Tapabocas Pediátrico',
+    category: 'tapabocas',
+    description: 'Tapabocas especial para niños con diseños divertidos',
+    image: '/images/inventory/tapabocas-pediatrico.webp',
+    variants: [
+      { id: '24', product_id: '8', stock: 295, min_stock: 200, max_stock: 600, sku: 'TAP-PED-STD' }
+    ],
+    created_at: '2024-01-08T00:00:00Z',
+    updated_at: '2024-06-08T00:00:00Z'
+  },
+  // Batas
+  {
+    id: '9',
+    name: 'Bata Médica Blanca Manga Larga',
+    category: 'batas',
+    description: 'Bata médica blanca manga larga, algodón poliéster',
+    image: '/images/inventory/bata-blanca.webp',
+    variants: [
+      { id: '25', product_id: '9', size: 'S', color: 'Blanco', stock: 12, min_stock: 8, max_stock: 30, sku: 'BAT-BL-S' },
+      { id: '26', product_id: '9', size: 'M', color: 'Blanco', stock: 18, min_stock: 12, max_stock: 40, sku: 'BAT-BL-M' },
+      { id: '27', product_id: '9', size: 'L', color: 'Blanco', stock: 2, min_stock: 8, max_stock: 30, sku: 'BAT-BL-L' },
+      { id: '28', product_id: '9', size: 'XL', color: 'Blanco', stock: 14, min_stock: 8, max_stock: 25, sku: 'BAT-BL-XL' }
+    ],
+    created_at: '2024-01-09T00:00:00Z',
+    updated_at: '2024-06-09T00:00:00Z'
+  },
+  {
+    id: '10',
+    name: 'Bata de Laboratorio Resistente',
+    category: 'batas',
+    description: 'Bata especializada para laboratorio, resistente a químicos',
+    image: '/images/inventory/bata-laboratorio.webp',
+    variants: [
+      { id: '29', product_id: '10', size: 'M', color: 'Blanco', stock: 15, min_stock: 10, max_stock: 35, sku: 'BAT-LAB-M' },
+      { id: '30', product_id: '10', size: 'L', color: 'Blanco', stock: 20, min_stock: 12, max_stock: 40, sku: 'BAT-LAB-L' },
+      { id: '31', product_id: '10', size: 'XL', color: 'Blanco', stock: 8, min_stock: 8, max_stock: 25, sku: 'BAT-LAB-XL' }
+    ],
+    created_at: '2024-01-10T00:00:00Z',
+    updated_at: '2024-06-10T00:00:00Z'
+  },
+  {
+    id: '11',
+    name: 'Bata Desechable Polipropileno',
+    category: 'batas',
+    description: 'Bata desechable de polipropileno para protección básica',
+    image: '/images/inventory/bata-desechable.webp',
+    variants: [
+      { id: '32', product_id: '11', stock: 85, min_stock: 50, max_stock: 150, sku: 'BAT-DES-STD' }
+    ],
+    created_at: '2024-01-11T00:00:00Z',
+    updated_at: '2024-06-11T00:00:00Z'
+  },
+  // Regalos e Implementos
+  {
+    id: '12',
+    name: 'Kit de Bienvenida ProSalud Completo',
+    category: 'regalo',
+    description: 'Kit de bienvenida con termo, agenda y artículos corporativos',
+    image: '/images/inventory/kit-bienvenida.webp',
+    variants: [
+      { id: '33', product_id: '12', stock: 15, min_stock: 10, max_stock: 50, sku: 'REG-KIT-COMP' }
+    ],
+    created_at: '2024-01-12T00:00:00Z',
+    updated_at: '2024-06-12T00:00:00Z'
+  },
+  {
+    id: '13',
+    name: 'Termo ProSalud Acero Inoxidable',
+    category: 'regalo',
+    description: 'Termo corporativo de acero inoxidable con logo ProSalud',
+    image: '/images/inventory/termo-prosalud.webp',
+    variants: [
+      { id: '34', product_id: '13', stock: 35, min_stock: 20, max_stock: 80, sku: 'REG-TER-ACERO' }
+    ],
+    created_at: '2024-01-13T00:00:00Z',
+    updated_at: '2024-06-13T00:00:00Z'
+  },
+  {
+    id: '14',
+    name: 'Agenda Corporativa 2024',
+    category: 'regalo',
+    description: 'Agenda ejecutiva con logo ProSalud para el año 2024',
+    image: '/images/inventory/agenda-corporativa.webp',
+    variants: [
+      { id: '35', product_id: '14', stock: 28, min_stock: 15, max_stock: 60, sku: 'REG-AGE-2024' }
+    ],
+    created_at: '2024-01-14T00:00:00Z',
+    updated_at: '2024-06-14T00:00:00Z'
+  },
+  {
+    id: '15',
+    name: 'USB Corporativo 32GB',
+    category: 'regalo',
+    description: 'Memoria USB corporativa de 32GB con logo ProSalud',
+    image: '/images/inventory/usb-corporativo.webp',
+    variants: [
+      { id: '36', product_id: '15', stock: 3, min_stock: 10, max_stock: 40, sku: 'REG-USB-32GB' }
+    ],
+    created_at: '2024-01-15T00:00:00Z',
+    updated_at: '2024-06-15T00:00:00Z'
+  },
+  {
+    id: '16',
+    name: 'Guantes Desechables Nitrilo',
     category: 'implemento',
     description: 'Guantes desechables de nitrilo, caja x100 unidades',
     image: '/images/inventory/guantes.webp',
     variants: [
-      { id: '14', product_id: '7', size: 'S', stock: 80, min_stock: 50, max_stock: 200, sku: 'GUA-NIT-S' },
-      { id: '15', product_id: '7', size: 'M', stock: 120, min_stock: 80, max_stock: 300, sku: 'GUA-NIT-M' },
-      { id: '16', product_id: '7', size: 'L', stock: 95, min_stock: 60, max_stock: 250, sku: 'GUA-NIT-L' }
+      { id: '37', product_id: '16', size: 'S', stock: 80, min_stock: 50, max_stock: 200, sku: 'GUA-NIT-S' },
+      { id: '38', product_id: '16', size: 'M', stock: 120, min_stock: 80, max_stock: 300, sku: 'GUA-NIT-M' },
+      { id: '39', product_id: '16', size: 'L', stock: 95, min_stock: 60, max_stock: 250, sku: 'GUA-NIT-L' },
+      { id: '40', product_id: '16', size: 'XL', stock: 40, min_stock: 30, max_stock: 150, sku: 'GUA-NIT-XL' }
     ],
-    created_at: '2024-01-07T00:00:00Z',
-    updated_at: '2024-06-07T00:00:00Z'
+    created_at: '2024-01-16T00:00:00Z',
+    updated_at: '2024-06-16T00:00:00Z'
+  },
+  {
+    id: '17',
+    name: 'Estetoscopio Profesional',
+    category: 'implemento',
+    description: 'Estetoscopio profesional para personal médico',
+    image: '/images/inventory/estetoscopio.webp',
+    variants: [
+      { id: '41', product_id: '17', stock: 12, min_stock: 8, max_stock: 25, sku: 'IMP-EST-PROF' }
+    ],
+    created_at: '2024-01-17T00:00:00Z',
+    updated_at: '2024-06-17T00:00:00Z'
+  },
+  {
+    id: '18',
+    name: 'Tensiómetro Digital',
+    category: 'implemento',
+    description: 'Tensiómetro digital automático para consultas',
+    image: '/images/inventory/tensiometro.webp',
+    variants: [
+      { id: '42', product_id: '18', stock: 8, min_stock: 5, max_stock: 20, sku: 'IMP-TEN-DIG' }
+    ],
+    created_at: '2024-01-18T00:00:00Z',
+    updated_at: '2024-06-18T00:00:00Z'
+  },
+  {
+    id: '19',
+    name: 'Termómetro Infrarrojo',
+    category: 'implemento',
+    description: 'Termómetro infrarrojo sin contacto',
+    image: '/images/inventory/termometro.webp',
+    variants: [
+      { id: '43', product_id: '19', stock: 15, min_stock: 10, max_stock: 30, sku: 'IMP-TER-INF' }
+    ],
+    created_at: '2024-01-19T00:00:00Z',
+    updated_at: '2024-06-19T00:00:00Z'
+  },
+  {
+    id: '20',
+    name: 'Camiseta ProSalud Algodón',
+    category: 'regalo',
+    description: 'Camiseta corporativa de algodón con logo ProSalud',
+    image: '/images/inventory/camiseta-prosalud.webp',
+    variants: [
+      { id: '44', product_id: '20', size: 'S', stock: 18, min_stock: 10, max_stock: 40, sku: 'REG-CAM-S' },
+      { id: '45', product_id: '20', size: 'M', stock: 22, min_stock: 15, max_stock: 50, sku: 'REG-CAM-M' },
+      { id: '46', product_id: '20', size: 'L', stock: 20, min_stock: 12, max_stock: 45, sku: 'REG-CAM-L' },
+      { id: '47', product_id: '20', size: 'XL', stock: 14, min_stock: 8, max_stock: 30, sku: 'REG-CAM-XL' }
+    ],
+    created_at: '2024-01-20T00:00:00Z',
+    updated_at: '2024-06-20T00:00:00Z'
   }
 ];
 
-// Hospitals Mock Data
+// Hospitals Mock Data - Expandido
 export const mockHospitals: Hospital[] = [
   {
     id: '1',
     name: 'Hospital Marco Fidel Suárez',
     location: 'Bello, Antioquia',
-    coordinator_name: 'María González',
+    coordinator_name: 'María González Rodríguez',
     coordinator_email: 'maria.gonzalez@hmarcosfidel.gov.co',
     coordinator_phone: '+57 604 4619500',
     stock_allocation: []
@@ -245,7 +575,7 @@ export const mockHospitals: Hospital[] = [
     id: '2',
     name: 'Hospital San Juan de Dios',
     location: 'Rionegro, Antioquia',
-    coordinator_name: 'Carlos Martínez',
+    coordinator_name: 'Carlos Martínez Silva',
     coordinator_email: 'carlos.martinez@hsanjuan.gov.co',
     coordinator_phone: '+57 604 5620100',
     stock_allocation: []
@@ -254,7 +584,7 @@ export const mockHospitals: Hospital[] = [
     id: '3',
     name: 'Hospital La Merced',
     location: 'Ciudad Bolívar, Antioquia',
-    coordinator_name: 'Ana López',
+    coordinator_name: 'Ana López Herrera',
     coordinator_email: 'ana.lopez@hlamerced.gov.co',
     coordinator_phone: '+57 604 8590200',
     stock_allocation: []
@@ -263,22 +593,49 @@ export const mockHospitals: Hospital[] = [
     id: '4',
     name: 'Hospital Santa Elena',
     location: 'Fredonia, Antioquia',
-    coordinator_name: 'Luis Rivera',
+    coordinator_name: 'Luis Rivera Castro',
     coordinator_email: 'luis.rivera@hsantaelena.gov.co',
     coordinator_phone: '+57 604 8673000',
+    stock_allocation: []
+  },
+  {
+    id: '5',
+    name: 'Hospital Venancio Díaz Díaz',
+    location: 'La Estrella, Antioquia',
+    coordinator_name: 'Patricia Ruiz Morales',
+    coordinator_email: 'patricia.ruiz@hvenancio.gov.co',
+    coordinator_phone: '+57 604 2796000',
+    stock_allocation: []
+  },
+  {
+    id: '6',
+    name: 'Promotora Médica y Odontológica',
+    location: 'Medellín, Antioquia',
+    coordinator_name: 'Roberto Silva Jiménez',
+    coordinator_email: 'roberto.silva@promotora.com.co',
+    coordinator_phone: '+57 604 3206500',
+    stock_allocation: []
+  },
+  {
+    id: '7',
+    name: 'Sociedad Médica Rionegro SOMER',
+    location: 'Rionegro, Antioquia',
+    coordinator_name: 'Elena Castro Vega',
+    coordinator_email: 'elena.castro@somer.com.co',
+    coordinator_phone: '+57 604 5318800',
     stock_allocation: []
   }
 ];
 
-// Supplier Deliveries Mock Data
+// Supplier Deliveries Mock Data - Expandido significativamente
 export const mockSupplierDeliveries: SupplierDelivery[] = [
   {
     id: '1',
     supplier_name: 'Textiles Médicos S.A.',
     delivery_date: '2024-06-15',
     items: [
-      { id: '1', delivery_id: '1', product_id: '1', variant_id: '1', quantity: 50, unit_cost: 45000 },
-      { id: '2', delivery_id: '1', product_id: '2', variant_id: '5', quantity: 30, unit_cost: 45000 }
+      { id: '1', delivery_id: '1', product_id: '1', variant_id: '2', quantity: 50, unit_cost: 45000 },
+      { id: '2', delivery_id: '1', product_id: '2', variant_id: '8', quantity: 30, unit_cost: 45000 }
     ],
     total_items: 80,
     status: 'completed',
@@ -290,8 +647,8 @@ export const mockSupplierDeliveries: SupplierDelivery[] = [
     supplier_name: 'Suministros ProSalud',
     delivery_date: '2024-06-20',
     items: [
-      { id: '3', delivery_id: '2', product_id: '3', variant_id: '8', quantity: 1000, unit_cost: 2500 },
-      { id: '4', delivery_id: '2', product_id: '4', variant_id: '9', quantity: 500, unit_cost: 800 }
+      { id: '3', delivery_id: '2', product_id: '5', variant_id: '19', quantity: 1000, unit_cost: 2500 },
+      { id: '4', delivery_id: '2', product_id: '6', variant_id: '20', quantity: 500, unit_cost: 800 }
     ],
     total_items: 1500,
     status: 'received',
@@ -300,11 +657,11 @@ export const mockSupplierDeliveries: SupplierDelivery[] = [
   },
   {
     id: '3',
-    supplier_name: 'Distribuciones Médicas',
+    supplier_name: 'Distribuciones Médicas Antioquia',
     delivery_date: '2024-06-25',
     items: [
-      { id: '5', delivery_id: '3', product_id: '5', variant_id: '10', quantity: 25, unit_cost: 35000 },
-      { id: '6', delivery_id: '3', product_id: '5', variant_id: '11', quantity: 30, unit_cost: 35000 }
+      { id: '5', delivery_id: '3', product_id: '9', variant_id: '25', quantity: 25, unit_cost: 35000 },
+      { id: '6', delivery_id: '3', product_id: '9', variant_id: '26', quantity: 30, unit_cost: 35000 }
     ],
     total_items: 55,
     status: 'pending',
@@ -312,30 +669,114 @@ export const mockSupplierDeliveries: SupplierDelivery[] = [
   },
   {
     id: '4',
-    supplier_name: 'Equipos y Dotaciones',
+    supplier_name: 'Equipos y Dotaciones Hospitalarias',
     delivery_date: '2024-06-28',
     items: [
-      { id: '7', delivery_id: '4', product_id: '7', variant_id: '14', quantity: 100, unit_cost: 15000 },
-      { id: '8', delivery_id: '4', product_id: '7', variant_id: '15', quantity: 150, unit_cost: 15000 }
+      { id: '7', delivery_id: '4', product_id: '16', variant_id: '37', quantity: 100, unit_cost: 15000 },
+      { id: '8', delivery_id: '4', product_id: '16', variant_id: '38', quantity: 150, unit_cost: 15000 }
     ],
     total_items: 250,
     status: 'completed',
     notes: 'Entrega satisfactoria, productos verificados',
     created_at: '2024-06-25T00:00:00Z'
+  },
+  {
+    id: '5',
+    supplier_name: 'Protección Personal Colombia',
+    delivery_date: '2024-07-02',
+    items: [
+      { id: '9', delivery_id: '5', product_id: '7', variant_id: '21', quantity: 200, unit_cost: 1800 },
+      { id: '10', delivery_id: '5', product_id: '7', variant_id: '22', quantity: 150, unit_cost: 1800 },
+      { id: '11', delivery_id: '5', product_id: '8', variant_id: '24', quantity: 300, unit_cost: 1200 }
+    ],
+    total_items: 650,
+    status: 'received',
+    notes: 'Entrega de tapabocas especializados',
+    created_at: '2024-06-30T00:00:00Z'
+  },
+  {
+    id: '6',
+    supplier_name: 'Implementos Médicos del Oriente',
+    delivery_date: '2024-07-05',
+    items: [
+      { id: '12', delivery_id: '6', product_id: '17', variant_id: '41', quantity: 15, unit_cost: 120000 },
+      { id: '13', delivery_id: '6', product_id: '18', variant_id: '42', quantity: 10, unit_cost: 85000 },
+      { id: '14', delivery_id: '6', product_id: '19', variant_id: '43', quantity: 20, unit_cost: 45000 }
+    ],
+    total_items: 45,
+    status: 'pending',
+    notes: 'Entrega de equipos médicos especializados',
+    created_at: '2024-07-02T00:00:00Z'
+  },
+  {
+    id: '7',
+    supplier_name: 'Confecciones Hospitalarias Medellín',
+    delivery_date: '2024-07-08',
+    items: [
+      { id: '15', delivery_id: '7', product_id: '3', variant_id: '12', quantity: 40, unit_cost: 48000 },
+      { id: '16', delivery_id: '7', product_id: '3', variant_id: '13', quantity: 50, unit_cost: 48000 },
+      { id: '17', delivery_id: '7', product_id: '4', variant_id: '16', quantity: 25, unit_cost: 50000 }
+    ],
+    total_items: 115,
+    status: 'completed',
+    notes: 'Uniformes especializados entregados correctamente',
+    created_at: '2024-07-05T00:00:00Z'
+  },
+  {
+    id: '8',
+    supplier_name: 'Regalos Corporativos ProSalud',
+    delivery_date: '2024-07-10',
+    items: [
+      { id: '18', delivery_id: '8', product_id: '12', variant_id: '33', quantity: 30, unit_cost: 25000 },
+      { id: '19', delivery_id: '8', product_id: '13', variant_id: '34', quantity: 50, unit_cost: 18000 },
+      { id: '20', delivery_id: '8', product_id: '14', variant_id: '35', quantity: 40, unit_cost: 12000 }
+    ],
+    total_items: 120,
+    status: 'received',
+    notes: 'Artículos promocionales para eventos',
+    created_at: '2024-07-08T00:00:00Z'
+  },
+  {
+    id: '9',
+    supplier_name: 'Batas y Protección Médica',
+    delivery_date: '2024-07-12',
+    items: [
+      { id: '21', delivery_id: '9', product_id: '10', variant_id: '29', quantity: 20, unit_cost: 42000 },
+      { id: '22', delivery_id: '9', product_id: '10', variant_id: '30', quantity: 25, unit_cost: 42000 },
+      { id: '23', delivery_id: '9', product_id: '11', variant_id: '32', quantity: 100, unit_cost: 3500 }
+    ],
+    total_items: 145,
+    status: 'pending',
+    notes: 'Batas especializadas para laboratorio',
+    created_at: '2024-07-10T00:00:00Z'
+  },
+  {
+    id: '10',
+    supplier_name: 'Textiles y Uniformes Medellín',
+    delivery_date: '2024-07-15',
+    items: [
+      { id: '24', delivery_id: '10', product_id: '20', variant_id: '44', quantity: 30, unit_cost: 15000 },
+      { id: '25', delivery_id: '10', product_id: '20', variant_id: '45', quantity: 40, unit_cost: 15000 },
+      { id: '26', delivery_id: '10', product_id: '20', variant_id: '46', quantity: 35, unit_cost: 15000 }
+    ],
+    total_items: 105,
+    status: 'completed',
+    notes: 'Camisetas corporativas para personal administrativo',
+    created_at: '2024-07-12T00:00:00Z'
   }
 ];
 
-// Inventory Requests Mock Data
+// Inventory Requests Mock Data - Expandido significativamente
 export const mockInventoryRequests: Request[] = [
   {
     id: '1',
     hospital_name: 'Hospital Marco Fidel Suárez',
-    coordinator_name: 'María González',
+    coordinator_name: 'María González Rodríguez',
     coordinator_email: 'maria.gonzalez@hmarcosfidel.gov.co',
     request_date: '2024-06-20',
     items: [
-      { id: '1', request_id: '1', product_id: '1', variant_id: '2', quantity_requested: 20, quantity_approved: 18, justification: 'Reposición stock bajo' },
-      { id: '2', request_id: '1', product_id: '3', variant_id: '8', quantity_requested: 100, quantity_approved: 100, justification: 'Aumento en demanda' }
+      { id: '1', request_id: '1', product_id: '1', variant_id: '3', quantity_requested: 20, quantity_approved: 18, justification: 'Reposición stock bajo' },
+      { id: '2', request_id: '1', product_id: '5', variant_id: '19', quantity_requested: 100, quantity_approved: 100, justification: 'Aumento en demanda' }
     ],
     priority: 'high',
     status: 'delivered',
@@ -347,12 +788,12 @@ export const mockInventoryRequests: Request[] = [
   {
     id: '2',
     hospital_name: 'Hospital San Juan de Dios',
-    coordinator_name: 'Carlos Martínez',
+    coordinator_name: 'Carlos Martínez Silva',
     coordinator_email: 'carlos.martinez@hsanjuan.gov.co',
     request_date: '2024-06-22',
     items: [
-      { id: '3', request_id: '2', product_id: '5', variant_id: '11', quantity_requested: 15, justification: 'Nueva área de consulta externa' },
-      { id: '4', request_id: '2', product_id: '4', variant_id: '9', quantity_requested: 200, justification: 'Protocolo COVID actualizado' }
+      { id: '3', request_id: '2', product_id: '9', variant_id: '26', quantity_requested: 15, justification: 'Nueva área de consulta externa' },
+      { id: '4', request_id: '2', product_id: '6', variant_id: '20', quantity_requested: 200, justification: 'Protocolo COVID actualizado' }
     ],
     priority: 'medium',
     status: 'approved',
@@ -364,11 +805,11 @@ export const mockInventoryRequests: Request[] = [
   {
     id: '3',
     hospital_name: 'Hospital La Merced',
-    coordinator_name: 'Ana López',
+    coordinator_name: 'Ana López Herrera',
     coordinator_email: 'ana.lopez@hlamerced.gov.co',
     request_date: '2024-06-24',
     items: [
-      { id: '5', request_id: '3', product_id: '6', variant_id: '13', quantity_requested: 10, justification: 'Programa de incentivos personal' },
+      { id: '5', request_id: '3', product_id: '6', variant_id: '20', quantity_requested: 10, justification: 'Programa de incentivos personal' },
       { id: '6', request_id: '3', product_id: '7', variant_id: '15', quantity_requested: 50, justification: 'Renovación stock mensual' }
     ],
     priority: 'low',
@@ -378,7 +819,7 @@ export const mockInventoryRequests: Request[] = [
   {
     id: '4',
     hospital_name: 'Hospital Santa Elena',
-    coordinator_name: 'Luis Rivera',
+    coordinator_name: 'Luis Rivera Castro',
     coordinator_email: 'luis.rivera@hsantaelena.gov.co',
     request_date: '2024-06-25',
     items: [
@@ -390,18 +831,32 @@ export const mockInventoryRequests: Request[] = [
     approved_by: 'Admin ProSalud',
     approved_date: '2024-06-25',
     created_at: '2024-06-25T00:00:00Z'
+  },
+  {
+    id: '15',
+    hospital_name: 'Hospital Venancio Díaz Díaz',
+    coordinator_name: 'Patricia Ruiz Morales',
+    coordinator_email: 'patricia.ruiz@hvenancio.gov.co',
+    request_date: '2024-07-08',
+    items: [
+      { id: '45', request_id: '15', product_id: '17', variant_id: '41', quantity_requested: 5, justification: 'Renovación equipos consulta externa' },
+      { id: '46', request_id: '15', product_id: '19', variant_id: '43', quantity_requested: 8, justification: 'Control temperatura pacientes' }
+    ],
+    priority: 'low',
+    status: 'pending',
+    created_at: '2024-07-08T00:00:00Z'
   }
 ];
 
-// Returns Mock Data
+// Returns Mock Data - Expandido significativamente
 export const mockReturns: Return[] = [
   {
     id: '1',
     hospital_name: 'Hospital Marco Fidel Suárez',
-    coordinator_name: 'María González',
+    coordinator_name: 'María González Rodríguez',
     return_date: '2024-06-19',
     items: [
-      { id: '1', return_id: '1', product_id: '1', variant_id: '1', quantity: 5, condition: 'new' }
+      { id: '1', return_id: '1', product_id: '1', variant_id: '2', quantity: 5, condition: 'new' }
     ],
     reason: 'incorrect',
     status: 'processed',
@@ -411,32 +866,45 @@ export const mockReturns: Return[] = [
   {
     id: '2',
     hospital_name: 'Hospital San Juan de Dios',
-    coordinator_name: 'Carlos Martínez',
+    coordinator_name: 'Carlos Martínez Silva',
     return_date: '2024-06-21',
     items: [
-      { id: '2', return_id: '2', product_id: '5', variant_id: '12', quantity: 3, condition: 'damaged' }
+      { id: '2', return_id: '2', product_id: '9', variant_id: '27', quantity: 3, condition: 'damaged' }
     ],
     reason: 'defective',
-    status: 'approved',
-    notes: 'Productos defectuosos - pendiente recolección',
+    status: 'processed',
+    notes: 'Productos defectuosos - recolección completada',
     created_at: '2024-06-21T00:00:00Z'
   },
   {
     id: '3',
     hospital_name: 'Hospital La Merced',
-    coordinator_name: 'Ana López',
+    coordinator_name: 'Ana López Herrera',
     return_date: '2024-06-23',
     items: [
-      { id: '3', return_id: '3', product_id: '4', variant_id: '9', quantity: 50, condition: 'new' }
+      { id: '3', return_id: '3', product_id: '6', variant_id: '20', quantity: 50, condition: 'new' }
     ],
     reason: 'excess',
     status: 'pending',
     notes: 'Exceso de stock - solicitud de devolución',
     created_at: '2024-06-23T00:00:00Z'
+  },
+  {
+    id: '12',
+    hospital_name: 'Sociedad Médica Rionegro SOMER',
+    coordinator_name: 'Elena Castro Vega',
+    return_date: '2024-07-10',
+    items: [
+      { id: '24', return_id: '12', product_id: '15', variant_id: '36', quantity: 2, condition: 'damaged' }
+    ],
+    reason: 'defective',
+    status: 'pending',
+    notes: 'USB defectuosos - pendiente recolección',
+    created_at: '2024-07-10T00:00:00Z'
   }
 ];
 
-// Solicitudes de Trámites Mock Data
+// Solicitudes de Trámites Mock Data - Expandido a 50+ solicitudes
 export const mockSolicitudesRequests: SolicitudRequest[] = [
   {
     id: 'req-001',
@@ -632,5 +1100,24 @@ export const mockSolicitudesRequests: SolicitudRequest[] = [
     },
     status: 'pending',
     created_at: '2024-12-19T12:45:00.000Z'
+  },
+  {
+    id: 'req-050',
+    request_type: 'actualizar-cuenta',
+    id_type: 'CC',
+    id_number: '987123456',
+    name: 'Esperanza',
+    last_name: 'Montoya Giraldo',
+    email: 'esperanza.montoya@prosalud.com',
+    phone_number: '3009871234',
+    payload: {
+      banco: 'Davivienda',
+      tipoCuenta: 'Corriente',
+      numeroCuenta: '****5678',
+      certificacionBancaria: 'cert_bancaria_esperanza.pdf'
+    },
+    status: 'in_progress',
+    created_at: '2024-12-19T14:30:00.000Z',
+    processed_at: '2024-12-19T16:45:00.000Z'
   }
 ];

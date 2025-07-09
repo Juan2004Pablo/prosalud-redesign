@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -35,12 +35,31 @@ const UserFormModal: React.FC<UserFormModalProps> = ({ open, onOpenChange, user 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      firstName: user?.firstName || '',
-      lastName: user?.lastName || '',
-      email: user?.email || '',
-      isActive: user?.isActive ?? true,
+      firstName: '',
+      lastName: '',
+      email: '',
+      isActive: true,
     }
   });
+
+  // Update form values when user prop changes
+  useEffect(() => {
+    if (user) {
+      form.reset({
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        isActive: user.isActive,
+      });
+    } else {
+      form.reset({
+        firstName: '',
+        lastName: '',
+        email: '',
+        isActive: true,
+      });
+    }
+  }, [user, form]);
 
   const createMutation = useMutation({
     mutationFn: usersApi.createUser,
