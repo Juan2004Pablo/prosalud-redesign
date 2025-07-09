@@ -1,169 +1,62 @@
+
 import React, { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import AdminLayout from '@/components/admin/AdminLayout';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import ExportRequestsDialog from '@/components/admin/solicitudes/ExportRequestsDialog';
 import { 
-  Brush,
-  Search,
   FileText,
   Download,
   Filter,
-  X,
+  Search,
   User,
   Eye,
   MoreHorizontal,
   Clock,
   CheckCircle,
   TrendingUp,
-  Users
+  Users,
+  Brush
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useToast } from '@/hooks/use-toast';
 import DataPagination from '@/components/ui/data-pagination';
 import { usePagination } from '@/hooks/usePagination';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import ReactJson from 'react-json-view';
-
-interface SolicitudDetallada {
-  id: string;
-  nombre: string;
-  email: string;
-  cedula: string;
-  tipo: string;
-  tipoId: string;
-  fechaCreacion: Date;
-  estado: 'pendiente' | 'en_proceso' | 'resuelto' | 'rechazada';
-  detalles: any;
-  observaciones?: string;
-  fechaResolucion?: Date;
-}
+import { solicitudesService } from '@/services/solicitudesService';
+import { Request } from '@/types/requests';
 
 const AdminSolicitudesPage: React.FC = () => {
-  const [selectedSolicitud, setSelectedSolicitud] = useState<SolicitudDetallada | null>(null);
+  const [selectedSolicitud, setSelectedSolicitud] = useState<Request | null>(null);
   const [exportDialogOpen, setExportDialogOpen] = useState(false);
-  const [filterDialogOpen, setFilterDialogOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedStatus, setSelectedStatus] = useState<string>('all');
   const [selectedType, setSelectedType] = useState<string>('all');
-  const [solicitudes, setSolicitudes] = useState<SolicitudDetallada[]>([
-    {
-      id: 'req-001',
-      nombre: 'María González Rodríguez',
-      email: 'maria.gonzalez@hospital.com',
-      cedula: '123456789',
-      tipo: 'Certificado de Convenio',
-      tipoId: 'req-001',
-      fechaCreacion: new Date('2024-12-10T03:30:00'),
-      estado: 'resuelto',
-      detalles: {
-        convenio: 'Hospital Marco Fidel Suárez',
-        fechaInicio: '2024-01-15',
-        fechaFin: '2024-12-31'
-      },
-      observaciones: 'Certificado generado exitosamente',
-      fechaResolucion: new Date('2024-12-10T09:20:00')
-    },
-    {
-      id: 'req-002',
-      nombre: 'Carlos Martínez Silva',
-      email: 'carlos.martinez@clinica.com',
-      cedula: '987654321',
-      tipo: 'Compensación Anual Diferida',
-      tipoId: 'req-002',
-      fechaCreacion: new Date('2024-12-15T04:45:00'),
-      estado: 'en_proceso',
-      detalles: {
-        año: '2024',
-        monto: 2500000,
-        concepto: 'Vacaciones no disfrutadas'
-      }
-    },
-    {
-      id: 'req-003',
-      nombre: 'Ana López Herrera',
-      email: 'ana.lopez@enfermeria.com',
-      cedula: '112233445',
-      tipo: 'Verificación de Pagos',
-      tipoId: 'req-003',
-      fechaCreacion: new Date('2024-12-16T11:20:00'),
-      estado: 'pendiente',
-      detalles: {
-        periodo: 'Noviembre 2024',
-        concepto: 'Horas extras',
-        valor: 850000
-      }
-    },
-    {
-      id: 'req-004',
-      nombre: 'Roberto Jiménez Castro',
-      email: 'roberto.jimenez@urgencias.com',
-      cedula: '556677889',
-      tipo: 'Solicitud de Descanso',
-      tipoId: 'req-004',
-      fechaCreacion: new Date('2024-12-17T06:15:00'),
-      estado: 'pendiente',
-      detalles: {
-        fechaInicio: '2024-12-20',
-        fechaFin: '2024-12-27',
-        motivo: 'Descanso médico'
-      }
-    },
-    {
-      id: 'req-005',
-      nombre: 'Elena Ramírez Vega',
-      email: 'elena.ramirez@laboratorio.com',
-      cedula: '778899001',
-      tipo: 'Actualizar Cuenta Bancaria',
-      tipoId: 'req-005',
-      fechaCreacion: new Date('2024-12-12T09:30:00'),
-      estado: 'resuelto',
-      detalles: {
-        banco: 'Bancolombia',
-        tipoCuenta: 'Ahorros',
-        numeroCuenta: '****7890'
-      },
-      fechaResolucion: new Date('2024-12-12T14:15:00')
-    },
-    {
-      id: 'req-006',
-      nombre: 'Alejandro Torres Mendoza',
-      email: 'alejandro.torres@radiologia.com',
-      cedula: '102345679',
-      tipo: 'Retiro Sindical',
-      tipoId: 'req-006',
-      fechaCreacion: new Date('2024-12-14T08:45:00'),
-      estado: 'en_proceso',
-      detalles: {
-        fechaRetiro: '2024-12-31',
-        motivo: 'Pensión por vejez'
-      }
-    },
-    {
-      id: 'req-007',
-      nombre: 'Patricia Sánchez Morales',
-      email: 'patricia.sanchez@farmacia.com',
-      cedula: '334556677',
-      tipo: 'Microcrédito CEII',
-      tipoId: 'req-007',
-      fechaCreacion: new Date('2024-12-16T05:00:00'),
-      estado: 'pendiente',
-      detalles: {
-        monto: 5000000,
-        plazo: '36 meses',
-        destino: 'Mejoras en vivienda'
-      }
-    }
-  ]);
 
   const { toast } = useToast();
+
+  // Fetch requests with filters
+  const { data: solicitudes = [], isLoading, refetch } = useQuery({
+    queryKey: ['admin-solicitudes', searchTerm, selectedStatus, selectedType],
+    queryFn: () => solicitudesService.getRequests({
+      search: searchTerm || undefined,
+      status: selectedStatus !== 'all' ? selectedStatus as any : undefined,
+      request_type: selectedType !== 'all' ? selectedType as any : undefined
+    })
+  });
+
+  // Fetch stats
+  const { data: stats } = useQuery({
+    queryKey: ['admin-solicitudes-stats'],
+    queryFn: solicitudesService.getRequestStats
+  });
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -185,42 +78,36 @@ const AdminSolicitudesPage: React.FC = () => {
     }
   };
 
-  const handleViewDetails = (solicitud: SolicitudDetallada) => {
+  const handleViewDetails = (solicitud: Request) => {
     console.log('Ver detalles de solicitud:', solicitud);
     setSelectedSolicitud(solicitud);
   };
 
-  const handleChangeStatus = (id: string, newStatus: 'en_proceso' | 'resuelto' | 'rechazada') => {
-    const now = new Date();
-    setSolicitudes(solicitudes.map(solicitud =>
-      solicitud.id === id ? { 
-        ...solicitud, 
-        estado: newStatus,
-        fechaResolucion: newStatus === 'resuelto' ? now : undefined
-      } : solicitud
-    ));
-    
-    const statusLabels = {
-      'en_proceso': 'Marcada en Proceso',
-      'resuelto': 'Marcada como Resuelta',
-      'rechazada': 'Rechazada'
-    };
-    
-    toast({
-      title: `Solicitud ${statusLabels[newStatus]}`,
-      description: `La solicitud #${id} ha sido ${statusLabels[newStatus].toLowerCase()} exitosamente.`,
-    });
-    setSelectedSolicitud(null);
+  const handleChangeStatus = async (id: string, newStatus: Request['status']) => {
+    try {
+      await solicitudesService.updateRequestStatus(id, newStatus);
+      
+      const statusLabels = {
+        'in_progress': 'Marcada en Proceso',
+        'resolved': 'Marcada como Resuelta',
+        'rejected': 'Rechazada'
+      };
+      
+      toast({
+        title: `Solicitud ${statusLabels[newStatus]}`,
+        description: `La solicitud #${id} ha sido ${statusLabels[newStatus].toLowerCase()} exitosamente.`,
+      });
+      
+      setSelectedSolicitud(null);
+      refetch();
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "No se pudo actualizar el estado de la solicitud",
+        variant: "destructive"
+      });
+    }
   };
-
-  const filteredSolicitudes = solicitudes.filter(solicitud => {
-    const matchesSearch = solicitud.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           solicitud.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           solicitud.tipo.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = selectedStatus === 'all' || solicitud.estado === selectedStatus;
-    const matchesType = selectedType === 'all' || solicitud.tipo === selectedType;
-    return matchesSearch && matchesStatus && matchesType;
-  });
 
   const {
     currentPage,
@@ -231,51 +118,49 @@ const AdminSolicitudesPage: React.FC = () => {
     goToPage,
     setItemsPerPage
   } = usePagination({
-    data: filteredSolicitudes,
+    data: solicitudes,
     initialItemsPerPage: 10
   });
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'pendiente': return 'bg-yellow-100 text-yellow-700';
-      case 'en_proceso': return 'bg-blue-100 text-blue-700';
-      case 'resuelto': return 'bg-green-100 text-green-700';
-      case 'rechazada': return 'bg-red-100 text-red-700';
+      case 'pending': return 'bg-yellow-100 text-yellow-700';
+      case 'in_progress': return 'bg-blue-100 text-blue-700';
+      case 'resolved': return 'bg-green-100 text-green-700';
+      case 'rejected': return 'bg-red-100 text-red-700';
       default: return 'bg-gray-100 text-gray-700';
     }
   };
 
   const getStatusLabel = (status: string) => {
     switch (status) {
-      case 'pendiente': return 'Pendiente';
-      case 'en_proceso': return 'En Proceso';
-      case 'resuelto': return 'Resuelto';
-      case 'rechazada': return 'Rechazado';
+      case 'pending': return 'Pendiente';
+      case 'in_progress': return 'En Proceso';
+      case 'resolved': return 'Resuelto';
+      case 'rejected': return 'Rechazado';
       default: return status;
     }
+  };
+
+  const getRequestTypeLabel = (type: string) => {
+    const labels: Record<string, string> = {
+      'certificado-convenio': 'Certificado de Convenio',
+      'compensacion-anual': 'Compensación Anual Diferida',
+      'verificacion-pagos': 'Verificación de Pagos',
+      'descanso-laboral': 'Solicitud de Descanso',
+      'actualizar-cuenta': 'Actualizar Cuenta Bancaria',
+      'retiro-sindical': 'Retiro Sindical',
+      'microcredito': 'Microcrédito CEII',
+      'incapacidad-maternidad': 'Incapacidad de Maternidad',
+      'permisos-turnos': 'Permisos y Turnos'
+    };
+    return labels[type] || type;
   };
 
   const clearFilters = () => {
     setSearchTerm('');
     setSelectedStatus('all');
     setSelectedType('all');
-  };
-
-  const uniqueTypes = Array.from(new Set(solicitudes.map(s => s.tipo)));
-
-  const handleCopyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text).then(() => {
-      toast({
-        title: "Copiado",
-        description: "El contenido ha sido copiado al portapapeles",
-      });
-    }).catch(() => {
-      toast({
-        title: "Error",
-        description: "No se pudo copiar el contenido",
-        variant: "destructive"
-      });
-    });
   };
 
   return (
@@ -325,7 +210,7 @@ const AdminSolicitudesPage: React.FC = () => {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm font-medium text-gray-600 mb-1">Total Solicitudes</p>
-                      <p className="text-3xl font-bold text-blue-600">{solicitudes.length}</p>
+                      <p className="text-3xl font-bold text-blue-600">{stats?.total || 0}</p>
                     </div>
                     <div className="p-3 rounded-full">
                       <Users className="h-6 w-6 text-blue-600" />
@@ -339,7 +224,7 @@ const AdminSolicitudesPage: React.FC = () => {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm font-medium text-gray-600 mb-1">Pendientes</p>
-                      <p className="text-3xl font-bold text-yellow-600">{solicitudes.filter(s => s.estado === 'pendiente').length}</p>
+                      <p className="text-3xl font-bold text-yellow-600">{stats?.pending || 0}</p>
                     </div>
                     <div className="p-3 rounded-full">
                       <Clock className="h-6 w-6 text-yellow-600" />
@@ -353,7 +238,7 @@ const AdminSolicitudesPage: React.FC = () => {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm font-medium text-gray-600 mb-1">Resueltas</p>
-                      <p className="text-3xl font-bold text-green-600">{solicitudes.filter(s => s.estado === 'resuelto').length}</p>
+                      <p className="text-3xl font-bold text-green-600">{stats?.resolved || 0}</p>
                     </div>
                     <div className="p-3 rounded-full">
                       <CheckCircle className="h-6 w-6 text-green-600" />
@@ -367,13 +252,7 @@ const AdminSolicitudesPage: React.FC = () => {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm font-medium text-gray-600 mb-1">Este Mes</p>
-                      <p className="text-3xl font-bold text-purple-600">
-                        {solicitudes.filter(s => {
-                          const solicitudMonth = s.fechaCreacion.getMonth();
-                          const currentMonth = new Date().getMonth();
-                          return solicitudMonth === currentMonth;
-                        }).length}
-                      </p>
+                      <p className="text-3xl font-bold text-purple-600">{stats?.this_month || 0}</p>
                     </div>
                     <div className="rounded-full">
                       <TrendingUp className="h-6 w-6 text-purple-600" />
@@ -417,35 +296,11 @@ const AdminSolicitudesPage: React.FC = () => {
                         <SelectValue placeholder="Todos los estados" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="all">
-                          <span className="flex items-center gap-2">
-                            Todos los estados
-                          </span>
-                        </SelectItem>
-                        <SelectItem value="pendiente">
-                          <span className="flex items-center gap-2">
-                            <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
-                            Pendiente
-                          </span>
-                        </SelectItem>
-                        <SelectItem value="en_proceso">
-                          <span className="flex items-center gap-2">
-                            <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                            En Proceso
-                          </span>
-                        </SelectItem>
-                        <SelectItem value="resuelto">
-                          <span className="flex items-center gap-2">
-                            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                            Resuelto
-                          </span>
-                        </SelectItem>
-                        <SelectItem value="rechazada">
-                          <span className="flex items-center gap-2">
-                            <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-                            Rechazado
-                          </span>
-                        </SelectItem>
+                        <SelectItem value="all">Todos los estados</SelectItem>
+                        <SelectItem value="pending">Pendiente</SelectItem>
+                        <SelectItem value="in_progress">En Proceso</SelectItem>
+                        <SelectItem value="resolved">Resuelto</SelectItem>
+                        <SelectItem value="rejected">Rechazado</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -456,13 +311,15 @@ const AdminSolicitudesPage: React.FC = () => {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="all">Todos los tipos</SelectItem>
-                        <SelectItem value="Certificado de Convenio">Certificado de Convenio</SelectItem>
-                        <SelectItem value="Compensación Anual Diferida">Compensación Anual Diferida</SelectItem>
-                        <SelectItem value="Verificación de Pagos">Verificación de Pagos</SelectItem>
-                        <SelectItem value="Solicitud de Descanso">Solicitud de Descanso</SelectItem>
-                        <SelectItem value="Actualizar Cuenta Bancaria">Actualizar Cuenta Bancaria</SelectItem>
-                        <SelectItem value="Retiro Sindical">Retiro Sindical</SelectItem>
-                        <SelectItem value="Microcrédito CEII">Microcrédito CEII</SelectItem>
+                        <SelectItem value="certificado-convenio">Certificado de Convenio</SelectItem>
+                        <SelectItem value="compensacion-anual">Compensación Anual</SelectItem>
+                        <SelectItem value="verificacion-pagos">Verificación de Pagos</SelectItem>
+                        <SelectItem value="descanso-laboral">Descanso Laboral</SelectItem>
+                        <SelectItem value="actualizar-cuenta">Actualizar Cuenta</SelectItem>
+                        <SelectItem value="retiro-sindical">Retiro Sindical</SelectItem>
+                        <SelectItem value="microcredito">Microcrédito</SelectItem>
+                        <SelectItem value="incapacidad-maternidad">Incapacidad Maternidad</SelectItem>
+                        <SelectItem value="permisos-turnos">Permisos y Turnos</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -497,127 +354,135 @@ const AdminSolicitudesPage: React.FC = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="rounded-md border overflow-hidden">
-                  <Table>
-                    <TableHeader>
-                      <TableRow className="bg-gray-50">
-                        <TableHead className="w-1/4">Solicitante</TableHead>
-                        <TableHead className="w-1/5">Tipo</TableHead>
-                        <TableHead className="w-1/6">Estado</TableHead>
-                        <TableHead className="w-1/6">Fecha</TableHead>
-                        <TableHead className="w-16">Acciones</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {paginatedData.map((solicitud) => (
-                        <TableRow key={solicitud.id} className="hover:bg-gray-50 transition-colors">
-                          <TableCell>
-                            <div className="flex items-center space-x-3">
-                              <div className="bg-gray-100 p-2 rounded-full">
-                                <User className="h-4 w-4 text-gray-600" />
-                              </div>
-                              <div>
-                                <p className="font-medium text-gray-900">{solicitud.nombre}</p>
-                                <p className="text-sm text-gray-600">{solicitud.email}</p>
-                                <p className="text-xs text-gray-500">CC: {solicitud.cedula}</p>
-                              </div>
-                            </div>
-                          </TableCell>
-                          <TableCell>
-                            <div>
-                              <p className="font-medium text-gray-900">{solicitud.tipo}</p>
-                              <p className="text-sm text-gray-500">ID: {solicitud.tipoId}</p>
-                            </div>
-                          </TableCell>
-                          <TableCell>
-                            <Badge className={getStatusColor(solicitud.estado)}>
-                              {getStatusLabel(solicitud.estado)}
-                            </Badge>
-                          </TableCell>
-                          <TableCell>
-                            <div>
-                              <p className="text-sm text-gray-900">
-                                {solicitud.fechaCreacion.toLocaleDateString('es-ES', {
-                                  day: '2-digit',
-                                  month: 'short',
-                                  year: 'numeric'
-                                })}
-                              </p>
-                              <p className="text-xs text-gray-500">
-                                {solicitud.fechaCreacion.toLocaleTimeString('es-ES', {
-                                  hour: '2-digit',
-                                  minute: '2-digit'
-                                })}
-                              </p>
-                              {solicitud.estado === 'resuelto' && solicitud.fechaResolucion && (
-                                <p className="text-xs text-green-600 font-medium mt-1">
-                                  ✓ Resuelto: {solicitud.fechaResolucion.toLocaleDateString('es-ES', {
-                                    day: '2-digit',
-                                    month: 'short',
-                                    year: 'numeric'
-                                  })}, {solicitud.fechaResolucion.toLocaleTimeString('es-ES', {
-                                    hour: '2-digit',
-                                    minute: '2-digit'
-                                  })}
-                                </p>
-                              )}
-                            </div>
-                          </TableCell>
-                          <TableCell>
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                  <MoreHorizontal className="h-4 w-4" />
-                                </Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent align="end" className="w-48">
-                                <DropdownMenuItem onClick={() => handleViewDetails(solicitud)}>
-                                  <Eye className="h-4 w-4 mr-2" />
-                                  Ver Detalles
-                                </DropdownMenuItem>
-                                {solicitud.estado === 'pendiente' && (
-                                  <>
-                                    <DropdownMenuItem onClick={() => handleChangeStatus(solicitud.id, 'en_proceso')}>
-                                      <div className="h-4 w-4 mr-2 bg-blue-600 rounded-full"></div>
-                                      Marcar en Proceso
+                {isLoading ? (
+                  <div className="flex justify-center py-8">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-prosalud"></div>
+                  </div>
+                ) : (
+                  <>
+                    <div className="rounded-md border overflow-hidden">
+                      <Table>
+                        <TableHeader>
+                          <TableRow className="bg-gray-50">
+                            <TableHead className="w-1/4">Solicitante</TableHead>
+                            <TableHead className="w-1/5">Tipo</TableHead>
+                            <TableHead className="w-1/6">Estado</TableHead>
+                            <TableHead className="w-1/6">Fecha</TableHead>
+                            <TableHead className="w-16">Acciones</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {paginatedData.map((solicitud) => (
+                            <TableRow key={solicitud.id} className="hover:bg-gray-50 transition-colors">
+                              <TableCell>
+                                <div className="flex items-center space-x-3">
+                                  <div className="bg-gray-100 p-2 rounded-full">
+                                    <User className="h-4 w-4 text-gray-600" />
+                                  </div>
+                                  <div>
+                                    <p className="font-medium text-gray-900">{solicitud.name} {solicitud.last_name}</p>
+                                    <p className="text-sm text-gray-600">{solicitud.email}</p>
+                                    <p className="text-xs text-gray-500">{solicitud.id_type}: {solicitud.id_number}</p>
+                                  </div>
+                                </div>
+                              </TableCell>
+                              <TableCell>
+                                <div>
+                                  <p className="font-medium text-gray-900">{getRequestTypeLabel(solicitud.request_type)}</p>
+                                  <p className="text-sm text-gray-500">ID: {solicitud.id}</p>
+                                </div>
+                              </TableCell>
+                              <TableCell>
+                                <Badge className={getStatusColor(solicitud.status)}>
+                                  {getStatusLabel(solicitud.status)}
+                                </Badge>
+                              </TableCell>
+                              <TableCell>
+                                <div>
+                                  <p className="text-sm text-gray-900">
+                                    {new Date(solicitud.created_at).toLocaleDateString('es-ES', {
+                                      day: '2-digit',
+                                      month: 'short',
+                                      year: 'numeric'
+                                    })}
+                                  </p>
+                                  <p className="text-xs text-gray-500">
+                                    {new Date(solicitud.created_at).toLocaleTimeString('es-ES', {
+                                      hour: '2-digit',
+                                      minute: '2-digit'
+                                    })}
+                                  </p>
+                                  {solicitud.status === 'resolved' && solicitud.resolved_at && (
+                                    <p className="text-xs text-green-600 font-medium mt-1">
+                                      ✓ Resuelto: {new Date(solicitud.resolved_at).toLocaleDateString('es-ES', {
+                                        day: '2-digit',
+                                        month: 'short',
+                                        year: 'numeric'
+                                      })}, {new Date(solicitud.resolved_at).toLocaleTimeString('es-ES', {
+                                        hour: '2-digit',
+                                        minute: '2-digit'
+                                      })}
+                                    </p>
+                                  )}
+                                </div>
+                              </TableCell>
+                              <TableCell>
+                                <DropdownMenu>
+                                  <DropdownMenuTrigger asChild>
+                                    <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                      <MoreHorizontal className="h-4 w-4" />
+                                    </Button>
+                                  </DropdownMenuTrigger>
+                                  <DropdownMenuContent align="end" className="w-48">
+                                    <DropdownMenuItem onClick={() => handleViewDetails(solicitud)}>
+                                      <Eye className="h-4 w-4 mr-2" />
+                                      Ver Detalles
                                     </DropdownMenuItem>
-                                    <DropdownMenuItem onClick={() => handleChangeStatus(solicitud.id, 'resuelto')}>
-                                      <div className="h-4 w-4 mr-2 bg-green-600 rounded-full"></div>
-                                      Marcar como Resuelto
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem 
-                                      onClick={() => handleChangeStatus(solicitud.id, 'rechazada')}
-                                      className="text-red-600 focus:text-red-600"
-                                    >
-                                      <div className="h-4 w-4 mr-2 bg-red-600 rounded-full"></div>
-                                      Rechazar
-                                    </DropdownMenuItem>
-                                  </>
-                                )}
-                                {solicitud.estado === 'en_proceso' && (
-                                  <DropdownMenuItem onClick={() => handleChangeStatus(solicitud.id, 'resuelto')}>
-                                    <div className="h-4 w-4 mr-2 bg-green-600 rounded-full"></div>
-                                    Marcar como Resuelto
-                                  </DropdownMenuItem>
-                                )}
-                              </DropdownMenuContent>
-                            </DropdownMenu>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </div>
+                                    {solicitud.status === 'pending' && (
+                                      <>
+                                        <DropdownMenuItem onClick={() => handleChangeStatus(solicitud.id, 'in_progress')}>
+                                          <div className="h-4 w-4 mr-2 bg-blue-600 rounded-full"></div>
+                                          Marcar en Proceso
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem onClick={() => handleChangeStatus(solicitud.id, 'resolved')}>
+                                          <div className="h-4 w-4 mr-2 bg-green-600 rounded-full"></div>
+                                          Marcar como Resuelto
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem 
+                                          onClick={() => handleChangeStatus(solicitud.id, 'rejected')}
+                                          className="text-red-600 focus:text-red-600"
+                                        >
+                                          <div className="h-4 w-4 mr-2 bg-red-600 rounded-full"></div>
+                                          Rechazar
+                                        </DropdownMenuItem>
+                                      </>
+                                    )}
+                                    {solicitud.status === 'in_progress' && (
+                                      <DropdownMenuItem onClick={() => handleChangeStatus(solicitud.id, 'resolved')}>
+                                        <div className="h-4 w-4 mr-2 bg-green-600 rounded-full"></div>
+                                        Marcar como Resuelto
+                                      </DropdownMenuItem>
+                                    )}
+                                  </DropdownMenuContent>
+                                </DropdownMenu>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
 
-                <DataPagination
-                  currentPage={currentPage}
-                  totalPages={totalPages}
-                  totalItems={totalItems}
-                  itemsPerPage={itemsPerPage}
-                  onPageChange={goToPage}
-                  onItemsPerPageChange={setItemsPerPage}
-                  className="mt-4"
-                />
+                    <DataPagination
+                      currentPage={currentPage}
+                      totalPages={totalPages}
+                      totalItems={totalItems}
+                      itemsPerPage={itemsPerPage}
+                      onPageChange={goToPage}
+                      onItemsPerPageChange={setItemsPerPage}
+                      className="mt-4"
+                    />
+                  </>
+                )}
               </CardContent>
             </Card>
           </motion.div>
@@ -660,26 +525,26 @@ const AdminSolicitudesPage: React.FC = () => {
                           <div className="space-y-2">
                             <label className="text-sm font-medium text-gray-700">Usuario Solicitante</label>
                             <div className="bg-[#EFF0FF] p-3 rounded-md border border-gray-200">
-                              <p className="text-gray-900">{selectedSolicitud.nombre}</p>
+                              <p className="text-gray-900">{selectedSolicitud.name} {selectedSolicitud.last_name}</p>
                             </div>
                           </div>
                           <div className="space-y-2">
                             <label className="text-sm font-medium text-gray-700">Tipo de Solicitud</label>
                             <div className="bg-[#EFF0FF] p-3 rounded-md border border-gray-200">
-                              <p className="text-gray-900">{selectedSolicitud.tipo}</p>
+                              <p className="text-gray-900">{getRequestTypeLabel(selectedSolicitud.request_type)}</p>
                             </div>
                           </div>
                           <div className="space-y-2">
                             <label className="text-sm font-medium text-gray-700">Fecha de Creación</label>
                             <div className="bg-[#EFF0FF] p-3 rounded-md border border-gray-200">
-                              <p className="text-gray-900">{new Date(selectedSolicitud.fechaCreacion).toLocaleDateString()}</p>
+                              <p className="text-gray-900">{new Date(selectedSolicitud.created_at).toLocaleDateString()}</p>
                             </div>
                           </div>
                           <div className="space-y-2">
                             <label className="text-sm font-medium text-gray-700">Estado Actual</label>
                             <div className="bg-[#EFF0FF] p-3 rounded-md border border-gray-200">
-                              <Badge className={getStatusColor(selectedSolicitud.estado)}>
-                                {getStatusLabel(selectedSolicitud.estado)}
+                              <Badge className={getStatusColor(selectedSolicitud.status)}>
+                                {getStatusLabel(selectedSolicitud.status)}
                               </Badge>
                             </div>
                           </div>
@@ -695,11 +560,11 @@ const AdminSolicitudesPage: React.FC = () => {
                       <CardContent className="p-6">
                         <div className="bg-white border border-gray-200 rounded-lg p-4">
                           <ReactJson 
-                            src={selectedSolicitud.detalles}
+                            src={selectedSolicitud.payload}
                             theme="bright:inverted"
                             displayDataTypes={false}
                             displayObjectSize={false}
-                            enableClipboard={false}
+                            enableClipboard={true}
                             collapsed={1}
                             name="detalles"
                             style={{
@@ -713,32 +578,18 @@ const AdminSolicitudesPage: React.FC = () => {
                       </CardContent>
                     </Card>
 
-                    {/* Observaciones */}
-                    {selectedSolicitud.observaciones && (
-                      <Card className="border border-gray-200 shadow-sm">
-                        <CardHeader className="bg-gray-50 border-b border-gray-200">
-                          <CardTitle className="text-lg font-semibold text-gray-900">Observaciones</CardTitle>
-                        </CardHeader>
-                        <CardContent className="p-6">
-                          <div className="bg-[#EFF0FF] p-4 rounded-md border border-gray-200 text-gray-900">
-                            {selectedSolicitud.observaciones}
-                          </div>
-                        </CardContent>
-                      </Card>
-                    )}
-
                     {/* Acciones */}
-                    {selectedSolicitud.estado === 'pendiente' && (
+                    {selectedSolicitud.status === 'pending' && (
                       <div className="flex justify-end space-x-3 pt-4 border-t border-gray-200">
                         <Button 
                           variant="outline" 
-                          onClick={() => handleChangeStatus(selectedSolicitud.id, 'rechazada')}
+                          onClick={() => handleChangeStatus(selectedSolicitud.id, 'rejected')}
                           className="text-red-600 border-red-200 hover:bg-red-50"
                         >
                           Rechazar
                         </Button>
                         <Button 
-                          onClick={() => handleChangeStatus(selectedSolicitud.id, 'resuelto')}
+                          onClick={() => handleChangeStatus(selectedSolicitud.id, 'resolved')}
                           className="bg-primary-prosalud hover:bg-primary-prosalud-dark text-white"
                         >
                           Resolver

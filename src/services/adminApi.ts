@@ -1,67 +1,20 @@
+// Re-export services for backward compatibility and centralized access
+export { usersService as usersApi } from './usersService';
+export { conveniosService as conveniosApi } from './conveniosService';
+export { inventoryService } from './inventoryService';
+export { solicitudesService } from './solicitudesService';
 
+// Keep existing bienestar and comfenalco APIs as they were
 import { 
-  User, 
-  Convenio, 
   BienestarEvent, 
   ComfenalcoEvent, 
   AboutUs, 
   SiteMetrics,
-  PaginatedResponse,
-  CreateUserData,
-  UpdateUserData,
-  CreateConvenioData,
   CreateBienestarEventData,
   CreateComfenalcoEventData
 } from '@/types/admin';
 
-// Mock data
-const mockUsers: User[] = [
-  {
-    id: '1',
-    firstName: 'Juan',
-    lastName: 'Pérez',
-    email: 'juan.perez@prosalud.com',
-    isActive: true,
-    createdAt: '2024-01-15',
-    lastLogin: '2024-06-01'
-  },
-  {
-    id: '2',
-    firstName: 'María',
-    lastName: 'González',
-    email: 'maria.gonzalez@prosalud.com',
-    isActive: true,
-    createdAt: '2024-02-10',
-    lastLogin: '2024-05-28'
-  },
-  {
-    id: '3',
-    firstName: 'Carlos',
-    lastName: 'Rodríguez',
-    email: 'carlos.rodriguez@prosalud.com',
-    isActive: false,
-    createdAt: '2024-03-05',
-    lastLogin: '2024-04-15'
-  }
-];
-
-const mockConvenios: Convenio[] = [
-  {
-    id: '1',
-    name: 'Hospital La Merced',
-    image: '/images/convenios/hospital-la-merced-ciudad-bolivar.webp',
-    isVisible: true,
-    createdAt: '2024-01-01'
-  },
-  {
-    id: '2',
-    name: 'Hospital Marco Fidel Suárez',
-    image: '/images/convenios/hospital-marco-fidel-suarez.webp',
-    isVisible: true,
-    createdAt: '2024-01-02'
-  }
-];
-
+// Mock data for events
 const mockBienestarEvents: BienestarEvent[] = [
   {
     id: '1',
@@ -79,6 +32,39 @@ const mockBienestarEvents: BienestarEvent[] = [
     ],
     isVisible: true,
     createdAt: '2024-06-01'
+  },
+  {
+    id: '2',
+    title: 'Capacitación en Bioseguridad',
+    date: '2024-06-20',
+    category: 'Capacitación',
+    description: 'Capacitación especializada en protocolos de bioseguridad hospitalaria',
+    location: 'Hospital Marco Fidel Suárez',
+    attendees: 80,
+    gift: 'Manual de bioseguridad',
+    provider: 'ProSalud',
+    images: [
+      { url: '/images/galeria_bienestar/evento2_1.webp', alt: 'Capacitación', isMain: true }
+    ],
+    isVisible: true,
+    createdAt: '2024-06-05'
+  },
+  {
+    id: '3',
+    title: 'Jornada de Bienestar Familiar',
+    date: '2024-06-25',
+    category: 'Recreation',
+    description: 'Día de integración familiar para los afiliados y sus familias',
+    location: 'Parque Recreativo',
+    attendees: 200,
+    gift: 'Kit familiar recreativo',
+    provider: 'ProSalud',
+    images: [
+      { url: '/images/galeria_bienestar/evento3_1.webp', alt: 'Familia', isMain: true },
+      { url: '/images/galeria_bienestar/evento3_2.webp', alt: 'Niños jugando', isMain: false }
+    ],
+    isVisible: true,
+    createdAt: '2024-06-10'
   }
 ];
 
@@ -97,115 +83,40 @@ const mockComfenalcoEvents: ComfenalcoEvent[] = [
     category: 'curso',
     displaySize: 'carousel',
     isVisible: true
+  },
+  {
+    id: '2',
+    title: 'Taller de Liderazgo en Salud',
+    bannerImage: '/images/comfenalco_banners/banner2.webp',
+    description: 'Desarrolla habilidades de liderazgo en el sector salud',
+    publishDate: '2024-06-05',
+    registrationDeadline: '2024-06-25',
+    eventDate: '2024-06-30',
+    registrationLink: 'https://comfenalco.com/registro2',
+    formLink: 'https://forms.comfenalco.com/liderazgo-salud',
+    isNew: true,
+    category: 'taller',
+    displaySize: 'mosaic',
+    isVisible: true
+  },
+  {
+    id: '3',
+    title: 'Diplomado en Gestión Hospitalaria',
+    bannerImage: '/images/comfenalco_banners/banner3.webp',
+    description: 'Especialízate en gestión y administración hospitalaria',
+    publishDate: '2024-06-10',
+    registrationDeadline: '2024-07-01',
+    eventDate: '2024-07-15',
+    registrationLink: 'https://comfenalco.com/registro3',
+    formLink: 'https://forms.comfenalco.com/gestion-hospitalaria',
+    isNew: false,
+    category: 'diplomado',
+    displaySize: 'carousel',
+    isVisible: true
   }
 ];
 
-// Simulate API delay
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
-// Users API
-export const usersApi = {
-  async getUsers(page = 1, pageSize = 10, search = '', status = ''): Promise<PaginatedResponse<User>> {
-    await delay(500);
-    
-    let filteredUsers = [...mockUsers];
-    
-    if (search) {
-      filteredUsers = filteredUsers.filter(user => 
-        user.firstName.toLowerCase().includes(search.toLowerCase()) ||
-        user.lastName.toLowerCase().includes(search.toLowerCase()) ||
-        user.email.toLowerCase().includes(search.toLowerCase())
-      );
-    }
-    
-    if (status) {
-      const isActive = status === 'active';
-      filteredUsers = filteredUsers.filter(user => user.isActive === isActive);
-    }
-    
-    const total = filteredUsers.length;
-    const start = (page - 1) * pageSize;
-    const data = filteredUsers.slice(start, start + pageSize);
-    
-    return {
-      data,
-      total,
-      page,
-      pageSize,
-      totalPages: Math.ceil(total / pageSize)
-    };
-  },
-
-  async getUserById(id: string): Promise<User | null> {
-    await delay(300);
-    return mockUsers.find(user => user.id === id) || null;
-  },
-
-  async createUser(userData: CreateUserData): Promise<User> {
-    await delay(800);
-    const newUser: User = {
-      id: String(mockUsers.length + 1),
-      ...userData,
-      isActive: true,
-      createdAt: new Date().toISOString().split('T')[0]
-    };
-    mockUsers.push(newUser);
-    return newUser;
-  },
-
-  async updateUser(id: string, userData: UpdateUserData): Promise<User> {
-    await delay(600);
-    const userIndex = mockUsers.findIndex(user => user.id === id);
-    if (userIndex === -1) throw new Error('Usuario no encontrado');
-    
-    mockUsers[userIndex] = { ...mockUsers[userIndex], ...userData };
-    return mockUsers[userIndex];
-  },
-
-  async toggleUserStatus(id: string): Promise<User> {
-    await delay(400);
-    const userIndex = mockUsers.findIndex(user => user.id === id);
-    if (userIndex === -1) throw new Error('Usuario no encontrado');
-    
-    mockUsers[userIndex].isActive = !mockUsers[userIndex].isActive;
-    return mockUsers[userIndex];
-  }
-};
-
-// Convenios API
-export const conveniosApi = {
-  async getConvenios(): Promise<Convenio[]> {
-    await delay(400);
-    return [...mockConvenios];
-  },
-
-  async createConvenio(data: CreateConvenioData): Promise<Convenio> {
-    await delay(800);
-    const newConvenio: Convenio = {
-      id: String(mockConvenios.length + 1),
-      name: data.name,
-      image: URL.createObjectURL(data.image),
-      isVisible: true,
-      createdAt: new Date().toISOString().split('T')[0]
-    };
-    mockConvenios.push(newConvenio);
-    return newConvenio;
-  },
-
-  async updateConvenio(id: string, data: Partial<CreateConvenioData & { isVisible: boolean }>): Promise<Convenio> {
-    await delay(600);
-    const convenioIndex = mockConvenios.findIndex(convenio => convenio.id === id);
-    if (convenioIndex === -1) throw new Error('Convenio no encontrado');
-    
-    const updatedData: any = { ...data };
-    if (data.image && data.image instanceof File) {
-      updatedData.image = URL.createObjectURL(data.image);
-    }
-    
-    mockConvenios[convenioIndex] = { ...mockConvenios[convenioIndex], ...updatedData };
-    return mockConvenios[convenioIndex];
-  }
-};
 
 // Bienestar Events API
 export const bienestarApi = {
@@ -270,10 +181,8 @@ export const comfenalcoApi = {
   async createEvent(data: CreateComfenalcoEventData): Promise<ComfenalcoEvent> {
     await delay(1000);
     
-    // Simular procesamiento del archivo - en el futuro esto se enviará al backend
     let bannerImageUrl = '';
     if (data.bannerImage) {
-      // Por ahora crear un URL temporal para mock, el backend procesará el archivo real
       bannerImageUrl = URL.createObjectURL(data.bannerImage);
     }
     
@@ -304,7 +213,6 @@ export const comfenalcoApi = {
     
     const updatedData: any = { ...data };
     
-    // Si se proporciona una nueva imagen, procesarla
     if (data.bannerImage && data.bannerImage instanceof File) {
       updatedData.bannerImage = URL.createObjectURL(data.bannerImage);
     }
@@ -333,7 +241,7 @@ export const configApi = {
     await delay(300);
     return {
       yearsExperience: 10,
-      conventionsCount: mockConvenios.filter(c => c.isVisible).length,
+      conventionsCount: 7, // Updated to match actual convenios count
       affiliatesCount: 1500
     };
   },

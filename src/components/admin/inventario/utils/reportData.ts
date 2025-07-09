@@ -1,141 +1,145 @@
 
 import { ReportData, RequestRecord, ReturnRecord, DeliveryRecord } from '../types/reportTypes';
+import { mockProducts, mockInventoryRequests, mockReturns, mockSupplierDeliveries } from '@/services/mockData';
 
-const getMockRequests = (): RequestRecord[] => [
-  {
-    id: 'REQ-001',
-    hospital: 'Hospital San Juan',
-    coordinator: 'María González',
-    date: '2024-06-20',
-    products: ['Uniforme Azul - Talla M', 'Tapabocas N95'],
-    status: 'approved',
-    priority: 'high'
-  },
-  {
-    id: 'REQ-002',
-    hospital: 'Hospital La Merced',
-    coordinator: 'Ana Rodríguez',
-    date: '2024-06-18',
-    products: ['Bata Blanca - Talla L', 'Tapabocas Quirúrgico'],
-    status: 'delivered',
-    priority: 'medium'
-  },
-  {
-    id: 'REQ-003',
-    hospital: 'Hospital Marco Fidel',
-    coordinator: 'Carmen López',
-    date: '2024-06-22',
-    products: ['Kit de Bienvenida', 'Termo ProSalud'],
-    status: 'pending',
-    priority: 'low'
-  }
-];
+const getMockRequests = (): RequestRecord[] => {
+  return mockInventoryRequests.map(request => ({
+    id: request.id,
+    hospital: request.hospital_name,
+    coordinator: request.coordinator_name,
+    date: request.request_date,
+    products: request.items.map(item => {
+      const product = mockProducts.find(p => p.id === item.product_id);
+      const variant = product?.variants?.find(v => v.id === item.variant_id);
+      return `${product?.name || 'Producto desconocido'}${variant?.size ? ` - ${variant.size}` : ''}`;
+    }),
+    status: request.status,
+    priority: request.priority
+  }));
+};
 
-const getMockReturns = (): ReturnRecord[] => [
-  {
-    id: 'RET-001',
-    hospital: 'Hospital San Juan',
-    coordinator: 'María González',
-    date: '2024-06-19',
-    products: ['Uniforme Verde - Talla S'],
-    reason: 'Talla incorrecta',
-    status: 'processed'
-  },
-  {
-    id: 'RET-002',
-    hospital: 'Hospital Santa Elena',
-    coordinator: 'Lucia Martínez',
-    date: '2024-06-21',
-    products: ['Bata de Laboratorio - Talla M'],
-    reason: 'Producto defectuoso',
-    status: 'pending'
-  }
-];
+const getMockReturns = (): ReturnRecord[] => {
+  return mockReturns.map(returnItem => ({
+    id: returnItem.id,
+    hospital: returnItem.hospital_name,
+    coordinator: returnItem.coordinator_name,
+    date: returnItem.return_date,
+    products: returnItem.items.map(item => {
+      const product = mockProducts.find(p => p.id === item.product_id);
+      const variant = product?.variants?.find(v => v.id === item.variant_id);
+      return `${product?.name || 'Producto desconocido'}${variant?.size ? ` - ${variant.size}` : ''}`;
+    }),
+    reason: returnItem.reason === 'incorrect' ? 'Talla incorrecta' : 
+            returnItem.reason === 'defective' ? 'Producto defectuoso' : 
+            returnItem.reason === 'excess' ? 'Exceso de stock' : returnItem.reason,
+    status: returnItem.status
+  }));
+};
 
-const getMockDeliveries = (): DeliveryRecord[] => [
-  {
-    id: 'DEL-001',
-    supplier: 'Textiles Médicos S.A.',
-    date: '2024-06-15',
-    products: ['Uniformes Azules', 'Uniformes Verdes'],
-    status: 'completed',
-    totalItems: 50
-  },
-  {
-    id: 'DEL-002',
-    supplier: 'Suministros ProSalud',
-    date: '2024-06-20',
-    products: ['Tapabocas N95', 'Tapabocas Quirúrgicos'],
-    status: 'received',
-    totalItems: 1000
-  },
-  {
-    id: 'DEL-003',
-    supplier: 'Distribuciones Médicas',
-    date: '2024-06-23',
-    products: ['Batas Blancas', 'Batas de Laboratorio'],
-    status: 'pending',
-    totalItems: 30
-  }
-];
+const getMockDeliveries = (): DeliveryRecord[] => {
+  return mockSupplierDeliveries.map(delivery => ({
+    id: delivery.id,
+    supplier: delivery.supplier_name,
+    date: delivery.delivery_date,
+    products: delivery.items.map(item => {
+      const product = mockProducts.find(p => p.id === item.product_id);
+      return product?.name || 'Producto desconocido';
+    }),
+    status: delivery.status,
+    totalItems: delivery.total_items
+  }));
+};
 
 export const getInventoryData = (): ReportData => {
+  // Transform products data for the report
+  const categories = [
+    {
+      name: 'Uniformes',
+      description: 'Uniformes médicos para personal de salud',
+      products: mockProducts
+        .filter(p => p.category === 'uniforme')
+        .flatMap(product => 
+          product.variants?.map(variant => ({
+            name: `${product.name} - ${variant.size || 'Único'}`,
+            stock: variant.stock,
+            min: variant.min_stock,
+            max: variant.max_stock,
+            status: variant.stock <= variant.min_stock ? 
+              (variant.stock === 0 ? 'critical' : 'low') : 'ok',
+            value: 45000,
+            sku: variant.sku,
+            location: `A-${Math.floor(Math.random() * 3) + 1}-${String(Math.floor(Math.random() * 10) + 1).padStart(2, '0')}`
+          })) || []
+        )
+    },
+    {
+      name: 'Tapabocas',
+      description: 'Equipos de protección respiratoria',
+      products: mockProducts
+        .filter(p => p.category === 'tapabocas')
+        .flatMap(product => 
+          product.variants?.map(variant => ({
+            name: product.name,
+            stock: variant.stock,
+            min: variant.min_stock,
+            max: variant.max_stock,
+            status: variant.stock <= variant.min_stock ? 
+              (variant.stock === 0 ? 'critical' : 'low') : 'ok',
+            value: product.name.includes('N95') ? 2500 : 800,
+            sku: variant.sku,
+            location: `B-${Math.floor(Math.random() * 2) + 1}-${String(Math.floor(Math.random() * 10) + 1).padStart(2, '0')}`
+          })) || []
+        )
+    },
+    {
+      name: 'Batas',
+      description: 'Batas médicas y de laboratorio',
+      products: mockProducts
+        .filter(p => p.category === 'batas')
+        .flatMap(product => 
+          product.variants?.map(variant => ({
+            name: `${product.name} - ${variant.size || 'Único'}`,
+            stock: variant.stock,
+            min: variant.min_stock,
+            max: variant.max_stock,
+            status: variant.stock <= variant.min_stock ? 
+              (variant.stock === 0 ? 'critical' : 'low') : 'ok',
+            value: 35000,
+            sku: variant.sku,
+            location: `C-${Math.floor(Math.random() * 2) + 1}-${String(Math.floor(Math.random() * 10) + 1).padStart(2, '0')}`
+          })) || []
+        )
+    },
+    {
+      name: 'Regalos e Implementos',
+      description: 'Artículos promocionales, de bienestar e implementos médicos',
+      products: mockProducts
+        .filter(p => p.category === 'regalo' || p.category === 'implemento')
+        .flatMap(product => 
+          product.variants?.map(variant => ({
+            name: `${product.name}${variant.size ? ` - ${variant.size}` : ''}`,
+            stock: variant.stock,
+            min: variant.min_stock,
+            max: variant.max_stock,
+            status: variant.stock <= variant.min_stock ? 
+              (variant.stock === 0 ? 'critical' : 'low') : 'ok',
+            value: product.category === 'regalo' ? 25000 : 15000,
+            sku: variant.sku,
+            location: `D-${Math.floor(Math.random() * 2) + 1}-${String(Math.floor(Math.random() * 10) + 1).padStart(2, '0')}`
+          })) || []
+        )
+    }
+  ];
+
   return {
     metadata: {
       lastUpdate: new Date().toLocaleDateString('es-ES'),
-      totalCategories: 4,
+      totalCategories: categories.length,
       systemVersion: '2.1.0',
       generatedBy: 'Sistema ProSalud',
       reportId: 'RPT-' + Date.now()
     },
-    categories: [
-      {
-        name: 'Uniformes',
-        description: 'Uniformes médicos para personal de salud',
-        products: [
-          { name: 'Uniforme Azul - Talla S', stock: 15, min: 10, max: 50, status: 'ok', value: 45000, sku: 'UNI-AZ-S', location: 'A-1-01' },
-          { name: 'Uniforme Azul - Talla M', stock: 3, min: 10, max: 50, status: 'low', value: 45000, sku: 'UNI-AZ-M', location: 'A-1-02' },
-          { name: 'Uniforme Azul - Talla L', stock: 25, min: 15, max: 60, status: 'ok', value: 45000, sku: 'UNI-AZ-L', location: 'A-1-03' },
-          { name: 'Uniforme Verde - Talla S', stock: 1, min: 5, max: 30, status: 'critical', value: 45000, sku: 'UNI-VE-S', location: 'A-2-01' },
-          { name: 'Uniforme Verde - Talla M', stock: 18, min: 10, max: 50, status: 'ok', value: 45000, sku: 'UNI-VE-M', location: 'A-2-02' },
-          { name: 'Uniforme Verde - Talla L', stock: 22, min: 15, max: 60, status: 'ok', value: 45000, sku: 'UNI-VE-L', location: 'A-2-03' },
-          { name: 'Uniforme Blanco - Talla S', stock: 12, min: 8, max: 40, status: 'ok', value: 45000, sku: 'UNI-BL-S', location: 'A-3-01' },
-          { name: 'Uniforme Blanco - Talla M', stock: 20, min: 12, max: 50, status: 'ok', value: 45000, sku: 'UNI-BL-M', location: 'A-3-02' },
-          { name: 'Uniforme Blanco - Talla L', stock: 18, min: 10, max: 50, status: 'ok', value: 45000, sku: 'UNI-BL-L', location: 'A-3-03' }
-        ]
-      },
-      {
-        name: 'Tapabocas',
-        description: 'Equipos de protección respiratoria',
-        products: [
-          { name: 'Tapabocas Quirúrgico', stock: 1200, min: 500, max: 2000, status: 'ok', value: 800, sku: 'TAP-QUI', location: 'B-1-01' },
-          { name: 'Tapabocas N95', stock: 45, min: 100, max: 500, status: 'low', value: 2500, sku: 'TAP-N95', location: 'B-1-02' },
-          { name: 'Tapabocas de Tela', stock: 800, min: 300, max: 1000, status: 'ok', value: 1200, sku: 'TAP-TEL', location: 'B-2-01' },
-          { name: 'Tapabocas Pediátrico', stock: 295, min: 200, max: 800, status: 'ok', value: 900, sku: 'TAP-PED', location: 'B-2-02' }
-        ]
-      },
-      {
-        name: 'Batas',
-        description: 'Batas médicas y de laboratorio',
-        products: [
-          { name: 'Bata Blanca - Talla S', stock: 12, min: 8, max: 30, status: 'ok', value: 35000, sku: 'BAT-BL-S', location: 'C-1-01' },
-          { name: 'Bata Blanca - Talla M', stock: 18, min: 12, max: 40, status: 'ok', value: 35000, sku: 'BAT-BL-M', location: 'C-1-02' },
-          { name: 'Bata Blanca - Talla L', stock: 2, min: 8, max: 30, status: 'critical', value: 35000, sku: 'BAT-BL-L', location: 'C-1-03' },
-          { name: 'Bata de Laboratorio - Talla M', stock: 15, min: 10, max: 35, status: 'ok', value: 38000, sku: 'BAT-LAB-M', location: 'C-2-01' },
-          { name: 'Bata de Laboratorio - Talla L', stock: 20, min: 12, max: 40, status: 'ok', value: 38000, sku: 'BAT-LAB-L', location: 'C-2-02' }
-        ]
-      },
-      {
-        name: 'Regalos',
-        description: 'Artículos promocionales y de bienestar',
-        products: [
-          { name: 'Kit de Bienvenida', stock: 15, min: 10, max: 50, status: 'ok', value: 25000, sku: 'REG-KIT', location: 'D-1-01' },
-          { name: 'Termo ProSalud', stock: 8, min: 5, max: 30, status: 'ok', value: 18000, sku: 'REG-TER', location: 'D-1-02' },
-          { name: 'Agenda Corporativa', stock: 12, min: 8, max: 40, status: 'ok', value: 12000, sku: 'REG-AGE', location: 'D-2-01' },
-          { name: 'USB Corporativo', stock: 3, min: 6, max: 25, status: 'low', value: 15000, sku: 'REG-USB', location: 'D-2-02' }
-        ]
-      }
-    ],
+    categories,
     requests: getMockRequests(),
     returns: getMockReturns(),
     deliveries: getMockDeliveries()
