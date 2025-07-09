@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import { Users, FileText, Calendar, BarChart3, Trophy, Settings, Edit } from 'lucide-react';
+import { Users, FileText, Heart, BarChart3, GraduationCap, Settings, Edit } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -160,7 +160,7 @@ const AdminDashboard: React.FC = () => {
                     whileTap={{ scale: 0.98 }}
                     className="flex items-center space-x-3 p-4 rounded-lg bg-slate-50 hover:bg-slate-100 transition-colors duration-300 border border-slate-200"
                   >
-                    <Calendar className="h-8 w-8 text-primary-prosalud flex-shrink-0" />
+                    <Heart className="h-8 w-8 text-primary-prosalud flex-shrink-0" />
                     <span className="font-medium text-text-dark">Nuevo Evento</span>
                   </motion.a>
                   
@@ -170,7 +170,7 @@ const AdminDashboard: React.FC = () => {
                     whileTap={{ scale: 0.98 }}
                     className="flex items-center space-x-3 p-4 rounded-lg bg-slate-50 hover:bg-slate-100 transition-colors duration-300 border border-slate-200"
                   >
-                    <Trophy className="h-8 w-8 text-primary-prosalud flex-shrink-0" />
+                    <GraduationCap className="h-8 w-8 text-primary-prosalud flex-shrink-0" />
                     <span className="font-medium text-text-dark">Agregar Convenio</span>
                   </motion.button>
                 </div>
