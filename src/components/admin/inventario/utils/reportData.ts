@@ -13,7 +13,10 @@ const getMockRequests = (): RequestRecord[] => {
       const variant = product?.variants?.find(v => v.id === item.variant_id);
       return `${product?.name || 'Producto desconocido'}${variant?.size ? ` - ${variant.size}` : ''}`;
     }),
-    status: request.status,
+    // Map inventory request status to report status
+    status: request.status === 'preparing' || request.status === 'shipped' || request.status === 'rejected' 
+      ? 'pending' 
+      : request.status as 'pending' | 'approved' | 'delivered',
     priority: request.priority
   }));
 };
@@ -32,7 +35,8 @@ const getMockReturns = (): ReturnRecord[] => {
     reason: returnItem.reason === 'incorrect' ? 'Talla incorrecta' : 
             returnItem.reason === 'defective' ? 'Producto defectuoso' : 
             returnItem.reason === 'excess' ? 'Exceso de stock' : returnItem.reason,
-    status: returnItem.status
+    // Map return status to report status (remove 'approved')
+    status: returnItem.status === 'approved' ? 'processed' : returnItem.status as 'pending' | 'processed'
   }));
 };
 
@@ -64,8 +68,8 @@ export const getInventoryData = (): ReportData => {
             stock: variant.stock,
             min: variant.min_stock,
             max: variant.max_stock,
-            status: variant.stock <= variant.min_stock ? 
-              (variant.stock === 0 ? 'critical' : 'low') : 'ok',
+            status: (variant.stock <= variant.min_stock ? 
+              (variant.stock === 0 ? 'critical' : 'low') : 'ok') as 'ok' | 'low' | 'critical',
             value: 45000,
             sku: variant.sku,
             location: `A-${Math.floor(Math.random() * 3) + 1}-${String(Math.floor(Math.random() * 10) + 1).padStart(2, '0')}`
@@ -83,8 +87,8 @@ export const getInventoryData = (): ReportData => {
             stock: variant.stock,
             min: variant.min_stock,
             max: variant.max_stock,
-            status: variant.stock <= variant.min_stock ? 
-              (variant.stock === 0 ? 'critical' : 'low') : 'ok',
+            status: (variant.stock <= variant.min_stock ? 
+              (variant.stock === 0 ? 'critical' : 'low') : 'ok') as 'ok' | 'low' | 'critical',
             value: product.name.includes('N95') ? 2500 : 800,
             sku: variant.sku,
             location: `B-${Math.floor(Math.random() * 2) + 1}-${String(Math.floor(Math.random() * 10) + 1).padStart(2, '0')}`
@@ -102,8 +106,8 @@ export const getInventoryData = (): ReportData => {
             stock: variant.stock,
             min: variant.min_stock,
             max: variant.max_stock,
-            status: variant.stock <= variant.min_stock ? 
-              (variant.stock === 0 ? 'critical' : 'low') : 'ok',
+            status: (variant.stock <= variant.min_stock ? 
+              (variant.stock === 0 ? 'critical' : 'low') : 'ok') as 'ok' | 'low' | 'critical',
             value: 35000,
             sku: variant.sku,
             location: `C-${Math.floor(Math.random() * 2) + 1}-${String(Math.floor(Math.random() * 10) + 1).padStart(2, '0')}`
@@ -121,8 +125,8 @@ export const getInventoryData = (): ReportData => {
             stock: variant.stock,
             min: variant.min_stock,
             max: variant.max_stock,
-            status: variant.stock <= variant.min_stock ? 
-              (variant.stock === 0 ? 'critical' : 'low') : 'ok',
+            status: (variant.stock <= variant.min_stock ? 
+              (variant.stock === 0 ? 'critical' : 'low') : 'ok') as 'ok' | 'low' | 'critical',
             value: product.category === 'regalo' ? 25000 : 15000,
             sku: variant.sku,
             location: `D-${Math.floor(Math.random() * 2) + 1}-${String(Math.floor(Math.random() * 10) + 1).padStart(2, '0')}`
