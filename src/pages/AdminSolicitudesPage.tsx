@@ -263,6 +263,21 @@ const AdminSolicitudesPage: React.FC = () => {
 
   const uniqueTypes = Array.from(new Set(solicitudes.map(s => s.tipo)));
 
+  const handleCopyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text).then(() => {
+      toast({
+        title: "Copiado",
+        description: "El contenido ha sido copiado al portapapeles",
+      });
+    }).catch(() => {
+      toast({
+        title: "Error",
+        description: "No se pudo copiar el contenido",
+        variant: "destructive"
+      });
+    });
+  };
+
   return (
     <AdminLayout>
       <div className="min-h-screen bg-slate-50">
@@ -632,14 +647,6 @@ const AdminSolicitudesPage: React.FC = () => {
                         </p>
                       </div>
                     </div>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setSelectedSolicitud(null)}
-                      className="h-8 w-8 p-0 hover:bg-gray-100"
-                    >
-                      <X className="h-4 w-4" />
-                    </Button>
                   </div>
 
                   <div className="p-6 space-y-6">
@@ -652,19 +659,25 @@ const AdminSolicitudesPage: React.FC = () => {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div className="space-y-2">
                             <label className="text-sm font-medium text-gray-700">Usuario Solicitante</label>
-                            <p className="text-gray-900 bg-gray-50 p-2 rounded border">{selectedSolicitud.nombre}</p>
+                            <div className="bg-[#EFF0FF] p-2 rounded border border-gray-200">
+                              <p className="text-gray-900">{selectedSolicitud.nombre}</p>
+                            </div>
                           </div>
                           <div className="space-y-2">
                             <label className="text-sm font-medium text-gray-700">Tipo de Solicitud</label>
-                            <p className="text-gray-900 bg-gray-50 p-2 rounded border">{selectedSolicitud.tipo}</p>
+                            <div className="bg-[#EFF0FF] p-2 rounded border border-gray-200">
+                              <p className="text-gray-900">{selectedSolicitud.tipo}</p>
+                            </div>
                           </div>
                           <div className="space-y-2">
                             <label className="text-sm font-medium text-gray-700">Fecha de Creación</label>
-                            <p className="text-gray-900 bg-gray-50 p-2 rounded border">{new Date(selectedSolicitud.fechaCreacion).toLocaleDateString()}</p>
+                            <div className="bg-[#EFF0FF] p-2 rounded border border-gray-200">
+                              <p className="text-gray-900">{new Date(selectedSolicitud.fechaCreacion).toLocaleDateString()}</p>
+                            </div>
                           </div>
                           <div className="space-y-2">
                             <label className="text-sm font-medium text-gray-700">Estado Actual</label>
-                            <div className="bg-gray-50 p-2 rounded border">
+                            <div className="bg-[#EFF0FF] p-2 rounded border border-gray-200">
                               <Badge className={getStatusColor(selectedSolicitud.estado)}>
                                 {getStatusLabel(selectedSolicitud.estado)}
                               </Badge>
@@ -689,6 +702,12 @@ const AdminSolicitudesPage: React.FC = () => {
                             enableClipboard={true}
                             collapsed={1}
                             name="detalles"
+                            onCopy={(copy) => {
+                              if (copy.src) {
+                                const textToCopy = typeof copy.src === 'object' ? JSON.stringify(copy.src) : String(copy.src);
+                                handleCopyToClipboard(textToCopy);
+                              }
+                            }}
                             style={{
                               backgroundColor: '#fafafa',
                               padding: '16px',
@@ -707,7 +726,7 @@ const AdminSolicitudesPage: React.FC = () => {
                           <CardTitle className="text-lg font-semibold text-gray-900">Observaciones</CardTitle>
                         </CardHeader>
                         <CardContent className="p-6">
-                          <div className="bg-gray-50 p-4 rounded border text-gray-900">
+                          <div className="bg-[#EFF0FF] p-4 rounded border border-gray-200 text-gray-900">
                             {selectedSolicitud.observaciones}
                           </div>
                         </CardContent>
@@ -715,31 +734,23 @@ const AdminSolicitudesPage: React.FC = () => {
                     )}
 
                     {/* Acciones */}
-                    <div className="flex justify-end space-x-3 pt-4 border-t border-gray-200">
-                      <Button 
-                        variant="outline" 
-                        onClick={() => setSelectedSolicitud(null)}
-                      >
-                        Cerrar
-                      </Button>
-                      {selectedSolicitud.estado === 'pendiente' && (
-                        <>
-                          <Button 
-                            variant="outline" 
-                            onClick={() => handleChangeStatus(selectedSolicitud.id, 'rechazada')}
-                            className="text-red-600 border-red-200 hover:bg-red-50"
-                          >
-                            Rechazar
-                          </Button>
-                          <Button 
-                            onClick={() => handleChangeStatus(selectedSolicitud.id, 'resuelto')}
-                            className="bg-primary-prosalud hover:bg-primary-prosalud-dark text-white"
-                          >
-                            Resolver
-                          </Button>
-                        </>
-                      )}
-                    </div>
+                    {selectedSolicitud.estado === 'pendiente' && (
+                      <div className="flex justify-end space-x-3 pt-4 border-t border-gray-200">
+                        <Button 
+                          variant="outline" 
+                          onClick={() => handleChangeStatus(selectedSolicitud.id, 'rechazada')}
+                          className="text-red-600 border-red-200 hover:bg-red-50"
+                        >
+                          Rechazar
+                        </Button>
+                        <Button 
+                          onClick={() => handleChangeStatus(selectedSolicitud.id, 'resuelto')}
+                          className="bg-primary-prosalud hover:bg-primary-prosalud-dark text-white"
+                        >
+                          Resolver
+                        </Button>
+                      </div>
+                    )}
                   </div>
                 </div>
               </DialogContent>
