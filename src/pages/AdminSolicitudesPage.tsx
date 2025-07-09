@@ -699,7 +699,7 @@ const AdminSolicitudesPage: React.FC = () => {
                             theme="bright:inverted"
                             displayDataTypes={false}
                             displayObjectSize={false}
-                            enableClipboard={true}
+                            enableClipboard={false}
                             collapsed={1}
                             name="detalles"
                             style={{
