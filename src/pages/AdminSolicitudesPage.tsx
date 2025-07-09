@@ -659,25 +659,25 @@ const AdminSolicitudesPage: React.FC = () => {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div className="space-y-2">
                             <label className="text-sm font-medium text-gray-700">Usuario Solicitante</label>
-                            <div className="bg-[#EFF0FF] p-2 rounded border border-gray-200">
+                            <div className="bg-[#EFF0FF] p-3 rounded-md border border-gray-200">
                               <p className="text-gray-900">{selectedSolicitud.nombre}</p>
                             </div>
                           </div>
                           <div className="space-y-2">
                             <label className="text-sm font-medium text-gray-700">Tipo de Solicitud</label>
-                            <div className="bg-[#EFF0FF] p-2 rounded border border-gray-200">
+                            <div className="bg-[#EFF0FF] p-3 rounded-md border border-gray-200">
                               <p className="text-gray-900">{selectedSolicitud.tipo}</p>
                             </div>
                           </div>
                           <div className="space-y-2">
                             <label className="text-sm font-medium text-gray-700">Fecha de Creación</label>
-                            <div className="bg-[#EFF0FF] p-2 rounded border border-gray-200">
+                            <div className="bg-[#EFF0FF] p-3 rounded-md border border-gray-200">
                               <p className="text-gray-900">{new Date(selectedSolicitud.fechaCreacion).toLocaleDateString()}</p>
                             </div>
                           </div>
                           <div className="space-y-2">
                             <label className="text-sm font-medium text-gray-700">Estado Actual</label>
-                            <div className="bg-[#EFF0FF] p-2 rounded border border-gray-200">
+                            <div className="bg-[#EFF0FF] p-3 rounded-md border border-gray-200">
                               <Badge className={getStatusColor(selectedSolicitud.estado)}>
                                 {getStatusLabel(selectedSolicitud.estado)}
                               </Badge>
@@ -702,12 +702,6 @@ const AdminSolicitudesPage: React.FC = () => {
                             enableClipboard={true}
                             collapsed={1}
                             name="detalles"
-                            onCopy={(copy) => {
-                              if (copy.src) {
-                                const textToCopy = typeof copy.src === 'object' ? JSON.stringify(copy.src) : String(copy.src);
-                                handleCopyToClipboard(textToCopy);
-                              }
-                            }}
                             style={{
                               backgroundColor: '#fafafa',
                               padding: '16px',
@@ -726,7 +720,7 @@ const AdminSolicitudesPage: React.FC = () => {
                           <CardTitle className="text-lg font-semibold text-gray-900">Observaciones</CardTitle>
                         </CardHeader>
                         <CardContent className="p-6">
-                          <div className="bg-[#EFF0FF] p-4 rounded border border-gray-200 text-gray-900">
+                          <div className="bg-[#EFF0FF] p-4 rounded-md border border-gray-200 text-gray-900">
                             {selectedSolicitud.observaciones}
                           </div>
                         </CardContent>
