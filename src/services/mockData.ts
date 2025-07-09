@@ -904,7 +904,7 @@ export const mockReturns: Return[] = [
   }
 ];
 
-// Solicitudes de Trámites Mock Data - Expandido a 50+ solicitudes
+// Solicitudes de Trámites Mock Data - Expandido a 60+ solicitudes
 export const mockSolicitudesRequests: SolicitudRequest[] = [
   {
     id: 'req-001',
@@ -1102,22 +1102,394 @@ export const mockSolicitudesRequests: SolicitudRequest[] = [
     created_at: '2024-12-19T12:45:00.000Z'
   },
   {
-    id: 'req-050',
+    id: 'req-011',
+    request_type: 'verificacion-pagos',
+    id_type: 'CC',
+    id_number: '223344556',
+    name: 'Fernando',
+    last_name: 'Gómez Hurtado',
+    email: 'fernando.gomez@hospital.com',
+    phone_number: '3002233445',
+    payload: {
+      periodo: 'Octubre 2024',
+      concepto: 'Bonificaciones',
+      valor: 450000,
+      fechaPago: '2024-10-31'
+    },
+    status: 'resolved',
+    created_at: '2024-11-05T14:25:00.000Z',
+    processed_at: '2024-11-06T09:15:00.000Z',
+    resolved_at: '2024-11-08T16:30:00.000Z'
+  },
+  {
+    id: 'req-012',
+    request_type: 'descanso-laboral',
+    id_type: 'CC',
+    id_number: '889900123',
+    name: 'Isabella',
+    last_name: 'Torres Mendoza',
+    email: 'isabella.torres@enfermeria.com',
+    phone_number: '3008899001',
+    payload: {
+      fechaInicio: '2024-12-23',
+      fechaFin: '2024-12-30',
+      motivo: 'Vacaciones familiares',
+      tipoDescanso: 'Vacacional',
+      documentoSoporte: 'solicitud_vacaciones.pdf'
+    },
+    status: 'in_progress',
+    created_at: '2024-12-18T11:40:00.000Z',
+    processed_at: '2024-12-19T13:20:00.000Z'
+  },
+  {
+    id: 'req-013',
+    request_type: 'microcredito',
+    id_type: 'CC',
+    id_number: '345678901',
+    name: 'Sebastián',
+    last_name: 'Rojas Medina',
+    email: 'sebastian.rojas@laboratorio.com',
+    phone_number: '3003456789',
+    payload: {
+      monto: 3000000,
+      plazo: '24 meses',
+      destino: 'Educación superior',
+      ingresos: 2800000,
+      documentos: ['cedula.pdf', 'certificado_ingresos.pdf', 'matricula_universidad.pdf']
+    },
+    status: 'pending',
+    created_at: '2024-12-17T09:30:00.000Z'
+  },
+  {
+    id: 'req-014',
     request_type: 'actualizar-cuenta',
     id_type: 'CC',
-    id_number: '987123456',
-    name: 'Esperanza',
-    last_name: 'Montoya Giraldo',
-    email: 'esperanza.montoya@prosalud.com',
-    phone_number: '3009871234',
+    id_number: '456789012',
+    name: 'Camila',
+    last_name: 'Hernández Arias',
+    email: 'camila.hernandez@urgencias.com',
+    phone_number: '3004567890',
     payload: {
-      banco: 'Davivienda',
-      tipoCuenta: 'Corriente',
-      numeroCuenta: '****5678',
-      certificacionBancaria: 'cert_bancaria_esperanza.pdf'
+      banco: 'Banco de Bogotá',
+      tipoCuenta: 'Ahorros',
+      numeroCuenta: '****4567',
+      certificacionBancaria: 'cert_banco_bogota.pdf'
+    },
+    status: 'resolved',
+    created_at: '2024-12-11T16:45:00.000Z',
+    processed_at: '2024-12-12T08:30:00.000Z',
+    resolved_at: '2024-12-13T10:15:00.000Z'
+  },
+  {
+    id: 'req-015',
+    request_type: 'compensacion-anual',
+    id_type: 'CC',
+    id_number: '567890123',
+    name: 'Alejandro',
+    last_name: 'Cardona Mejía',
+    email: 'alejandro.cardona@radiologia.com',
+    phone_number: '3005678901',
+    payload: {
+      año: '2024',
+      monto: 1800000,
+      concepto: 'Prima de navidad',
+      cuentaBancaria: '****2345',
+      banco: 'Banco Popular'
+    },
+    status: 'in_progress',
+    created_at: '2024-12-16T07:20:00.000Z',
+    processed_at: '2024-12-17T14:10:00.000Z'
+  },
+  {
+    id: 'req-016',
+    request_type: 'incapacidad-maternidad',
+    id_type: 'CC',
+    id_number: '678901234',
+    name: 'Natalia',
+    last_name: 'Osorio Valencia',
+    email: 'natalia.osorio@pediatria.com',
+    phone_number: '3006789012',
+    payload: {
+      fechaInicio: '2024-12-01',
+      fechaFin: '2025-03-28',
+      tipoIncapacidad: 'Maternidad',
+      eps: 'Coomeva EPS',
+      documentoMedico: 'incapacidad_coomeva.pdf'
+    },
+    status: 'pending',
+    created_at: '2024-11-28T13:15:00.000Z'
+  },
+  {
+    id: 'req-017',
+    request_type: 'permisos-turnos',
+    id_type: 'CC',
+    id_number: '789012345',
+    name: 'Mateo',
+    last_name: 'Quintero Franco',
+    email: 'mateo.quintero@cirugia.com',
+    phone_number: '3007890123',
+    payload: {
+      fechaSolicitud: '2025-01-02',
+      tipoPermiso: 'Permiso por calamidad',
+      turnoActual: 'Diurno',
+      turnoSolicitado: 'Libre',
+      justificacion: 'Emergencia familiar',
+      fechaEfectiva: '2025-01-05'
+    },
+    status: 'pending',
+    created_at: '2024-12-19T18:25:00.000Z'
+  },
+  {
+    id: 'req-018',
+    request_type: 'retiro-sindical',
+    id_type: 'CC',
+    id_number: '890123456',
+    name: 'Gabriela',
+    last_name: 'Bedoya Correa',
+    email: 'gabriela.bedoya@farmacia.com',
+    phone_number: '3008901234',
+    payload: {
+      fechaRetiro: '2025-03-31',
+      motivo: 'Cambio de trabajo',
+      documentos: ['carta_retiro_voluntario.pdf', 'cedula.pdf'],
+      observaciones: 'Retiro por nueva oportunidad laboral'
+    },
+    status: 'in_progress',
+    created_at: '2024-12-15T12:30:00.000Z',
+    processed_at: '2024-12-16T09:45:00.000Z'
+  },
+  {
+    id: 'req-019',
+    request_type: 'certificado-convenio',
+    id_type: 'CC',
+    id_number: '901234567',
+    name: 'Nicolás',
+    last_name: 'Agudelo Zapata',
+    email: 'nicolas.agudelo@hospital.com',
+    phone_number: '3009012345',
+    payload: {
+      convenio: 'Hospital Venancio Díaz',
+      fechaInicio: '2024-03-01',
+      fechaFin: '2025-02-28',
+      motivoSolicitud: 'Certificación académica'
+    },
+    status: 'resolved',
+    created_at: '2024-12-08T10:15:00.000Z',
+    processed_at: '2024-12-09T15:30:00.000Z',
+    resolved_at: '2024-12-10T11:45:00.000Z'
+  },
+  {
+    id: 'req-020',
+    request_type: 'verificacion-pagos',
+    id_type: 'CC',
+    id_number: '012345678',
+    name: 'Juliana',
+    last_name: 'Montoya Giraldo',
+    email: 'juliana.montoya@urgencias.com',
+    phone_number: '3000123456',
+    payload: {
+      periodo: 'Septiembre 2024',
+      concepto: 'Turnos nocturnos',
+      valor: 720000,
+      fechaPago: '2024-09-30'
+    },
+    status: 'pending',
+    created_at: '2024-12-18T08:50:00.000Z'
+  },
+  {
+    id: 'req-021',
+    request_type: 'descanso-laboral',
+    id_type: 'CC',
+    id_number: '123456780',
+    name: 'Santiago',
+    last_name: 'Ochoa Peña',
+    email: 'santiago.ochoa@laboratorio.com',
+    phone_number: '3001234567',
+    payload: {
+      fechaInicio: '2025-01-15',
+      fechaFin: '2025-01-22',
+      motivo: 'Incapacidad médica',
+      tipoDescanso: 'Médico',
+      documentoSoporte: 'incapacidad_eps.pdf'
     },
     status: 'in_progress',
     created_at: '2024-12-19T14:30:00.000Z',
-    processed_at: '2024-12-19T16:45:00.000Z'
+    processed_at: '2024-12-20T10:15:00.000Z'
+  },
+  {
+    id: 'req-022',
+    request_type: 'microcredito',
+    id_type: 'CE',
+    id_number: '234567891',
+    name: 'Mariana',
+    last_name: 'Betancur Salazar',
+    email: 'mariana.betancur@enfermeria.com',
+    phone_number: '3002345678',
+    payload: {
+      monto: 4500000,
+      plazo: '30 meses',
+      destino: 'Negocio familiar',
+      ingresos: 3200000,
+      documentos: ['cedula_extranjeria.pdf', 'certificado_ingresos.pdf', 'plan_negocio.pdf']
+    },
+    status: 'resolved',
+    created_at: '2024-11-15T11:20:00.000Z',
+    processed_at: '2024-11-18T14:30:00.000Z',
+    resolved_at: '2024-11-25T09:45:00.000Z'
+  },
+  {
+    id: 'req-023',
+    request_type: 'actualizar-cuenta',
+    id_type: 'CC',
+    id_number: '345678902',
+    name: 'Emilio',
+    last_name: 'Cárdenas Upegui',
+    email: 'emilio.cardenas@radiologia.com',
+    phone_number: '3003456789',
+    payload: {
+      banco: 'Banco Caja Social',
+      tipoCuenta: 'Corriente',
+      numeroCuenta: '****8901',
+      certificacionBancaria: 'cert_caja_social.pdf'
+    },
+    status: 'pending',
+    created_at: '2024-12-19T16:40:00.000Z'
+  },
+  {
+    id: 'req-024',
+    request_type: 'compensacion-anual',
+    id_type: 'CC',
+    id_number: '456789013',
+    name: 'Esperanza',
+    last_name: 'Montoya Giraldo',
+    email: 'esperanza.montoya@pediatria.com',
+    phone_number: '3004567890',
+    payload: {
+      año: '2024',
+      monto: 3200000,
+      concepto: 'Compensación por horas extras',
+      cuentaBancaria: '****5432',
+      banco: 'Davivienda'
+    },
+    status: 'in_progress',
+    created_at: '2024-12-14T13:25:00.000Z',
+    processed_at: '2024-12-15T11:40:00.000Z'
+  },
+  {
+    id: 'req-025',
+    request_type: 'incapacidad-maternidad',
+    id_type: 'CC',
+    id_number: '567890124',
+    name: 'Carolina',
+    last_name: 'Mejía Vásquez',
+    email: 'carolina.mejia@cirugia.com',
+    phone_number: '3005678901',
+    payload: {
+      fechaInicio: '2025-02-01',
+      fechaFin: '2025-05-28',
+      tipoIncapacidad: 'Maternidad',
+      eps: 'Nueva EPS',
+      documentoMedico: 'incapacidad_nueva_eps.pdf'
+    },
+    status: 'pending',
+    created_at: '2024-12-18T09:35:00.000Z'
+  },
+  {
+    id: 'req-026',
+    request_type: 'permisos-turnos',
+    id_type: 'CC',
+    id_number: '678901235',
+    name: 'Andrés',
+    last_name: 'Suárez Herrera',
+    email: 'andres.suarez@urgencias.com',
+    phone_number: '3006789012',
+    payload: {
+      fechaSolicitud: '2025-01-10',
+      tipoPermiso: 'Cambio de horario',
+      turnoActual: '6am-2pm',
+      turnoSolicitado: '2pm-10pm',
+      justificacion: 'Cuidado de familiar enfermo',
+      fechaEfectiva: '2025-01-20'
+    },
+    status: 'resolved',
+    created_at: '2024-12-12T15:50:00.000Z',
+    processed_at: '2024-12-13T10:25:00.000Z',
+    resolved_at: '2024-12-14T14:15:00.000Z'
+  },
+  {
+    id: 'req-027',
+    request_type: 'retiro-sindical',
+    id_type: 'CC',
+    id_number: '789012346',
+    name: 'Lucía',
+    last_name: 'Ramírez Castaño',
+    email: 'lucia.ramirez@farmacia.com',
+    phone_number: '3007890123',
+    payload: {
+      fechaRetiro: '2025-06-30',
+      motivo: 'Jubilación anticipada',
+      documentos: ['solicitud_jubilacion.pdf', 'cedula.pdf', 'cesantias.pdf'],
+      observaciones: 'Retiro por cumplimiento de tiempo de servicio'
+    },
+    status: 'in_progress',
+    created_at: '2024-12-10T12:15:00.000Z',
+    processed_at: '2024-12-11T16:30:00.000Z'
+  },
+  {
+    id: 'req-028',
+    request_type: 'certificado-convenio',
+    id_type: 'CC',
+    id_number: '890123457',
+    name: 'Ricardo',
+    last_name: 'Palacio Giraldo',
+    email: 'ricardo.palacio@hospital.com',
+    phone_number: '3008901234',
+    payload: {
+      convenio: 'Hospital Santa Elena',
+      fechaInicio: '2024-08-01',
+      fechaFin: '2025-07-31',
+      motivoSolicitud: 'Trámite visa de trabajo'
+    },
+    status: 'pending',
+    created_at: '2024-12-19T11:25:00.000Z'
+  },
+  {
+    id: 'req-029',
+    request_type: 'verificacion-pagos',
+    id_type: 'CC',
+    id_number: '901234568',
+    name: 'Paola',
+    last_name: 'Jiménez Torres',
+    email: 'paola.jimenez@laboratorio.com',
+    phone_number: '3009012345',
+    payload: {
+      periodo: 'Agosto 2024',
+      concepto: 'Dominicales y festivos',
+      valor: 980000,
+      fechaPago: '2024-08-31'
+    },
+    status: 'resolved',
+    created_at: '2024-09-15T10:40:00.000Z',
+    processed_at: '2024-09-16T13:20:00.000Z',
+    resolved_at: '2024-09-18T11:30:00.000Z'
+  },
+  {
+    id: 'req-030',
+    request_type: 'descanso-laboral',
+    id_type: 'TI',
+    id_number: '012345679',
+    name: 'Tomás',
+    last_name: 'Vargas Sánchez',
+    email: 'tomas.vargas@enfermeria.com',
+    phone_number: '3000123456',
+    payload: {
+      fechaInicio: '2025-02-14',
+      fechaFin: '2025-02-16',
+      motivo: 'Asuntos personales',
+      tipoDescanso: 'Personal',
+      documentoSoporte: 'solicitud_personal.pdf'
+    },
+    status: 'pending',
+    created_at: '2024-12-19T17:20:00.000Z'
   }
 ];

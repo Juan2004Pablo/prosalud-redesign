@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { 
   SquareX,
@@ -18,9 +19,8 @@ import {
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Separator } from '@/components/ui/separator';
 import { Label } from '@/components/ui/label';
@@ -30,41 +30,10 @@ import DataPagination from '@/components/ui/data-pagination';
 import ConfirmationModal from '@/components/admin/common/ConfirmationModal';
 import { usePagination } from '@/hooks/usePagination';
 import { useToast } from '@/hooks/use-toast';
-
-interface Convenio {
-  id: string;
-  name: string;
-  imageUrl: string;
-  isVisible: boolean;
-  createdAt: string;
-}
-
-const mockConvenios: Convenio[] = [
-  {
-    id: 'conv-001',
-    name: 'Clínica del Occidente',
-    imageUrl: '/images/convenios/clinica_occidente.webp',
-    isVisible: true,
-    createdAt: '2024-01-15T10:00:00Z'
-  },
-  {
-    id: 'conv-002',
-    name: 'Óptica CaliVisión',
-    imageUrl: '/images/convenios/optica_calivision.webp',
-    isVisible: false,
-    createdAt: '2024-02-20T14:30:00Z'
-  },
-  {
-    id: 'conv-003',
-    name: 'Gimnasio FitLife',
-    imageUrl: '/images/convenios/gimnasio_fitlife.webp',
-    isVisible: true,
-    createdAt: '2024-03-10T09:15:00Z'
-  },
-];
+import { conveniosService } from '@/services/conveniosService';
+import { Convenio } from '@/types/admin';
 
 const AdminConveniosPage: React.FC = () => {
-  const [convenios, setConvenios] = useState<Convenio[]>(mockConvenios);
   const [selectedConvenio, setSelectedConvenio] = useState<Convenio | null>(null);
   const [convenioFormOpen, setConvenioFormOpen] = useState(false);
   const [editConvenioOpen, setEditConvenioOpen] = useState(false);
@@ -75,6 +44,12 @@ const AdminConveniosPage: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('');
   const { toast } = useToast();
+
+  // Fetch convenios from service
+  const { data: convenios = [], isLoading, refetch } = useQuery({
+    queryKey: ['admin-convenios'],
+    queryFn: conveniosService.getConvenios
+  });
 
   const [formValues, setFormValues] = useState({
     name: '',
@@ -210,10 +185,11 @@ const AdminConveniosPage: React.FC = () => {
           name: formValues.name,
           isVisible: formValues.isVisible,
           // Solo actualizar imageUrl si se seleccionó una nueva imagen
-          ...(selectedImage && { imageUrl: URL.createObjectURL(selectedImage) })
+          ...(selectedImage && { image: URL.createObjectURL(selectedImage) })
         } : convenio
       );
-      setConvenios(updatedConvenios);
+      //setConvenios(updatedConvenios);
+      refetch();
       toast({
         title: "Convenio Actualizado",
         description: "El convenio ha sido actualizado exitosamente.",
@@ -222,11 +198,12 @@ const AdminConveniosPage: React.FC = () => {
       const newConvenio: Convenio = {
         id: `conv-${Date.now()}`,
         name: formValues.name,
-        imageUrl: selectedImage ? URL.createObjectURL(selectedImage) : '',
+        image: selectedImage ? URL.createObjectURL(selectedImage) : '',
         isVisible: formValues.isVisible,
         createdAt: new Date().toISOString()
       };
-      setConvenios([...convenios, newConvenio]);
+      //setConvenios([...convenios, newConvenio]);
+      refetch();
       toast({
         title: "Convenio Creado",
         description: "El convenio ha sido creado exitosamente.",
@@ -250,14 +227,15 @@ const AdminConveniosPage: React.FC = () => {
       isVisible: convenio.isVisible
     });
     // Cargar la imagen actual como preview
-    setImagePreview(convenio.imageUrl);
+    setImagePreview(convenio.image);
     setSelectedImage(null); // No hay archivo seleccionado inicialmente
     setIsEditing(true);
     setEditConvenioOpen(true);
   };
 
   const handleDelete = (convenioId: string) => {
-    setConvenios(convenios.filter(convenio => convenio.id !== convenioId));
+    //setConvenios(convenios.filter(convenio => convenio.id !== convenioId));
+    refetch();
     setDeleteConvenioOpen(false);
     toast({
       title: "Convenio Eliminado",
@@ -266,9 +244,10 @@ const AdminConveniosPage: React.FC = () => {
   };
 
   const toggleVisibility = (convenioId: string) => {
-    setConvenios(convenios.map(convenio =>
-      convenio.id === convenioId ? { ...convenio, isVisible: !convenio.isVisible } : convenio
-    ));
+    //setConvenios(convenios.map(convenio =>
+    //  convenio.id === convenioId ? { ...convenio, isVisible: !convenio.isVisible } : convenio
+    //));
+    refetch();
     toast({
       title: "Estado Actualizado",
       description: "El estado de visibilidad del convenio ha sido actualizado.",
@@ -369,81 +348,89 @@ const AdminConveniosPage: React.FC = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                  {paginatedConvenios.map((convenio) => (
-                    <Card key={convenio.id} className="hover:shadow-lg transition-shadow duration-300">
-                      <CardHeader className="p-0">
-                        <img
-                          src={convenio.imageUrl}
-                          alt={convenio.name}
-                          className="w-full h-48 object-cover rounded-t-lg"
-                        />
-                      </CardHeader>
-                      <CardContent className="p-4">
-                        <div className="flex items-center justify-between mb-2">
-                          <Badge variant={convenio.isVisible ? "default" : "secondary"} className="text-xs">
-                            {convenio.isVisible ? "Visible" : "Oculto"}
-                          </Badge>
-                          <Switch
-                            checked={convenio.isVisible}
-                            onCheckedChange={() => toggleVisibility(convenio.id)}
-                            className="scale-75"
-                          />
-                        </div>
-                        <CardTitle className="text-lg font-semibold mb-2 line-clamp-2">
-                          {convenio.name}
-                        </CardTitle>
-                        <div className="space-y-1 mb-4">
-                          <p className="text-xs text-gray-500">
-                            Creado: {formatDate(convenio.createdAt)}
-                          </p>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => {
-                              setSelectedConvenio(convenio);
-                              setViewConvenioOpen(true);
-                            }}
-                          >
-                            <Eye className="h-4 w-4" />
-                          </Button>
-                          <div className="flex items-center gap-1">
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" size="sm">
-                                  <MoreHorizontal className="h-4 w-4" />
-                                </Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent>
-                                <DropdownMenuItem onClick={() => handleEdit(convenio)}>
-                                  <Edit className="h-4 w-4 mr-2" />
-                                  Editar
-                                </DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => { setSelectedConvenio(convenio); setDeleteConvenioOpen(true); }}>
-                                  <Trash2 className="h-4 w-4 mr-2" />
-                                  Eliminar
-                                </DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
+                {isLoading ? (
+                  <div className="flex justify-center py-8">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-prosalud"></div>
+                  </div>
+                ) : (
+                  <>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                      {paginatedConvenios.map((convenio) => (
+                        <Card key={convenio.id} className="hover:shadow-lg transition-shadow duration-300">
+                          <CardHeader className="p-0">
+                            <img
+                              src={convenio.image}
+                              alt={convenio.name}
+                              className="w-full h-48 object-cover rounded-t-lg"
+                            />
+                          </CardHeader>
+                          <CardContent className="p-4">
+                            <div className="flex items-center justify-between mb-2">
+                              <Badge variant={convenio.isVisible ? "default" : "secondary"} className="text-xs">
+                                {convenio.isVisible ? "Visible" : "Oculto"}
+                              </Badge>
+                              <Switch
+                                checked={convenio.isVisible}
+                                onCheckedChange={() => toggleVisibility(convenio.id)}
+                                className="scale-75"
+                              />
+                            </div>
+                            <CardTitle className="text-lg font-semibold mb-2 line-clamp-2">
+                              {convenio.name}
+                            </CardTitle>
+                            <div className="space-y-1 mb-4">
+                              <p className="text-xs text-gray-500">
+                                Creado: {formatDate(convenio.createdAt)}
+                              </p>
+                            </div>
+                            <div className="flex items-center justify-between">
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => {
+                                  setSelectedConvenio(convenio);
+                                  setViewConvenioOpen(true);
+                                }}
+                              >
+                                <Eye className="h-4 w-4" />
+                              </Button>
+                              <div className="flex items-center gap-1">
+                                <DropdownMenu>
+                                  <DropdownMenuTrigger asChild>
+                                    <Button variant="ghost" size="sm">
+                                      <MoreHorizontal className="h-4 w-4" />
+                                    </Button>
+                                  </DropdownMenuTrigger>
+                                  <DropdownMenuContent>
+                                    <DropdownMenuItem onClick={() => handleEdit(convenio)}>
+                                      <Edit className="h-4 w-4 mr-2" />
+                                      Editar
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem onClick={() => { setSelectedConvenio(convenio); setDeleteConvenioOpen(true); }}>
+                                      <Trash2 className="h-4 w-4 mr-2" />
+                                      Eliminar
+                                    </DropdownMenuItem>
+                                  </DropdownMenuContent>
+                                </DropdownMenu>
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
 
-                {/* Pagination */}
-                <DataPagination
-                  currentPage={currentPage}
-                  totalPages={totalPages}
-                  totalItems={totalItems}
-                  itemsPerPage={itemsPerPage}
-                  onPageChange={goToPage}
-                  onItemsPerPageChange={setItemsPerPage}
-                  className="mt-6"
-                />
+                    {/* Pagination */}
+                    <DataPagination
+                      currentPage={currentPage}
+                      totalPages={totalPages}
+                      totalItems={totalItems}
+                      itemsPerPage={itemsPerPage}
+                      onPageChange={goToPage}
+                      onItemsPerPageChange={setItemsPerPage}
+                      className="mt-6"
+                    />
+                  </>
+                )}
               </CardContent>
             </Card>
           </motion.div>
@@ -496,7 +483,7 @@ const AdminConveniosPage: React.FC = () => {
                       </CardHeader>
                       <CardContent>
                         <img
-                          src={selectedConvenio.imageUrl}
+                          src={selectedConvenio.image}
                           alt={selectedConvenio.name}
                           className="w-full h-48 object-cover rounded-lg"
                         />
