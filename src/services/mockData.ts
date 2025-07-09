@@ -285,7 +285,7 @@ export const mockConvenios: Convenio[] = [
   }
 ];
 
-// Products Mock Data - Expandido significativamente
+// Products Mock Data - Expandido significativamente con 10+ productos adicionales
 export const mockProducts: Product[] = [
   // Uniformes
   {
@@ -557,6 +557,165 @@ export const mockProducts: Product[] = [
     ],
     created_at: '2024-01-20T00:00:00Z',
     updated_at: '2024-06-20T00:00:00Z'
+  },
+  // Nuevos productos adicionales
+  {
+    id: '21',
+    name: 'Gorro Quirúrgico Desechable',
+    category: 'implemento',
+    description: 'Gorro quirúrgico desechable de polipropileno',
+    image: '/images/inventory/gorro-quirurgico.webp',
+    variants: [
+      { id: '48', product_id: '21', color: 'Azul', stock: 350, min_stock: 200, max_stock: 800, sku: 'GOR-QUI-AZ' },
+      { id: '49', product_id: '21', color: 'Verde', stock: 280, min_stock: 150, max_stock: 600, sku: 'GOR-QUI-VE' },
+      { id: '50', product_id: '21', color: 'Blanco', stock: 420, min_stock: 250, max_stock: 900, sku: 'GOR-QUI-BL' }
+    ],
+    created_at: '2024-01-21T00:00:00Z',
+    updated_at: '2024-06-21T00:00:00Z'
+  },
+  {
+    id: '22',
+    name: 'Zapatos Antideslizantes ProSalud',
+    category: 'implemento',
+    description: 'Zapatos antideslizantes para personal médico',
+    image: '/images/inventory/zapatos-medicos.webp',
+    variants: [
+      { id: '51', product_id: '22', size: '36', color: 'Blanco', stock: 8, min_stock: 5, max_stock: 20, sku: 'ZAP-MED-36' },
+      { id: '52', product_id: '22', size: '37', color: 'Blanco', stock: 12, min_stock: 8, max_stock: 25, sku: 'ZAP-MED-37' },
+      { id: '53', product_id: '22', size: '38', color: 'Blanco', stock: 15, min_stock: 10, max_stock: 30, sku: 'ZAP-MED-38' },
+      { id: '54', product_id: '22', size: '39', color: 'Blanco', stock: 18, min_stock: 12, max_stock: 35, sku: 'ZAP-MED-39' },
+      { id: '55', product_id: '22', size: '40', color: 'Blanco', stock: 20, min_stock: 15, max_stock: 40, sku: 'ZAP-MED-40' },
+      { id: '56', product_id: '22', size: '41', color: 'Blanco', stock: 16, min_stock: 10, max_stock: 30, sku: 'ZAP-MED-41' },
+      { id: '57', product_id: '22', size: '42', color: 'Blanco', stock: 14, min_stock: 8, max_stock: 25, sku: 'ZAP-MED-42' },
+      { id: '58', product_id: '22', size: '43', color: 'Blanco', stock: 10, min_stock: 6, max_stock: 20, sku: 'ZAP-MED-43' }
+    ],
+    created_at: '2024-01-22T00:00:00Z',
+    updated_at: '2024-06-22T00:00:00Z'
+  },
+  {
+    id: '23',
+    name: 'Delantal Impermeable',
+    category: 'batas',
+    description: 'Delantal impermeable para procedimientos',
+    image: '/images/inventory/delantal-impermeable.webp',
+    variants: [
+      { id: '59', product_id: '23', size: 'S', color: 'Transparente', stock: 45, min_stock: 30, max_stock: 100, sku: 'DEL-IMP-S' },
+      { id: '60', product_id: '23', size: 'M', color: 'Transparente', stock: 65, min_stock: 40, max_stock: 150, sku: 'DEL-IMP-M' },
+      { id: '61', product_id: '23', size: 'L', color: 'Transparente', stock: 38, min_stock: 25, max_stock: 100, sku: 'DEL-IMP-L' }
+    ],
+    created_at: '2024-01-23T00:00:00Z',
+    updated_at: '2024-06-23T00:00:00Z'
+  },
+  {
+    id: '24',
+    name: 'Mascarilla de Protección Facial',
+    category: 'tapabocas',
+    description: 'Mascarilla de protección facial con visor',
+    image: '/images/inventory/mascarilla-facial.webp',
+    variants: [
+      { id: '62', product_id: '24', stock: 85, min_stock: 50, max_stock: 200, sku: 'MAS-FAC-STD' }
+    ],
+    created_at: '2024-01-24T00:00:00Z',
+    updated_at: '2024-06-24T00:00:00Z'
+  },
+  {
+    id: '25',
+    name: 'Uniforme Pijama Quirúrgica Morada',
+    category: 'uniforme',
+    description: 'Uniforme pijama quirúrgica color morado para personal especializado',
+    image: '/images/inventory/uniforme-morado.webp',
+    variants: [
+      { id: '63', product_id: '25', size: 'XS', color: 'Morado', stock: 6, min_stock: 4, max_stock: 20, sku: 'UNI-MO-XS' },
+      { id: '64', product_id: '25', size: 'S', color: 'Morado', stock: 14, min_stock: 8, max_stock: 30, sku: 'UNI-MO-S' },
+      { id: '65', product_id: '25', size: 'M', color: 'Morado', stock: 18, min_stock: 12, max_stock: 40, sku: 'UNI-MO-M' },
+      { id: '66', product_id: '25', size: 'L', color: 'Morado', stock: 16, min_stock: 10, max_stock: 35, sku: 'UNI-MO-L' },
+      { id: '67', product_id: '25', size: 'XL', color: 'Morado', stock: 12, min_stock: 6, max_stock: 25, sku: 'UNI-MO-XL' }
+    ],
+    created_at: '2024-01-25T00:00:00Z',
+    updated_at: '2024-06-25T00:00:00Z'
+  },
+  {
+    id: '26',
+    name: 'Lentes de Protección',
+    category: 'implemento',
+    description: 'Lentes de protección contra salpicaduras',
+    image: '/images/inventory/lentes-proteccion.webp',
+    variants: [
+      { id: '68', product_id: '26', stock: 35, min_stock: 20, max_stock: 80, sku: 'LEN-PRO-STD' }
+    ],
+    created_at: '2024-01-26T00:00:00Z',
+    updated_at: '2024-06-26T00:00:00Z'
+  },
+  {
+    id: '27',
+    name: 'Chaqueta Corporativa ProSalud',
+    category: 'regalo',
+    description: 'Chaqueta corporativa con logo ProSalud para eventos',
+    image: '/images/inventory/chaqueta-corporativa.webp',
+    variants: [
+      { id: '69', product_id: '27', size: 'S', color: 'Azul Marino', stock: 8, min_stock: 5, max_stock: 25, sku: 'CHA-COR-S' },
+      { id: '70', product_id: '27', size: 'M', color: 'Azul Marino', stock: 12, min_stock: 8, max_stock: 30, sku: 'CHA-COR-M' },
+      { id: '71', product_id: '27', size: 'L', color: 'Azul Marino', stock: 10, min_stock: 6, max_stock: 25, sku: 'CHA-COR-L' },
+      { id: '72', product_id: '27', size: 'XL', color: 'Azul Marino', stock: 6, min_stock: 4, max_stock: 20, sku: 'CHA-COR-XL' }
+    ],
+    created_at: '2024-01-27T00:00:00Z',
+    updated_at: '2024-06-27T00:00:00Z'
+  },
+  {
+    id: '28',
+    name: 'Alcohol Antiséptico 500ml',
+    category: 'implemento',
+    description: 'Alcohol antiséptico al 70% para desinfección',
+    image: '/images/inventory/alcohol-antiseptico.webp',
+    variants: [
+      { id: '73', product_id: '28', stock: 180, min_stock: 100, max_stock: 400, sku: 'ALC-ANT-500' }
+    ],
+    created_at: '2024-01-28T00:00:00Z',
+    updated_at: '2024-06-28T00:00:00Z'
+  },
+  {
+    id: '29',
+    name: 'Morral ProSalud Deportivo',
+    category: 'regalo',
+    description: 'Morral deportivo con logo ProSalud para actividades',
+    image: '/images/inventory/morral-deportivo.webp',
+    variants: [
+      { id: '74', product_id: '29', color: 'Negro', stock: 25, min_stock: 15, max_stock: 60, sku: 'MOR-DEP-NEG' },
+      { id: '75', product_id: '29', color: 'Azul', stock: 22, min_stock: 12, max_stock: 50, sku: 'MOR-DEP-AZ' }
+    ],
+    created_at: '2024-01-29T00:00:00Z',
+    updated_at: '2024-06-29T00:00:00Z'
+  },
+  {
+    id: '30',
+    name: 'Botas de Seguridad',
+    category: 'implemento',
+    description: 'Botas de seguridad para áreas específicas',
+    image: '/images/inventory/botas-seguridad.webp',
+    variants: [
+      { id: '76', product_id: '30', size: '36', color: 'Negro', stock: 4, min_stock: 3, max_stock: 15, sku: 'BOT-SEG-36' },
+      { id: '77', product_id: '30', size: '37', color: 'Negro', stock: 6, min_stock: 4, max_stock: 18, sku: 'BOT-SEG-37' },
+      { id: '78', product_id: '30', size: '38', color: 'Negro', stock: 8, min_stock: 5, max_stock: 20, sku: 'BOT-SEG-38' },
+      { id: '79', product_id: '30', size: '39', color: 'Negro', stock: 10, min_stock: 6, max_stock: 22, sku: 'BOT-SEG-39' },
+      { id: '80', product_id: '30', size: '40', color: 'Negro', stock: 12, min_stock: 8, max_stock: 25, sku: 'BOT-SEG-40' },
+      { id: '81', product_id: '30', size: '41', color: 'Negro', stock: 8, min_stock: 5, max_stock: 20, sku: 'BOT-SEG-41' },
+      { id: '82', product_id: '30', size: '42', color: 'Negro', stock: 6, min_stock: 4, max_stock: 18, sku: 'BOT-SEG-42' },
+      { id: '83', product_id: '30', size: '43', color: 'Negro', stock: 4, min_stock: 3, max_stock: 15, sku: 'BOT-SEG-43' }
+    ],
+    created_at: '2024-01-30T00:00:00Z',
+    updated_at: '2024-06-30T00:00:00Z'
+  },
+  {
+    id: '31',
+    name: 'Gel Antibacterial 250ml',
+    category: 'implemento',
+    description: 'Gel antibacterial para higiene de manos',
+    image: '/images/inventory/gel-antibacterial.webp',
+    variants: [
+      { id: '84', product_id: '31', stock: 240, min_stock: 150, max_stock: 500, sku: 'GEL-ANT-250' }
+    ],
+    created_at: '2024-01-31T00:00:00Z',
+    updated_at: '2024-06-31T00:00:00Z'
   }
 ];
 
@@ -766,7 +925,7 @@ export const mockSupplierDeliveries: SupplierDelivery[] = [
   }
 ];
 
-// Inventory Requests Mock Data - Expandido significativamente
+// Inventory Requests Mock Data - Expandido con 5+ solicitudes adicionales
 export const mockInventoryRequests: Request[] = [
   {
     id: '1',
@@ -845,6 +1004,106 @@ export const mockInventoryRequests: Request[] = [
     priority: 'low',
     status: 'pending',
     created_at: '2024-07-08T00:00:00Z'
+  },
+  // Nuevas solicitudes adicionales
+  {
+    id: '16',
+    hospital_name: 'Promotora Médica y Odontológica',
+    coordinator_name: 'Roberto Silva Jiménez',
+    coordinator_email: 'roberto.silva@promotora.com.co',
+    request_date: '2024-07-12',
+    items: [
+      { id: '47', request_id: '16', product_id: '21', variant_id: '48', quantity_requested: 200, quantity_approved: 150, justification: 'Aumento en cirugías programadas' },
+      { id: '48', request_id: '16', product_id: '24', variant_id: '62', quantity_requested: 50, justification: 'Protocolos COVID reforzados' }
+    ],
+    priority: 'medium',
+    status: 'approved',
+    notes: 'Solicitud aprobada parcialmente',
+    approved_by: 'Admin ProSalud',
+    approved_date: '2024-07-13',
+    created_at: '2024-07-12T00:00:00Z'
+  },
+  {
+    id: '17',
+    hospital_name: 'Sociedad Médica Rionegro SOMER',
+    coordinator_name: 'Elena Castro Vega',
+    coordinator_email: 'elena.castro@somer.com.co',
+    request_date: '2024-07-14',
+    items: [
+      { id: '49', request_id: '17', product_id: '22', variant_id: '55', quantity_requested: 10, justification: 'Dotación nuevo personal' },
+      { id: '50', request_id: '17', product_id: '26', variant_id: '68', quantity_requested: 15, justification: 'Equipos de protección laboratorio' }
+    ],
+    priority: 'low',
+    status: 'pending',
+    created_at: '2024-07-14T00:00:00Z'
+  },
+  {
+    id: '18',
+    hospital_name: 'Hospital Marco Fidel Suárez',
+    coordinator_name: 'María González Rodríguez',
+    coordinator_email: 'maria.gonzalez@hmarcosfidel.gov.co',
+    request_date: '2024-07-15',
+    items: [
+      { id: '51', request_id: '18', product_id: '25', variant_id: '65', quantity_requested: 25, quantity_approved: 20, justification: 'Uniformes área pediatría' },
+      { id: '52', request_id: '18', product_id: '28', variant_id: '73', quantity_requested: 100, quantity_approved: 100, justification: 'Reposición mensual antisépticos' }
+    ],
+    priority: 'high',
+    status: 'delivered',
+    notes: 'Entrega completada sin inconvenientes',
+    approved_by: 'Admin ProSalud',
+    approved_date: '2024-07-16',
+    created_at: '2024-07-15T00:00:00Z'
+  },
+  {
+    id: '19',
+    hospital_name: 'Hospital San Juan de Dios',
+    coordinator_name: 'Carlos Martínez Silva',
+    coordinator_email: 'carlos.martinez@hsanjuan.gov.co',
+    request_date: '2024-07-16',
+    items: [
+      { id: '53', request_id: '19', product_id: '23', variant_id: '60', quantity_requested: 30, justification: 'Procedimientos quirúrgicos especiales' },
+      { id: '54', request_id: '19', product_id: '31', variant_id: '84', quantity_requested: 80, justification: 'Protocolo higiene reforzado' }
+    ],
+    priority: 'urgent',
+    status: 'preparing',
+    notes: 'Preparando envío urgente',
+    approved_by: 'Admin ProSalud',
+    approved_date: '2024-07-16',
+    created_at: '2024-07-16T00:00:00Z'
+  },
+  {
+    id: '20',
+    hospital_name: 'Hospital La Merced',
+    coordinator_name: 'Ana López Herrera',
+    coordinator_email: 'ana.lopez@hlamerced.gov.co',
+    request_date: '2024-07-17',
+    items: [
+      { id: '55', request_id: '20', product_id: '27', variant_id: '70', quantity_requested: 8, justification: 'Evento institucional' },
+      { id: '56', request_id: '20', product_id: '29', variant_id: '74', quantity_requested: 15, justification: 'Programa bienestar laboral' }
+    ],
+    priority: 'low',
+    status: 'approved',
+    notes: 'Aprobado para entrega siguiente semana',
+    approved_by: 'Admin ProSalud',
+    approved_date: '2024-07-18',
+    created_at: '2024-07-17T00:00:00Z'
+  },
+  {
+    id: '21',
+    hospital_name: 'Hospital Santa Elena',
+    coordinator_name: 'Luis Rivera Castro',
+    coordinator_email: 'luis.rivera@hsantaelena.gov.co',
+    request_date: '2024-07-18',
+    items: [
+      { id: '57', request_id: '21', product_id: '30', variant_id: '79', quantity_requested: 6, justification: 'Dotación área mantenimiento' },
+      { id: '58', request_id: '21', product_id: '21', variant_id: '50', quantity_requested: 150, justification: 'Reposición gorros quirúrgicos' }
+    ],
+    priority: 'medium',
+    status: 'shipped',
+    notes: 'Enviado por transportadora',
+    approved_by: 'Admin ProSalud',
+    approved_date: '2024-07-18',
+    created_at: '2024-07-18T00:00:00Z'
   }
 ];
 

@@ -11,12 +11,16 @@ const getMockRequests = (): RequestRecord[] => {
     products: request.items.map(item => {
       const product = mockProducts.find(p => p.id === item.product_id);
       const variant = product?.variants?.find(v => v.id === item.variant_id);
-      return `${product?.name || 'Producto desconocido'}${variant?.size ? ` - ${variant.size}` : ''}`;
+      return `${product?.name || 'Producto desconocido'}${variant?.size ? ` - ${variant.size}` : ''}${variant?.color ? ` - ${variant.color}` : ''}`;
     }),
     // Map inventory request status to report status
     status: request.status === 'preparing' || request.status === 'shipped' || request.status === 'rejected' 
       ? 'pending' 
-      : request.status as 'pending' | 'approved' | 'delivered',
+      : request.status === 'delivered'
+      ? 'delivered'
+      : request.status === 'approved'
+      ? 'approved'
+      : 'pending',
     priority: request.priority
   }));
 };
@@ -30,13 +34,15 @@ const getMockReturns = (): ReturnRecord[] => {
     products: returnItem.items.map(item => {
       const product = mockProducts.find(p => p.id === item.product_id);
       const variant = product?.variants?.find(v => v.id === item.variant_id);
-      return `${product?.name || 'Producto desconocido'}${variant?.size ? ` - ${variant.size}` : ''}`;
+      return `${product?.name || 'Producto desconocido'}${variant?.size ? ` - ${variant.size}` : ''}${variant?.color ? ` - ${variant.color}` : ''}`;
     }),
     reason: returnItem.reason === 'incorrect' ? 'Talla incorrecta' : 
             returnItem.reason === 'defective' ? 'Producto defectuoso' : 
-            returnItem.reason === 'excess' ? 'Exceso de stock' : returnItem.reason,
+            returnItem.reason === 'excess' ? 'Exceso de stock' : 
+            returnItem.reason === 'expired' ? 'Producto vencido' : returnItem.reason,
     // Map return status to report status (remove 'approved')
-    status: returnItem.status === 'approved' ? 'processed' : returnItem.status as 'pending' | 'processed'
+    status: returnItem.status === 'approved' ? 'processed' : 
+            returnItem.status === 'processed' ? 'processed' : 'pending'
   }));
 };
 
@@ -64,7 +70,7 @@ export const getInventoryData = (): ReportData => {
         .filter(p => p.category === 'uniforme')
         .flatMap(product => 
           product.variants?.map(variant => ({
-            name: `${product.name} - ${variant.size || 'Único'}`,
+            name: `${product.name}${variant.size ? ` - ${variant.size}` : ''}${variant.color ? ` - ${variant.color}` : ''}`,
             stock: variant.stock,
             min: variant.min_stock,
             max: variant.max_stock,
@@ -83,13 +89,13 @@ export const getInventoryData = (): ReportData => {
         .filter(p => p.category === 'tapabocas')
         .flatMap(product => 
           product.variants?.map(variant => ({
-            name: product.name,
+            name: `${product.name}${variant.color ? ` - ${variant.color}` : ''}`,
             stock: variant.stock,
             min: variant.min_stock,
             max: variant.max_stock,
             status: (variant.stock <= variant.min_stock ? 
               (variant.stock === 0 ? 'critical' : 'low') : 'ok') as 'ok' | 'low' | 'critical',
-            value: product.name.includes('N95') ? 2500 : 800,
+            value: product.name.includes('N95') ? 2500 : product.name.includes('KN95') ? 1800 : 800,
             sku: variant.sku,
             location: `B-${Math.floor(Math.random() * 2) + 1}-${String(Math.floor(Math.random() * 10) + 1).padStart(2, '0')}`
           })) || []
@@ -102,34 +108,58 @@ export const getInventoryData = (): ReportData => {
         .filter(p => p.category === 'batas')
         .flatMap(product => 
           product.variants?.map(variant => ({
-            name: `${product.name} - ${variant.size || 'Único'}`,
+            name: `${product.name}${variant.size ? ` - ${variant.size}` : ''}${variant.color ? ` - ${variant.color}` : ''}`,
             stock: variant.stock,
             min: variant.min_stock,
             max: variant.max_stock,
             status: (variant.stock <= variant.min_stock ? 
               (variant.stock === 0 ? 'critical' : 'low') : 'ok') as 'ok' | 'low' | 'critical',
-            value: 35000,
+            value: product.name.includes('Laboratorio') ? 42000 : product.name.includes('Desechable') ? 3500 : 35000,
             sku: variant.sku,
             location: `C-${Math.floor(Math.random() * 2) + 1}-${String(Math.floor(Math.random() * 10) + 1).padStart(2, '0')}`
           })) || []
         )
     },
     {
-      name: 'Regalos e Implementos',
-      description: 'Artículos promocionales, de bienestar e implementos médicos',
+      name: 'Regalos',
+      description: 'Artículos promocionales y de bienestar',
       products: mockProducts
-        .filter(p => p.category === 'regalo' || p.category === 'implemento')
+        .filter(p => p.category === 'regalo')
         .flatMap(product => 
           product.variants?.map(variant => ({
-            name: `${product.name}${variant.size ? ` - ${variant.size}` : ''}`,
+            name: `${product.name}${variant.size ? ` - ${variant.size}` : ''}${variant.color ? ` - ${variant.color}` : ''}`,
             stock: variant.stock,
             min: variant.min_stock,
             max: variant.max_stock,
             status: (variant.stock <= variant.min_stock ? 
               (variant.stock === 0 ? 'critical' : 'low') : 'ok') as 'ok' | 'low' | 'critical',
-            value: product.category === 'regalo' ? 25000 : 15000,
+            value: product.name.includes('Kit') ? 25000 : 
+                   product.name.includes('Termo') ? 18000 : 
+                   product.name.includes('Chaqueta') ? 35000 : 15000,
             sku: variant.sku,
             location: `D-${Math.floor(Math.random() * 2) + 1}-${String(Math.floor(Math.random() * 10) + 1).padStart(2, '0')}`
+          })) || []
+        )
+    },
+    {
+      name: 'Implementos',
+      description: 'Implementos médicos y equipos de protección',
+      products: mockProducts
+        .filter(p => p.category === 'implemento')
+        .flatMap(product => 
+          product.variants?.map(variant => ({
+            name: `${product.name}${variant.size ? ` - ${variant.size}` : ''}${variant.color ? ` - ${variant.color}` : ''}`,
+            stock: variant.stock,
+            min: variant.min_stock,
+            max: variant.max_stock,
+            status: (variant.stock <= variant.min_stock ? 
+              (variant.stock === 0 ? 'critical' : 'low') : 'ok') as 'ok' | 'low' | 'critical',
+            value: product.name.includes('Estetoscopio') ? 120000 : 
+                   product.name.includes('Tensiómetro') ? 85000 : 
+                   product.name.includes('Termómetro') ? 45000 :
+                   product.name.includes('Zapatos') || product.name.includes('Botas') ? 65000 : 15000,
+            sku: variant.sku,
+            location: `E-${Math.floor(Math.random() * 3) + 1}-${String(Math.floor(Math.random() * 10) + 1).padStart(2, '0')}`
           })) || []
         )
     }

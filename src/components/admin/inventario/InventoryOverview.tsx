@@ -34,62 +34,102 @@ const InventoryOverview: React.FC = () => {
       id: 'uniformes',
       name: 'Uniformes',
       icon: Shirt,
-      total: 156,
-      available: 134,
-      reserved: 22,
+      total: 198,
+      available: 172,
+      reserved: 26,
       products: [
         { name: 'Uniforme Azul - Talla S', stock: 15, min: 10, status: 'ok' },
-        { name: 'Uniforme Azul - Talla M', stock: 3, min: 10, status: 'low' },
+        { name: 'Uniforme Azul - Talla M', stock: 8, min: 10, status: 'low' },
         { name: 'Uniforme Azul - Talla L', stock: 25, min: 15, status: 'ok' },
-        { name: 'Uniforme Verde - Talla S', stock: 1, min: 5, status: 'critical' },
+        { name: 'Uniforme Verde - Talla S', stock: 3, min: 5, status: 'critical' },
         { name: 'Uniforme Verde - Talla M', stock: 18, min: 10, status: 'ok' },
         { name: 'Uniforme Verde - Talla L', stock: 22, min: 15, status: 'ok' },
-        { name: 'Uniforme Blanco - Talla S', stock: 12, min: 8, status: 'ok' },
-        { name: 'Uniforme Blanco - Talla M', stock: 20, min: 12, status: 'ok' },
-        { name: 'Uniforme Blanco - Talla L', stock: 18, min: 10, status: 'ok' }
+        { name: 'Uniforme Blanco - Talla S', stock: 20, min: 8, status: 'ok' },
+        { name: 'Uniforme Blanco - Talla M', stock: 28, min: 12, status: 'ok' },
+        { name: 'Uniforme Blanco - Talla L', stock: 22, min: 10, status: 'ok' },
+        { name: 'Uniforme Rosa - Talla M', stock: 15, min: 8, status: 'ok' },
+        { name: 'Uniforme Morado - Talla S', stock: 14, min: 8, status: 'ok' },
+        { name: 'Uniforme Morado - Talla M', stock: 18, min: 12, status: 'ok' }
       ]
     },
     {
       id: 'tapabocas',
       name: 'Tapabocas',
       icon: Shield,
-      total: 2500,
-      available: 2340,
-      reserved: 160,
+      total: 3270,
+      available: 3090,
+      reserved: 180,
       products: [
         { name: 'Tapabocas Quirúrgico', stock: 1200, min: 500, status: 'ok' },
         { name: 'Tapabocas N95', stock: 45, min: 100, status: 'low' },
         { name: 'Tapabocas de Tela', stock: 800, min: 300, status: 'ok' },
-        { name: 'Tapabocas Pediátrico', stock: 295, min: 200, status: 'ok' }
+        { name: 'Tapabocas Pediátrico', stock: 295, min: 200, status: 'ok' },
+        { name: 'Tapabocas KN95 Azul', stock: 200, min: 150, status: 'ok' },
+        { name: 'Tapabocas KN95 Rosa', stock: 180, min: 150, status: 'ok' },
+        { name: 'Tapabocas KN95 Verde', stock: 160, min: 150, status: 'ok' },
+        { name: 'Mascarilla Protección Facial', stock: 85, min: 50, status: 'ok' }
       ]
     },
     {
       id: 'batas',
       name: 'Batas',
+      description: 'Batas médicas y de laboratorio',
       icon: Package,
-      total: 89,
-      available: 76,
-      reserved: 13,
+      total: 237,
+      available: 218,
+      reserved: 19,
       products: [
         { name: 'Bata Blanca - Talla S', stock: 12, min: 8, status: 'ok' },
         { name: 'Bata Blanca - Talla M', stock: 18, min: 12, status: 'ok' },
         { name: 'Bata Blanca - Talla L', stock: 2, min: 8, status: 'critical' },
         { name: 'Bata de Laboratorio - Talla M', stock: 15, min: 10, status: 'ok' },
-        { name: 'Bata de Laboratorio - Talla L', stock: 20, min: 12, status: 'ok' }
+        { name: 'Bata de Laboratorio - Talla L', stock: 20, min: 12, status: 'ok' },
+        { name: 'Bata Desechable', stock: 85, min: 50, status: 'ok' },
+        { name: 'Delantal Impermeable - Talla S', stock: 45, min: 30, status: 'ok' },
+        { name: 'Delantal Impermeable - Talla M', stock: 65, min: 40, status: 'ok' },
+        { name: 'Delantal Impermeable - Talla L', stock: 38, min: 25, status: 'ok' }
+      ]
+    },
+    {
+      id: 'implementos',
+      name: 'Implementos',
+      icon: Activity,
+      total: 1145,
+      available: 1089,
+      reserved: 56,
+      products: [
+        { name: 'Guantes Nitrilo - Talla S', stock: 80, min: 50, status: 'ok' },
+        { name: 'Guantes Nitrilo - Talla M', stock: 120, min: 80, status: 'ok' },
+        { name: 'Guantes Nitrilo - Talla L', stock: 95, min: 60, status: 'ok' },
+        { name: 'Estetoscopio Profesional', stock: 12, min: 8, status: 'ok' },
+        { name: 'Tensiómetro Digital', stock: 8, min: 5, status: 'ok' },
+        { name: 'Termómetro Infrarrojo', stock: 15, min: 10, status: 'ok' },
+        { name: 'Gorro Quirúrgico Azul', stock: 350, min: 200, status: 'ok' },
+        { name: 'Gorro Quirúrgico Verde', stock: 280, min: 150, status: 'ok' },
+        { name: 'Zapatos Antideslizantes - T.38', stock: 15, min: 10, status: 'ok' },
+        { name: 'Zapatos Antideslizantes - T.40', stock: 20, min: 15, status: 'ok' },
+        { name: 'Lentes de Protección', stock: 35, min: 20, status: 'ok' },
+        { name: 'Alcohol Antiséptico 500ml', stock: 180, min: 100, status: 'ok' },
+        { name: 'Gel Antibacterial 250ml', stock: 240, min: 150, status: 'ok' },
+        { name: 'Botas de Seguridad - T.40', stock: 12, min: 8, status: 'ok' }
       ]
     },
     {
       id: 'regalos',
       name: 'Regalos',
       icon: Gift,
-      total: 45,
-      available: 38,
-      reserved: 7,
+      total: 156,
+      available: 142,
+      reserved: 14,
       products: [
         { name: 'Kit de Bienvenida', stock: 15, min: 10, status: 'ok' },
-        { name: 'Termo ProSalud', stock: 8, min: 5, status: 'ok' },
-        { name: 'Agenda Corporativa', stock: 12, min: 8, status: 'ok' },
-        { name: 'USB Corporativo', stock: 3, min: 6, status: 'low' }
+        { name: 'Termo ProSalud', stock: 35, min: 20, status: 'ok' },
+        { name: 'Agenda Corporativa', stock: 28, min: 15, status: 'ok' },
+        { name: 'USB Corporativo', stock: 3, min: 10, status: 'critical' },
+        { name: 'Camiseta ProSalud - Talla M', stock: 22, min: 15, status: 'ok' },
+        { name: 'Camiseta ProSalud - Talla L', stock: 20, min: 12, status: 'ok' },
+        { name: 'Chaqueta Corporativa - Talla M', stock: 12, min: 8, status: 'ok' },
+        { name: 'Morral Deportivo Negro', stock: 25, min: 15, status: 'ok' }
       ]
     }
   ];
@@ -113,22 +153,25 @@ const InventoryOverview: React.FC = () => {
   };
 
   const lowStockItems = [
-    { name: 'Uniforme Azul - Talla M', current: 3, min: 10, category: 'Uniformes' },
+    { name: 'Uniforme Azul - Talla M', current: 8, min: 10, category: 'Uniformes' },
     { name: 'Bata Blanca - Talla L', current: 2, min: 8, category: 'Batas' },
     { name: 'Tapabocas N95', current: 45, min: 100, category: 'Tapabocas' },
-    { name: 'Uniforme Verde - Talla S', current: 1, min: 5, category: 'Uniformes' }
+    { name: 'Uniforme Verde - Talla S', current: 3, min: 5, category: 'Uniformes' },
+    { name: 'USB Corporativo', current: 3, min: 10, category: 'Regalos' }
   ];
 
   const hospitalRequests = [
-    { hospital: 'Hospital Marco Fidel Suárez', pending: 3, priority: 'high' },
-    { hospital: 'Hospital San Juan de Dios', pending: 2, priority: 'medium' },
-    { hospital: 'Hospital La Merced', pending: 1, priority: 'low' }
+    { hospital: 'Hospital Marco Fidel Suárez', pending: 4, priority: 'high' },
+    { hospital: 'Hospital San Juan de Dios', pending: 3, priority: 'urgent' },
+    { hospital: 'Hospital La Merced', pending: 2, priority: 'medium' },
+    { hospital: 'Promotora Médica y Odontológica', pending: 2, priority: 'medium' },
+    { hospital: 'Sociedad Médica Rionegro SOMER', pending: 1, priority: 'low' }
   ];
 
   return (
     <div className="space-y-6">
       {/* Categories Overview */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-6">
         {categoryStats.map((category, index) => (
           <motion.div
             key={category.name}
@@ -287,11 +330,13 @@ const InventoryOverview: React.FC = () => {
                     <p className="text-xs text-gray-600">{request.pending} solicitudes pendientes</p>
                   </div>
                   <Badge 
-                    variant={request.priority === 'high' ? 'destructive' : 
+                    variant={request.priority === 'urgent' ? 'destructive' :
+                            request.priority === 'high' ? 'destructive' : 
                             request.priority === 'medium' ? 'default' : 'secondary'}
                     className="text-xs"
                   >
-                    {request.priority === 'high' ? 'Alta' : 
+                    {request.priority === 'urgent' ? 'Urgente' :
+                     request.priority === 'high' ? 'Alta' : 
                      request.priority === 'medium' ? 'Media' : 'Baja'}
                   </Badge>
                 </div>
@@ -310,7 +355,7 @@ const InventoryOverview: React.FC = () => {
       {/* Dialogs */}
       <QuickActionsDialog open={quickActionsOpen} onOpenChange={setQuickActionsOpen} />
       <LowStockDialog open={lowStockOpen} onOpenChange={setLowStockOpen} />
-      <HospitalRequestsDialog open={hospitalRequestsOpen} onOpenChange={setHospitalRequestsOpen} />
+      <HospitalRequestsDialog open={hospitalRequestsOpen} onOpenChange={setHospitalRequestsDialog} />
     </div>
   );
 };
