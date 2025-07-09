@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import { Users, FileText, Heart, BarChart3, GraduationCap, Settings, Edit } from 'lucide-react';
+import { Users, GraduationCap, Heart, BarChart3, Handshake, Settings, Edit } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -27,21 +27,21 @@ const AdminDashboard: React.FC = () => {
       title: "Convenios Activos",
       value: "7",
       change: "+2",
-      icon: Trophy,
+      icon: Handshake,
       color: "text-secondary-prosaludgreen"
     },
     {
       title: "Eventos de Bienestar",
       value: "72",
       change: "+8",
-      icon: Calendar,
+      icon: Heart,
       color: "text-accent-prosaludteal"
     },
     {
       title: "Experiencias Comfenalco",
       value: "12",
       change: "+3",
-      icon: FileText,
+      icon: GraduationCap,
       color: "text-orange-600"
     }
   ]);
@@ -170,7 +170,7 @@ const AdminDashboard: React.FC = () => {
                     whileTap={{ scale: 0.98 }}
                     className="flex items-center space-x-3 p-4 rounded-lg bg-slate-50 hover:bg-slate-100 transition-colors duration-300 border border-slate-200"
                   >
-                    <GraduationCap className="h-8 w-8 text-primary-prosalud flex-shrink-0" />
+                    <Handshake className="h-8 w-8 text-primary-prosalud flex-shrink-0" />
                     <span className="font-medium text-text-dark">Agregar Convenio</span>
                   </motion.button>
                 </div>
