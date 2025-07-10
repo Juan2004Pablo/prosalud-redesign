@@ -903,6 +903,162 @@ export const mockInventoryRequests: InventoryRequest[] = [
     ],
     notes: 'Reposición mensual de EPP',
     created_at: '2024-10-20T10:30:00Z'
+  },
+  // Nuevas solicitudes de inventario adicionales
+  {
+    id: 'req-13',
+    hospital_name: 'Hospital Santa Elena',
+    coordinator_name: 'Dra. Ana López',
+    coordinator_email: 'ana.lopez@santaelena.gov.co',
+    request_date: '2024-10-22',
+    status: 'approved',
+    priority: 'medium',
+    items: [
+      {
+        id: 'item-13a',
+        request_id: 'req-13',
+        product_id: 'prod-4',
+        variant_id: 'var-4',
+        quantity_requested: 300,
+        quantity_approved: 300,
+        justification: 'Reposición semanal de tapabocas'
+      },
+      {
+        id: 'item-13b',
+        request_id: 'req-13',
+        product_id: 'prod-6',
+        variant_id: 'var-6',
+        quantity_requested: 50,
+        quantity_approved: 45,
+        justification: 'Guantes para área de emergencias'
+      }
+    ],
+    notes: 'Solicitud para área de consulta externa',
+    created_at: '2024-10-22T09:15:00Z'
+  },
+  {
+    id: 'req-14',
+    hospital_name: 'Hospital Regional Norte',
+    coordinator_name: 'Dr. Luis Martínez',
+    coordinator_email: 'luis.martinez@hrn.gov.co',
+    request_date: '2024-10-23',
+    status: 'pending',
+    priority: 'high',
+    items: [
+      {
+        id: 'item-14a',
+        request_id: 'req-14',
+        product_id: 'prod-1',
+        variant_id: 'var-1',
+        quantity_requested: 25,
+        quantity_approved: null,
+        justification: 'Uniformes nuevos para personal de enfermería'
+      },
+      {
+        id: 'item-14b',
+        request_id: 'req-14',
+        product_id: 'prod-5',
+        variant_id: 'var-5',
+        quantity_requested: 20,
+        quantity_approved: null,
+        justification: 'Batas para médicos residentes'
+      }
+    ],
+    notes: 'Solicitud urgente - nuevo personal médico',
+    created_at: '2024-10-23T07:30:00Z'
+  },
+  {
+    id: 'req-15',
+    hospital_name: 'Clínica del Oriente',
+    coordinator_name: 'Enf. Patricia Gómez',
+    coordinator_email: 'patricia.gomez@cliorien.com',
+    request_date: '2024-10-24',
+    status: 'shipped',
+    priority: 'low',
+    items: [
+      {
+        id: 'item-15a',
+        request_id: 'req-15',
+        product_id: 'prod-10',
+        variant_id: 'var-10',
+        quantity_requested: 5,
+        quantity_approved: 5,
+        justification: 'Kits de bienvenida para nuevos empleados'
+      },
+      {
+        id: 'item-15b',
+        request_id: 'req-15',
+        product_id: 'prod-11',
+        variant_id: 'var-11',
+        quantity_requested: 10,
+        quantity_approved: 10,
+        justification: 'Termos corporativos para personal administrativo'
+      }
+    ],
+    notes: 'Material promocional para evento corporativo',
+    created_at: '2024-10-24T11:45:00Z'
+  },
+  {
+    id: 'req-16',
+    hospital_name: 'Centro Médico Antioquia',
+    coordinator_name: 'Dr. Fernando Vargas',
+    coordinator_email: 'fernando.vargas@cma.com.co',
+    request_date: '2024-10-25',
+    status: 'delivered',
+    priority: 'urgent',
+    items: [
+      {
+        id: 'item-16a',
+        request_id: 'req-16',
+        product_id: 'prod-7',
+        variant_id: 'var-7',
+        quantity_requested: 15,
+        quantity_approved: 15,
+        justification: 'Termómetros para triaje COVID-19'
+      },
+      {
+        id: 'item-16b',
+        request_id: 'req-16',
+        product_id: 'prod-8',
+        variant_id: 'var-8',
+        quantity_requested: 30,
+        quantity_approved: 30,
+        justification: 'Alcohol antiséptico para desinfección'
+      }
+    ],
+    notes: 'Equipamiento para protocolo de bioseguridad',
+    created_at: '2024-10-25T14:20:00Z'
+  },
+  {
+    id: 'req-17',
+    hospital_name: 'Hospital Universitario',
+    coordinator_name: 'Dra. Carmen Silva',
+    coordinator_email: 'carmen.silva@huniv.edu.co',
+    request_date: '2024-10-26',
+    status: 'preparing',
+    priority: 'medium',
+    items: [
+      {
+        id: 'item-17a',
+        request_id: 'req-17',
+        product_id: 'prod-2',
+        variant_id: 'var-2',
+        quantity_requested: 12,
+        quantity_approved: 12,
+        justification: 'Uniformes para estudiantes de medicina'
+      },
+      {
+        id: 'item-17b',
+        request_id: 'req-17',
+        product_id: 'prod-9',
+        variant_id: 'var-9',
+        quantity_requested: 40,
+        quantity_approved: 40,
+        justification: 'Gel antibacterial para consultorios'
+      }
+    ],
+    notes: 'Material para prácticas académicas',
+    created_at: '2024-10-26T16:10:00Z'
   }
 ];
 
