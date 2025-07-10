@@ -785,3 +785,168 @@ export const mockInventoryRequests: InventoryRequest[] = [
     notes: 'Reposición mensual de EPP'
   }
 ];
+
+export const mockUsers = [
+  {
+    id: '1',
+    firstName: 'Juan',
+    lastName: 'Pérez',
+    email: 'juan.perez@prosalud.com',
+    isActive: true,
+    createdAt: '2024-01-15'
+  },
+  {
+    id: '2',
+    firstName: 'María',
+    lastName: 'García',
+    email: 'maria.garcia@prosalud.com',
+    isActive: true,
+    createdAt: '2024-02-10'
+  },
+  {
+    id: '3',
+    firstName: 'Carlos',
+    lastName: 'Rodríguez',
+    email: 'carlos.rodriguez@prosalud.com',
+    isActive: false,
+    createdAt: '2024-01-20'
+  }
+];
+
+export const mockConvenios = [
+  {
+    id: '1',
+    name: 'Hospital Marco Fidel Suárez',
+    image: '/images/convenios/hospital-marco-fidel-suarez.webp',
+    isVisible: true,
+    createdAt: '2024-01-01'
+  },
+  {
+    id: '2',
+    name: 'Hospital San Juan de Dios',
+    image: '/images/convenios/hospital-san-juan-de-dios-rionegro.webp',
+    isVisible: true,
+    createdAt: '2024-01-02'
+  }
+];
+
+export const mockSupplierDeliveries = [
+  {
+    id: 'del-1',
+    supplier_name: 'Distribuidora Médica Sur',
+    delivery_date: '2024-10-01',
+    status: 'completed',
+    total_items: 150,
+    items: [
+      {
+        product_id: 'prod-1',
+        variant_id: 'var-1',
+        quantity: 50,
+        unit_cost: 45000
+      }
+    ],
+    created_at: '2024-10-01T10:00:00Z'
+  },
+  {
+    id: 'del-2',
+    supplier_name: 'Suministros Hospitalarios',
+    delivery_date: '2024-10-05',
+    status: 'pending',
+    total_items: 200,
+    items: [
+      {
+        product_id: 'prod-2',
+        variant_id: 'var-2',
+        quantity: 75,
+        unit_cost: 45000
+      }
+    ],
+    created_at: '2024-10-05T14:30:00Z'
+  }
+];
+
+export const mockReturns = [
+  {
+    id: 'ret-1',
+    hospital_name: 'Hospital Marco Fidel Suárez',
+    coordinator_name: 'Dr. Patricia Morales',
+    return_date: '2024-10-10',
+    reason: 'incorrect',
+    status: 'pending',
+    items: [
+      {
+        product_id: 'prod-1',
+        variant_id: 'var-1',
+        quantity: 5,
+        reason: 'Talla incorrecta'
+      }
+    ],
+    created_at: '2024-10-10T09:15:00Z'
+  },
+  {
+    id: 'ret-2',
+    hospital_name: 'Hospital San Juan de Dios',
+    return_date: '2024-10-12',
+    coordinator_name: 'Enf. Miguel Ángel Torres',
+    reason: 'defective',
+    status: 'approved',
+    items: [
+      {
+        product_id: 'prod-3',
+        variant_id: 'var-3',
+        quantity: 3,
+        reason: 'Producto defectuoso'
+      }
+    ],
+    created_at: '2024-10-12T11:20:00Z'
+  }
+];
+
+export const mockHospitals = [
+  {
+    id: 'hosp-1',
+    name: 'Hospital Marco Fidel Suárez',
+    code: 'HMFS',
+    city: 'Bello',
+    coordinator: 'Dr. Patricia Morales'
+  },
+  {
+    id: 'hosp-2',
+    name: 'Hospital San Juan de Dios',
+    code: 'HSJD',
+    city: 'Rionegro',
+    coordinator: 'Enf. Miguel Ángel Torres'
+  },
+  {
+    id: 'hosp-3',
+    name: 'Promotora Médica y Odontológica',
+    code: 'PMO',
+    city: 'Medellín',
+    coordinator: 'Dra. Isabella Ramírez'
+  }
+];
+
+export const mockSolicitudesRequests = [
+  {
+    id: 'sol-1',
+    name: 'María',
+    last_name: 'García López',
+    email: 'maria.garcia@prosalud.com',
+    request_type: 'Certificado de Seguridad Social',
+    status: 'pending',
+    created_at: '2024-10-15T10:30:00Z',
+    processed_at: null,
+    resolved_at: null
+  },
+  {
+    id: 'sol-2',
+    name: 'Carlos',
+    last_name: 'Rodríguez Pérez',
+    email: 'carlos.rodriguez@prosalud.com',
+    request_type: 'Actualización de Cuenta Bancaria',
+    status: 'resolved',
+    created_at: '2024-10-10T14:20:00Z',
+    processed_at: '2024-10-11T09:15:00Z',
+    resolved_at: '2024-10-12T16:45:00Z'
+  }
+];
