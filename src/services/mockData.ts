@@ -1,4 +1,4 @@
-import { Product, InventoryRequest, SupplierDelivery, Return, Hospital } from './types/mockTypes';
+import { Product, InventoryRequest, SupplierDelivery, Return, Hospital, SolicitudRequest } from './types/mockTypes';
 
 export const mockProducts: Product[] = [
   {
@@ -1037,7 +1037,8 @@ export const mockHospitals: Hospital[] = [
     location: 'Bello',
     coordinator_name: 'Dr. Patricia Morales',
     coordinator_email: 'patricia.morales@hmfs.gov.co',
-    coordinator_phone: '+57 4 123-4567'
+    coordinator_phone: '+57 4 123-4567',
+    stock_allocation: []
   },
   {
     id: 'hosp-2',
@@ -1045,7 +1046,8 @@ export const mockHospitals: Hospital[] = [
     location: 'Rionegro',
     coordinator_name: 'Enf. Miguel Ángel Torres',
     coordinator_email: 'miguel.torres@hsjd.gov.co',
-    coordinator_phone: '+57 4 765-4321'
+    coordinator_phone: '+57 4 765-4321',
+    stock_allocation: []
   },
   {
     id: 'hosp-3',
@@ -1053,31 +1055,52 @@ export const mockHospitals: Hospital[] = [
     location: 'Medellín',
     coordinator_name: 'Dra. Isabella Ramírez',
     coordinator_email: 'isabella.ramirez@pmo.com.co',
-    coordinator_phone: '+57 4 987-6543'
+    coordinator_phone: '+57 4 987-6543',
+    stock_allocation: []
   }
 ];
 
-export const mockSolicitudesRequests = [
+export const mockSolicitudesRequests: SolicitudRequest[] = [
   {
     id: 'sol-1',
+    request_type: 'certificado-convenio',
+    id_type: 'CC',
+    id_number: '12345678',
     name: 'María',
     last_name: 'García López',
     email: 'maria.garcia@prosalud.com',
-    request_type: 'Certificado de Seguridad Social',
+    phone_number: '+57 300 123 4567',
+    payload: { convenio: 'EPS Sura', motivo: 'Certificación laboral' },
     status: 'pending',
-    created_at: '2024-10-15T10:30:00Z',
-    processed_at: null,
-    resolved_at: null
+    created_at: '2024-10-15T10:30:00Z'
   },
   {
     id: 'sol-2',
+    request_type: 'actualizar-cuenta',
+    id_type: 'CC',
+    id_number: '87654321',
     name: 'Carlos',
     last_name: 'Rodríguez Pérez',
     email: 'carlos.rodriguez@prosalud.com',
-    request_type: 'Actualización de Cuenta Bancaria',
+    phone_number: '+57 300 765 4321',
+    payload: { banco: 'Bancolombia', numero_cuenta: '****1234' },
     status: 'resolved',
     created_at: '2024-10-10T14:20:00Z',
     processed_at: '2024-10-11T09:15:00Z',
     resolved_at: '2024-10-12T16:45:00Z'
+  },
+  {
+    id: 'sol-3',
+    request_type: 'descanso-laboral',
+    id_type: 'CE',
+    id_number: '98765432',
+    name: 'Ana',
+    last_name: 'López Martínez',
+    email: 'ana.lopez@prosalud.com',
+    phone_number: '+57 301 234 5678',
+    payload: { fecha_inicio: '2024-02-01', fecha_fin: '2024-02-15', motivo: 'Descanso médico' },
+    status: 'in_progress',
+    created_at: '2024-10-13T14:20:00Z',
+    processed_at: '2024-10-14T10:00:00Z'
   }
 ];
