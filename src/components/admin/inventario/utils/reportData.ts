@@ -81,7 +81,7 @@ export const getInventoryData = (): ReportData => {
         });
       });
     } else {
-      // Productos sin variantes
+      // Productos sin variantes (fallback para compatibilidad)
       acc[product.category].push({
         name: product.name,
         stock: Math.floor(Math.random() * 100) + 10,
@@ -144,22 +144,32 @@ const getProductValue = (productName: string, category: string): number => {
   // Valores más realistas basados en el tipo de producto
   switch (category) {
     case 'uniforme':
+      if (productName.includes('Quirúrgico') || productName.includes('Premium')) return 65000;
+      if (productName.includes('Pediátrico')) return 52000;
       return 45000;
     case 'tapabocas':
+      if (productName.includes('FFP2')) return 3200;
       if (productName.includes('N95')) return 2500;
       if (productName.includes('KN95')) return 1800;
+      if (productName.includes('Infantil')) return 1200;
       return 800;
     case 'batas':
+      if (productName.includes('Quirúrgica') || productName.includes('Estéril')) return 48000;
+      if (productName.includes('Radiología')) return 180000;
       if (productName.includes('Laboratorio')) return 42000;
       if (productName.includes('Desechable')) return 3500;
       return 35000;
     case 'implemento':
+      if (productName.includes('Oxímetro')) return 95000;
       if (productName.includes('Estetoscopio')) return 120000;
       if (productName.includes('Tensiómetro')) return 85000;
       if (productName.includes('Termómetro')) return 45000;
+      if (productName.includes('Gafas') || productName.includes('Protección')) return 25000;
       if (productName.includes('Zapatos') || productName.includes('Botas')) return 65000;
       return 15000;
     case 'regalo':
+      if (productName.includes('Kit') && productName.includes('Emergencia')) return 45000;
+      if (productName.includes('Mochila')) return 35000;
       if (productName.includes('Kit')) return 25000;
       if (productName.includes('Termo')) return 18000;
       if (productName.includes('Chaqueta')) return 35000;
