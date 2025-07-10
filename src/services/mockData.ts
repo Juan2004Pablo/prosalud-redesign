@@ -1,4 +1,4 @@
-import { Product, InventoryRequest } from './types/mockTypes';
+import { Product, InventoryRequest, SupplierDelivery, Return, Hospital } from './types/mockTypes';
 
 export const mockProducts: Product[] = [
   {
@@ -9,6 +9,7 @@ export const mockProducts: Product[] = [
     variants: [
       {
         id: 'var-1',
+        product_id: 'prod-1',
         size: 'S',
         color: 'Azul',
         stock: 15,
@@ -17,7 +18,8 @@ export const mockProducts: Product[] = [
         sku: 'UA-S-001'
       }
     ],
-    createdAt: '2023-01-01'
+    created_at: '2023-01-01T00:00:00Z',
+    updated_at: '2023-01-01T00:00:00Z'
   },
   {
     id: 'prod-2',
@@ -27,6 +29,7 @@ export const mockProducts: Product[] = [
     variants: [
       {
         id: 'var-2',
+        product_id: 'prod-2',
         size: 'M',
         color: 'Azul',
         stock: 8,
@@ -35,7 +38,8 @@ export const mockProducts: Product[] = [
         sku: 'UA-M-001'
       }
     ],
-    createdAt: '2023-01-01'
+    created_at: '2023-01-01T00:00:00Z',
+    updated_at: '2023-01-01T00:00:00Z'
   },
   {
     id: 'prod-3',
@@ -45,6 +49,7 @@ export const mockProducts: Product[] = [
     variants: [
       {
         id: 'var-3',
+        product_id: 'prod-3',
         size: 'S',
         color: 'Verde',
         stock: 3,
@@ -53,7 +58,8 @@ export const mockProducts: Product[] = [
         sku: 'UV-S-001'
       }
     ],
-    createdAt: '2023-01-01'
+    created_at: '2023-01-01T00:00:00Z',
+    updated_at: '2023-01-01T00:00:00Z'
   },
   {
     id: 'prod-4',
@@ -63,6 +69,7 @@ export const mockProducts: Product[] = [
     variants: [
       {
         id: 'var-4',
+        product_id: 'prod-4',
         size: 'Única',
         color: 'Blanco',
         stock: 1200,
@@ -71,7 +78,8 @@ export const mockProducts: Product[] = [
         sku: 'TQ-001'
       }
     ],
-    createdAt: '2023-01-01'
+    created_at: '2023-01-01T00:00:00Z',
+    updated_at: '2023-01-01T00:00:00Z'
   },
   {
     id: 'prod-5',
@@ -81,6 +89,7 @@ export const mockProducts: Product[] = [
     variants: [
       {
         id: 'var-5',
+        product_id: 'prod-5',
         size: 'M',
         color: 'Blanco',
         stock: 18,
@@ -89,7 +98,8 @@ export const mockProducts: Product[] = [
         sku: 'BW-M-001'
       }
     ],
-    createdAt: '2023-01-01'
+    created_at: '2023-01-01T00:00:00Z',
+    updated_at: '2023-01-01T00:00:00Z'
   },
   {
     id: 'prod-6',
@@ -99,6 +109,7 @@ export const mockProducts: Product[] = [
     variants: [
       {
         id: 'var-6',
+        product_id: 'prod-6',
         size: 'M',
         color: 'Azul',
         stock: 120,
@@ -107,7 +118,8 @@ export const mockProducts: Product[] = [
         sku: 'GN-M-001'
       }
     ],
-    createdAt: '2023-01-01'
+    created_at: '2023-01-01T00:00:00Z',
+    updated_at: '2023-01-01T00:00:00Z'
   },
   {
     id: 'prod-7',
@@ -117,6 +129,7 @@ export const mockProducts: Product[] = [
     variants: [
       {
         id: 'var-7',
+        product_id: 'prod-7',
         size: 'Única',
         color: 'Blanco',
         stock: 50,
@@ -125,7 +138,8 @@ export const mockProducts: Product[] = [
         sku: 'TD-001'
       }
     ],
-    createdAt: '2023-01-01'
+    created_at: '2023-01-01T00:00:00Z',
+    updated_at: '2023-01-01T00:00:00Z'
   },
   {
     id: 'prod-8',
@@ -135,6 +149,7 @@ export const mockProducts: Product[] = [
     variants: [
       {
         id: 'var-8',
+        product_id: 'prod-8',
         size: '500ml',
         color: 'Transparente',
         stock: 180,
@@ -143,7 +158,8 @@ export const mockProducts: Product[] = [
         sku: 'AA-500-001'
       }
     ],
-    createdAt: '2023-01-01'
+    created_at: '2023-01-01T00:00:00Z',
+    updated_at: '2023-01-01T00:00:00Z'
   },
   {
     id: 'prod-9',
@@ -153,6 +169,7 @@ export const mockProducts: Product[] = [
     variants: [
       {
         id: 'var-9',
+        product_id: 'prod-9',
         size: '250ml',
         color: 'Transparente',
         stock: 240,
@@ -161,7 +178,8 @@ export const mockProducts: Product[] = [
         sku: 'GA-250-001'
       }
     ],
-    createdAt: '2023-01-01'
+    created_at: '2023-01-01T00:00:00Z',
+    updated_at: '2023-01-01T00:00:00Z'
   },
   {
     id: 'prod-10',
@@ -171,6 +189,7 @@ export const mockProducts: Product[] = [
     variants: [
       {
         id: 'var-10',
+        product_id: 'prod-10',
         size: 'Estándar',
         color: 'Multicolor',
         stock: 15,
@@ -179,7 +198,8 @@ export const mockProducts: Product[] = [
         sku: 'KB-001'
       }
     ],
-    createdAt: '2023-01-01'
+    created_at: '2023-01-01T00:00:00Z',
+    updated_at: '2023-01-01T00:00:00Z'
   },
   {
     id: 'prod-11',
@@ -189,6 +209,7 @@ export const mockProducts: Product[] = [
     variants: [
       {
         id: 'var-11',
+        product_id: 'prod-11',
         size: '500ml',
         color: 'Negro',
         stock: 35,
@@ -197,7 +218,8 @@ export const mockProducts: Product[] = [
         sku: 'TP-500-001'
       }
     ],
-    createdAt: '2023-01-01'
+    created_at: '2023-01-01T00:00:00Z',
+    updated_at: '2023-01-01T00:00:00Z'
   },
   {
     id: 'prod-12',
@@ -207,6 +229,7 @@ export const mockProducts: Product[] = [
     variants: [
       {
         id: 'var-12',
+        product_id: 'prod-12',
         size: 'A5',
         color: 'Negro',
         stock: 28,
@@ -215,7 +238,8 @@ export const mockProducts: Product[] = [
         sku: 'AC-A5-001'
       }
     ],
-    createdAt: '2023-01-01'
+    created_at: '2023-01-01T00:00:00Z',
+    updated_at: '2023-01-01T00:00:00Z'
   },
   {
     id: 'prod-13',
@@ -225,6 +249,7 @@ export const mockProducts: Product[] = [
     variants: [
       {
         id: 'var-13',
+        product_id: 'prod-13',
         size: '16GB',
         color: 'Negro',
         stock: 3,
@@ -233,7 +258,8 @@ export const mockProducts: Product[] = [
         sku: 'USB-16-001'
       }
     ],
-    createdAt: '2023-01-01'
+    created_at: '2023-01-01T00:00:00Z',
+    updated_at: '2023-01-01T00:00:00Z'
   },
   {
     id: 'prod-14',
@@ -243,6 +269,7 @@ export const mockProducts: Product[] = [
     variants: [
       {
         id: 'var-14',
+        product_id: 'prod-14',
         size: 'M',
         color: 'Blanco',
         stock: 22,
@@ -251,7 +278,8 @@ export const mockProducts: Product[] = [
         sku: 'CP-M-001'
       }
     ],
-    createdAt: '2023-01-01'
+    created_at: '2023-01-01T00:00:00Z',
+    updated_at: '2023-01-01T00:00:00Z'
   },
   {
     id: 'prod-15',
@@ -261,6 +289,7 @@ export const mockProducts: Product[] = [
     variants: [
       {
         id: 'var-15',
+        product_id: 'prod-15',
         size: 'L',
         color: 'Blanco',
         stock: 20,
@@ -269,7 +298,8 @@ export const mockProducts: Product[] = [
         sku: 'CP-L-001'
       }
     ],
-    createdAt: '2023-01-01'
+    created_at: '2023-01-01T00:00:00Z',
+    updated_at: '2023-01-01T00:00:00Z'
   },
   {
     id: 'prod-16',
@@ -279,6 +309,7 @@ export const mockProducts: Product[] = [
     variants: [
       {
         id: 'var-40',
+        product_id: 'prod-16',
         size: 'XS',
         color: 'Verde Hospital',
         stock: 12,
@@ -288,6 +319,7 @@ export const mockProducts: Product[] = [
       },
       {
         id: 'var-41',
+        product_id: 'prod-16',
         size: 'S',
         color: 'Verde Hospital',
         stock: 25,
@@ -297,6 +329,7 @@ export const mockProducts: Product[] = [
       },
       {
         id: 'var-42',
+        product_id: 'prod-16',
         size: 'M',
         color: 'Verde Hospital',
         stock: 18,
@@ -305,7 +338,8 @@ export const mockProducts: Product[] = [
         sku: 'UQ-GH-M-001'
       }
     ],
-    createdAt: '2024-07-15'
+    created_at: '2024-07-15T00:00:00Z',
+    updated_at: '2024-07-15T00:00:00Z'
   },
   {
     id: 'prod-17',
@@ -315,6 +349,7 @@ export const mockProducts: Product[] = [
     variants: [
       {
         id: 'var-43',
+        product_id: 'prod-17',
         size: 'Única',
         color: 'Blanco',
         stock: 450,
@@ -324,6 +359,7 @@ export const mockProducts: Product[] = [
       },
       {
         id: 'var-44',
+        product_id: 'prod-17',
         size: 'Única',
         color: 'Azul',
         stock: 320,
@@ -332,7 +368,8 @@ export const mockProducts: Product[] = [
         sku: 'FFP2-AZ-U-001'
       }
     ],
-    createdAt: '2024-08-01'
+    created_at: '2024-08-01T00:00:00Z',
+    updated_at: '2024-08-01T00:00:00Z'
   },
   {
     id: 'prod-18',
@@ -342,6 +379,7 @@ export const mockProducts: Product[] = [
     variants: [
       {
         id: 'var-45',
+        product_id: 'prod-18',
         size: 'M',
         color: 'Azul Cielo',
         stock: 85,
@@ -351,6 +389,7 @@ export const mockProducts: Product[] = [
       },
       {
         id: 'var-46',
+        product_id: 'prod-18',
         size: 'L',
         color: 'Azul Cielo',
         stock: 92,
@@ -360,6 +399,7 @@ export const mockProducts: Product[] = [
       },
       {
         id: 'var-47',
+        product_id: 'prod-18',
         size: 'XL',
         color: 'Azul Cielo',
         stock: 45,
@@ -368,7 +408,8 @@ export const mockProducts: Product[] = [
         sku: 'BQE-AC-XL-001'
       }
     ],
-    createdAt: '2024-08-05'
+    created_at: '2024-08-05T00:00:00Z',
+    updated_at: '2024-08-05T00:00:00Z'
   },
   {
     id: 'prod-19',
@@ -378,6 +419,7 @@ export const mockProducts: Product[] = [
     variants: [
       {
         id: 'var-48',
+        product_id: 'prod-19',
         size: 'Estándar',
         color: 'Rojo',
         stock: 28,
@@ -386,7 +428,8 @@ export const mockProducts: Product[] = [
         sku: 'KME-RJ-E-001'
       }
     ],
-    createdAt: '2024-08-10'
+    created_at: '2024-08-10T00:00:00Z',
+    updated_at: '2024-08-10T00:00:00Z'
   },
   {
     id: 'prod-20',
@@ -396,6 +439,7 @@ export const mockProducts: Product[] = [
     variants: [
       {
         id: 'var-49',
+        product_id: 'prod-20',
         size: 'Portátil',
         color: 'Blanco',
         stock: 15,
@@ -405,6 +449,7 @@ export const mockProducts: Product[] = [
       },
       {
         id: 'var-50',
+        product_id: 'prod-20',
         size: 'Portátil',
         color: 'Azul',
         stock: 12,
@@ -413,7 +458,8 @@ export const mockProducts: Product[] = [
         sku: 'OPD-AZ-P-001'
       }
     ],
-    createdAt: '2024-08-12'
+    created_at: '2024-08-12T00:00:00Z',
+    updated_at: '2024-08-12T00:00:00Z'
   },
   {
     id: 'prod-21',
@@ -423,6 +469,7 @@ export const mockProducts: Product[] = [
     variants: [
       {
         id: 'var-51',
+        product_id: 'prod-21',
         size: 'Ajustable',
         color: 'Transparente',
         stock: 75,
@@ -431,7 +478,8 @@ export const mockProducts: Product[] = [
         sku: 'GPA-TR-A-001'
       }
     ],
-    createdAt: '2024-08-15'
+    created_at: '2024-08-15T00:00:00Z',
+    updated_at: '2024-08-15T00:00:00Z'
   },
   {
     id: 'prod-22',
@@ -441,6 +489,7 @@ export const mockProducts: Product[] = [
     variants: [
       {
         id: 'var-52',
+        product_id: 'prod-22',
         size: 'S',
         color: 'Rosa Pastel',
         stock: 22,
@@ -450,6 +499,7 @@ export const mockProducts: Product[] = [
       },
       {
         id: 'var-53',
+        product_id: 'prod-22',
         size: 'M',
         color: 'Rosa Pastel',
         stock: 18,
@@ -459,6 +509,7 @@ export const mockProducts: Product[] = [
       },
       {
         id: 'var-54',
+        product_id: 'prod-22',
         size: 'L',
         color: 'Celeste',
         stock: 16,
@@ -467,7 +518,8 @@ export const mockProducts: Product[] = [
         sku: 'UP-CE-L-001'
       }
     ],
-    createdAt: '2024-08-18'
+    created_at: '2024-08-18T00:00:00Z',
+    updated_at: '2024-08-18T00:00:00Z'
   },
   {
     id: 'prod-23',
@@ -477,6 +529,7 @@ export const mockProducts: Product[] = [
     variants: [
       {
         id: 'var-55',
+        product_id: 'prod-23',
         size: 'Infantil',
         color: 'Multicolor',
         stock: 180,
@@ -485,7 +538,8 @@ export const mockProducts: Product[] = [
         sku: 'TID-MC-I-001'
       }
     ],
-    createdAt: '2024-08-20'
+    created_at: '2024-08-20T00:00:00Z',
+    updated_at: '2024-08-20T00:00:00Z'
   },
   {
     id: 'prod-24',
@@ -495,6 +549,7 @@ export const mockProducts: Product[] = [
     variants: [
       {
         id: 'var-56',
+        product_id: 'prod-24',
         size: 'M',
         color: 'Plomo',
         stock: 8,
@@ -504,6 +559,7 @@ export const mockProducts: Product[] = [
       },
       {
         id: 'var-57',
+        product_id: 'prod-24',
         size: 'L',
         color: 'Plomo',
         stock: 6,
@@ -512,7 +568,8 @@ export const mockProducts: Product[] = [
         sku: 'DR-PL-L-001'
       }
     ],
-    createdAt: '2024-08-22'
+    created_at: '2024-08-22T00:00:00Z',
+    updated_at: '2024-08-22T00:00:00Z'
   },
   {
     id: 'prod-25',
@@ -522,6 +579,7 @@ export const mockProducts: Product[] = [
     variants: [
       {
         id: 'var-58',
+        product_id: 'prod-25',
         size: 'Grande',
         color: 'Verde Militar',
         stock: 35,
@@ -531,6 +589,7 @@ export const mockProducts: Product[] = [
       },
       {
         id: 'var-59',
+        product_id: 'prod-25',
         size: 'Mediana',
         color: 'Azul Marino',
         stock: 42,
@@ -539,7 +598,8 @@ export const mockProducts: Product[] = [
         sku: 'MS-AM-M-001'
       }
     ],
-    createdAt: '2024-08-25'
+    created_at: '2024-08-25T00:00:00Z',
+    updated_at: '2024-08-25T00:00:00Z'
   }
 ];
 
@@ -548,241 +608,301 @@ export const mockInventoryRequests: InventoryRequest[] = [
     id: 'req-1',
     hospital_name: 'Hospital Marco Fidel Suárez',
     coordinator_name: 'Dr. Patricia Morales',
+    coordinator_email: 'patricia.morales@hmfs.gov.co',
     request_date: '2024-10-01',
     status: 'preparing',
     priority: 'high',
     items: [
       {
+        id: 'item-1',
+        request_id: 'req-1',
         product_id: 'prod-1',
         variant_id: 'var-1',
-        quantity: 15,
-        requested_quantity: 15
+        quantity_requested: 15,
+        quantity_approved: 15
       }
     ],
-    notes: 'Solicitud urgente para área de cirugía'
+    notes: 'Solicitud urgente para área de cirugía',
+    created_at: '2024-10-01T08:00:00Z'
   },
   {
     id: 'req-2',
     hospital_name: 'Hospital San Juan de Dios',
     coordinator_name: 'Enf. Miguel Ángel Torres',
+    coordinator_email: 'miguel.torres@hsjd.gov.co',
     request_date: '2024-10-02',
     status: 'approved',
     priority: 'medium',
     items: [
       {
+        id: 'item-2',
+        request_id: 'req-2',
         product_id: 'prod-2',
         variant_id: 'var-2',
-        quantity: 25,
-        requested_quantity: 25
+        quantity_requested: 25,
+        quantity_approved: 25
       }
     ],
-    notes: 'Para renovación de equipos UCI'
+    notes: 'Para renovación de equipos UCI',
+    created_at: '2024-10-02T09:30:00Z'
   },
   {
     id: 'req-3',
     hospital_name: 'Promotora Médica y Odontológica',
     coordinator_name: 'Dra. Isabella Ramírez',
+    coordinator_email: 'isabella.ramirez@pmo.com.co',
     request_date: '2024-10-03',
     status: 'shipped',
     priority: 'low',
     items: [
       {
+        id: 'item-3',
+        request_id: 'req-3',
         product_id: 'prod-3',
         variant_id: 'var-3',
-        quantity: 20,
-        requested_quantity: 20
+        quantity_requested: 20,
+        quantity_approved: 20
       }
     ],
-    notes: 'Equipamiento para nueva área pediátrica'
+    notes: 'Equipamiento para nueva área pediátrica',
+    created_at: '2024-10-03T11:15:00Z'
   },
   {
     id: 'req-4',
     hospital_name: 'Hospital La Merced',
     coordinator_name: 'Dr. Fernando Castillo',
+    coordinator_email: 'fernando.castillo@lamerced.gov.co',
     request_date: '2024-10-04',
     status: 'pending',
     priority: 'urgent',
     items: [
       {
+        id: 'item-4',
+        request_id: 'req-4',
         product_id: 'prod-4',
         variant_id: 'var-4',
-        quantity: 50,
-        requested_quantity: 50
+        quantity_requested: 50,
+        quantity_approved: 50
       }
     ],
-    notes: 'Solicitud para área de radiología pediátrica'
+    notes: 'Solicitud para área de radiología pediátrica',
+    created_at: '2024-10-04T14:20:00Z'
   },
   {
     id: 'req-5',
     hospital_name: 'Sociedad Médica Rionegro SOMER',
     coordinator_name: 'Enf. Claudia Hernández',
+    coordinator_email: 'claudia.hernandez@somer.com.co',
     request_date: '2024-10-05',
     status: 'delivered',
     priority: 'medium',
     items: [
       {
+        id: 'item-5',
+        request_id: 'req-5',
         product_id: 'prod-5',
         variant_id: 'var-5',
-        quantity: 10,
-        requested_quantity: 10
+        quantity_requested: 10,
+        quantity_approved: 10
       }
     ],
-    notes: 'Material para brigadas de salud externas'
+    notes: 'Material para brigadas de salud externas',
+    created_at: '2024-10-05T16:45:00Z'
   },
   {
     id: 'req-6',
     hospital_name: 'Hospital Venancio Díaz',
     coordinator_name: 'Dr. Roberto Silva',
+    coordinator_email: 'roberto.silva@hvd.gov.co',
     request_date: '2024-10-06',
     status: 'preparing',
     priority: 'high',
     items: [
       {
+        id: 'item-6',
+        request_id: 'req-6',
         product_id: 'prod-6',
         variant_id: 'var-6',
-        quantity: 80,
-        requested_quantity: 80
+        quantity_requested: 80,
+        quantity_approved: 80
       }
     ],
-    notes: 'Reposición mensual de EPP'
+    notes: 'Reposición mensual de EPP',
+    created_at: '2024-10-06T10:30:00Z'
   },
   {
     id: 'req-7',
     hospital_name: 'Hospital Marco Fidel Suárez',
     coordinator_name: 'Dr. Patricia Morales',
+    coordinator_email: 'patricia.morales@hmfs.gov.co',
     request_date: '2024-10-15',
     status: 'preparing',
     priority: 'high',
     items: [
       {
+        id: 'item-7a',
+        request_id: 'req-7',
         product_id: 'prod-16',
         variant_id: 'var-41',
-        quantity: 15,
-        requested_quantity: 15
+        quantity_requested: 15,
+        quantity_approved: 15
       },
       {
+        id: 'item-7b',
+        request_id: 'req-7',
         product_id: 'prod-17',
         variant_id: 'var-43',
-        quantity: 100,
-        requested_quantity: 100
+        quantity_requested: 100,
+        quantity_approved: 100
       }
     ],
-    notes: 'Solicitud urgente para área de cirugía'
+    notes: 'Solicitud urgente para área de cirugía',
+    created_at: '2024-10-15T08:00:00Z'
   },
   {
     id: 'req-8',
     hospital_name: 'Hospital San Juan de Dios',
     coordinator_name: 'Enf. Miguel Ángel Torres',
+    coordinator_email: 'miguel.torres@hsjd.gov.co',
     request_date: '2024-10-16',
     status: 'approved',
     priority: 'medium',
     items: [
       {
+        id: 'item-8a',
+        request_id: 'req-8',
         product_id: 'prod-18',
         variant_id: 'var-45',
-        quantity: 25,
-        requested_quantity: 25
+        quantity_requested: 25,
+        quantity_approved: 25
       },
       {
+        id: 'item-8b',
+        request_id: 'req-8',
         product_id: 'prod-20',
         variant_id: 'var-49',
-        quantity: 3,
-        requested_quantity: 3
+        quantity_requested: 3,
+        quantity_approved: 3
       }
     ],
-    notes: 'Para renovación de equipos UCI'
+    notes: 'Para renovación de equipos UCI',
+    created_at: '2024-10-16T09:30:00Z'
   },
   {
     id: 'req-9',
     hospital_name: 'Promotora Médica y Odontológica',
     coordinator_name: 'Dra. Isabella Ramírez',
+    coordinator_email: 'isabella.ramirez@pmo.com.co',
     request_date: '2024-10-17',
     status: 'shipped',
     priority: 'low',
     items: [
       {
+        id: 'item-9a',
+        request_id: 'req-9',
         product_id: 'prod-21',
         variant_id: 'var-51',
-        quantity: 20,
-        requested_quantity: 20
+        quantity_requested: 20,
+        quantity_approved: 20
       },
       {
+        id: 'item-9b',
+        request_id: 'req-9',
         product_id: 'prod-22',
         variant_id: 'var-52',
-        quantity: 8,
-        requested_quantity: 8
+        quantity_requested: 8,
+        quantity_approved: 8
       }
     ],
-    notes: 'Equipamiento para nueva área pediátrica'
+    notes: 'Equipamiento para nueva área pediátrica',
+    created_at: '2024-10-17T11:15:00Z'
   },
   {
     id: 'req-10',
     hospital_name: 'Hospital La Merced',
     coordinator_name: 'Dr. Fernando Castillo',
+    coordinator_email: 'fernando.castillo@lamerced.gov.co',
     request_date: '2024-10-18',
     status: 'pending',
     priority: 'urgent',
     items: [
       {
+        id: 'item-10a',
+        request_id: 'req-10',
         product_id: 'prod-23',
         variant_id: 'var-55',
-        quantity: 50,
-        requested_quantity: 50
+        quantity_requested: 50,
+        quantity_approved: 50
       },
       {
+        id: 'item-10b',
+        request_id: 'req-10',
         product_id: 'prod-24',
         variant_id: 'var-56',
-        quantity: 2,
-        requested_quantity: 2
+        quantity_requested: 2,
+        quantity_approved: 2
       }
     ],
-    notes: 'Solicitud para área de radiología pediátrica'
+    notes: 'Solicitud para área de radiología pediátrica',
+    created_at: '2024-10-18T14:20:00Z'
   },
   {
     id: 'req-11',
     hospital_name: 'Sociedad Médica Rionegro SOMER',
     coordinator_name: 'Enf. Claudia Hernández',
+    coordinator_email: 'claudia.hernandez@somer.com.co',
     request_date: '2024-10-19',
     status: 'delivered',
     priority: 'medium',
     items: [
       {
+        id: 'item-11a',
+        request_id: 'req-11',
         product_id: 'prod-25',
         variant_id: 'var-58',
-        quantity: 10,
-        requested_quantity: 10
+        quantity_requested: 10,
+        quantity_approved: 10
       },
       {
+        id: 'item-11b',
+        request_id: 'req-11',
         product_id: 'prod-19',
         variant_id: 'var-48',
-        quantity: 5,
-        requested_quantity: 5
+        quantity_requested: 5,
+        quantity_approved: 5
       }
     ],
-    notes: 'Material para brigadas de salud externas'
+    notes: 'Material para brigadas de salud externas',
+    created_at: '2024-10-19T16:45:00Z'
   },
   {
     id: 'req-12',
     hospital_name: 'Hospital Venancio Díaz',
     coordinator_name: 'Dr. Roberto Silva',
+    coordinator_email: 'roberto.silva@hvd.gov.co',
     request_date: '2024-10-20',
     status: 'preparing',
     priority: 'high',
     items: [
       {
+        id: 'item-12a',
+        request_id: 'req-12',
         product_id: 'prod-17',
         variant_id: 'var-44',
-        quantity: 80,
-        requested_quantity: 80
+        quantity_requested: 80,
+        quantity_approved: 80
       },
       {
+        id: 'item-12b',
+        request_id: 'req-12',
         product_id: 'prod-18',
         variant_id: 'var-46',
-        quantity: 15,
-        requested_quantity: 15
+        quantity_requested: 15,
+        quantity_approved: 15
       }
     ],
-    notes: 'Reposición mensual de EPP'
+    notes: 'Reposición mensual de EPP',
+    created_at: '2024-10-20T10:30:00Z'
   }
 ];
 
@@ -793,7 +913,7 @@ export const mockUsers = [
     lastName: 'Pérez',
     email: 'juan.perez@prosalud.com',
     isActive: true,
-    createdAt: '2024-01-15'
+    createdAt: '2024-01-15T00:00:00Z'
   },
   {
     id: '2',
@@ -801,7 +921,7 @@ export const mockUsers = [
     lastName: 'García',
     email: 'maria.garcia@prosalud.com',
     isActive: true,
-    createdAt: '2024-02-10'
+    createdAt: '2024-02-10T00:00:00Z'
   },
   {
     id: '3',
@@ -809,7 +929,7 @@ export const mockUsers = [
     lastName: 'Rodríguez',
     email: 'carlos.rodriguez@prosalud.com',
     isActive: false,
-    createdAt: '2024-01-20'
+    createdAt: '2024-01-20T00:00:00Z'
   }
 ];
 
@@ -819,18 +939,18 @@ export const mockConvenios = [
     name: 'Hospital Marco Fidel Suárez',
     image: '/images/convenios/hospital-marco-fidel-suarez.webp',
     isVisible: true,
-    createdAt: '2024-01-01'
+    createdAt: '2024-01-01T00:00:00Z'
   },
   {
     id: '2',
     name: 'Hospital San Juan de Dios',
     image: '/images/convenios/hospital-san-juan-de-dios-rionegro.webp',
     isVisible: true,
-    createdAt: '2024-01-02'
+    createdAt: '2024-01-02T00:00:00Z'
   }
 ];
 
-export const mockSupplierDeliveries = [
+export const mockSupplierDeliveries: SupplierDelivery[] = [
   {
     id: 'del-1',
     supplier_name: 'Distribuidora Médica Sur',
@@ -839,6 +959,8 @@ export const mockSupplierDeliveries = [
     total_items: 150,
     items: [
       {
+        id: 'del-item-1',
+        delivery_id: 'del-1',
         product_id: 'prod-1',
         variant_id: 'var-1',
         quantity: 50,
@@ -855,6 +977,8 @@ export const mockSupplierDeliveries = [
     total_items: 200,
     items: [
       {
+        id: 'del-item-2',
+        delivery_id: 'del-2',
         product_id: 'prod-2',
         variant_id: 'var-2',
         quantity: 75,
@@ -865,7 +989,7 @@ export const mockSupplierDeliveries = [
   }
 ];
 
-export const mockReturns = [
+export const mockReturns: Return[] = [
   {
     id: 'ret-1',
     hospital_name: 'Hospital Marco Fidel Suárez',
@@ -875,10 +999,12 @@ export const mockReturns = [
     status: 'pending',
     items: [
       {
+        id: 'ret-item-1',
+        return_id: 'ret-1',
         product_id: 'prod-1',
         variant_id: 'var-1',
         quantity: 5,
-        reason: 'Talla incorrecta'
+        condition: 'new'
       }
     ],
     created_at: '2024-10-10T09:15:00Z'
@@ -892,37 +1018,42 @@ export const mockReturns = [
     status: 'approved',
     items: [
       {
+        id: 'ret-item-2',
+        return_id: 'ret-2',
         product_id: 'prod-3',
         variant_id: 'var-3',
         quantity: 3,
-        reason: 'Producto defectuoso'
+        condition: 'damaged'
       }
     ],
     created_at: '2024-10-12T11:20:00Z'
   }
 ];
 
-export const mockHospitals = [
+export const mockHospitals: Hospital[] = [
   {
     id: 'hosp-1',
     name: 'Hospital Marco Fidel Suárez',
-    code: 'HMFS',
-    city: 'Bello',
-    coordinator: 'Dr. Patricia Morales'
+    location: 'Bello',
+    coordinator_name: 'Dr. Patricia Morales',
+    coordinator_email: 'patricia.morales@hmfs.gov.co',
+    coordinator_phone: '+57 4 123-4567'
   },
   {
     id: 'hosp-2',
     name: 'Hospital San Juan de Dios',
-    code: 'HSJD',
-    city: 'Rionegro',
-    coordinator: 'Enf. Miguel Ángel Torres'
+    location: 'Rionegro',
+    coordinator_name: 'Enf. Miguel Ángel Torres',
+    coordinator_email: 'miguel.torres@hsjd.gov.co',
+    coordinator_phone: '+57 4 765-4321'
   },
   {
     id: 'hosp-3',
     name: 'Promotora Médica y Odontológica',
-    code: 'PMO',
-    city: 'Medellín',
-    coordinator: 'Dra. Isabella Ramírez'
+    location: 'Medellín',
+    coordinator_name: 'Dra. Isabella Ramírez',
+    coordinator_email: 'isabella.ramirez@pmo.com.co',
+    coordinator_phone: '+57 4 987-6543'
   }
 ];
 

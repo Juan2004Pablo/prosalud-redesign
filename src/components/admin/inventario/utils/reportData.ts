@@ -53,7 +53,8 @@ const getMockDeliveries = (): DeliveryRecord[] => {
       const product = mockProducts.find(p => p.id === item.product_id);
       return product?.name || 'Producto desconocido';
     }),
-    status: delivery.status,
+    status: delivery.status === 'completed' ? 'completed' : 
+            delivery.status === 'received' ? 'received' : 'pending',
     totalItems: delivery.total_items
   }));
 };
