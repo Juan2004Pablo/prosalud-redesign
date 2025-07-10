@@ -355,7 +355,7 @@ const InventoryOverview: React.FC = () => {
       {/* Dialogs */}
       <QuickActionsDialog open={quickActionsOpen} onOpenChange={setQuickActionsOpen} />
       <LowStockDialog open={lowStockOpen} onOpenChange={setLowStockOpen} />
-      <HospitalRequestsDialog open={hospitalRequestsOpen} onOpenChange={setHospitalRequestsDialog} />
+      <HospitalRequestsDialog open={hospitalRequestsOpen} onOpenChange={setHospitalRequestsOpen} />
     </div>
   );
 };
