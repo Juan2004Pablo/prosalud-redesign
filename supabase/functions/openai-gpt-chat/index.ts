@@ -29,7 +29,7 @@ serve(async (req) => {
       });
     }
 
-    // Mejorar el sistema de instrucciones para ser más inclusivo
+    // Mejorar el sistema de instrucciones para incluir rutas de servicios
     const enhancedMessages = messages.map((msg: any) => {
       if (msg.role === 'system') {
         return {
@@ -46,7 +46,50 @@ INSTRUCCIONES IMPORTANTES PARA RESPONDER:
 - Mantén un tono profesional y útil
 - Si realmente no tienes información sobre el tema consultado, entonces indica que no puedes ayudar con eso
 
-RECUERDA: Tu función es ayudar con TODA la información disponible de ProSalud, no solo cuando se mencione explícitamente el nombre del sindicato.`
+RUTAS DE SERVICIOS DISPONIBLES EN EL SITIO WEB:
+Cuando menciones servicios específicos, SIEMPRE incluye el enlace correspondiente usando este formato:
+"Para acceder al servicio, visite: [NOMBRE_DEL_SERVICIO](URL)"
+
+SERVICIOS Y SUS RUTAS:
+- Certificado de Convenio Sindical: /servicios/certificado-convenio
+- Solicitud de Descanso Laboral: /servicios/descanso-sindical  
+- Compensación Anual Diferida: /servicios/compensacion-anual
+- Verificación de Pagos: /servicios/consulta-pagos
+- Certificado de Seguridad Social: /servicios/certificado-seguridad-social
+- Actualizar Cuenta Bancaria: /servicios/actualizar-cuenta
+- Incapacidades y Licencias: /servicios/incapacidad-maternidad
+- Seguridad y Salud en el Trabajo (SST): /servicios/sst
+- Galería de Bienestar: /servicios/galeria-bienestar
+- Permisos y Cambio de Turnos: /servicios/permisos-turnos
+- Microcrédito: /servicios/microcredito
+- Retiro Sindical: /servicios/retiro-sindical
+- Información EPS Sura: /servicios/eps-sura
+
+PÁGINAS INFORMATIVAS:
+- Quiénes Somos: /nosotros
+- Estatutos y Beneficios: /nosotros/estatutos
+- Contrato Sindical: /nosotros/contrato-sindical
+- Contacto: /contacto
+- Preguntas Frecuentes: /faq
+- Inicio: /
+
+ENLACES EXTERNOS IMPORTANTES:
+- Cuadro de Turnos: https://www.prosanet.com/#/shifts-employees/index
+- Encuesta de Bienestar: https://forms.gle/2YnLMixdN6EnZ7Qq6
+- Portal ARUS SUAPORTE (Seguridad Social): Disponible en la página de certificado de seguridad social
+
+INSTRUCCIONES PARA PROPORCIONAR ENLACES:
+1. Cuando el usuario pregunte sobre un servicio específico, SIEMPRE incluye el enlace correspondiente
+2. Usa el formato markdown: [Texto del enlace](URL)
+3. Para enlaces internos del sitio, usa rutas relativas (ej: /servicios/certificado-convenio)
+4. Para enlaces externos, usa la URL completa
+5. Si mencionas múltiples servicios, incluye los enlaces de todos los relevantes
+6. Siempre verifica que el servicio mencionado corresponda con la documentación disponible
+
+EJEMPLO DE RESPUESTA CON ENLACES:
+"Para solicitar su certificado de convenio sindical, complete el formulario en línea en: [Certificado de Convenio Sindical](/servicios/certificado-convenio). También puede verificar sus pagos en: [Verificación de Pagos](/servicios/consulta-pagos)."
+
+RECUERDA: Tu función es ayudar con TODA la información disponible de ProSalud, no solo cuando se mencione explícitamente el nombre del sindicato. SIEMPRE proporciona enlaces cuando sea relevante.`
         };
       }
       return msg;
@@ -64,8 +107,8 @@ RECUERDA: Tu función es ayudar con TODA la información disponible de ProSalud,
         body: JSON.stringify({
           model: 'gpt-4o-mini',
           messages: enhancedMessages,
-          max_tokens: 400, // Aumentado para respuestas más completas
-          temperature: 0.7, // Poco de creatividad para respuestas más naturales
+          max_tokens: 500, // Aumentado para incluir enlaces
+          temperature: 0.7,
         }),
       });
     } catch (e) {
