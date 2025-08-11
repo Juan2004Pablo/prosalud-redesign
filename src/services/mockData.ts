@@ -1,4 +1,3 @@
-
 import { Convenio } from '@/types/admin';
 import { Product, SupplierDelivery, Return, Request as InventoryRequest, Hospital } from '@/types/inventory';
 import { User } from '@/types/admin';
@@ -272,7 +271,6 @@ export const mockUsers: User[] = [
     firstName: "Ana",
     lastName: "García",
     email: "ana.garcia@prosalud.com",
-    role: "admin",
     isActive: true,
     createdAt: "2024-01-15"
   },
@@ -281,7 +279,6 @@ export const mockUsers: User[] = [
     firstName: "Carlos",
     lastName: "Rodríguez",
     email: "carlos.rodriguez@prosalud.com",
-    role: "editor",
     isActive: true,
     createdAt: "2024-02-10"
   },
@@ -290,7 +287,6 @@ export const mockUsers: User[] = [
     firstName: "María",
     lastName: "López",
     email: "maria.lopez@prosalud.com",
-    role: "viewer",
     isActive: false,
     createdAt: "2024-03-05"
   }
