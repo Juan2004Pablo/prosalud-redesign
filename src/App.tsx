@@ -87,11 +87,11 @@ function App() {
             <Route path="/servicios/incapacidad-maternidad" element={<IncapacidadesLicenciasPage />} />
             <Route path="/servicios/sst" element={<SstPage />} />
             <Route path="/servicios/galeria-bienestar" element={<GaleriaBienestarPage />} />
+            <Route path="/servicios/galeria-bienestar/:eventId" element={<EventoDetallePage />} />
             <Route path="/servicios/permisos-turnos" element={<SolicitudPermisosCambioTurnosPage />} />
             <Route path="/servicios/microcredito" element={<SolicitudMicrocreditoPage />} />
             <Route path="/servicios/retiro-sindical" element={<SolicitudRetiroSindicalPage />} />
             <Route path="/servicios/eps-sura" element={<EpsSuraPage />} />
-            <Route path="/eventos/:id" element={<EventoDetallePage />} />
 
             {/* Admin Routes */}
             <Route path="/admin" element={<AdminDashboard />} />
