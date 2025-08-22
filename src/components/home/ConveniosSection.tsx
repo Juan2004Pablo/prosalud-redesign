@@ -76,33 +76,37 @@ const ConveniosSection: React.FC = () => {
               <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                 {visibleConvenios.map((convenio, index) => (
                   <li 
-                    key={convenio.name} 
-                    className="group perspective-1000 animate-fade-in h-64"
-                    style={{ animationDelay: `${index * 100}ms` }}
-                  >
-                    <div className="relative preserve-3d group-hover:rotate-y-180 transition-transform duration-700 h-full w-full">
-                      {/* Cara frontal */}
-                      <div className="absolute inset-0 backface-hidden bg-card p-6 rounded-lg shadow-md border border-prosalud-border flex items-center">
-                        <div className="h-14 w-14 rounded-full overflow-hidden mr-4 shrink-0">
-                          <img 
-                            src={convenio.imageUrl} 
-                            alt={convenio.name} 
-                            loading="lazy"
-                            className="h-full w-full object-cover"
-                            width={56}
-                            height={56}
-                          />
-                        </div>
-                        <p className="text-base font-medium text-text-dark">{convenio.name}</p>
-                      </div>
-                      
-                      {/* Cara trasera */}
-                      <div className="absolute inset-0 backface-hidden rotate-y-180 bg-primary-prosalud text-white p-6 rounded-lg shadow-md border border-prosalud-border flex flex-col justify-center">
-                        <h3 className="text-sm font-semibold mb-2 line-clamp-2">{convenio.name}</h3>
-                        <p className="text-sm leading-relaxed line-clamp-5">{convenio.description}</p>
-                      </div>
-                    </div>
-                  </li>
+  key={convenio.name} 
+  className="group perspective-1000 animate-fade-in"
+  style={{ animationDelay: `${index * 100}ms` }}
+>
+  <div className="relative preserve-3d group-hover:rotate-y-180 transition-transform duration-700 w-full">
+    
+    {/* Cara frontal */}
+    <div className="backface-hidden bg-card p-6 rounded-lg shadow-md border border-prosalud-border flex items-center h-auto">
+      <div className="h-12 w-12 rounded-full overflow-hidden mr-4 shrink-0">
+        <img 
+          src={convenio.imageUrl} 
+          alt={convenio.name} 
+          loading="lazy"
+          className="h-full w-full object-cover"
+          width={48}
+          height={48}
+        />
+      </div>
+      <p className="text-md font-medium text-text-dark">{convenio.name}</p>
+    </div>
+    
+    {/* Cara trasera */}
+    <div className="backface-hidden rotate-y-180 bg-primary-prosalud text-white p-6 rounded-lg shadow-md border border-prosalud-border flex flex-col justify-center h-auto">
+      <h3 className="text-sm font-semibold mb-3">{convenio.name}</h3>
+      {convenio.description && (
+        <p className="text-sm leading-relaxed break-words">{convenio.description}</p>
+      )}
+    </div>
+  </div>
+</li>
+
                 ))}
               </ul>
             )}
