@@ -73,11 +73,11 @@ const ConveniosSection: React.FC = () => {
                 ))}
               </ul>
             ) : (
-              <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-auto">
+              <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                 {visibleConvenios.map((convenio, index) => (
                   <li 
                     key={convenio.name} 
-                    className="group perspective-1000 animate-fade-in h-64"
+                    className="group perspective-1000 animate-fade-in h-48"
                     style={{ animationDelay: `${index * 100}ms` }}
                   >
                     <div className="relative preserve-3d group-hover:rotate-y-180 transition-transform duration-700 h-full w-full">
