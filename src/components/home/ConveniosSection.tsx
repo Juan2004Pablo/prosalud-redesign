@@ -16,35 +16,42 @@ const ConveniosSection: React.FC = () => {
   });
 
   const visibleConvenios = [
-  { 
-    name: "E.S.E. HOSPITAL MARCO FIDEL SUÁREZ - BELLO",
-    imageUrl: "/images/convenios/hospital-marco-fidel-suarez.webp"
-  },
-  { 
-    name: "E.S.E. HOSPITAL SAN JUAN DE DIOS - RIONEGRO",
-    imageUrl: "/images/convenios/hospital-san-juan-de-dios-rionegro.webp"
-  },
-  { 
-    name: "PROMOTORA MÉDICA Y ODONTOLÓGICA S.A.",
-    imageUrl: "/images/convenios/promotora-medica-odontologica.webp"
-  },
-  { 
-    name: "SOCIEDAD MÉDICA RIONEGRO SOMER S.A.",
-    imageUrl: "/images/convenios/somer-sa.webp"
-  },
-  { 
-    name: "E.S.E. HOSPITAL VENANCIO DÍAZ DÍAZ",
-    imageUrl: "/images/convenios/hospital-venancio-diaz.webp"
-  },
-  { 
-    name: "E.S.E. HOSPITAL LA MERCED - CIUDAD BOLÍVAR",
-    imageUrl: "/images/convenios/hospital-la-merced-ciudad-bolivar.webp"
-  },
-  { 
-    name: "E.S.E. HOSPITAL SANTA ELENA - FREDONIA",
-    imageUrl: "/images/convenios/hospital-santa-elena-fredonia.webp"
-  },
-];
+    { 
+      name: "E.S.E. HOSPITAL MARCO FIDEL SUÁREZ - BELLO",
+      imageUrl: "/images/convenios/hospital-marco-fidel-suarez.webp",
+      description: "Hospital público de segundo nivel de atención que brinda servicios de salud integral a la población del Valle de Aburrá Norte, con énfasis en medicina interna, cirugía general y servicios de urgencias."
+    },
+    { 
+      name: "E.S.E. HOSPITAL SAN JUAN DE DIOS - RIONEGRO",
+      imageUrl: "/images/convenios/hospital-san-juan-de-dios-rionegro.webp",
+      description: "Institución hospitalaria de segundo nivel que atiende al Oriente Antioqueño, especializada en servicios de medicina general, cirugía, ginecología y pediatría con tecnología de vanguardia."
+    },
+    { 
+      name: "PROMOTORA MÉDICA Y ODONTOLÓGICA S.A.",
+      imageUrl: "/images/convenios/promotora-medica-odontologica.webp",
+      description: "Empresa prestadora de servicios de salud especializada en atención médica y odontológica integral, con amplia experiencia en programas de salud ocupacional y medicina preventiva."
+    },
+    { 
+      name: "SOCIEDAD MÉDICA RIONEGRO SOMER S.A.",
+      imageUrl: "/images/convenios/somer-sa.webp",
+      description: "Clínica privada ubicada en Rionegro que ofrece servicios médicos especializados, cirugía ambulatoria y hospitalización, con un enfoque en atención personalizada y calidad asistencial."
+    },
+    { 
+      name: "E.S.E. HOSPITAL VENANCIO DÍAZ DÍAZ",
+      imageUrl: "/images/convenios/hospital-venancio-diaz.webp",
+      description: "Hospital público que presta servicios de salud de primer y segundo nivel, enfocado en atención primaria, medicina familiar y programas de promoción y prevención en salud."
+    },
+    { 
+      name: "E.S.E. HOSPITAL LA MERCED - CIUDAD BOLÍVAR",
+      imageUrl: "/images/convenios/hospital-la-merced-ciudad-bolivar.webp",
+      description: "Centro hospitalario público que brinda atención médica integral al Suroeste Antioqueño, con servicios de urgencias, hospitalización y consulta externa especializada."
+    },
+    { 
+      name: "E.S.E. HOSPITAL SANTA ELENA - FREDONIA",
+      imageUrl: "/images/convenios/hospital-santa-elena-fredonia.webp",
+      description: "Hospital comunitario que atiende a la población del Suroeste de Antioquia, ofreciendo servicios de medicina general, materno infantil y programas de salud rural."
+    },
+  ];
 
   return (
     <section ref={sectionRef} id="convenios" className="py-16 md:py-20 bg-background-light">
@@ -70,20 +77,31 @@ const ConveniosSection: React.FC = () => {
                 {visibleConvenios.map((convenio, index) => (
                   <li 
                     key={convenio.name} 
-                    className="bg-card p-6 rounded-lg shadow-md border border-prosalud-border flex items-center animate-fade-in"
+                    className="group perspective-1000 animate-fade-in"
                     style={{ animationDelay: `${index * 100}ms` }}
                   >
-                    <div className="h-12 w-12 rounded-full overflow-hidden mr-4 shrink-0">
-                      <img 
-                        src={convenio.imageUrl} 
-                        alt={convenio.name} 
-                        loading="lazy"
-                        className="h-full w-full object-cover"
-                        width={48}
-                        height={48}
-                      />
+                    <div className="relative preserve-3d group-hover:rotate-y-180 transition-transform duration-700 h-full">
+                      {/* Cara frontal */}
+                      <div className="absolute inset-0 backface-hidden bg-card p-6 rounded-lg shadow-md border border-prosalud-border flex items-center">
+                        <div className="h-12 w-12 rounded-full overflow-hidden mr-4 shrink-0">
+                          <img 
+                            src={convenio.imageUrl} 
+                            alt={convenio.name} 
+                            loading="lazy"
+                            className="h-full w-full object-cover"
+                            width={48}
+                            height={48}
+                          />
+                        </div>
+                        <p className="text-md font-medium text-text-dark">{convenio.name}</p>
+                      </div>
+                      
+                      {/* Cara trasera */}
+                      <div className="absolute inset-0 backface-hidden rotate-y-180 bg-primary-prosalud text-white p-6 rounded-lg shadow-md border border-prosalud-border flex flex-col justify-center">
+                        <h3 className="text-sm font-semibold mb-3">{convenio.name}</h3>
+                        <p className="text-sm leading-relaxed">{convenio.description}</p>
+                      </div>
                     </div>
-                    <p className="text-md font-medium text-text-dark">{convenio.name}</p>
                   </li>
                 ))}
               </ul>
@@ -107,6 +125,24 @@ const ConveniosSection: React.FC = () => {
           </>
         )}
       </div>
+      
+      <style jsx>{`
+        .perspective-1000 {
+          perspective: 1000px;
+        }
+        .preserve-3d {
+          transform-style: preserve-3d;
+        }
+        .backface-hidden {
+          backface-visibility: hidden;
+        }
+        .rotate-y-180 {
+          transform: rotateY(180deg);
+        }
+        .group:hover .group-hover\\:rotate-y-180 {
+          transform: rotateY(180deg);
+        }
+      `}</style>
     </section>
   );
 };

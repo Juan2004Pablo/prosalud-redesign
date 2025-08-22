@@ -3,7 +3,7 @@ import React from 'react';
 import { Control, FieldValues, FieldPath } from 'react-hook-form';
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Briefcase, HelpCircle } from 'lucide-react'; // Added HelpCircle for Motivo
+import { Briefcase } from 'lucide-react';
 
 interface InformacionAnualDiferidaSectionProps<TFieldValues extends FieldValues> {
   control: Control<TFieldValues>;
@@ -19,11 +19,14 @@ const InformacionAnualDiferidaSection = <TFieldValues extends FieldValues>({
   ];
 
   const ubicaciones = [
-    "Abejorral", "Bello", "Caldas", "C. Bolivar", "Carisma", "Cisneros", "La Maria", "Rionegro", "Sabaneta"
+    "Bello",
+    "Caldas",
+    "La Maria",
+    "Rionegro"
   ];
 
   const motivosSolicitud = [
-    "Compra de vivienda", "Remodelación /Reforma", "Estudio", "CEII" // CEII: Cesantías e Intereses Individuales (assuming)
+    "Compra de vivienda", "Remodelación /Reforma", "Estudio", "CEII"
   ];
 
   return (
@@ -80,7 +83,7 @@ const InformacionAnualDiferidaSection = <TFieldValues extends FieldValues>({
           control={control}
           name={"motivoSolicitud" as FieldPath<TFieldValues>}
           render={({ field }) => (
-            <FormItem className="md:col-span-2"> {/* Make it span full width on medium screens if desired, or keep as is */}
+            <FormItem className="md:col-span-2">
               <FormLabel>Motivo de la solicitud *</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
