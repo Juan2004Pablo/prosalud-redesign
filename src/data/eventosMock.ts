@@ -116,5 +116,5 @@ const baseEvents: EventData[] = [
 export const mockEvents: EventData[] = [...events];
 
 // Ordenar eventos por fecha descendente (más recientes primero)
-mockEvents.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+// mockEvents.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
