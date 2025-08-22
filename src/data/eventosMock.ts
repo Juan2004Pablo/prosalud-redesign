@@ -78,7 +78,7 @@ const baseEvents: EventData[] = [
     category: 'Simulacro'
   },
   {
-    id: 'evento-4',
+    id: 'evento-5',
     title: 'Integración y Esparcimiento Líderes',
     date: '2024-11-22',
     location: 'Hospital Bello Sede Autopista',
@@ -94,7 +94,7 @@ const baseEvents: EventData[] = [
     category: 'Integración'
   },
   {
-    id: 'evento-4',
+    id: 'evento-6',
     title: 'Celebración día del niñ@ HSJD',
     date: '2024-10-25',
     location: 'Hospital san juan de Dios, sede GMM',
@@ -113,36 +113,7 @@ const baseEvents: EventData[] = [
     category: 'Celebración'
   },
 ];
-
-export const mockEvents: EventData[] = [...baseEvents];
-
-const totalEventsToGenerate = 72;
-const existingEventsCount = baseEvents.length;
-
-for (let i = existingEventsCount + 1; i <= totalEventsToGenerate; i++) {
-  const baseEventIndex = (i - 1) % existingEventsCount;
-  const baseEvent = baseEvents[baseEventIndex];
-  
-  // Create a slightly varied date to avoid exact duplicates if sorting by date later
-  const baseDate = new Date(baseEvent.date);
-  const newDate = new Date(baseDate.setDate(baseDate.getDate() + (i - baseEventIndex * 4))); // Simple date variation
-
-  mockEvents.push({
-    ...baseEvent,
-    id: `evento-${i}`,
-    title: `${baseEvent.title} (Edición ${Math.ceil(i / existingEventsCount)})`,
-    // Ensure unique image by adding a unique query param (sig for signature)
-    mainImage: { 
-      ...baseEvent.mainImage, 
-      src: `${baseEvent.mainImage.src.split('&sig=')[0]}&sig=${i * 100}` 
-    },
-    date: newDate.toISOString().split('T')[0], // Formato YYYY-MM-DD
-    additionalImages: baseEvent.additionalImages?.map((img, index) => ({
-      ...img,
-      src: `${img.src.split('&sig=')[0]}&sig=${i * 100 + index + 1}`
-    }))
-  });
-}
+export const mockEvents: EventData[] = [...events];
 
 // Ordenar eventos por fecha descendente (más recientes primero)
 mockEvents.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
