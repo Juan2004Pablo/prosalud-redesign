@@ -1,9 +1,17 @@
 
-import React from 'react';
+import React, { useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Users, Calendar, FileText } from 'lucide-react';
+import { ArrowRight, HeartPulse } from 'lucide-react';
+import useIntersectionObserver from '@/hooks/useIntersectionObserver';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 const HeroSection: React.FC = () => {
+  const sectionRef = useRef<HTMLDivElement | null>(null);
+  const isVisible = useIntersectionObserver(sectionRef, { threshold: 0.1, freezeOnceVisible: true });
+  const [imagesLoaded, setImagesLoaded] = useState<{ [key: number]: boolean }>({});
+
   const handleScrollToServices = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const element = document.getElementById('servicios');
@@ -15,73 +23,180 @@ const HeroSection: React.FC = () => {
     }
   };
 
+  const handleImageLoad = (index: number) => {
+    setImagesLoaded(prev => ({ ...prev, [index]: true }));
+  };
+
+  // Placeholder avatars - en una aplicación real, estos vendrían de datos dinámicos o imágenes específicas.
+  const avatarPlaceholders = [
+    { src: "/images/avatar_hero/avatar3.webp", fallback: "P4", alt: "Profesional 4" },
+    { src: "/images/avatar_hero/avatar1.webp", fallback: "P3", alt: "Profesional 3" },
+    { src: "/images/avatar_hero/avatar4.webp", fallback: "P2", alt: "Profesional 2" },
+    { src: "/images/avatar_hero/avatar2.webp", fallback: "P1", alt: "Profesional 1" },
+  ];
+
+  const collageImages = [
+    "/images/collage/image_collage_1_.webp",
+    "/images/collage/image_collage_3_.webp",
+    "/images/collage/image_collage_2_.webp",
+  ];
+
   return (
-    <section className="relative bg-gradient-to-br from-primary-prosalud via-primary-prosalud-dark to-slate-900 text-text-light py-20 md:py-32 overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute inset-0" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-        }} />
-      </div>
+    <section
+      ref={sectionRef}
+      className="bg-gradient-to-br from-primary-prosalud via-primary-prosalud-dark to-slate-900 text-text-light py-16 md:py-20 lg:py-24"
+    >
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        {isVisible ? (
+          <div className="grid md:grid-cols-2 gap-12 lg:gap-16 items-center">
+            {/* Left Column: Textual Content & Buttons */}
+            <div className="md:text-left text-center transform transition-all duration-4000 opacity-0 translate-y-8 animate-[fadeInUp_0.8s_ease-out_forwards]">
+              <h1 className="font-bold mb-8">
+                <span className="inline-flex items-center gap-2 bg-secondary-prosaludgreen/20 text-secondary-prosaludgreen px-3 py-1 text-sm font-medium rounded-full mb-4">
+                  <HeartPulse className="h-4 w-4" />
+                  Tu Bienestar, Nuestra Prioridad
+                </span>
+                <span className="block text-5xl md:text-6xl lg:text-7xl leading-tight">
+                  <span className="text-prosalud-pro">Pro</span><span className="text-prosalud-salud">Salud</span>
+                </span>
+                <span className="block text-4xl md:text-5xl lg:text-6xl mt-2 md:mt-3 leading-snug">
+                  Cuidamos de ti,<br />
+                  como tú cuidas de los demás
+                </span>
+              </h1>
+              <p className="text-lg md:text-xl text-primary-prosalud-light/90 mb-10 max-w-2xl mx-auto md:mx-0">
+                Tu portal de autogestión para acceder a servicios, trámites y beneficios de manera ágil y segura. Simplificamos tu día a día.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 md:justify-start justify-center">
+                <Button
+                  size="lg"
+                  className="bg-secondary-prosaludgreen hover:bg-secondary-prosaludgreen/90 text-white text-base shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 px-8 py-6"
+                  onClick={handleScrollToServices}
+                >
+                  Trámites Rápidos
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+                <Link to="/nosotros" aria-label="Conocer más sobre ProSalud">
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="text-primary-prosalud border-text-light/70 hover:bg-text-light px-8 py-3 hover:text-primary-prosalud hover:underline w-full sm:w-auto transition-all duration-300 transform hover:scale-105 px-8 py-6"
+                  >
+                    Conoce Más
+                  </Button>
+                </Link>
+              </div>
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="max-w-4xl mx-auto text-center">
-          {/* Main Heading */}
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 animate-fade-in tracking-tight">
-            Bienvenido a{' '}
-            <span className="text-secondary-prosaludgreen">ProSalud</span>
-          </h1>
+              {/* Nueva sección de avatares y texto de confianza */}
+              <div className="mt-10 flex items-center justify-center md:justify-start">
+                <div className="flex -space-x-3">
+                  {avatarPlaceholders.map((avatar, index) => (
+                    <Avatar key={index} className="h-10 w-10 border-2 border-white">
+                      <AvatarImage
+                        src={avatar.src}
+                        alt={avatar.alt}
+                        className="object-cover"
+                        width={40}
+                        height={40}
+                      />
+                      <AvatarFallback className="bg-secondary-prosaludgreen text-white">{avatar.fallback}</AvatarFallback>
+                    </Avatar>
+                  ))}
+                </div>
+                <p className="ml-4 text-sm text-text-light font-medium">
+                  +1.500 profesionales ya confían en nosotros
+                </p>
+              </div>
+            </div>
 
-          {/* Subtitle */}
-          <p className="text-lg sm:text-xl md:text-2xl mb-8 animate-fade-in animation-delay-200 font-light max-w-3xl mx-auto leading-relaxed">
-            El Sindicato de Profesionales de la Salud que trabaja por tu bienestar y desarrollo profesional
-          </p>
+            {/* Right Column: Image Collage */}
+            <div className="hidden md:block">
+              <div className="grid grid-cols-2 gap-8 p-4 bg-slate-800/30 rounded-xl shadow-xl">
+                {/* Imagen superior izquierda */}
+                <div className="relative bg-muted rounded-md aspect-square overflow-hidden">
+                  {!imagesLoaded[0] && (
+                    <Skeleton className="absolute inset-0 rounded-md aspect-square" />
+                  )}
+                  <img
+                    src={collageImages[0]}
+                    alt="Collage ProSalud imagen 1"
+                    loading="lazy"
+                    onLoad={() => handleImageLoad(0)}
+                    className={`w-full h-full object-cover transition-transform duration-500 ${imagesLoaded[0] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
+                      } hover:scale-105`}
+                    style={{ transitionDelay: '0ms' }}
+                  />
+                </div>
 
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12 animate-fade-in animation-delay-400">
-            <Button 
-              onClick={handleScrollToServices}
-              size="lg" 
-              className="bg-secondary-prosaludgreen hover:bg-secondary-prosaludgreen/90 text-white px-8 py-3 text-lg font-semibold rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105"
-            >
-              Trámites Rápidos
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
-            <Button 
-              variant="outline" 
-              size="lg" 
-              className="border-2 border-white text-white hover:bg-white hover:text-primary-prosalud px-8 py-3 text-lg font-semibold rounded-full transition-all hover:scale-105"
-              asChild
-            >
-              <a href="/quienes-somos">Conoce ProSalud</a>
-            </Button>
+                {/* Imagen derecha ocupando 2 filas */}
+                <div className="relative bg-muted rounded-md row-span-2 overflow-hidden">
+                  {!imagesLoaded[2] && (
+                    <Skeleton className="absolute inset-0 rounded-md aspect-square" />
+                  )}
+                  <img
+                    src={collageImages[2]}
+                    alt="Collage ProSalud imagen 3"
+                    loading="lazy"
+                    onLoad={() => handleImageLoad(2)}
+                    className={`w-full h-full object-cover transition-transform duration-500 ${imagesLoaded[2] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
+                      } hover:scale-105`}
+                    style={{ transitionDelay: '200ms' }}
+                  />
+                </div>
+
+                {/* Imagen inferior izquierda */}
+                <div className="relative bg-muted rounded-md aspect-square overflow-hidden">
+                  {!imagesLoaded[1] && (
+                    <Skeleton className="absolute inset-0 rounded-md aspect-square" />
+                  )}
+                  <img
+                    src={collageImages[1]}
+                    alt="Collage ProSalud imagen 2"
+                    loading="lazy"
+                    onLoad={() => handleImageLoad(1)}
+                    className={`w-full h-full object-cover transition-transform duration-500 ${imagesLoaded[1] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
+                      } hover:scale-105`}
+                    style={{ transitionDelay: '100ms' }}
+                  />
+                </div>
+              </div>
+            </div>
           </div>
-
-          {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto animate-fade-in animation-delay-600">
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
-              <Users className="h-8 w-8 text-secondary-prosaludgreen mb-3 mx-auto" />
-              <h3 className="text-2xl font-bold mb-2">500+</h3>
-              <p className="text-sm opacity-90">Afiliados Activos</p>
+        ) : (
+          // Skeleton Loader for HeroSection
+          <div className="grid md:grid-cols-2 gap-12 lg:gap-16 items-center">
+            <div>
+              <Skeleton className="h-16 w-3/4 mb-4" />
+              <Skeleton className="h-10 w-1/2 mb-8" />
+              <Skeleton className="h-6 w-full mb-2" />
+              <Skeleton className="h-6 w-full mb-2" />
+              <Skeleton className="h-6 w-3/4 mb-12" />
+              <div className="flex flex-col sm:flex-row gap-4 md:justify-start justify-center">
+                <Skeleton className="h-12 w-48" />
+                <Skeleton className="h-12 w-40" />
+              </div>
+              {/* Skeleton para la nueva sección de confianza */}
+              <div className="mt-10 flex items-center justify-center md:justify-start">
+                <div className="flex -space-x-3">
+                  <Skeleton className="h-10 w-10 rounded-full" />
+                  <Skeleton className="h-10 w-10 rounded-full" />
+                  <Skeleton className="h-10 w-10 rounded-full" />
+                  <Skeleton className="h-10 w-10 rounded-full" />
+                </div>
+                <Skeleton className="ml-4 h-6 w-64" />
+              </div>
             </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
-              <Calendar className="h-8 w-8 text-secondary-prosaludgreen mb-3 mx-auto" />
-              <h3 className="text-2xl font-bold mb-2">25+</h3>
-              <p className="text-sm opacity-90">Años de Experiencia</p>
-            </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
-              <FileText className="h-8 w-8 text-secondary-prosaludgreen mb-3 mx-auto" />
-              <h3 className="text-2xl font-bold mb-2">15+</h3>
-              <p className="text-sm opacity-90">Servicios Disponibles</p>
+            <div className="hidden md:block">
+              <div className="grid grid-cols-2 gap-4 p-4">
+                <Skeleton className="rounded-lg aspect-square" />
+                <Skeleton className="rounded-lg aspect-square" />
+                <Skeleton className="rounded-lg aspect-square" />
+                <Skeleton className="rounded-lg aspect-square" />
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
-
-      {/* Floating Elements */}
-      <div className="absolute top-20 left-10 w-20 h-20 bg-secondary-prosaludgreen/20 rounded-full blur-xl animate-pulse"></div>
-      <div className="absolute bottom-20 right-10 w-32 h-32 bg-white/10 rounded-full blur-xl animate-pulse animation-delay-1000"></div>
-      <div className="absolute top-1/2 left-1/4 w-16 h-16 bg-secondary-prosaludgreen/30 rounded-full blur-lg animate-pulse animation-delay-500"></div>
     </section>
   );
 };
