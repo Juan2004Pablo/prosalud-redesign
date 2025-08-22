@@ -19,7 +19,7 @@ const InformacionProcesoCuentaSection = <TFieldValues extends FieldValues>({
   ];
 
   const ubicaciones = [
-    "Abejorral", "Bello", "Caldas", "C. Bolivar", "Carisma", "Cisneros", "La Maria", "Rionegro", "Sabaneta"
+    "Bello", "Caldas", "La Maria", "Rionegro"
   ];
 
   return (
