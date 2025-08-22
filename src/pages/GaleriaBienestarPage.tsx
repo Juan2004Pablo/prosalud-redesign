@@ -97,7 +97,7 @@ const GaleriaBienestarPage: React.FC = () => {
           </BreadcrumbList>
         </Breadcrumb>
       </div>
-      <div className="container mx-auto pt-6 pb-2 px-4 md:px-6 lg:px-8 py-10">
+      <div className="container mx-auto pt-6 pb-20 px-4 md:px-6 lg:px-8 py-10">
         <div className="text-center mb-8">
           <div className="flex justify-center items-center gap-3 mb-4">
             <Image className="h-8 w-8 text-primary-prosalud-dark" />

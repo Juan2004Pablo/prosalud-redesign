@@ -20,7 +20,7 @@ const Header: React.FC = () => {
           {/* Logo (Left) */}
           <Link to="/" className="flex items-center flex-shrink-0">
             <img 
-              src="/images/logo_prosalud.webp" 
+              src="/images/logo_prosalud_fondo.png" 
               alt="ProSalud Logo" 
               className="h-12 w-auto" 
               width={120}

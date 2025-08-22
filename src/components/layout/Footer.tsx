@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
 
 const Footer: React.FC = () => {
-  const logoUrl = "/images/logo_prosalud.webp";
+  const logoUrl = "/images/logo_prosalud_fondo.png";
   const minsaludLogoUrl = "/images/minsalud.webp";
 
   return (

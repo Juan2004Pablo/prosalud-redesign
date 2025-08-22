@@ -15,7 +15,36 @@ const ConveniosSection: React.FC = () => {
     enabled: isVisible
   });
 
-  const visibleConvenios = convenios?.filter(convenio => convenio.isVisible) || [];
+  const visibleConvenios = [
+  { 
+    name: "E.S.E. HOSPITAL MARCO FIDEL SUÁREZ - BELLO",
+    imageUrl: "/images/convenios/hospital-marco-fidel-suarez.webp"
+  },
+  { 
+    name: "E.S.E. HOSPITAL SAN JUAN DE DIOS - RIONEGRO",
+    imageUrl: "/images/convenios/hospital-san-juan-de-dios-rionegro.webp"
+  },
+  { 
+    name: "PROMOTORA MÉDICA Y ODONTOLÓGICA S.A.",
+    imageUrl: "/images/convenios/promotora-medica-odontologica.webp"
+  },
+  { 
+    name: "SOCIEDAD MÉDICA RIONEGRO SOMER S.A.",
+    imageUrl: "/images/convenios/somer-sa.webp"
+  },
+  { 
+    name: "E.S.E. HOSPITAL VENANCIO DÍAZ DÍAZ",
+    imageUrl: "/images/convenios/hospital-venancio-diaz.webp"
+  },
+  { 
+    name: "E.S.E. HOSPITAL LA MERCED - CIUDAD BOLÍVAR",
+    imageUrl: "/images/convenios/hospital-la-merced-ciudad-bolivar.webp"
+  },
+  { 
+    name: "E.S.E. HOSPITAL SANTA ELENA - FREDONIA",
+    imageUrl: "/images/convenios/hospital-santa-elena-fredonia.webp"
+  },
+];
 
   return (
     <section ref={sectionRef} id="convenios" className="py-16 md:py-20 bg-background-light">
@@ -40,13 +69,13 @@ const ConveniosSection: React.FC = () => {
               <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                 {visibleConvenios.map((convenio, index) => (
                   <li 
-                    key={convenio.id} 
+                    key={convenio.name} 
                     className="bg-card p-6 rounded-lg shadow-md border border-prosalud-border flex items-center animate-fade-in"
                     style={{ animationDelay: `${index * 100}ms` }}
                   >
                     <div className="h-12 w-12 rounded-full overflow-hidden mr-4 shrink-0">
                       <img 
-                        src={convenio.image} 
+                        src={convenio.imageUrl} 
                         alt={convenio.name} 
                         loading="lazy"
                         className="h-full w-full object-cover"

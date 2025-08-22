@@ -49,7 +49,7 @@ const QuickLinksSection: React.FC = () => {
                 className={`${
                   selectedCategory === category 
                     ? 'bg-primary-prosalud hover:bg-primary-prosalud/90 text-white' 
-                    : 'border-gray-300 text-gray-700 hover:bg-gray-100'
+                    : 'border-gray-300 text-gray-700 '
                 } rounded-full px-4 py-2 transition-all font-medium`}
                 size="sm"
               >
