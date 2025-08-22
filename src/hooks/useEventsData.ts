@@ -10,24 +10,36 @@ export const useEventsData = () => {
   const [filterCategory, setFilterCategory] = useState<string>('all');
 
   // Generar categorías únicas
-  const uniqueCategories = ['all', ...Array.from(new Set(mockEvents.map(event => event.category).filter(Boolean) as string[])).sort((a, b) => a.localeCompare(b))];
+  const uniqueCategories = useMemo(() => {
+    const categories = new Set(mockEvents.map(event => event.category).filter(Boolean) as string[]);
+    return ['all', ...Array.from(categories).sort((a, b) => a.localeCompare(b))];
+  }, []);
 
   // Procesar eventos usando useMemo para evitar cálculos innecesarios
   const processedEvents = useMemo(() => {
     console.log('Processing events - Category:', filterCategory, 'Sort:', sortOrder);
     
-    // Siempre empezar con una copia fresca de los eventos originales
-    const originalEvents = [...mockEvents];
+    // Crear un Set para asegurar eventos únicos basados en el ID
+    const uniqueEventsMap = new Map();
+    mockEvents.forEach(event => {
+      if (!uniqueEventsMap.has(event.id)) {
+        uniqueEventsMap.set(event.id, event);
+      }
+    });
+    
+    // Convertir el Map de vuelta a un array
+    const uniqueEvents = Array.from(uniqueEventsMap.values());
     
     // Paso 1: Filtrar por categoría
-    const filtered = originalEvents.filter(event => 
+    const filtered = uniqueEvents.filter(event => 
       filterCategory === 'all' || event.category === filterCategory
     );
     
+    console.log('Unique events count:', uniqueEvents.length);
     console.log('Filtered events count:', filtered.length);
     
     // Paso 2: Ordenar según el criterio seleccionado
-    const sorted = filtered.sort((a, b) => {
+    const sorted = [...filtered].sort((a, b) => {
       const dateA = new Date(a.date).getTime();
       const dateB = new Date(b.date).getTime();
       

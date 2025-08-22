@@ -65,6 +65,14 @@ const FAQPage: React.FC = () => {
     return groups;
   }, [filteredFAQs, selectedCategory]);
 
+  const handleChatbotClick = () => {
+    // Trigger the chatbot FAB click event
+    const chatbotFab = document.querySelector('[aria-label="Abrir chat"]') as HTMLButtonElement;
+    if (chatbotFab) {
+      chatbotFab.click();
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
       {/* Enhanced Header */}
@@ -282,6 +290,7 @@ const FAQPage: React.FC = () => {
                 </p>
                 <div className="flex flex-wrap gap-4">
                   <Button 
+                    onClick={handleChatbotClick}
                     variant="secondary" 
                     size="lg"
                     className="bg-white text-primary-prosalud hover:bg-gray-100 font-semibold rounded-lg transition-all hover:scale-105"
@@ -289,7 +298,7 @@ const FAQPage: React.FC = () => {
                     <Settings className="h-5 w-5 mr-2" />
                     Usar Chatbot
                   </Button>
-                  <Link to="/">
+                  <Link to="/#servicios">
                     <Button 
                       variant="outline" 
                       size="lg"

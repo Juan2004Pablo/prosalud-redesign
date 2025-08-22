@@ -1,98 +1,66 @@
-import React, { useState, useRef } from 'react';
+
+import React, { useState } from 'react';
+import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
-import ServiceList, { serviceCategories, ServiceCategory } from './ServiceList';
-import useIntersectionObserver from '@/hooks/useIntersectionObserver';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Search } from "lucide-react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Button } from '@/components/ui/button';
+import ServiceList, { serviceCategories, ServiceCategory } from '@/components/home/ServiceList';
 
 const QuickLinksSection: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<ServiceCategory>('Todos');
-  const sectionRef = useRef<HTMLDivElement | null>(null);
-  const isVisible = useIntersectionObserver(sectionRef, { threshold: 0.1, freezeOnceVisible: true });
+
+  const handleCategoryClick = (category: ServiceCategory) => {
+    setSelectedCategory(category);
+  };
 
   return (
-    <section ref={sectionRef} id="quick-links" className="py-16 md:py-20 bg-background-light">
+    <section id="servicios" className="py-20 bg-gradient-to-br from-slate-50 via-white to-blue-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        {isVisible ? (
-          <>
-            <div className="space-y-3 mb-12 text-center">
-              <div className="inline-block rounded-lg bg-primary px-3 py-1.5 text-sm text-primary-foreground">
-                Autogestión
-              </div>
-              <h2 className="text-4xl font-bold tracking-tight text-primary-prosalud sm:text-5xl">
-                Gestiona tus trámites
-              </h2>
-              <p className="max-w-[900px] mx-auto text-center text-gray-600 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                Accede rápidamente a los servicios que necesitas sin complicaciones.
-              </p>
-            </div>
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            Gestiona tus trámites
+          </h2>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            Accede a todos los servicios y trámites que ProSalud tiene disponibles para ti
+          </p>
+        </div>
 
-            <div className="max-w-xl mx-auto mb-10">
-            <div className="flex items-stretch rounded-md border border-gray-300 overflow-hidden shadow-sm focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 h-[40px]">
-              
-              {/* Select (categoría) */}
-              <div className="flex-shrink-0 border-r border-gray-300 bg-background">
-                <Select value={selectedCategory} onValueChange={(value) => setSelectedCategory(value as ServiceCategory)}>
-                  <SelectTrigger 
-                    className="w-auto min-w-[180px] text-sm md:text-base h-[40px] px-3 border-0 rounded-none focus:ring-0 focus:ring-offset-0 data-[state=open]:bg-accent/10 text-muted-foreground hover:text-foreground"
-                    aria-label="Filtrar por categoría"
-                  >
-                    <SelectValue placeholder="Categoría" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {serviceCategories.map(category => (
-                      <SelectItem key={category} value={category}>
-                        {category}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-          
-              {/* Input de búsqueda */}
-              <div className="relative flex-grow max-w-full sm:max-w-lg lg:max-w-2xl xl:max-w-3xl mx-auto">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground z-10" size={18} />
-                <Input 
-                  type="text"
-                  placeholder="Buscar trámite por nombre o descripción..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full text-sm md:text-base h-[40px] pl-10 pr-4 border-0 rounded-none focus-visible:ring-0 focus-visible:ring-offset-0"
-                  aria-label="Buscar trámite por nombre o descripción"
-                />
-              </div>
-            </div>
+        {/* Search and Filter Section */}
+        <div className="max-w-4xl mx-auto mb-12 space-y-6">
+          {/* Search Bar */}
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={20} />
+            <Input
+              type="text"
+              placeholder="Buscar trámites y servicios..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10 pr-4 py-3 text-lg rounded-xl border-gray-300 focus:ring-2 focus:ring-primary-prosalud focus:border-transparent"
+            />
           </div>
 
-            <ServiceList searchTerm={searchTerm} selectedCategory={selectedCategory} />
-          </>
-        ) : (
-          // Skeleton Loader for QuickLinksSection
-          <>
-            <div className="space-y-3 mb-12 text-center">
-              <Skeleton className="h-7 w-24 mx-auto mb-2" />
-              <Skeleton className="h-12 w-3/5 mx-auto mb-2" />
-              <Skeleton className="h-6 w-4/5 mx-auto" />
-              <Skeleton className="h-6 w-3/5 mx-auto" />
-            </div>
-            <div className="mb-10 max-w-xl mx-auto">
-              <Skeleton className="h-12 w-full" />
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
-              {[...Array(4)].map((_, index) => (
-                <div key={index} className="bg-card p-6 rounded-lg shadow-lg border border-prosalud-border">
-                  <Skeleton className="h-12 w-12 mb-4" />
-                  <Skeleton className="h-6 w-3/4 mb-2" />
-                  <Skeleton className="h-4 w-full mb-1" />
-                  <Skeleton className="h-4 w-full mb-4" />
-                  <Skeleton className="h-5 w-1/2" />
-                </div>
-              ))}
-            </div>
-          </>
-        )}
+          {/* Category Filters */}
+          <div className="flex flex-wrap gap-3 justify-center">
+            {serviceCategories.map((category) => (
+              <Button
+                key={category}
+                variant={selectedCategory === category ? "default" : "outline"}
+                onClick={() => handleCategoryClick(category)}
+                className={`${
+                  selectedCategory === category 
+                    ? 'bg-primary-prosalud hover:bg-primary-prosalud/90 text-white' 
+                    : 'border-gray-300 text-gray-700 hover:bg-gray-100'
+                } rounded-full px-4 py-2 transition-all font-medium`}
+                size="sm"
+              >
+                {category}
+              </Button>
+            ))}
+          </div>
+        </div>
+
+        {/* Service List */}
+        <ServiceList searchTerm={searchTerm} selectedCategory={selectedCategory} />
       </div>
     </section>
   );

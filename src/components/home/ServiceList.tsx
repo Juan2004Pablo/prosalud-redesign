@@ -41,23 +41,122 @@ interface Service {
   description: string;
   linkTo: string;
   category: ServiceCategory;
+  keywords: string[];
 }
 
 const newServices: Service[] = [
-  { icon: Certificate, title: 'Certificado de convenio sindical', description: 'Descarga tu constancia de afiliación al convenio sindical.', linkTo: '/servicios/certificado-convenio', category: 'Certificados y Documentos' },
-  { icon: CalendarCheck, title: 'Solicitud de descanso', description: 'Solicita días de descanso según tus condiciones actuales.', linkTo: '/servicios/descanso-sindical', category: 'Gestión Personal y Sindical' },
-  { icon: DollarSign, title: 'Compensación anual diferida', description: 'Gestiona el pago correspondiente a tu compensación anual.', linkTo: '/servicios/compensacion-anual', category: 'Pagos' },
-  { icon: SearchIconLucide, title: 'Consulta de pagos', description: 'Verifica los pagos realizados por concepto sindical.', linkTo: '/servicios/consulta-pagos', category: 'Pagos' }, 
-  { icon: ShieldCheck, title: 'Certificado de seguridad social', description: 'Genera tu certificado de aportes a la seguridad social.', linkTo: '/servicios/certificado-seguridad-social', category: 'Certificados y Documentos' },
-  { icon: Banknote, title: 'Actualizar cuenta bancaria', description: 'Notifica un cambio en tu cuenta para recibir pagos.', linkTo: '/servicios/actualizar-cuenta', category: 'Pagos' },
-  { icon: Hospital, title: 'Incapacidades y licencias', description: 'Reporta tu incapacidad o licencia de maternidad al sindicato.', linkTo: '/servicios/incapacidad-maternidad', category: 'Gestión Personal y Sindical' },
-  { icon: BriefcaseMedical, title: 'Seguridad y salud en el trabajo (S.S.T)', description: 'Accede a recursos y reportes relacionados con SST.', linkTo: '/servicios/sst', category: 'Bienestar y SST' },
-  { icon: Poll, title: 'Encuesta de bienestar', description: 'Participa en encuestas para mejorar tu entorno y condiciones.', linkTo: 'https://forms.gle/2YnLMixdN6EnZ7Qq6', category: 'Bienestar y SST' },
-  { icon: Image, title: 'Galería de bienestar', description: 'Explora fotos y eventos organizados para tu bienestar.', linkTo: '/servicios/galeria-bienestar', category: 'Bienestar y SST' },
-  { icon: Calendar, title: 'Formato de permisos y cambio de turnos', description: 'Diligencia el formato para solicitudes de permisos sindicales o ajustes en tus turnos.', linkTo: '/servicios/permisos-turnos', category: 'Certificados y Documentos' },
-  { icon: CalendarDays, title: 'Cuadro de turnos', description: 'Consulta tu calendario de turnos asignados.', linkTo: 'https://www.prosanet.com/#/shifts-employees/index', category: 'Gestión Personal y Sindical' },
-  { icon: CreditCard, title: 'Solicitud de microcrédito', description: 'Aplica a un microcrédito con condiciones especiales para afiliados.', linkTo: '/servicios/microcredito', category: 'Pagos' },
-  { icon: LogOut, title: 'Solicitud de retiro sindical', description: 'Inicia el proceso para retirarte del sindicato.', linkTo: '/servicios/retiro-sindical', category: 'Gestión Personal y Sindical' },
+  { 
+    icon: Certificate, 
+    title: 'Certificado de convenio sindical', 
+    description: 'Descarga tu constancia de afiliación al convenio sindical.', 
+    linkTo: '/servicios/certificado-convenio', 
+    category: 'Certificados y Documentos',
+    keywords: ['certificado', 'convenio', 'sindical', 'afiliacion', 'constancia', 'documento', 'descarga']
+  },
+  { 
+    icon: CalendarCheck, 
+    title: 'Solicitud de descanso', 
+    description: 'Solicita días de descanso según tus condiciones actuales.', 
+    linkTo: '/servicios/descanso-sindical', 
+    category: 'Gestión Personal y Sindical',
+    keywords: ['descanso', 'solicitud', 'dias', 'vacaciones', 'permisos', 'ausentismo', 'tiempo libre']
+  },
+  { 
+    icon: DollarSign, 
+    title: 'Compensación anual diferida', 
+    description: 'Gestiona el pago correspondiente a tu compensación anual.', 
+    linkTo: '/servicios/compensacion-anual', 
+    category: 'Pagos',
+    keywords: ['compensacion', 'anual', 'diferida', 'pago', 'gestion', 'prima', 'bono', 'beneficio']
+  },
+  { 
+    icon: SearchIconLucide, 
+    title: 'Consulta de pagos', 
+    description: 'Verifica los pagos realizados por concepto sindical.', 
+    linkTo: '/servicios/consulta-pagos', 
+    category: 'Pagos',
+    keywords: ['consulta', 'pagos', 'verificacion', 'sindical', 'concepto', 'salario', 'nomina', 'estado']
+  }, 
+  { 
+    icon: ShieldCheck, 
+    title: 'Certificado de seguridad social', 
+    description: 'Genera tu certificado de aportes a la seguridad social.', 
+    linkTo: '/servicios/certificado-seguridad-social', 
+    category: 'Certificados y Documentos',
+    keywords: ['seguridad', 'social', 'aportes', 'certificado', 'generar', 'salud', 'pensiones', 'arl']
+  },
+  { 
+    icon: Banknote, 
+    title: 'Actualizar cuenta bancaria', 
+    description: 'Notifica un cambio en tu cuenta para recibir pagos.', 
+    linkTo: '/servicios/actualizar-cuenta', 
+    category: 'Pagos',
+    keywords: ['cuenta', 'bancaria', 'actualizar', 'cambio', 'banco', 'pagos', 'datos', 'informacion']
+  },
+  { 
+    icon: Hospital, 
+    title: 'Incapacidades y licencias', 
+    description: 'Reporta tu incapacidad o licencia de maternidad al sindicato.', 
+    linkTo: '/servicios/incapacidad-maternidad', 
+    category: 'Gestión Personal y Sindical',
+    keywords: ['incapacidades', 'licencias', 'maternidad', 'reportar', 'salud', 'ausencia', 'medica']
+  },
+  { 
+    icon: BriefcaseMedical, 
+    title: 'Seguridad y salud en el trabajo (S.S.T)', 
+    description: 'Accede a recursos y reportes relacionados con SST.', 
+    linkTo: '/servicios/sst', 
+    category: 'Bienestar y SST',
+    keywords: ['seguridad', 'salud', 'trabajo', 'sst', 'recursos', 'reportes', 'riesgos', 'prevencion']
+  },
+  { 
+    icon: Poll, 
+    title: 'Encuesta de bienestar', 
+    description: 'Participa en encuestas para mejorar tu entorno y condiciones.', 
+    linkTo: 'https://forms.gle/2YnLMixdN6EnZ7Qq6', 
+    category: 'Bienestar y SST',
+    keywords: ['encuesta', 'bienestar', 'participar', 'mejorar', 'entorno', 'condiciones', 'feedback']
+  },
+  { 
+    icon: Image, 
+    title: 'Galería de bienestar', 
+    description: 'Explora fotos y eventos organizados para tu bienestar.', 
+    linkTo: '/servicios/galeria-bienestar', 
+    category: 'Bienestar y SST',
+    keywords: ['galeria', 'bienestar', 'fotos', 'eventos', 'explorar', 'actividades', 'imagenes']
+  },
+  { 
+    icon: Calendar, 
+    title: 'Formato de permisos y cambio de turnos', 
+    description: 'Diligencia el formato para solicitudes de permisos sindicales o ajustes en tus turnos.', 
+    linkTo: '/servicios/permisos-turnos', 
+    category: 'Certificados y Documentos',
+    keywords: ['permisos', 'turnos', 'formato', 'diligenciar', 'solicitudes', 'cambio', 'ajustes', 'horario']
+  },
+  { 
+    icon: CalendarDays, 
+    title: 'Cuadro de turnos', 
+    description: 'Consulta tu calendario de turnos asignados.', 
+    linkTo: 'https://www.prosanet.com/#/shifts-employees/index', 
+    category: 'Gestión Personal y Sindical',
+    keywords: ['cuadro', 'turnos', 'calendario', 'consulta', 'asignados', 'horarios', 'programacion']
+  },
+  { 
+    icon: CreditCard, 
+    title: 'Solicitud de microcrédito', 
+    description: 'Aplica a un microcrédito con condiciones especiales para afiliados.', 
+    linkTo: '/servicios/microcredito', 
+    category: 'Pagos',
+    keywords: ['microcredito', 'solicitud', 'aplicar', 'credito', 'prestamo', 'condiciones', 'afiliados']
+  },
+  { 
+    icon: LogOut, 
+    title: 'Solicitud de retiro sindical', 
+    description: 'Inicia el proceso para retirarte del sindicato.', 
+    linkTo: '/servicios/retiro-sindical', 
+    category: 'Gestión Personal y Sindical',
+    keywords: ['retiro', 'sindical', 'proceso', 'iniciar', 'salida', 'desvinculacion', 'abandono']
+  },
 ];
 
 interface ServiceListProps {
@@ -77,7 +176,8 @@ const ServiceList: React.FC<ServiceListProps> = ({ searchTerm, selectedCategory 
       const lowerSearchTerm = searchTerm.toLowerCase();
       servicesToFilter = servicesToFilter.filter(service => 
         service.title.toLowerCase().includes(lowerSearchTerm) ||
-        (service.description && service.description.toLowerCase().includes(lowerSearchTerm))
+        (service.description && service.description.toLowerCase().includes(lowerSearchTerm)) ||
+        service.keywords.some(keyword => keyword.toLowerCase().includes(lowerSearchTerm))
       );
     }
     return servicesToFilter;
