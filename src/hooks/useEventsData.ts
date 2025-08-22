@@ -19,23 +19,11 @@ export const useEventsData = () => {
   const processedEvents = useMemo(() => {
     console.log('Processing events - Category:', filterCategory, 'Sort:', sortOrder);
     
-    // Crear un Set para asegurar eventos únicos basados en el ID
-    const uniqueEventsMap = new Map();
-    mockEvents.forEach(event => {
-      if (!uniqueEventsMap.has(event.id)) {
-        uniqueEventsMap.set(event.id, event);
-      }
-    });
-    
-    // Convertir el Map de vuelta a un array
-    const uniqueEvents = Array.from(uniqueEventsMap.values());
-    
     // Paso 1: Filtrar por categoría
-    const filtered = uniqueEvents.filter(event => 
+    const filtered = mockEvents.filter(event => 
       filterCategory === 'all' || event.category === filterCategory
     );
     
-    console.log('Unique events count:', uniqueEvents.length);
     console.log('Filtered events count:', filtered.length);
     
     // Paso 2: Ordenar según el criterio seleccionado
