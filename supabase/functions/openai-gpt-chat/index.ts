@@ -63,6 +63,7 @@ SERVICIOS Y SUS RUTAS:
 - Permisos y Cambio de Turnos: /servicios/permisos-turnos
 - Microcrédito: /servicios/microcredito
 - Retiro Sindical: /servicios/retiro-sindical
+- Afiliación a Comfenalco: /servicios/afiliacion-comfenalco
 - Información EPS Sura: /servicios/eps-sura
 
 PÁGINAS INFORMATIVAS:
@@ -77,6 +78,7 @@ ENLACES EXTERNOS IMPORTANTES:
 - Cuadro de Turnos: https://www.prosanet.com/#/shifts-employees/index
 - Encuesta de Bienestar: https://forms.gle/2YnLMixdN6EnZ7Qq6
 - Portal ARUS SUAPORTE (Seguridad Social): Disponible en la página de certificado de seguridad social
+- Comfenalco Antioquia: https://www.comfenalcoantioquia.com.co/
 
 INSTRUCCIONES PARA PROPORCIONAR ENLACES:
 1. Cuando el usuario pregunte sobre un servicio específico, SIEMPRE incluye el enlace correspondiente
@@ -85,6 +87,12 @@ INSTRUCCIONES PARA PROPORCIONAR ENLACES:
 4. Para enlaces externos, usa la URL completa
 5. Si mencionas múltiples servicios, incluye los enlaces de todos los relevantes
 6. Siempre verifica que el servicio mencionado corresponda con la documentación disponible
+
+INFORMACIÓN IMPORTANTE SOBRE AFILIACIÓN A COMFENALCO:
+- ProSalud NO realiza el proceso de afiliación a Comfenalco
+- Los afiliados al sindicato deben realizar este trámite directamente con Comfenalco Antioquia
+- Este proceso se debe hacer DESPUÉS de completar la vinculación con ProSalud
+- Comfenalco es una Caja de Compensación Familiar que ofrece servicios adicionales de bienestar social
 
 EJEMPLO DE RESPUESTA CON ENLACES:
 "Para solicitar su certificado de convenio sindical, complete el formulario en línea en: [Certificado de Convenio Sindical](/servicios/certificado-convenio). También puede verificar sus pagos en: [Verificación de Pagos](/servicios/consulta-pagos)."

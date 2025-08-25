@@ -21,7 +21,8 @@ import {
   Calendar,
   CalendarDays,
   CreditCard,
-  LogOut
+  LogOut,
+  UserPlus
 } from 'lucide-react';
 
 // Definición de categorías (debe coincidir con QuickLinksSection)
@@ -156,6 +157,14 @@ const newServices: Service[] = [
     linkTo: '/servicios/retiro-sindical', 
     category: 'Gestión Personal y Sindical',
     keywords: ['retiro', 'sindical', 'proceso', 'iniciar', 'salida', 'desvinculacion', 'abandono']
+  },
+  { 
+    icon: UserPlus, 
+    title: 'Afiliación a Comfenalco', 
+    description: 'Conoce el proceso para afiliarte a Comfenalco Antioquia como beneficiario del sindicato.', 
+    linkTo: '/servicios/afiliacion-comfenalco', 
+    category: 'Gestión Personal y Sindical',
+    keywords: ['comfenalco', 'afiliacion', 'beneficio', 'proceso', 'vinculacion', 'registro', 'caja', 'compensacion']
   },
 ];
 

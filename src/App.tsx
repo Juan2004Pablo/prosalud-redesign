@@ -40,6 +40,7 @@ import SolicitudPermisosCambioTurnosPage from '@/pages/SolicitudPermisosCambioTu
 import SolicitudMicrocreditoPage from '@/pages/SolicitudMicrocreditoPage';
 import SolicitudRetiroSindicalPage from '@/pages/SolicitudRetiroSindicalPage';
 import EventoDetallePage from '@/pages/EventoDetallePage';
+import AfiliacionComfenalcoPage from '@/pages/AfiliacionComfenalcoPage';
 
 // Legal Pages
 import EstatutosBeneficiosPage from '@/pages/EstatutosBeneficiosPage';
@@ -91,6 +92,7 @@ function App() {
             <Route path="/servicios/permisos-turnos" element={<SolicitudPermisosCambioTurnosPage />} />
             <Route path="/servicios/microcredito" element={<SolicitudMicrocreditoPage />} />
             <Route path="/servicios/retiro-sindical" element={<SolicitudRetiroSindicalPage />} />
+            <Route path="/servicios/afiliacion-comfenalco" element={<AfiliacionComfenalcoPage />} />
             <Route path="/servicios/eps-sura" element={<EpsSuraPage />} />
 
             {/* Admin Routes */}
