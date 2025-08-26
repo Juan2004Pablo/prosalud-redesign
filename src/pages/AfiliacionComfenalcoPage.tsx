@@ -1,4 +1,3 @@
-
 import React from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -138,7 +137,7 @@ const AfiliacionComfenalcoPage: React.FC = () => {
                           {beneficio.title}
                         </h4>
                         <p className="text-sm text-gray-600">
-                          {beneficio.descripcion}
+                          {beneficio.description}
                         </p>
                       </div>
                     </div>
