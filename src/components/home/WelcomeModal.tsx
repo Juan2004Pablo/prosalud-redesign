@@ -62,7 +62,7 @@ const WelcomeModal: React.FC = () => {
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent className="sm:max-w-lg w-[95vw] max-w-[95vw] sm:w-full p-0 overflow-hidden border-0 shadow-2xl bg-white m-4 max-h-[90vh] sm:max-h-[85vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-lg w-[95vw] max-w-[95vw] sm:w-full p-0 overflow-hidden border-0 shadow-2xl bg-white mx-4 my-8 max-h-[85vh] sm:max-h-[80vh] overflow-y-auto">
         {/* Close button */}
         <button
           onClick={handleClose}
