@@ -67,7 +67,7 @@ export default function ChatBot() {
     const chatContainerRef = useRef(null)
     const [suggestionsHeight, setSuggestionsHeight] = useState(0)
     const [locale, setLocale] = useState('')
-    const [showChatbot, setShowChatbot] = useState(false)
+    const [showChatbot, setShowChatbot] = useState(true)
     const [typingDots, setTypingDots] = useState(1)
 
     const isMobile = useIsMobile()
@@ -392,11 +392,8 @@ export default function ChatBot() {
                 const listData = await fetch(`/chatbot/contextConfig.json`).then(r => r.json())
                 const files = listData[specialtyPart] || {}
 
-                setShowChatbot(
-                    !!files &&
-                    (files.docs && files.docs.length) &&
-                    (files['show-chatbot'] ?? true)
-                )
+                // El chatbot siempre estará visible, independientemente del contexto
+                // setShowChatbot se mantiene en true por defecto
 
                 // Cargamos los MD como texto
                 const getDocs = (files.docs || []).map(fp => {
@@ -418,11 +415,15 @@ export default function ChatBot() {
                 // Devolvemos los valores para initializeChat
                 return { docs: joinedDocs }
             } else {
-                setShowChatbot(false)
+                // El chatbot permanece visible sin importar si hay contexto o no
+                // setShowChatbot(false) - REMOVIDO para mantener chatbot siempre visible
+                return { docs: '' }
             }
         } catch (error) {
             console.error('Error:', error)
-            setShowChatbot(false)
+            // El chatbot permanece visible aún si hay errores de contexto
+            // setShowChatbot(false) - REMOVIDO para mantener chatbot siempre visible
+            return { docs: '' }
         }
     }
 
