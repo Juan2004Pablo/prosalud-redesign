@@ -7,7 +7,7 @@ import { Form } from '@/components/ui/form';
 import MainLayout from '@/components/layout/MainLayout';
 import { toast } from 'sonner';
 import { Send, CheckCircle2, AlertCircle, Home, FileText as PageIcon } from 'lucide-react'; // Renamed FileText to PageIcon
-import { MAX_FILE_SIZE, ALLOWED_FILE_TYPES_PDF_WORD_IMAGES } from '@/components/solicitud-certificado/utils';
+import { MAX_FILE_SIZE, ALLOWED_FILE_TYPES_ALL } from '@/components/solicitud-certificado/utils';
 import { Link, useNavigate } from 'react-router-dom';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 
@@ -32,8 +32,8 @@ const fileValidation = z.any().refine(files => {
 }, `El archivo no debe exceder los ${MAX_FILE_SIZE / (1024*1024)}MB.`).refine(files => {
   if (!files || files.length === 0) return true;
   const file = files[0];
-  return ALLOWED_FILE_TYPES_PDF_WORD_IMAGES.includes(file.type);
-}, 'Solo se permiten archivos PDF, Word o imágenes (PNG, JPG, JPEG).');
+  return ALLOWED_FILE_TYPES_ALL.includes(file.type);
+}, 'Se permiten archivos PDF, Word o imágenes (JPG, PNG, GIF, WEBP).');
 
 const formSchemaAnualDiferida = z.object({
   tipoIdentificacion: z.string().min(1, "Este campo es requerido."),

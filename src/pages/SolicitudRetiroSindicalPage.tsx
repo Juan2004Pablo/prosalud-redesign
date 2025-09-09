@@ -8,7 +8,7 @@ import { Form } from '@/components/ui/form';
 import MainLayout from '@/components/layout/MainLayout';
 import { toast } from 'sonner';
 import { Send, CheckCircle2, AlertCircle, Home, FileText } from 'lucide-react';
-import { MAX_FILE_SIZE, ALLOWED_FILE_TYPES_PDF_WORD } from '@/components/solicitud-certificado/utils';
+import { MAX_FILE_SIZE, ALLOWED_FILE_TYPES_ALL } from '@/components/solicitud-certificado/utils';
 import { Link, useNavigate } from 'react-router-dom';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 
@@ -42,8 +42,8 @@ const formSchema = z.object({
   }, `El archivo no debe exceder los ${MAX_FILE_SIZE / (1024*1024)}MB.`).refine(files => {
     if (!files || files.length === 0) return true;
     const file = files[0];
-    return ALLOWED_FILE_TYPES_PDF_WORD.includes(file.type);
-  }, 'Tipo de archivo no permitido. Use PDF o Word.'),
+    return ALLOWED_FILE_TYPES_ALL.includes(file.type);
+  }, 'Se permiten archivos PDF, Word o imágenes (JPG, PNG, GIF, WEBP).'),
   
   confirmacionCorreo: z.boolean().default(false),
 });

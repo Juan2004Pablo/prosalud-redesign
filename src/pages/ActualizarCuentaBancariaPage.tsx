@@ -7,7 +7,7 @@ import { Form } from '@/components/ui/form';
 import MainLayout from '@/components/layout/MainLayout';
 import { toast } from 'sonner';
 import { Send, CheckCircle2, AlertCircle, Home, FileText } from 'lucide-react'; // Removed Landmark as it was unused after ConfirmacionCorreoSection update
-import { MAX_FILE_SIZE } from '@/components/solicitud-certificado/utils'; 
+import { MAX_FILE_SIZE, ALLOWED_FILE_TYPES_ALL } from '@/components/solicitud-certificado/utils'; 
 import { Link, useNavigate } from 'react-router-dom';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 
@@ -20,7 +20,7 @@ import InformacionImportanteCuentaAlert from '@/components/actualizar-cuenta/Inf
 import InformacionProcesoCuentaSection from '@/components/actualizar-cuenta/InformacionProcesoCuentaSection';
 import AnexoCertificacionBancariaSection from '@/components/actualizar-cuenta/AnexoCertificacionBancariaSection';
 
-const ALLOWED_FILE_TYPES_CERTIFICADO = ['application/pdf', 'image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+const ALLOWED_FILE_TYPES_CERTIFICADO = ALLOWED_FILE_TYPES_ALL;
 
 const formSchemaActualizarCuenta = z.object({
   tipoIdentificacion: z.string().min(1, "Este campo es requerido."),
@@ -36,7 +36,7 @@ const formSchemaActualizarCuenta = z.object({
   certificacionBancaria: z.any()
     .refine(files => files && files.length > 0, "La certificación bancaria es requerida.")
     .refine(files => files && files?.[0]?.size <= MAX_FILE_SIZE, `El archivo no debe exceder los ${MAX_FILE_SIZE / (1024*1024)}MB.`)
-    .refine(files => files && ALLOWED_FILE_TYPES_CERTIFICADO.includes(files?.[0]?.type), 'Tipo de archivo no permitido. Use PDF o imágenes (JPG, PNG, GIF, WEBP).'),
+    .refine(files => files && ALLOWED_FILE_TYPES_CERTIFICADO.includes(files?.[0]?.type), 'Se permiten archivos PDF, Word o imágenes (JPG, PNG, GIF, WEBP).'),
 });
 
 type FormValuesActualizarCuenta = z.infer<typeof formSchemaActualizarCuenta>;

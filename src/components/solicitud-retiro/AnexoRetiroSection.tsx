@@ -19,9 +19,9 @@ const AnexoRetiroSection = <TFieldValues extends FieldValues>({
       <FileUploadField
         control={control}
         name={"formatoRetiroAnexo" as any}
-        label="Seleccione el formato diligenciado (PDF o Word, máx. 4MB)"
-        accept=".pdf,.doc,.docx"
-        description="Debe adjuntar el formato de retiro y liquidación debidamente diligenciado y firmado. Este archivo es obligatorio."
+        label="Seleccione el formato diligenciado (PDF, Word o imagen, máx. 4MB)"
+        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif,.webp"
+        description="Debe adjuntar el formato de retiro y liquidación debidamente diligenciado y firmado. Se permiten archivos PDF, Word o imágenes (JPG, PNG, GIF, WEBP). Este archivo es obligatorio."
         isRequired={true}
       />
     </section>

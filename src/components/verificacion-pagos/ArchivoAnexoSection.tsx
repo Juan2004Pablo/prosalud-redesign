@@ -19,9 +19,9 @@ const ArchivoAnexoSection = <TFieldValues extends FieldValues>({
       <FileUploadField
         control={control}
         name={"archivoAnexo" as any}
-        label="Seleccione un archivo (PDF o Word, máx. 4MB)"
-        accept=".pdf,.doc,.docx"
-        description="Si necesita adjuntar algún documento de soporte, puede hacerlo aquí. Solo se permiten archivos PDF o Word."
+        label="Seleccione un archivo (PDF, Word o imagen, máx. 4MB)"
+        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif,.webp"
+        description="Si necesita adjuntar algún documento de soporte, puede hacerlo aquí. Se permiten archivos PDF, Word o imágenes (JPG, PNG, GIF, WEBP)."
       />
     </section>
   );
