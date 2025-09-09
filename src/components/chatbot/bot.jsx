@@ -84,6 +84,68 @@ export default function ChatBot() {
         questionCount: 0
     });
 
+    // Clave para persistencia en localStorage
+    const CHATBOT_STORAGE_KEY = 'prosalud-chatbot-state';
+
+    // Función para cargar estado desde localStorage
+    const loadPersistedState = () => {
+        try {
+            const saved = localStorage.getItem(CHATBOT_STORAGE_KEY);
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                console.log('📥 Cargando estado persistido del chatbot:', parsed);
+                
+                // Restaurar mensajes (excluyendo mensajes del sistema)
+                if (parsed.messages && parsed.messages.length > 0) {
+                    const filteredMessages = parsed.messages.filter(msg => msg.role !== 'system');
+                    setMessages(filteredMessages);
+                }
+                
+                // Restaurar contexto conversacional
+                if (parsed.conversationContext) {
+                    setConversationContext(parsed.conversationContext);
+                }
+                
+                // Restaurar otros estados relevantes
+                if (parsed.hasContext !== undefined) {
+                    setHasContext(parsed.hasContext);
+                }
+                if (parsed.allPageContents) {
+                    setAllPageContents(parsed.allPageContents);
+                }
+                
+                return true; // Indica que se cargó estado persistido
+            }
+        } catch (error) {
+            console.warn('⚠️ Error cargando estado persistido:', error);
+            localStorage.removeItem(CHATBOT_STORAGE_KEY);
+        }
+        return false; // No había estado persistido
+    };
+
+    // Función para guardar estado en localStorage
+    const saveStateToStorage = () => {
+        try {
+            const stateToSave = {
+                messages: messages.filter(msg => msg.role !== 'system'), // Excluir mensajes del sistema
+                conversationContext,
+                hasContext,
+                allPageContents,
+                timestamp: Date.now()
+            };
+            localStorage.setItem(CHATBOT_STORAGE_KEY, JSON.stringify(stateToSave));
+            console.log('💾 Estado del chatbot guardado');
+        } catch (error) {
+            console.warn('⚠️ Error guardando estado:', error);
+        }
+    };
+
+    // Función para limpiar estado persistido
+    const clearPersistedState = () => {
+        localStorage.removeItem(CHATBOT_STORAGE_KEY);
+        console.log('🗑️ Estado persistido limpiado');
+    };
+
     // Mensajes del tooltip rotativo
     const tooltipMessages = [
         "¡Hola! Soy tu asistente virtual de ProSalud. ¿En qué puedo ayudarte hoy?",
@@ -473,6 +535,15 @@ Recuerda: No inventes información. Solo responde según los recursos/documentos
     }
 
     const initializeChat = async () => {
+        // Intentar cargar estado persistido primero
+        const hasPersistedState = loadPersistedState();
+        
+        if (hasPersistedState) {
+            console.log('✅ Estado del chatbot restaurado desde localStorage');
+            return; // Si hay estado persistido, no inicializar desde cero
+        }
+        
+        // Si no hay estado persistido, inicializar normalmente
         const newSpecialty = extractSpecialtyFromURL()
         const context = await importContext(newSpecialty.specialtyPart)
 
@@ -516,6 +587,9 @@ Recuerda: No inventes información. Solo responde según los recursos/documentos
                 questionCount: 0
             });
             
+            // Limpiar estado persistido cuando se resetea el chat
+            clearPersistedState();
+            
             console.log('🔄 Contexto conversacional reiniciado');
         } catch (error) {
             console.error('Error generating initial message:', error)
@@ -531,6 +605,31 @@ Recuerda: No inventes información. Solo responde según los recursos/documentos
     useEffect(() => {
         console.log('Mensajes actualizados:', messages)
     }, [messages])
+
+    // Efecto para guardar estado cuando cambien los mensajes (excepto cuando esté vacío)
+    useEffect(() => {
+        if (messages.length > 0) {
+            // Solo guardar si hay mensajes reales del usuario/asistente
+            const realMessages = messages.filter(msg => msg.role !== 'system');
+            if (realMessages.length > 0) {
+                saveStateToStorage();
+            }
+        }
+    }, [messages]);
+
+    // Efecto para guardar estado cuando cambie el contexto conversacional
+    useEffect(() => {
+        if (conversationContext.questionCount > 0) {
+            saveStateToStorage();
+        }
+    }, [conversationContext]);
+
+    // Efecto para guardar estado cuando cambien otros datos relevantes
+    useEffect(() => {
+        if (hasContext && allPageContents) {
+            saveStateToStorage();
+        }
+    }, [hasContext, allPageContents]);
 
     const startNewChat = async () => {
         const newSpecialty = extractSpecialtyFromURL()
