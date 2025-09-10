@@ -72,28 +72,27 @@ const AfiliacionComfenalcoPage: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen">
         {/* Header */}
-        <div className="bg-gradient-to-r from-primary-prosalud to-secondary-prosaludgreen text-white py-16">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center">
-              <div className="flex justify-center mb-6">
-                <div className="bg-white/20 p-4 rounded-2xl backdrop-blur-sm">
-                  <UserPlus className="h-12 w-12" />
-                </div>
+        <section className="relative bg-gradient-to-br from-primary-prosalud via-primary-prosalud-dark to-slate-900 text-text-light py-16 sm:py-20 md:py-24 lg:py-32 overflow-hidden">
+          <div className="absolute inset-0 opacity-10"></div>
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            <div className="flex justify-center mb-6">
+              <div className="bg-white/20 p-4 rounded-2xl backdrop-blur-sm">
+                <UserPlus className="h-12 w-12" />
               </div>
-              <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                Afiliación a Comfenalco
-              </h1>
-              <p className="text-xl md:text-2xl text-white/90 mb-6">
-                Accede a los beneficios de Comfenalco Antioquia
-              </p>
-              <p className="text-lg text-white/80 max-w-2xl mx-auto">
-                Como afiliado a ProSalud, tienes derecho a afiliarte a Comfenalco y disfrutar de sus servicios de bienestar social.
-              </p>
             </div>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 sm:mb-6 animate-fade-in tracking-tight">
+              Afiliación a Comfenalco
+            </h1>
+            <p className="text-lg sm:text-xl md:text-2xl max-w-3xl mx-auto animate-fade-in animation-delay-200 font-light px-2 mb-4">
+              Accede a los beneficios de Comfenalco Antioquia
+            </p>
+            <p className="text-base sm:text-lg text-text-light/80 max-w-2xl mx-auto animate-fade-in animation-delay-400">
+              Como afiliado a ProSalud, tienes derecho a afiliarte a Comfenalco y disfrutar de sus servicios de bienestar social.
+            </p>
           </div>
-        </div>
+        </section>
 
         <div className="container mx-auto px-4 py-12">
           <div className="max-w-4xl mx-auto space-y-8">
