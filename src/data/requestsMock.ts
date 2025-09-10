@@ -136,7 +136,7 @@ export const mockRequests: Request[] = [
   },
   {
     id: 'req-008',
-    request_type: 'incapacidad-maternidad',
+    request_type: 'incapacidad-licencia',
     id_type: 'CC',
     id_number: '8899001122',
     name: 'Juliana',
@@ -176,7 +176,7 @@ export const requestTypeLabels: Record<string, string> = {
   'retiro-sindical': 'Retiro Sindical',
   'actualizar-cuenta': 'Actualizar Cuenta Bancaria',
   'microcredito': 'Microcrédito CEII',
-  'incapacidad-maternidad': 'Incapacidades y Licencias',
+  'incapacidad-licencia': 'Incapacidades y Licencias',
   'permisos-turnos': 'Permisos y Cambio de Turnos'
 };
 

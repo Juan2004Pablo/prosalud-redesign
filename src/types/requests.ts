@@ -1,7 +1,7 @@
 
 export interface Request {
   id: string;
-  request_type: 'certificado-convenio' | 'compensacion-anual' | 'descanso-laboral' | 'verificacion-pagos' | 'retiro-sindical' | 'actualizar-cuenta' | 'microcredito' | 'incapacidad-maternidad' | 'permisos-turnos';
+  request_type: 'certificado-convenio' | 'compensacion-anual' | 'descanso-laboral' | 'verificacion-pagos' | 'retiro-sindical' | 'actualizar-cuenta' | 'microcredito' | 'incapacidad-licencia' | 'permisos-turnos';
   id_type: 'CC' | 'CE' | 'TI' | 'PP';
   id_number: string;
   name: string;

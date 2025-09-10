@@ -1,158 +1,141 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import { Button } from '@/components/ui/button';
+import { Form } from '@/components/ui/form';
 import MainLayout from '@/components/layout/MainLayout';
-import { Mail, CheckCircle2, AlertTriangle, FileText, Send, Info, Home, Hospital } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import CopyToClipboardButton from '@/components/ui/copyToClipboardButton';
+import { toast } from 'sonner';
+import { Send, CheckCircle2, AlertCircle, Home, Hospital } from 'lucide-react';
+import { MAX_FILE_SIZE, ALLOWED_FILE_TYPES_ALL } from '@/components/solicitud-certificado/utils';
+import { Link, useNavigate } from 'react-router-dom';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 
+import DatosPersonalesSection from '@/components/solicitud-certificado/DatosPersonalesSection';
+import ConfirmacionCorreoSection from '@/components/solicitud-certificado/ConfirmacionCorreoSection';
+import AutorizacionDatosSection from '@/components/solicitud-certificado/AutorizacionDatosSection';
+
+import IncapacidadesHeader from '@/components/incapacidades/IncapacidadesHeader';
+import InformacionImportanteIncapacidadesAlert from '@/components/incapacidades/InformacionImportanteIncapacidadesAlert';
+import TipoIncapacidadSection from '@/components/incapacidades/TipoIncapacidadSection';
+import AnexoIncapacidadSection from '@/components/incapacidades/AnexoIncapacidadSection';
+
+const formSchemaIncapacidades = z.object({
+  tipoIdentificacion: z.string().min(1, "Este campo es requerido."),
+  numeroIdentificacion: z.string().min(5, "Debe tener al menos 5 dígitos.").regex(/^\d+$/, "Solo se permiten números."),
+  nombres: z.string().min(2, "Este campo es requerido."),
+  apellidos: z.string().min(2, "Este campo es requerido."),
+  correoElectronico: z.string().email("Correo electrónico inválido."),
+  numeroCelular: z.string().min(7, "Número de celular inválido.").regex(/^\d+$/, "Solo se permiten números."),
+  
+  tipoDocumento: z.string().min(1, "Este campo es requerido."),
+  entidadExpedidora: z.string().min(2, "Este campo es requerido."),
+  fechaExpedicion: z.string().min(1, "La fecha de expedición es requerida."),
+  numeroDias: z.string().optional(),
+  observaciones: z.string().optional(),
+  
+  certificadoIncapacidad: z.any()
+    .refine(files => files && files.length > 0, "El certificado de incapacidad es requerido.")
+    .refine(files => files && files?.[0]?.size <= MAX_FILE_SIZE, `El archivo no debe exceder los ${MAX_FILE_SIZE / (1024*1024)}MB.`)
+    .refine(files => files && ALLOWED_FILE_TYPES_ALL.includes(files?.[0]?.type), 'Se permiten archivos PDF, Word o imágenes (JPG, PNG, GIF, WEBP).'),
+});
+
+type FormValuesIncapacidades = z.infer<typeof formSchemaIncapacidades>;
+
 const IncapacidadesLicenciasPage: React.FC = () => {
+  const navigate = useNavigate();
+  const form = useForm<FormValuesIncapacidades>({
+    resolver: zodResolver(formSchemaIncapacidades),
+    defaultValues: {
+      tipoIdentificacion: 'CC',
+      numeroIdentificacion: '',
+      nombres: '',
+      apellidos: '',
+      correoElectronico: '',
+      numeroCelular: '',
+      tipoDocumento: '',
+      entidadExpedidora: '',
+      fechaExpedicion: '',
+      numeroDias: '',
+      observaciones: '',
+      certificadoIncapacidad: undefined,
+    },
+  });
+
+  const onSubmit = (data: FormValuesIncapacidades) => {
+    console.log('Form data Incapacidades:', data);
+    toast.success('Solicitud de incapacidad/licencia enviada', {
+      description: 'Su solicitud ha sido recibida. Se procesará según los plazos establecidos y recibirá una respuesta en máximo 3 días hábiles.',
+      duration: 8000,
+      icon: <CheckCircle2 className="h-5 w-5 text-emerald-600" />,
+      onAutoClose: () => {
+        form.reset();
+        navigate('/');
+      },
+      onDismiss: () => {
+        if (form.formState.isSubmitSuccessful) { 
+            navigate('/');
+        }
+      }
+    });
+  };
+  
+  const handleError = (errors: any) => {
+    console.error("Errores en el formulario:", errors);
+    toast.error('Error al enviar el formulario', {
+      description: 'Por favor verifique los datos ingresados e intente nuevamente. Asegúrese de adjuntar el certificado de incapacidad.',
+      duration: 5000,
+      icon: <AlertCircle className="h-5 w-5 text-red-600" />,
+    });
+  };
+  
+  const idTypes = [
+    { value: "CC", label: "Cédula de Ciudadanía (CC)" },
+    { value: "CE", label: "Cédula de Extranjería (CE)" },
+    { value: "PP", label: "Pasaporte (PP)" },
+    { value: "PT", label: "Permiso por protección temporal (PT)" },
+  ];
+
   return (
     <MainLayout>
       <div className="container mx-auto pt-6 pb-2 px-4 md:px-6 lg:px-8">
-        <Breadcrumb>
-          <BreadcrumbList className="flex items-center space-x-2 text-sm">
+        <Breadcrumb className="mb-8">
+          <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <Link to="/" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
-                  <Home className="h-4 w-4" />
-                  Inicio
-                </Link>
+                <Link to="/"><Home className="h-4 w-4 mr-1 inline-block" /> Inicio</Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage className="flex items-center gap-1 font-medium text-foreground">
-                <FileText className="h-4 w-4" />
-                Incapacidades y Licencias
+              <BreadcrumbPage>
+                <Hospital className="h-4 w-4 mr-1 inline-block" /> Incapacidades y Licencias
               </BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
       </div>
+      
+      <div className="container mx-auto py-8 px-4 md:px-6 lg:px-8">
+        <IncapacidadesHeader />
+        <InformacionImportanteIncapacidadesAlert />
 
-      <div className="container mx-auto py-10 px-4 sm:px-6 lg:px-8 animate-[fadeInUp_0.5s_ease-out]">
-        <header className="mb-12 text-center">
-          <div className="flex justify-center items-center gap-3 mb-4">
-            <Hospital className="h-8 w-8 text-primary-prosalud-dark" />
-            <h1 className="text-4xl font-bold text-primary-prosalud-dark">
-              Incapacidades y Licencias
-            </h1>
-          </div>
-          <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-            Guía completa para el trámite de incapacidades y licencias. Sigue estos pasos para asegurar un proceso ágil y correcto.
-          </p>
-        </header>
-
-        <div className="grid md:grid-cols-2 gap-8 mb-12">
-          <Card className="animate-[fadeInUp_0.7s_ease-out_0.2s_forwards] opacity-0">
-            <CardHeader>
-              <CardTitle className="flex items-center text-2xl text-primary">
-                <Send size={28} className="mr-3 text-secondary" />
-                Proceso de Envío de Incapacidades
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div>
-                <h3 className="font-semibold text-lg mb-2 flex items-center">
-                  <Mail size={20} className="mr-2 text-primary" /> Correo para envío:
-                </h3>
-                <div className="flex items-center">
-                  <p className="text-secondary font-medium text-lg bg-primary/10 p-3 rounded-md inline-block">
-                    incapacidades@sindicatoprosalud.com
-                  </p>
-                  <CopyToClipboardButton textToCopy="incapacidades@sindicatoprosalud.com" />
-                </div>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Este es el único canal para la recepción de incapacidades.
-                </p>
-              </div>
-              <div>
-                <h3 className="font-semibold text-lg mb-2 flex items-center">
-                  <FileText size={20} className="mr-2 text-primary" /> Asunto del Correo:
-                </h3>
-                <p>
-                  Debe indicar: <strong>Nombre completo y número de cédula del afiliado</strong>.
-                </p>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Ej: Asunto: incapacidad Maria Perez CC 123456789
-                </p>
-              </div>
-              <div>
-                <h3 className="font-semibold text-lg mb-2 flex items-center">
-                  <FileText size={20} className="mr-2 text-primary" /> Archivos Adjuntos:
-                </h3>
-                <p>
-                  Anexar únicamente archivos en formato <strong>PDF</strong>.
-                </p>
-                <p>
-                  El documento debe ser <strong>legible y completo</strong>.
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="animate-[fadeInUp_0.7s_ease-out_0.4s_forwards] opacity-0">
-            <CardHeader>
-              <CardTitle className="flex items-center text-2xl text-primary">
-                <Info size={28} className="mr-3 text-secondary" />
-                Recomendaciones Importantes
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {[
-                "El afiliado garantiza que las incapacidades son originales, sin alteraciones ni enmendaduras.",
-                "Si tiene incapacidades por diferentes diagnósticos, envíe un correo por cada incapacidad.",
-                "Fecha límite de envío: dentro de los 5 días calendario siguientes a la fecha de expedición del certificado.",
-                "El mero envío de la incapacidad no implica su aprobación o aceptación para pago.",
-                "Solo se reciben incapacidades expedidas por su respectiva EPS/ARL."
-              ].map((item, index) => (
-                <div key={index} className="flex items-start">
-                  <CheckCircle2 size={20} className="mr-2 text-primary flex-shrink-0 mt-1" />
-                  <p>{item}</p>
-                </div>
-              ))}
-            </CardContent>
-          </Card>
-        </div>
-
-        <Card className="mb-12 animate-[fadeInUp_0.7s_ease-out_0.6s_forwards] opacity-0">
-          <CardHeader>
-            <CardTitle className="flex items-center text-2xl text-primary">
-              <Mail size={28} className="mr-3 text-secondary" />
-              Respuesta del Sindicato ProSalud
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <p>
-              ProSalud enviará una respuesta sobre la información recibida en un plazo de <strong>3 días hábiles</strong>.
-            </p>
-            <p>
-              Esta respuesta se enviará únicamente desde el correo: <strong className="text-secondary">incapacidades@sindicatoprosalud.com</strong> y se remitirá al mismo correo desde donde se recibió la incapacidad.
-            </p>
-            <p>
-              Se entenderá como fecha de recepción de la Incapacidad Temporal (IT) por parte de ProSalud, la fecha en la que el sindicato recibe el email en el buzón mencionado.
-            </p>
-            <p>
-              Las incapacidades temporales remitidas por este buzón no se entienden como aprobadas ni aceptadas para pago hasta su validación.
-            </p>
-            <p className="font-semibold">
-              Este buzón es exclusivo para la recepción de incapacidades por parte de los afiliados.
-            </p>
-          </CardContent>
-        </Card>
-
-        <Alert variant="destructive" className="animate-[fadeInUp_0.7s_ease-out_0.8s_forwards] opacity-0">
-          <AlertTriangle className="h-5 w-5" />
-          <AlertTitle className="text-lg font-semibold">¡Atención!</AlertTitle>
-          <AlertDescription className="text-base">
-            Solo se procesarán incapacidades expedidas por su respectiva <strong>EPS o ARL</strong>. Asegúrese de que los documentos cumplan con este requisito fundamental.
-            <p className="mt-2 text-sm">
-              El horario de revisión de solicitudes es de lunes a viernes de 7:00 a.m. a 4:00 p.m. Cualquier registro vencido el citado horario, se entenderá presentado el siguiente día hábil. Se registran y asigna su revisión por orden de registro.
-            </p>
-          </AlertDescription>
-        </Alert>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit, handleError)} className="space-y-8">
+            <DatosPersonalesSection control={form.control} idTypes={idTypes} />
+            <TipoIncapacidadSection control={form.control} />
+            <AnexoIncapacidadSection control={form.control} />
+            <ConfirmacionCorreoSection />
+            <AutorizacionDatosSection />
+                        
+            <div className="flex justify-center mt-10">
+              <Button type="submit" size="lg" className="w-full md:w-auto bg-secondary-prosaludgreen hover:bg-secondary-prosaludgreen/90 text-white flex items-center gap-2">
+                <Send className="h-5 w-5" />
+                Enviar Solicitud
+              </Button>
+            </div>
+          </form>
+        </Form>
       </div>
     </MainLayout>
   );
