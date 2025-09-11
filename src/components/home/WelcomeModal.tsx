@@ -2,10 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { 
   Sparkles, 
-  MessageCircle, 
+  MessageSquare,
   Settings, 
   CheckCircle, 
   X 
@@ -47,7 +46,7 @@ const WelcomeModal: React.FC = () => {
       description: 'Formularios más intuitivos y procesos simplificados para tus trámites.'
     },
     {
-      icon: MessageCircle,
+      icon: MessageSquare,
       title: 'Chatbot Inteligente',
       description: 'Asistente virtual disponible 24/7 para resolver tus dudas instantáneamente.'
     },
@@ -80,16 +79,13 @@ const WelcomeModal: React.FC = () => {
               </div>
             </div>
             <DialogHeader className="space-y-0">
-              <DialogTitle className="text-xl sm:text-2xl font-bold text-white mb-2 leading-tight">
+              <DialogTitle className="text-xl sm:text-2xl font-bold justify-center text-center text-white mb-2 leading-tight">
                 ¡Bienvenido al Nuevo ProSalud!
               </DialogTitle>
             </DialogHeader>
             <p className="text-white/90 text-sm sm:text-base leading-relaxed px-2">
               Hemos rediseñado nuestro sitio web pensando en ti
             </p>
-            <Badge className="mt-3 bg-white/20 text-white border-white/30 hover:bg-white/30 font-medium text-xs sm:text-sm">
-              Versión 2.0
-            </Badge>
           </div>
         </div>
 
@@ -130,7 +126,7 @@ const WelcomeModal: React.FC = () => {
 
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-2.5 sm:p-3 mt-4">
               <div className="flex gap-2.5 sm:gap-3">
-                <MessageCircle className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-blue-600 flex-shrink-0 mt-0.5" />
+                <MessageSquare className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-blue-600 flex-shrink-0 mt-0.5" />
                 <div>
                   <p className="text-xs text-blue-800 leading-relaxed">
                     <strong>¡Prueba nuestro chatbot!</strong> Haz clic en el ícono de chat en la esquina inferior derecha 

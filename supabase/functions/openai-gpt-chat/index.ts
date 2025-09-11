@@ -78,7 +78,7 @@ ENLACES EXTERNOS IMPORTANTES:
 - Cuadro de Turnos: https://www.prosanet.com/#/shifts-employees/index
 - Encuesta de Bienestar: https://forms.gle/2YnLMixdN6EnZ7Qq6
 - Portal ARUS SUAPORTE (Seguridad Social): Disponible en la página de certificado de seguridad social
-- Comfenalco Antioquia: https://www.comfenalcoantioquia.com.co/
+- Comfenalco Antioquia: https://www.comfenalcoantioquia.com.co/personas
 
 INSTRUCCIONES PARA PROPORCIONAR ENLACES:
 1. Cuando el usuario pregunte sobre un servicio específico, SIEMPRE incluye el enlace correspondiente

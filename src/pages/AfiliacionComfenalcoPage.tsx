@@ -248,7 +248,7 @@ const AfiliacionComfenalcoPage: React.FC = () => {
                 <div className="text-center pt-4">
                   <Button 
                     className="bg-primary-prosalud hover:bg-primary-prosalud/90"
-                    onClick={() => window.open('https://www.comfenalcoantioquia.com.co/', '_blank')}
+                    onClick={() => window.open('https://www.comfenalcoantioquia.com.co/personas', '_blank')}
                   >
                     <ExternalLink className="h-4 w-4 mr-2" />
                     Visitar sitio web de Comfenalco
