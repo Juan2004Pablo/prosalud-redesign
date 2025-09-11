@@ -14,9 +14,9 @@ const Index: React.FC = () => {
       <WelcomeModal />
       <HeroSection />
       <ComfenalcoSection />
-      <ConveniosSection />
-      <GaleriaBienestarIntroSection />
       <QuickLinksSection />
+      <GaleriaBienestarIntroSection />
+      <ConveniosSection />
     </MainLayout>
   );
 };
