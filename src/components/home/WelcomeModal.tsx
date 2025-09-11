@@ -79,8 +79,8 @@ const WelcomeModal: React.FC = () => {
               </div>
             </div>
             <DialogHeader className="space-y-0">
-              <DialogTitle className="text-xl sm:text-2xl font-bold justify-center text-center text-white mb-2 leading-tight">
-                ¡Bienvenido al Nuevo ProSalud!
+              <DialogTitle className="text-3xl sm:text-4xl font-bold justify-center text-center text-white mb-2 leading-tight">
+                ¡Bienvenido a ProSalud!
               </DialogTitle>
             </DialogHeader>
             <p className="text-white/90 text-sm sm:text-base leading-relaxed px-2">
@@ -93,10 +93,10 @@ const WelcomeModal: React.FC = () => {
         <div className="px-4 sm:px-6 py-4 sm:py-6">
           <div className="space-y-4 sm:space-y-5">
             <div className="text-center mb-4 sm:mb-5">
-              <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">
+              <h3 className="text-base sm:text-xl font-semibold text-gray-900 mb-2">
                 ¿Qué hay de nuevo?
               </h3>
-              <p className="text-gray-600 text-xs sm:text-sm leading-relaxed px-2">
+              <p className="text-gray-600 text-xs sm:text-base leading-relaxed px-2">
                 Descubre las mejoras que hemos implementado para brindarte un mejor servicio
               </p>
             </div>
@@ -126,7 +126,6 @@ const WelcomeModal: React.FC = () => {
 
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-2.5 sm:p-3 mt-4">
               <div className="flex gap-2.5 sm:gap-3">
-                <MessageSquare className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-blue-600 flex-shrink-0 mt-0.5" />
                 <div>
                   <p className="text-xs text-blue-800 leading-relaxed">
                     <strong>¡Prueba nuestro chatbot!</strong> Haz clic en el ícono de chat en la esquina inferior derecha 
@@ -141,7 +140,7 @@ const WelcomeModal: React.FC = () => {
                 onClick={handleClose}
                 className="bg-primary-prosalud hover:bg-primary-prosalud-dark px-4 sm:px-6 py-2 text-xs sm:text-sm font-medium w-full sm:w-auto"
               >
-                ¡Entendido, explorar el sitio!
+                Explorar el nuevo sitio
               </Button>
             </div>
           </div>
