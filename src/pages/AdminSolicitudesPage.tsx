@@ -559,20 +559,10 @@ const AdminSolicitudesPage: React.FC = () => {
                       </CardHeader>
                       <CardContent className="p-6">
                         <div className="bg-white border border-gray-200 rounded-lg p-4">
-                          <ReactJson 
-                            src={selectedSolicitud.payload}
-                            theme="bright:inverted"
-                            displayDataTypes={false}
-                            displayObjectSize={false}
-                            enableClipboard={true}
+                          <JsonView
+                            value={selectedSolicitud.payload}
                             collapsed={1}
-                            name="detalles"
-                            style={{
-                              backgroundColor: '#fafafa',
-                              padding: '16px',
-                              borderRadius: '8px',
-                              fontSize: '14px'
-                            }}
+                            style={{ fontSize: '12px', backgroundColor: '#fafafa' }}
                           />
                         </div>
                       </CardContent>

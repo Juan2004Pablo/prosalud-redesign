@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/context/AuthContext';
 import UserProfileDropdown from './UserProfileDropdown';
 
 interface AdminLayoutProps {
@@ -18,6 +19,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { user } = useAuth();
 
   const navigation = [
     { name: 'Dashboard', href: '/admin', icon: BarChart3 },
@@ -215,10 +217,13 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
             <div className="flex items-center space-x-4">
               <div className="hidden sm:flex items-center space-x-4">
                 <div className="text-sm text-slate-600">
-                  Bienvenido <span className="font-medium text-primary-prosalud"></span>
+                  Bienvenido <span className="font-medium text-primary-prosalud">{user?.name || 'Administrador'}</span>
                 </div>
               </div>
-              <UserProfileDropdown />
+              <UserProfileDropdown 
+                userEmail={user?.email} 
+                userName={user?.name} 
+              />
             </div>
           </div>
         </div>

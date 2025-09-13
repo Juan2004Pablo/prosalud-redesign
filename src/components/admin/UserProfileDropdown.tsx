@@ -34,6 +34,7 @@ const UserProfileDropdown: React.FC<UserProfileDropdownProps> = ({
   const [showUpdateProfile, setShowUpdateProfile] = useState(false);
 
   const { logout } = useAuth();
+  const initials = getInitialsFromEmail(userEmail);
 
   const handleLogout = async () => {
     setIsOpen(false);
