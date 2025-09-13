@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useToast } from '@/hooks/use-toast';
 import { getInitialsFromEmail } from '@/utils/avatarUtils';
-import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/context/AuthContext';
 import ChangePasswordDialog from './ChangePasswordDialog';
 import UpdateProfileDialog from './UpdateProfileDialog';
 
@@ -33,31 +33,23 @@ const UserProfileDropdown: React.FC<UserProfileDropdownProps> = ({
   const [showChangePassword, setShowChangePassword] = useState(false);
   const [showUpdateProfile, setShowUpdateProfile] = useState(false);
 
-  const initials = userEmail ? getInitialsFromEmail(userEmail) : 'AD';
+  const { logout } = useAuth();
 
   const handleLogout = async () => {
     setIsOpen(false);
     try {
-      const { error } = await supabase.auth.signOut();
-      if (error) {
-        toast({
-          title: "Error",
-          description: "No se pudo cerrar la sesión",
-          variant: "destructive"
-        });
-      } else {
-        toast({
-          title: "Sesión cerrada",
-          description: "Has cerrado sesión exitosamente.",
-          variant: "default",
-          className: "border-green-200 bg-green-50 text-green-800"
-        });
-        navigate('/login');
-      }
+      await logout();
+      toast({
+        title: "Sesión cerrada",
+        description: "Has cerrado sesión exitosamente.",
+        variant: "default",
+        className: "border-green-200 bg-green-50 text-green-800"
+      });
+      navigate('/auth/login');
     } catch (error) {
       toast({
         title: "Error",
-        description: "Ocurrió un error inesperado",
+        description: "Ocurrió un error al cerrar sesión.",
         variant: "destructive"
       });
     }

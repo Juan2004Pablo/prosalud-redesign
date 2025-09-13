@@ -12,6 +12,7 @@ import { Eye, EyeOff } from "lucide-react"
 import { Link, useNavigate, useLocation } from "react-router-dom"
 import { motion } from "framer-motion"
 import { useToast } from "@/hooks/use-toast"
+import { useAuth } from "@/context/AuthContext"
 
 // Enhanced validation schema with stronger security requirements
 const formSchema = z.object({
@@ -48,6 +49,7 @@ const LoginForm: React.FC = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const { toast } = useToast()
+  const { login } = useAuth()
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(formSchema),
@@ -68,39 +70,18 @@ const LoginForm: React.FC = () => {
     setIsSubmitting(true)
 
     try {
-      // Simulación de autenticación
-      console.log("Intento de login para:", values.emailOrUser)
+      await login(values.emailOrUser, values.password)
 
-      // Credenciales de prueba para acceso administrativo
-      const adminCredentials = {
-        email: "admin@prosalud.com",
-        password: "ProSalud2024"
-      }
-
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-
-      if (values.emailOrUser === adminCredentials.email && values.password === adminCredentials.password) {
-        // Login exitoso
-        localStorage.setItem('prosalud_admin_token', 'mock_admin_token_12345')
-        
-        toast({
-          title: "¡Bienvenido!",
-          description: "Has iniciado sesión correctamente en el panel administrativo.",
-        })
-
-        // Redirigir al panel administrativo o a la página que intentaba acceder
-        const from = location.state?.from?.pathname || '/admin'
-        navigate(from, { replace: true })
-      } else {
-        form.setError("root", {
-          message: "Credenciales incorrectas. Usa admin@prosalud.com / ProSalud2024",
-        })
-        setLoginAttempts((prev) => prev + 1)
-      }
-    } catch (error) {
-      form.setError("root", {
-        message: "Error en el servidor. Intenta de nuevo más tarde.",
+      toast({
+        title: "¡Bienvenido!",
+        description: "Has iniciado sesión correctamente en el panel administrativo.",
       })
+
+      const from = (location.state as any)?.from?.pathname || '/admin'
+      navigate(from, { replace: true })
+    } catch (error: any) {
+      const message = error?.response?.data?.message || 'Credenciales inválidas o error de autenticación.'
+      form.setError("root", { message })
       setLoginAttempts((prev) => prev + 1)
     } finally {
       setIsSubmitting(false)
@@ -164,12 +145,12 @@ const LoginForm: React.FC = () => {
               name="emailOrUser"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email o usuario</FormLabel>
+                  <FormLabel>Email</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Tu usuario actual"
+                      placeholder="tu@correo.com"
                       {...field}
-                      autoComplete="username"
+                      autoComplete="email"
                       disabled={isSubmitting}
                       maxLength={100}
                     />
@@ -236,7 +217,7 @@ const LoginForm: React.FC = () => {
           )}
 
           <motion.div variants={itemVariants} className="text-left">
-            <Link to="/forgot-password" className="text-sm text-primary-prosalud hover:underline">
+            <Link to="/auth/forgot-password" className="text-sm text-primary-prosalud hover:underline">
               ¿Olvidaste tu contraseña?
             </Link>
           </motion.div>

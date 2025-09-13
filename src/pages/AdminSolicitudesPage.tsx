@@ -29,7 +29,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import ReactJson from 'react-json-view';
+import JsonView from '@uiw/react-json-view';
 import { solicitudesService } from '@/services/solicitudesService';
 import { Request } from '@/types/requests';
 
