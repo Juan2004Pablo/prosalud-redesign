@@ -25,8 +25,12 @@ export const submitRequest = async (requestData: RequestData): Promise<any> => {
     formData.append('email', requestData.email);
     formData.append('phone_number', requestData.phone_number);
     
-    // Add payload as JSON string
-    formData.append('payload', JSON.stringify(requestData.payload));
+    // Add payload fields individually
+    Object.entries(requestData.payload).forEach(([key, value]) => {
+      if (value !== null && value !== undefined) {
+        formData.append(`payload[${key}]`, typeof value === 'object' ? JSON.stringify(value) : String(value));
+      }
+    });
     
     // Add files if present
     if (requestData.files) {
