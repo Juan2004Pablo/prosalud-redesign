@@ -90,20 +90,18 @@ const IncapacidadesLicenciasPage: React.FC = () => {
 
       await submitRequest(requestData);
 
+      form.reset();
+      
       toast.success('Solicitud de incapacidad/licencia enviada', {
         description: 'Su solicitud ha sido recibida. Se procesará según los plazos establecidos y recibirá una respuesta en máximo 3 días hábiles.',
         duration: 8000,
-        icon: <CheckCircle2 className="h-5 w-5 text-emerald-600" />,
-        onAutoClose: () => {
-          form.reset();
-          navigate('/');
-        },
-        onDismiss: () => {
-          if (form.formState.isSubmitSuccessful) { 
-              navigate('/');
-          }
-        }
+        icon: <CheckCircle2 className="h-5 w-5 text-emerald-600" />
       });
+      
+      // Redirect immediately but with a small delay to ensure toast is visible
+      setTimeout(() => {
+        navigate('/');
+      }, 500);
     } catch (error) {
       handleError(error);
     }

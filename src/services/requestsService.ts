@@ -25,12 +25,26 @@ export const submitRequest = async (requestData: RequestData): Promise<any> => {
     formData.append('email', requestData.email);
     formData.append('phone_number', requestData.phone_number);
     
-    // Add payload fields individually
-    Object.entries(requestData.payload).forEach(([key, value]) => {
-      if (value !== null && value !== undefined) {
-        formData.append(`payload[${key}]`, typeof value === 'object' ? JSON.stringify(value) : String(value));
-      }
-    });
+    // Add payload fields individually - handle nested objects properly
+    const addPayloadFields = (obj: Record<string, any>, prefix: string = 'payload') => {
+      Object.entries(obj).forEach(([key, value]) => {
+        if (value !== null && value !== undefined) {
+          const fieldName = `${prefix}[${key}]`;
+          if (typeof value === 'object' && !Array.isArray(value) && !(value instanceof File)) {
+            // For nested objects, add each property as a separate field
+            Object.entries(value).forEach(([nestedKey, nestedValue]) => {
+              if (nestedValue !== null && nestedValue !== undefined) {
+                formData.append(`${fieldName}[${nestedKey}]`, String(nestedValue));
+              }
+            });
+          } else {
+            formData.append(fieldName, String(value));
+          }
+        }
+      });
+    };
+    
+    addPayloadFields(requestData.payload);
     
     // Add files if present
     if (requestData.files) {

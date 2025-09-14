@@ -98,6 +98,8 @@ const VerificacionPagosPage: React.FC = () => {
 
       await submitRequest(requestData);
 
+      form.reset();
+      
       toast.success('Solicitud de verificación enviada con éxito', {
         description: (
           <>
@@ -107,17 +109,13 @@ const VerificacionPagosPage: React.FC = () => {
           </>
         ),
         duration: 8000,
-        icon: <CheckCircle2 className="h-5 w-5 text-emerald-600" />,
-        onAutoClose: () => {
-          form.reset();
-          navigate('/');
-        },
-        onDismiss: () => {
-          if (form.formState.isSubmitSuccessful) { 
-              navigate('/');
-          }
-        }
+        icon: <CheckCircle2 className="h-5 w-5 text-emerald-600" />
       });
+      
+      // Redirect immediately but with a small delay to ensure toast is visible
+      setTimeout(() => {
+        navigate('/');
+      }, 500);
     } catch (error) {
       handleError();
     }

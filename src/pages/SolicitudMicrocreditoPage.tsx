@@ -96,12 +96,17 @@ const SolicitudMicrocreditoPage: React.FC = () => {
 
       await submitRequest(requestData);
 
+      form.reset();
+      
       toast({
         title: "Solicitud enviada",
         description: "Su solicitud de microcrédito ha sido enviada para revisión.",
       });
-      form.reset();
-      navigate('/');
+      
+      // Redirect immediately but with a small delay to ensure toast is visible
+      setTimeout(() => {
+        navigate('/');
+      }, 500);
     } catch (error) {
       toast({
         title: "Error",
