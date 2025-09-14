@@ -6,7 +6,7 @@ export const baseNameValidation = z
   .string()
   .min(2, 'Mínimo 2 caracteres')
   .max(50, 'Máximo 50 caracteres')
-  .regex(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/, 'Solo se permiten letras y espacios');
+  .regex(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s,.]+$/, 'Solo se permiten letras, espacios, comas y puntos');
 
 export const baseEmailValidation = z
   .string()
@@ -16,7 +16,8 @@ export const baseEmailValidation = z
 
 export const baseTextValidation = z
   .string()
-  .max(500, 'Máximo 500 caracteres');
+  .max(500, 'Máximo 500 caracteres')
+  .regex(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s,.\d]*$/, 'Solo se permiten letras, números, espacios, comas y puntos');
 
 export const baseUrlValidation = z
   .string()
@@ -27,7 +28,7 @@ export const baseCategoryValidation = z
   .string()
   .min(1, 'La categoría es requerida')
   .max(30, 'Máximo 30 caracteres')
-  .regex(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/, 'Solo se permiten letras y espacios');
+  .regex(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s,.]+$/, 'Solo se permiten letras, espacios, comas y puntos');
 
 // Validaciones finales con refinements de seguridad
 export const nameValidation = baseNameValidation
@@ -37,10 +38,10 @@ export const emailValidation = baseEmailValidation;
 
 export const textValidation = baseTextValidation
   .refine(val => {
-    // No permitir scripts o código malicioso
-    const dangerousPatterns = /<script|javascript:|data:|vbscript:|on\w+\s*=/i;
+    // No permitir scripts, HTML, código malicioso o caracteres especiales peligrosos
+    const dangerousPatterns = /<[^>]*>|javascript:|data:|vbscript:|on\w+\s*=|[\<\>\"\'\`\{\}\[\]\(\)\|\\\&\^\$\#\@\!\%\*\+\=\~\?]/i;
     return !dangerousPatterns.test(val);
-  }, 'Contiene caracteres no permitidos');
+  }, 'Contiene caracteres no permitidos o código malicioso');
 
 export const urlValidation = baseUrlValidation
   .refine(val => {
