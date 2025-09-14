@@ -160,9 +160,11 @@ const SolicitudCertificadoConvenioPage: React.FC = () => {
         email: data.correoElectronico,
         phone_number: data.numeroCelular,
         payload: {
-          ...data,
-          actividadesPdf: undefined,
-          adjuntarArchivoAdicional: undefined
+          infoCertificado: data.infoCertificado,
+          dirigidoAQuien: data.dirigidoAQuien,
+          tipoVehiculo: data.tipoVehiculo,
+          placaVehiculo: data.placaVehiculo,
+          otrosDescripcion: data.otrosDescripcion
         },
         files
       };

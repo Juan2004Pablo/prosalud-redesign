@@ -102,8 +102,11 @@ const SolicitudDescansoSindicalPage: React.FC = () => {
         email: data.correoElectronico,
         phone_number: data.numeroCelular,
         payload: {
-          ...data,
-          anexoDescanso: undefined
+          proceso: data.proceso,
+          dondeRealizaProceso: data.dondeRealizaProceso,
+          coordinadorVoBo: data.coordinadorVoBo,
+          fechaInicioDescanso: data.fechaInicioDescanso,
+          fechaFinalizacionDescanso: data.fechaFinalizacionDescanso
         },
         files
       };

@@ -79,8 +79,11 @@ const IncapacidadesLicenciasPage: React.FC = () => {
         email: data.correoElectronico,
         phone_number: data.numeroCelular,
         payload: {
-          ...data,
-          certificadoIncapacidad: undefined // Remove file from payload as it's sent separately
+          tipoDocumento: data.tipoDocumento,
+          entidadExpedidora: data.entidadExpedidora,
+          fechaExpedicion: data.fechaExpedicion,
+          numeroDias: data.numeroDias,
+          observaciones: data.observaciones
         },
         files
       };

@@ -95,9 +95,9 @@ const SolicitudAnualDiferidaPage: React.FC = () => {
         email: data.correoElectronico,
         phone_number: data.numeroCelular,
         payload: {
-          ...data,
-          anexoFormatoDiligenciado: undefined,
-          anexoEvidenciaSolicitud: undefined
+          proceso: data.proceso,
+          dondeRealizaProceso: data.dondeRealizaProceso,
+          motivoSolicitud: data.motivoSolicitud
         },
         files
       };

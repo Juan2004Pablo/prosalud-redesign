@@ -85,8 +85,8 @@ const SolicitudRetiroSindicalPage: React.FC = () => {
         email: data.correoElectronico,
         phone_number: data.numeroCelular,
         payload: {
-          ...data,
-          formatoRetiroAnexo: undefined // Remove file from payload as it's sent separately
+          proceso: data.proceso,
+          dondeRealizaProceso: data.dondeRealizaProceso
         },
         files
       };

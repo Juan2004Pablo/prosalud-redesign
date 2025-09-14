@@ -87,7 +87,11 @@ const SolicitudMicrocreditoPage: React.FC = () => {
         last_name: data.apellidos,
         email: data.correoElectronico,
         phone_number: data.numeroCelular,
-        payload: data,
+        payload: {
+          sedeProceso: data.sedeProceso,
+          montoSolicitado: data.montoSolicitado,
+          numeroCuotas: data.numeroCuotas
+        },
       };
 
       await submitRequest(requestData);
