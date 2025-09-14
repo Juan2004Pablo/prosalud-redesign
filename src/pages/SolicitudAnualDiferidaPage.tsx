@@ -76,28 +76,57 @@ const SolicitudAnualDiferidaPage: React.FC = () => {
     },
   });
 
-  const onSubmit = (data: FormValuesAnualDiferida) => {
-    console.log('Formulario de solicitud anual diferida enviado:', data);
-    toast.success('Solicitud de compensación anual diferida enviada', {
-      description: (
-        <>
-          Su solicitud será revisada y procesada según los plazos establecidos.
-          <br />
-          <strong className="mt-2 block font-semibold">Tenga presente:</strong> Solamente en caso de presentarse alguna inconsistencia nos comunicaremos con usted.
-        </>
-      ),
-      duration: 8000,
-      icon: <CheckCircle2 className="h-5 w-5 text-emerald-600" />,
-      onAutoClose: () => {
-        form.reset();
-        navigate('/');
-      },
-      onDismiss: () => {
-        if (form.formState.isSubmitSuccessful) { 
-            navigate('/');
-        }
+  const onSubmit = async (data: FormValuesAnualDiferida) => {
+    try {
+      const files: Record<string, File> = {};
+      if (data.anexoFormatoDiligenciado) {
+        files.anexoFormatoDiligenciado = data.anexoFormatoDiligenciado;
       }
-    });
+      if (data.anexoEvidenciaSolicitud) {
+        files.anexoEvidenciaSolicitud = data.anexoEvidenciaSolicitud;
+      }
+
+      const requestData = {
+        request_type: 'compensacion-anual',
+        id_type: data.tipoIdentificacion,
+        id_number: data.numeroIdentificacion,
+        name: data.nombres,
+        last_name: data.apellidos,
+        email: data.correoElectronico,
+        phone_number: data.numeroCelular,
+        payload: {
+          ...data,
+          anexoFormatoDiligenciado: undefined,
+          anexoEvidenciaSolicitud: undefined
+        },
+        files
+      };
+
+      await submitRequest(requestData);
+
+      toast.success('Solicitud de compensación anual diferida enviada', {
+        description: (
+          <>
+            Su solicitud será revisada y procesada según los plazos establecidos.
+            <br />
+            <strong className="mt-2 block font-semibold">Tenga presente:</strong> Solamente en caso de presentarse alguna inconsistencia nos comunicaremos con usted.
+          </>
+        ),
+        duration: 8000,
+        icon: <CheckCircle2 className="h-5 w-5 text-emerald-600" />,
+        onAutoClose: () => {
+          form.reset();
+          navigate('/');
+        },
+        onDismiss: () => {
+          if (form.formState.isSubmitSuccessful) { 
+              navigate('/');
+          }
+        }
+      });
+    } catch (error) {
+      handleError();
+    }
   };
   
   const handleError = () => {

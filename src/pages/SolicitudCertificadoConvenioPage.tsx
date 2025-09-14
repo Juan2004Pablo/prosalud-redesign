@@ -141,28 +141,57 @@ const SolicitudCertificadoConvenioPage: React.FC = () => {
     },
   });
 
-  const onSubmit = (data: FormValues) => {
-    console.log('Form data (reCAPTCHA temporalmente desactivado):', data);
-    toast.success('Solicitud enviada con éxito', {
-      description: (
-        <>
-          Recibirá el certificado en su correo en los próximos días hábiles.
-          <br />
-          <strong className="mt-2 block font-semibold">Tenga presente:</strong> Solamente en caso de presentarse alguna inconsistencia nos comunicaremos con usted.
-        </>
-      ),
-      duration: 8000,
-      icon: <CheckCircle2 className="h-5 w-5 text-emerald-600" />,
-      onAutoClose: () => {
-        form.reset();
-        navigate('/');
-      },
-      onDismiss: () => {
-        if (form.formState.isSubmitSuccessful) { 
-            navigate('/');
-        }
+  const onSubmit = async (data: FormValues) => {
+    try {
+      const files: Record<string, File> = {};
+      if (data.actividadesPdf) {
+        files.actividadesPdf = data.actividadesPdf;
       }
-    });
+      if (data.adjuntarArchivoAdicional) {
+        files.adjuntarArchivoAdicional = data.adjuntarArchivoAdicional;
+      }
+
+      const requestData = {
+        request_type: 'certificado-convenio',
+        id_type: data.tipoIdentificacion,
+        id_number: data.numeroIdentificacion,
+        name: data.nombres,
+        last_name: data.apellidos,
+        email: data.correoElectronico,
+        phone_number: data.numeroCelular,
+        payload: {
+          ...data,
+          actividadesPdf: undefined,
+          adjuntarArchivoAdicional: undefined
+        },
+        files
+      };
+
+      await submitRequest(requestData);
+
+      toast.success('Solicitud enviada con éxito', {
+        description: (
+          <>
+            Recibirá el certificado en su correo en los próximos días hábiles.
+            <br />
+            <strong className="mt-2 block font-semibold">Tenga presente:</strong> Solamente en caso de presentarse alguna inconsistencia nos comunicaremos con usted.
+          </>
+        ),
+        duration: 8000,
+        icon: <CheckCircle2 className="h-5 w-5 text-emerald-600" />,
+        onAutoClose: () => {
+          form.reset();
+          navigate('/');
+        },
+        onDismiss: () => {
+          if (form.formState.isSubmitSuccessful) { 
+              navigate('/');
+          }
+        }
+      });
+    } catch (error) {
+      handleError();
+    }
   };
   
   const handleError = () => {

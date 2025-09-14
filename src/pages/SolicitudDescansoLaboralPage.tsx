@@ -86,28 +86,53 @@ const SolicitudDescansoSindicalPage: React.FC = () => {
     },
   });
 
-  const onSubmit = (data: FormValues) => {
-    console.log('Formulario de solicitud de descanso sindical enviado:', data);
-    toast.success('Solicitud de descanso enviada con éxito', {
-      description: (
-        <>
-          Su solicitud será revisada y en caso de ser aprobada será incluida junto con la compensación correspondiente.
-          <br />
-          <strong className="mt-2 block font-semibold">Tenga presente:</strong> Solamente en caso de presentarse alguna inconsistencia nos comunicaremos con usted.
-        </>
-      ),
-      duration: 8000,
-      icon: <CheckCircle2 className="h-5 w-5 text-emerald-600" />,
-      onAutoClose: () => {
-        form.reset();
-        navigate('/');
-      },
-      onDismiss: () => {
-        if (form.formState.isSubmitSuccessful) { 
-            navigate('/');
-        }
+  const onSubmit = async (data: FormValues) => {
+    try {
+      const files: Record<string, File> = {};
+      if (data.anexoDescanso) {
+        files.anexoDescanso = data.anexoDescanso;
       }
-    });
+
+      const requestData = {
+        request_type: 'descanso-laboral',
+        id_type: data.tipoIdentificacion,
+        id_number: data.numeroIdentificacion,
+        name: data.nombres,
+        last_name: data.apellidos,
+        email: data.correoElectronico,
+        phone_number: data.numeroCelular,
+        payload: {
+          ...data,
+          anexoDescanso: undefined
+        },
+        files
+      };
+
+      await submitRequest(requestData);
+
+      toast.success('Solicitud de descanso enviada con éxito', {
+        description: (
+          <>
+            Su solicitud será revisada y en caso de ser aprobada será incluida junto con la compensación correspondiente.
+            <br />
+            <strong className="mt-2 block font-semibold">Tenga presente:</strong> Solamente en caso de presentarse alguna inconsistencia nos comunicaremos con usted.
+          </>
+        ),
+        duration: 8000,
+        icon: <CheckCircle2 className="h-5 w-5 text-emerald-600" />,
+        onAutoClose: () => {
+          form.reset();
+          navigate('/');
+        },
+        onDismiss: () => {
+          if (form.formState.isSubmitSuccessful) { 
+              navigate('/');
+          }
+        }
+      });
+    } catch (error) {
+      handleError();
+    }
   };
   
   const handleError = () => {
