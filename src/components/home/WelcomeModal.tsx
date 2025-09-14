@@ -80,7 +80,7 @@ const WelcomeModal: React.FC = () => {
             </div>
             <DialogHeader className="space-y-0">
               <DialogTitle className="text-3xl sm:text-4xl font-bold justify-center text-center text-white mb-2 leading-tight">
-                ¡Bienvenido a ProSalud!
+                ¡Bienvenido a <span className="text-prosalud-pro">Pro</span><span className="text-prosalud-salud">Salud</span>!
               </DialogTitle>
             </DialogHeader>
             <p className="text-white/90 text-sm sm:text-base leading-relaxed px-2">
