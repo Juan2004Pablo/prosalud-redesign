@@ -2,15 +2,16 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-import { Button } from '@/components/ui/button';
+import { z } from 'zod';
 import { Form } from '@/components/ui/form';
-import MainLayout from '@/components/layout/MainLayout';
+import { Button } from '@/components/ui/button';
+import { CheckCircle2, AlertCircle, Send, Home, FileText } from 'lucide-react';
 import { toast } from 'sonner';
-import { Send, CheckCircle2, AlertCircle, Home, FileText } from 'lucide-react';
+import { useNavigate, Link } from 'react-router-dom';
+import MainLayout from '@/components/layout/MainLayout';
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
+import { submitRequest } from '@/services/requestsService';
 import { MAX_FILE_SIZE, ALLOWED_FILE_TYPES_ALL } from '@/components/solicitud-certificado/utils';
-import { Link, useNavigate } from 'react-router-dom';
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 
 import SolicitudRetiroHeader from '@/components/solicitud-retiro/SolicitudRetiroHeader';
 import InformacionGeneralRetiroSection from '@/components/solicitud-retiro/InformacionGeneralRetiroSection';
@@ -68,28 +69,53 @@ const SolicitudRetiroSindicalPage: React.FC = () => {
     },
   });
 
-  const onSubmit = (data: FormValues) => {
-    console.log('Formulario de solicitud de retiro sindical enviado:', data);
-    toast.success('Solicitud de retiro enviada con éxito', {
-      description: (
-        <>
-          Su solicitud ha sido recibida y será procesada según los procedimientos establecidos.
-          <br />
-          <strong className="mt-2 block font-semibold">Importante:</strong> En caso de requerir información adicional nos comunicaremos con usted.
-        </>
-      ),
-      duration: 8000,
-      icon: <CheckCircle2 className="h-5 w-5 text-emerald-600" />,
-      onAutoClose: () => {
-        form.reset();
-        navigate('/');
-      },
-      onDismiss: () => {
-        if (form.formState.isSubmitSuccessful) { 
-            navigate('/');
-        }
+  const onSubmit = async (data: FormValues) => {
+    try {
+      const files: Record<string, File> = {};
+      if (data.formatoRetiroAnexo) {
+        files.formatoRetiroAnexo = data.formatoRetiroAnexo;
       }
-    });
+
+      const requestData = {
+        request_type: 'retiro-sindical',
+        id_type: data.tipoIdentificacion,
+        id_number: data.numeroIdentificacion,
+        name: data.nombres,
+        last_name: data.apellidos,
+        email: data.correoElectronico,
+        phone_number: data.numeroCelular,
+        payload: {
+          ...data,
+          formatoRetiroAnexo: undefined // Remove file from payload as it's sent separately
+        },
+        files
+      };
+
+      await submitRequest(requestData);
+
+      toast.success('Solicitud de retiro enviada con éxito', {
+        description: (
+          <>
+            Su solicitud ha sido recibida y será procesada según los procedimientos establecidos.
+            <br />
+            <strong className="mt-2 block font-semibold">Importante:</strong> En caso de requerir información adicional nos comunicaremos con usted.
+          </>
+        ),
+        duration: 8000,
+        icon: <CheckCircle2 className="h-5 w-5 text-emerald-600" />,
+        onAutoClose: () => {
+          form.reset();
+          navigate('/');
+        },
+        onDismiss: () => {
+          if (form.formState.isSubmitSuccessful) { 
+              navigate('/');
+          }
+        }
+      });
+    } catch (error) {
+      handleError();
+    }
   };
   
   const handleError = () => {

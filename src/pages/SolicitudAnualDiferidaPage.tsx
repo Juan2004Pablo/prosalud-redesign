@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
+import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import MainLayout from '@/components/layout/MainLayout';
@@ -10,6 +10,7 @@ import { Send, CheckCircle2, AlertCircle, Home, FileText as PageIcon } from 'luc
 import { MAX_FILE_SIZE, ALLOWED_FILE_TYPES_ALL } from '@/components/solicitud-certificado/utils';
 import { Link, useNavigate } from 'react-router-dom';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
+import { submitRequest } from '@/services/requestsService';
 
 // Reusable components (or similar ones)
 import DatosPersonalesDescansoSection from '@/components/solicitud-descanso/DatosPersonalesDescansoSection'; // Reusing for personal data

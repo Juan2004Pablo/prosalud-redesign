@@ -1,8 +1,8 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-import { Link } from 'react-router-dom';
+import { z } from 'zod';
+import { Link, useNavigate } from 'react-router-dom';
 
 import MainLayout from '@/components/layout/MainLayout';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
@@ -12,7 +12,8 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Home, CreditCard, Info, Mail, Clock, Send } from 'lucide-react';
+import { Home, CreditCard, Info, Mail, Clock, Send, CheckCircle2, AlertCircle } from 'lucide-react';
+import { submitRequest } from '@/services/requestsService';
 import { toast } from "@/hooks/use-toast";
 
 import DatosPersonalesSection from '@/components/solicitud-certificado/DatosPersonalesSection';
@@ -59,6 +60,7 @@ const microcreditoFormSchema = z.object({
 type MicrocreditoFormValues = z.infer<typeof microcreditoFormSchema>;
 
 const SolicitudMicrocreditoPage: React.FC = () => {
+  const navigate = useNavigate();
   const form = useForm<MicrocreditoFormValues>({
     resolver: zodResolver(microcreditoFormSchema),
     defaultValues: {
@@ -75,14 +77,27 @@ const SolicitudMicrocreditoPage: React.FC = () => {
     },
   });
 
-  const onSubmit = (data: MicrocreditoFormValues) => {
-    console.log('Formulario de microcrédito enviado:', data);
-    toast({
-      title: "Solicitud Enviada",
-      description: "Su solicitud de microcrédito ha sido enviada para revisión.",
-      variant: "default",
-    });
-    form.reset();
+  const onSubmit = async (data: MicrocreditoFormValues) => {
+    try {
+      const requestData = {
+        request_type: 'microcredito',
+        id_type: data.tipoIdentificacion,
+        id_number: data.numeroIdentificacion,
+        name: data.nombres,
+        last_name: data.apellidos,
+        email: data.correoElectronico,
+        phone_number: data.numeroCelular,
+        payload: data,
+      };
+
+      await submitRequest(requestData);
+
+      toast('Solicitud de microcrédito enviada para revisión.');
+      form.reset();
+      navigate('/');
+    } catch (error) {
+      toast('Error al enviar solicitud. Por favor intente nuevamente.');
+    }
   };
 
   return (

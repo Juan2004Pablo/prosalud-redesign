@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
+import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import MainLayout from '@/components/layout/MainLayout';
@@ -10,6 +10,7 @@ import { Send, CheckCircle2, AlertCircle, Home, Hospital } from 'lucide-react';
 import { MAX_FILE_SIZE, ALLOWED_FILE_TYPES_ALL } from '@/components/solicitud-certificado/utils';
 import { Link, useNavigate } from 'react-router-dom';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
+import { submitRequest } from '@/services/requestsService';
 
 import DatosPersonalesSection from '@/components/solicitud-certificado/DatosPersonalesSection';
 import ConfirmacionCorreoSection from '@/components/solicitud-certificado/ConfirmacionCorreoSection';
@@ -62,22 +63,47 @@ const IncapacidadesLicenciasPage: React.FC = () => {
     },
   });
 
-  const onSubmit = (data: FormValuesIncapacidades) => {
-    console.log('Form data Incapacidades:', data);
-    toast.success('Solicitud de incapacidad/licencia enviada', {
-      description: 'Su solicitud ha sido recibida. Se procesará según los plazos establecidos y recibirá una respuesta en máximo 3 días hábiles.',
-      duration: 8000,
-      icon: <CheckCircle2 className="h-5 w-5 text-emerald-600" />,
-      onAutoClose: () => {
-        form.reset();
-        navigate('/');
-      },
-      onDismiss: () => {
-        if (form.formState.isSubmitSuccessful) { 
-            navigate('/');
-        }
+  const onSubmit = async (data: FormValuesIncapacidades) => {
+    try {
+      const files: Record<string, File> = {};
+      if (data.certificadoIncapacidad) {
+        files.certificadoIncapacidad = data.certificadoIncapacidad;
       }
-    });
+
+      const requestData = {
+        request_type: 'incapacidad-licencia',
+        id_type: data.tipoIdentificacion,
+        id_number: data.numeroIdentificacion,
+        name: data.nombres,
+        last_name: data.apellidos,
+        email: data.correoElectronico,
+        phone_number: data.numeroCelular,
+        payload: {
+          ...data,
+          certificadoIncapacidad: undefined // Remove file from payload as it's sent separately
+        },
+        files
+      };
+
+      await submitRequest(requestData);
+
+      toast.success('Solicitud de incapacidad/licencia enviada', {
+        description: 'Su solicitud ha sido recibida. Se procesará según los plazos establecidos y recibirá una respuesta en máximo 3 días hábiles.',
+        duration: 8000,
+        icon: <CheckCircle2 className="h-5 w-5 text-emerald-600" />,
+        onAutoClose: () => {
+          form.reset();
+          navigate('/');
+        },
+        onDismiss: () => {
+          if (form.formState.isSubmitSuccessful) { 
+              navigate('/');
+          }
+        }
+      });
+    } catch (error) {
+      handleError(error);
+    }
   };
   
   const handleError = (errors: any) => {

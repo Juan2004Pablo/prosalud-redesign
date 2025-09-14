@@ -2,7 +2,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
+import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import MainLayout from '@/components/layout/MainLayout';
@@ -11,6 +11,7 @@ import { Send, CheckCircle2, AlertCircle, Home, FileText } from 'lucide-react';
 import { MAX_FILE_SIZE, ALLOWED_FILE_TYPES_ALL, ALLOWED_FILE_TYPES_PDF } from '@/components/solicitud-certificado/utils';
 import { Link, useNavigate } from 'react-router-dom';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
+import { submitRequest } from '@/services/requestsService';
 
 import DatosPersonalesSection from '@/components/solicitud-certificado/DatosPersonalesSection';
 import InformacionCertificadoSection from '@/components/solicitud-certificado/InformacionCertificadoSection';
