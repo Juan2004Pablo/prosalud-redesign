@@ -95,7 +95,16 @@ function App() {
             <Route path="/servicios/afiliacion-comfenalco" element={<AfiliacionComfenalcoPage />} />
             <Route path="/servicios/eps-sura" element={<EpsSuraPage />} />
 
-            {/* Admin Routes */}
+            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/admin/usuarios" element={<AdminUsuariosPage />} />
+            <Route path="/admin/solicitudes" element={<AdminSolicitudesPage />} />
+            <Route path="/admin/inventario" element={<AdminInventarioPage />} />
+            <Route path="/admin/convenios" element={<AdminConveniosPage />} />
+            <Route path="/admin/configuracion" element={<AdminConfiguracionPage />} />
+            <Route path="/admin/bienestar" element={<AdminBienestarPage />} />
+            <Route path="/admin/comfenalco" element={<AdminComfenalcoPage />} />
+
+            {/* Admin Routes 
             <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
             <Route path="/admin/usuarios" element={<ProtectedRoute><AdminUsuariosPage /></ProtectedRoute>} />
             <Route path="/admin/solicitudes" element={<ProtectedRoute><AdminSolicitudesPage /></ProtectedRoute>} />
@@ -104,6 +113,7 @@ function App() {
             <Route path="/admin/configuracion" element={<ProtectedRoute><AdminConfiguracionPage /></ProtectedRoute>} />
             <Route path="/admin/bienestar" element={<ProtectedRoute><AdminBienestarPage /></ProtectedRoute>} />
             <Route path="/admin/comfenalco" element={<ProtectedRoute><AdminComfenalcoPage /></ProtectedRoute>} />
+            */}
 
             {/* 404 Route */}
             <Route path="*" element={<NotFound />} />
