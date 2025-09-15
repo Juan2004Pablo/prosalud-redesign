@@ -59,7 +59,7 @@ const UserStatusConfirmationDialog: React.FC<UserStatusConfirmationDialogProps> 
       confirmText={toggleStatusMutation.isPending ? 'Procesando...' : `${actionCapitalized} Usuario`}
       confirmVariant={user.isActive ? "destructive" : "default"}
       onConfirm={handleConfirm}
-      itemName={`${user.firstName} ${user.lastName}`}
+      itemName={user.name}
       showAssociatedDataWarning={false}
     />
   );

@@ -1,23 +1,21 @@
-
 import React, { useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { User as UserIcon, Mail, Shield } from 'lucide-react';
+import * as z from 'zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/hooks/use-toast';
+import { User } from '@/types/admin';
 import { usersApi } from '@/services/adminApi';
-import { User, CreateUserData } from '@/types/admin';
 import { nameValidation, emailValidation } from '@/hooks/useFormValidation';
 import AdminModal from '@/components/admin/common/AdminModal';
 
 const formSchema = z.object({
-  firstName: nameValidation,
-  lastName: nameValidation,
+  name: nameValidation,
   email: emailValidation,
   isActive: z.boolean().optional(),
 });
@@ -28,33 +26,36 @@ interface UserFormModalProps {
   user?: User | null;
 }
 
-const UserFormModal: React.FC<UserFormModalProps> = ({ open, onOpenChange, user }) => {
+const UserFormModal: React.FC<UserFormModalProps> = ({
+  open,
+  onOpenChange,
+  user
+}) => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
-
+  
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      firstName: '',
-      lastName: '',
+      name: '',
       email: '',
       isActive: true,
-    }
+    },
   });
+
+  const { register, handleSubmit, formState: { errors }, reset } = form;
 
   // Update form values when user prop changes
   useEffect(() => {
     if (user) {
       form.reset({
-        firstName: user.firstName,
-        lastName: user.lastName,
+        name: user.name,
         email: user.email,
         isActive: user.isActive,
       });
     } else {
       form.reset({
-        firstName: '',
-        lastName: '',
+        name: '',
         email: '',
         isActive: true,
       });
@@ -67,169 +68,135 @@ const UserFormModal: React.FC<UserFormModalProps> = ({ open, onOpenChange, user 
       queryClient.invalidateQueries({ queryKey: ['users'] });
       toast({
         title: "Usuario creado",
-        description: "El usuario ha sido creado exitosamente."
+        description: "El usuario ha sido creado exitosamente.",
       });
       onOpenChange(false);
-      form.reset();
     },
-    onError: () => {
+    onError: (error: Error) => {
       toast({
         title: "Error",
-        description: "No se pudo crear el usuario. Inténtalo de nuevo.",
-        variant: "destructive"
+        description: error.message || "No se pudo crear el usuario. Inténtalo de nuevo.",
+        variant: "destructive",
       });
-    }
+    },
   });
 
   const updateMutation = useMutation({
-    mutationFn: (data: Partial<CreateUserData & { isActive: boolean }>) => 
-      usersApi.updateUser(user!.id, data),
+    mutationFn: ({ id, data }: { id: string; data: any }) => usersApi.updateUser(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
       toast({
         title: "Usuario actualizado",
-        description: "El usuario ha sido actualizado exitosamente."
+        description: "El usuario ha sido actualizado exitosamente.",
       });
       onOpenChange(false);
     },
-    onError: () => {
+    onError: (error: Error) => {
       toast({
         title: "Error",
-        description: "No se pudo actualizar el usuario. Inténtalo de nuevo.",
-        variant: "destructive"
+        description: error.message || "No se pudo actualizar el usuario. Inténtalo de nuevo.",
+        variant: "destructive",
       });
     }
   });
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
-    const userData: CreateUserData & { isActive?: boolean } = {
-      firstName: data.firstName,
-      lastName: data.lastName,
+    const userData: any = {
+      name: data.name,
       email: data.email,
       ...(user && { isActive: data.isActive })
     };
 
     if (user) {
-      updateMutation.mutate(userData);
+      updateMutation.mutate({ id: user.id, data: userData });
     } else {
-      const { isActive, ...createData } = userData;
-      createMutation.mutate(createData);
+      createMutation.mutate(userData);
     }
   };
 
   const handleOpenChange = (newOpen: boolean) => {
     if (!newOpen) {
-      form.reset();
+      reset();
     }
     onOpenChange(newOpen);
   };
+
+  const isLoading = createMutation.isPending || updateMutation.isPending;
 
   return (
     <AdminModal
       open={open}
       onOpenChange={handleOpenChange}
-      title={user ? 'Editar Usuario' : 'Nuevo Usuario'}
-      description={user ? 'Modifica los datos del usuario del sistema' : 'Crea un nuevo usuario para el panel administrativo'}
-      size="lg"
+      title={user ? "Editar Usuario" : "Crear Usuario"}
+      description={user ? "Modifica la información del usuario" : "Completa el formulario para crear un nuevo usuario"}
       actions={
-        <>
-          <Button 
-            type="button" 
-            variant="outline" 
-            onClick={() => onOpenChange(false)}
+        <div className="flex justify-end space-x-2">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => handleOpenChange(false)}
+            disabled={isLoading}
           >
             Cancelar
           </Button>
           <Button
-            onClick={form.handleSubmit(onSubmit)}
-            disabled={createMutation.isPending || updateMutation.isPending}
-            className="bg-primary-prosalud hover:bg-primary-prosalud-dark"
+            type="submit"
+            form="user-form"
+            disabled={isLoading}
+            className="min-w-[120px]"
           >
-            {createMutation.isPending || updateMutation.isPending
-              ? 'Guardando...'
-              : user ? 'Actualizar Usuario' : 'Crear Usuario'
-            }
+            {isLoading ? "Procesando..." : user ? "Actualizar Usuario" : "Crear Usuario"}
           </Button>
-        </>
+        </div>
       }
     >
-      <div className="space-y-6">
-        <div className="text-center">
-          <div className="mx-auto w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4">
-            <UserIcon className="h-8 w-8 text-blue-600" />
-          </div>
-          <h3 className="text-lg font-semibold">Información Personal</h3>
-          <p className="text-sm text-muted-foreground">Datos básicos del usuario del sistema</p>
-        </div>
-
-        <div className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <motion.form
+        id="user-form"
+        onSubmit={handleSubmit(onSubmit)}
+        className="space-y-6"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.2 }}
+      >
+        <div className="grid gap-6">
+          <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="firstName" className="text-sm font-semibold">
-                Nombres *
-              </Label>
+              <Label htmlFor="name">Nombre Completo</Label>
               <Input
-                id="firstName"
-                {...form.register('firstName')}
-                placeholder="Ej: Juan Carlos"
+                id="name"
+                {...register('name')}
+                placeholder="Ingrese el nombre completo"
               />
-              {form.formState.errors.firstName && (
-                <p className="text-destructive text-sm">{form.formState.errors.firstName.message}</p>
+              {errors.name && (
+                <p className="text-sm text-red-500">{errors.name.message}</p>
               )}
             </div>
+
             <div className="space-y-2">
-              <Label htmlFor="lastName" className="text-sm font-semibold">
-                Apellidos *
-              </Label>
+              <Label htmlFor="email">Correo Electrónico</Label>
               <Input
-                id="lastName"
-                {...form.register('lastName')}
-                placeholder="Ej: García López"
+                id="email"
+                type="email"
+                {...register('email')}
+                placeholder="ejemplo@prosalud.com"
               />
-              {form.formState.errors.lastName && (
-                <p className="text-destructive text-sm">{form.formState.errors.lastName.message}</p>
+              {errors.email && (
+                <p className="text-sm text-red-500">{errors.email.message}</p>
               )}
             </div>
-          </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="email" className="text-sm font-semibold flex items-center gap-2">
-              <Mail className="h-4 w-4" />
-              Correo Electrónico *
-            </Label>
-            <Input
-              id="email"
-              type="email"
-              {...form.register('email')}
-              placeholder="ejemplo@prosalud.com"
-            />
-            {form.formState.errors.email && (
-              <p className="text-destructive text-sm">{form.formState.errors.email.message}</p>
+            {user && (
+              <div className="flex items-center space-x-2">
+                <Switch
+                  id="isActive"
+                  {...register('isActive')}
+                />
+                <Label htmlFor="isActive">Usuario activo</Label>
+              </div>
             )}
           </div>
-
-          {user && (
-            <div className="flex items-center justify-between p-4 bg-slate-50 rounded-lg">
-              <div className="flex items-center gap-3">
-                <Shield className="h-5 w-5 text-primary-prosalud" />
-                <div>
-                  <Label htmlFor="isActive" className="text-sm font-semibold">
-                    Estado del Usuario
-                  </Label>
-                  <p className="text-xs text-muted-foreground">
-                    Controla si el usuario puede acceder al sistema
-                  </p>
-                </div>
-              </div>
-              <Switch
-                id="isActive"
-                checked={form.watch('isActive')}
-                onCheckedChange={(checked) => form.setValue('isActive', checked)}
-              />
-            </div>
-          )}
         </div>
-      </div>
+      </motion.form>
     </AdminModal>
   );
 };

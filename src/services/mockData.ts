@@ -268,27 +268,27 @@ export const mockHospitals: Hospital[] = [
 export const mockUsers: User[] = [
   {
     id: "1",
-    firstName: "Ana",
-    lastName: "García",
+    name: "Ana García",
     email: "ana.garcia@prosalud.com",
     isActive: true,
-    createdAt: "2024-01-15"
+    createdAt: "2024-01-15",
+    updatedAt: "2024-01-15"
   },
   {
     id: "2",
-    firstName: "Carlos",
-    lastName: "Rodríguez",
+    name: "Carlos Rodríguez",
     email: "carlos.rodriguez@prosalud.com",
     isActive: true,
-    createdAt: "2024-02-10"
+    createdAt: "2024-02-10",
+    updatedAt: "2024-02-10"
   },
   {
     id: "3",
-    firstName: "María",
-    lastName: "López",
+    name: "María López",
     email: "maria.lopez@prosalud.com",
     isActive: false,
-    createdAt: "2024-03-05"
+    createdAt: "2024-03-05",
+    updatedAt: "2024-03-05"
   }
 ];
 

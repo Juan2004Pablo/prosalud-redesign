@@ -13,8 +13,7 @@ export const usersService = {
     
     if (search) {
       filteredUsers = filteredUsers.filter(user => 
-        user.firstName.toLowerCase().includes(search.toLowerCase()) ||
-        user.lastName.toLowerCase().includes(search.toLowerCase()) ||
+        user.name.toLowerCase().includes(search.toLowerCase()) ||
         user.email.toLowerCase().includes(search.toLowerCase())
       );
     }
@@ -48,7 +47,8 @@ export const usersService = {
       id: String(mockUsers.length + 1),
       ...userData,
       isActive: true,
-      createdAt: new Date().toISOString().split('T')[0]
+      createdAt: new Date().toISOString().split('T')[0],
+      updatedAt: new Date().toISOString().split('T')[0]
     };
     mockUsers.push(newUser);
     return newUser;

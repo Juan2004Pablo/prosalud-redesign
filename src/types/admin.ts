@@ -1,12 +1,11 @@
 
 export interface User {
   id: string;
-  firstName: string;
-  lastName: string;
+  name: string;
   email: string;
   isActive: boolean;
   createdAt: string;
-  lastLogin?: string;
+  updatedAt: string;
 }
 
 export interface Convenio {
@@ -68,8 +67,7 @@ export interface PaginatedResponse<T> {
 }
 
 export interface CreateUserData {
-  firstName: string;
-  lastName: string;
+  name: string;
   email: string;
 }
 

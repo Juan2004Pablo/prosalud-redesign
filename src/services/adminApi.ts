@@ -1,5 +1,5 @@
 // Re-export services for backward compatibility and centralized access
-export { usersService as usersApi } from './usersService';
+export { usersApiAdapter as usersApi } from './usersApiAdapter';
 export { conveniosService as conveniosApi } from './conveniosService';
 export { inventoryService } from './inventoryService';
 export { solicitudesService } from './solicitudesService';
