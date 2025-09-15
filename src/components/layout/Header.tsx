@@ -40,7 +40,8 @@ const Header: React.FC = () => {
               <GlobalSearch />
             </div>
 
-            <Link to="/auth/login" className="flex-shrink-0">
+            <Link to="/admin" className="flex-shrink-0">
+              {/*<Link to="/auth/login" className="flex-shrink-0">*/ }
               <Button
                 variant="outline"
                 size="sm"
