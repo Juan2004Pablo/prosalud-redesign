@@ -38,11 +38,9 @@ const AdminUsuariosPage: React.FC = () => {
   }, [searchParams, setSearchParams]);
 
   const { data: usersResponse, isLoading, error } = useQuery({
-    queryKey: ['users', searchTerm, statusFilter],
-    queryFn: () => {
-      const status = statusFilter === 'all' ? undefined : statusFilter;
-      return usersApi.getUsers(1, 1000, searchTerm, status);
-    }
+    queryKey: ['users'],
+    queryFn: () => usersApi.getUsers(1, 1000, '', ''),
+    staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
   const itemVariants = {
@@ -203,7 +201,7 @@ const AdminUsuariosPage: React.FC = () => {
                     <div key={user.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 border rounded-lg hover:bg-slate-50 transition-colors gap-4">
                       <div className="flex items-center gap-3 flex-1">
                         <Avatar>
-                          <AvatarFallback>
+                          <AvatarFallback className="bg-muted/30 text-foreground">
                             {user.name.split(' ').map(n => n[0]).join('').toUpperCase()}
                           </AvatarFallback>
                         </Avatar>

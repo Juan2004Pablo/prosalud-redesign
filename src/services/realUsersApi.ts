@@ -55,7 +55,7 @@ export interface UpdateUserStatusRequest {
 
 // Create axios instance for the backend API
 const backendApi = axios.create({
-  baseURL: 'http://localhost:8000/api',
+  baseURL: 'https://prosalud.test/api',
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
@@ -96,7 +96,7 @@ backendApi.interceptors.response.use(
     
     // Handle CORS errors
     if (error.code === 'ERR_NETWORK' || error.message.includes('CORS')) {
-      throw new Error('Error de conexión: Verifique que el servidor backend esté ejecutándose en http://localhost:8000');
+      throw new Error('Error de conexión: Verifique que el servidor backend esté ejecutándose en https://prosalud.test');
     }
     
     if (error.response?.data) {
