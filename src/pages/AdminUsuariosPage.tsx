@@ -14,6 +14,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import AdminLayout from '@/components/admin/AdminLayout';
 import UserFormModal from '@/components/admin/usuarios/UserFormModal';
 import UserStatusConfirmationDialog from '@/components/admin/usuarios/UserStatusConfirmationDialog';
+import BackendStatusIndicator from '@/components/admin/common/BackendStatusIndicator';
 import UserAvatar from '@/components/admin/UserAvatar';
 import DataPagination from '@/components/ui/data-pagination';
 import { usePagination } from '@/hooks/usePagination';
@@ -118,9 +119,12 @@ const AdminUsuariosPage: React.FC = () => {
                       <Users className="h-8 w-8 text-primary-prosalud" />
                     </div>
                     <div>
-                      <CardTitle className="text-3xl font-bold text-primary-prosalud">
-                        Gestión de Usuarios
-                      </CardTitle>
+                      <div className="flex items-center gap-3 mb-2">
+                        <CardTitle className="text-3xl font-bold text-primary-prosalud">
+                          Gestión de Usuarios
+                        </CardTitle>
+                        <BackendStatusIndicator />
+                      </div>
                       <CardDescription className="text-base mt-2">
                         Administra los usuarios del panel administrativo
                       </CardDescription>
