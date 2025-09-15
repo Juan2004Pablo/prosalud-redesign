@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import AdminLayout from '@/components/admin/AdminLayout';
 import UserFormModal from '@/components/admin/usuarios/UserFormModal';
@@ -56,8 +57,7 @@ const AdminUsuariosPage: React.FC = () => {
   
   const filteredUsers = users.filter(user => {
     const matchesSearch = !searchTerm || 
-      user.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.email.toLowerCase().includes(searchTerm.toLowerCase());
     
     const matchesStatus = statusFilter === 'all' || 
@@ -198,15 +198,15 @@ const AdminUsuariosPage: React.FC = () => {
                   {paginatedUsers.map((user) => (
                     <div key={user.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 border rounded-lg hover:bg-slate-50 transition-colors gap-4">
                       <div className="flex items-center gap-3 flex-1">
-                        <UserAvatar
-                          firstName={user.firstName}
-                          lastName={user.lastName}
-                          size="md"
-                        />
+                        <Avatar>
+                          <AvatarFallback>
+                            {user.name.split(' ').map(n => n[0]).join('').toUpperCase()}
+                          </AvatarFallback>
+                        </Avatar>
                         <div className="flex-1">
                           <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
                             <h3 className="font-semibold text-text-dark">
-                              {user.firstName} {user.lastName}
+                              {user.name}
                             </h3>
                             <Badge variant={user.isActive ? "secondary" : "destructive"}>
                               {user.isActive ? "Activo" : "Inactivo"}
