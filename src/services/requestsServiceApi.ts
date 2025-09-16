@@ -35,17 +35,17 @@ const mapFrontendStatusToApiStatus = (frontendStatus: Request['status']): 'pendi
 // Map API request to frontend request
 const mapApiRequestToFrontendRequest = (apiRequest: ApiRequest): Request => {
   return {
-    id: apiRequest.id.toString(),
+    id: apiRequest.id?.toString() || '',
     request_type: apiRequest.request_type as Request['request_type'],
     id_type: apiRequest.document_type as Request['id_type'],
-    id_number: apiRequest.document_number,
-    name: apiRequest.name,
-    last_name: apiRequest.last_name,
-    email: apiRequest.email,
-    phone_number: apiRequest.phone_number,
-    payload: apiRequest.payload,
+    id_number: apiRequest.document_number || '',
+    name: apiRequest.name || '',
+    last_name: apiRequest.last_name || '',
+    email: apiRequest.email || '',
+    phone_number: apiRequest.phone_number || '',
+    payload: apiRequest.payload || {},
     status: mapApiStatusToFrontendStatus(apiRequest.status),
-    created_at: apiRequest.created_at,
+    created_at: apiRequest.created_at || '',
     processed_at: apiRequest.processed_at,
     resolved_at: apiRequest.status === 'COMPLETED' ? apiRequest.processed_at : undefined,
   };
@@ -72,6 +72,7 @@ export const requestsService = {
     try {
       const numericId = parseInt(id, 10);
       if (isNaN(numericId)) {
+        console.warn('⚠️ Invalid ID format, falling back to mock data');
         return await solicitudesService.getRequestById(id);
       }
 
@@ -87,15 +88,16 @@ export const requestsService = {
     try {
       const numericId = parseInt(id, 10);
       if (isNaN(numericId)) {
-        return await solicitudesService.updateRequestStatus(id, status, notes);
+        console.warn('⚠️ Invalid ID format for update, fallback not allowed per user requirements');
+        throw new Error('ID inválido - se requiere un ID numérico válido');
       }
 
       const apiStatus = mapFrontendStatusToApiStatus(status);
       const updatedApiRequest = await requestsApiService.updateRequestStatus(numericId, apiStatus);
       return mapApiRequestToFrontendRequest(updatedApiRequest);
     } catch (error) {
-      console.warn('⚠️ API failed for updateRequestStatus, falling back to mock data:', error);
-      return await solicitudesService.updateRequestStatus(id, status, notes);
+      console.error('❌ API failed for updateRequestStatus - no fallback allowed:', error);
+      throw error;
     }
   },
 

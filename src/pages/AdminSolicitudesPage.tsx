@@ -112,7 +112,7 @@ const AdminSolicitudesPage: React.FC = () => {
 
   const handleChangeStatus = async (id: string, newStatus: Request['status']) => {
     try {
-      await requestsService.updateRequestStatus(id, newStatus);
+      const updatedRequest = await requestsService.updateRequestStatus(id, newStatus);
       
       const statusLabels = {
         'in_progress': 'Marcada en Proceso',
@@ -125,9 +125,14 @@ const AdminSolicitudesPage: React.FC = () => {
         description: `La solicitud #${id} ha sido ${statusLabels[newStatus].toLowerCase()} exitosamente.`,
       });
       
-      setSelectedSolicitud(null);
+      // Update selected request if it's being viewed
+      if (selectedSolicitud?.id === id) {
+        setSelectedSolicitud(updatedRequest);
+      }
+      
       refetch();
     } catch (error) {
+      console.error('Error updating request status:', error);
       toast({
         title: "Error",
         description: error instanceof Error ? error.message : "No se pudo actualizar el estado de la solicitud",
@@ -586,11 +591,17 @@ const AdminSolicitudesPage: React.FC = () => {
                       </CardHeader>
                       <CardContent className="p-6">
                         <div className="bg-white border border-gray-200 rounded-lg p-4">
-                          <JsonView
-                            value={selectedSolicitud.payload}
-                            collapsed={1}
-                            style={{ fontSize: '12px', backgroundColor: '#fafafa' }}
-                          />
+                          {selectedSolicitud.payload && typeof selectedSolicitud.payload === 'object' ? (
+                            <JsonView
+                              value={selectedSolicitud.payload}
+                              collapsed={1}
+                              style={{ fontSize: '12px', backgroundColor: '#fafafa' }}
+                            />
+                          ) : (
+                            <div className="text-gray-500 text-sm text-center py-4">
+                              No hay detalles adicionales disponibles
+                            </div>
+                          )}
                         </div>
                       </CardContent>
                     </Card>
