@@ -80,7 +80,7 @@ const ConveniosSection: React.FC = () => {
                     className="group perspective-1000 animate-fade-in h-48"
                     style={{ animationDelay: `${index * 100}ms` }}
                   >
-                    <div className="relative preserve-3d group-hover:rotate-y-180 transition-transform duration-700 h-full w-full">
+                    <div className="relative preserve-3d group-hover:rotate-y-180 transition-transform duration-1000 ease-in-out h-full w-full">
                       {/* Cara frontal */}
                       <div className="absolute inset-0 backface-hidden bg-card p-6 rounded-lg shadow-md border border-prosalud-border flex items-center">
                         <div className="h-14 w-14 rounded-full overflow-hidden mr-4 shrink-0">

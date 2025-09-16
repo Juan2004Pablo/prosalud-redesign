@@ -19,16 +19,18 @@ const mapApiStatusToFrontendStatus = (apiStatus: string): Request['status'] => {
 };
 
 // Map frontend status to API status
-const mapFrontendStatusToApiStatus = (frontendStatus: Request['status']): 'pending' | 'processed' => {
+const mapFrontendStatusToApiStatus = (frontendStatus: Request['status']): 'PENDING' | 'IN_REVIEW' | 'COMPLETED' | 'REJECTED' => {
   switch (frontendStatus) {
     case 'pending':
-      return 'pending';
+      return 'PENDING';
     case 'in_progress':
+      return 'IN_REVIEW';
     case 'resolved':
+      return 'COMPLETED';
     case 'rejected':
-      return 'processed';
+      return 'REJECTED';
     default:
-      return 'pending';
+      return 'PENDING';
   }
 };
 

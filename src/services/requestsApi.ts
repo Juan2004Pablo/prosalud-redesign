@@ -114,7 +114,7 @@ export const requestsApiService = {
   },
 
   // Update request status
-  async updateRequestStatus(id: number, status: 'pending' | 'processed'): Promise<ApiRequest> {
+  async updateRequestStatus(id: number, status: 'PENDING' | 'IN_REVIEW' | 'COMPLETED' | 'REJECTED'): Promise<ApiRequest> {
     try {
       const response = await requestsApi.patch<ApiResponse<ApiRequest>>(`/requests/${id}/status`, {
         status

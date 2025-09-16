@@ -115,8 +115,8 @@ const AdminSolicitudesPage: React.FC = () => {
       const updatedRequest = await requestsService.updateRequestStatus(id, newStatus);
       
       const statusLabels = {
-        'in_progress': 'Marcada en Proceso',
-        'resolved': 'Marcada como Resuelta',
+        'in_progress': 'Marcada en Revisión',
+        'resolved': 'Marcada como Completada',
         'rejected': 'Rechazada'
       };
       
@@ -168,7 +168,7 @@ const AdminSolicitudesPage: React.FC = () => {
     switch (status) {
       case 'pending': return 'Pendiente';
       case 'in_progress': return 'En Revisión';
-      case 'resolved': return 'Completado';
+      case 'resolved': return 'Completado';  
       case 'rejected': return 'Rechazado';
       default: return status;
     }
@@ -474,11 +474,11 @@ const AdminSolicitudesPage: React.FC = () => {
                                       <>
                                         <DropdownMenuItem onClick={() => handleChangeStatus(solicitud.id, 'in_progress')}>
                                           <div className="h-4 w-4 mr-2 bg-blue-600 rounded-full"></div>
-                                          Marcar en Proceso
+                                          Marcar en Revisión
                                         </DropdownMenuItem>
                                         <DropdownMenuItem onClick={() => handleChangeStatus(solicitud.id, 'resolved')}>
                                           <div className="h-4 w-4 mr-2 bg-green-600 rounded-full"></div>
-                                          Marcar como Resuelto
+                                          Marcar como Completado
                                         </DropdownMenuItem>
                                         <DropdownMenuItem 
                                           onClick={() => handleChangeStatus(solicitud.id, 'rejected')}
@@ -492,7 +492,7 @@ const AdminSolicitudesPage: React.FC = () => {
                                     {solicitud.status === 'in_progress' && (
                                       <DropdownMenuItem onClick={() => handleChangeStatus(solicitud.id, 'resolved')}>
                                         <div className="h-4 w-4 mr-2 bg-green-600 rounded-full"></div>
-                                        Marcar como Resuelto
+                                        Marcar como Completado
                                       </DropdownMenuItem>
                                     )}
                                   </DropdownMenuContent>
