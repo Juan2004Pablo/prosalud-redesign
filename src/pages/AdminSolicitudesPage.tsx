@@ -30,8 +30,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import JsonView from '@uiw/react-json-view';
-import { solicitudesService } from '@/services/solicitudesService';
+import { requestsService } from '@/services/requestsServiceApi';
 import { Request } from '@/types/requests';
+import { useMemo } from 'react';
 
 const AdminSolicitudesPage: React.FC = () => {
   const [selectedSolicitud, setSelectedSolicitud] = useState<Request | null>(null);
@@ -42,20 +43,46 @@ const AdminSolicitudesPage: React.FC = () => {
 
   const { toast } = useToast();
 
-  // Fetch requests with filters
-  const { data: solicitudes = [], isLoading, refetch } = useQuery({
-    queryKey: ['admin-solicitudes', searchTerm, selectedStatus, selectedType],
-    queryFn: () => solicitudesService.getRequests({
-      search: searchTerm || undefined,
-      status: selectedStatus !== 'all' ? selectedStatus as any : undefined,
-      request_type: selectedType !== 'all' ? selectedType as any : undefined
-    })
+  // Fetch all requests from API
+  const { data: allSolicitudes = [], isLoading, refetch } = useQuery({
+    queryKey: ['admin-solicitudes'],
+    queryFn: requestsService.getRequests,
+    staleTime: 5 * 60 * 1000, // 5 minutes
   });
+
+  // Filter requests locally for better performance
+  const filteredSolicitudes = useMemo(() => {
+    let filtered = [...allSolicitudes];
+
+    // Apply search filter
+    if (searchTerm) {
+      const searchLower = searchTerm.toLowerCase();
+      filtered = filtered.filter(request => 
+        request.name.toLowerCase().includes(searchLower) ||
+        request.last_name.toLowerCase().includes(searchLower) ||
+        request.email.toLowerCase().includes(searchLower) ||
+        request.id_number.toLowerCase().includes(searchLower) ||
+        getRequestTypeLabel(request.request_type).toLowerCase().includes(searchLower)
+      );
+    }
+
+    // Apply status filter
+    if (selectedStatus !== 'all') {
+      filtered = filtered.filter(request => request.status === selectedStatus);
+    }
+
+    // Apply type filter
+    if (selectedType !== 'all') {
+      filtered = filtered.filter(request => request.request_type === selectedType);
+    }
+
+    return filtered;
+  }, [allSolicitudes, searchTerm, selectedStatus, selectedType]);
 
   // Fetch stats
   const { data: stats } = useQuery({
     queryKey: ['admin-solicitudes-stats'],
-    queryFn: solicitudesService.getRequestStats
+    queryFn: requestsService.getRequestStats
   });
 
   const containerVariants = {
@@ -85,7 +112,7 @@ const AdminSolicitudesPage: React.FC = () => {
 
   const handleChangeStatus = async (id: string, newStatus: Request['status']) => {
     try {
-      await solicitudesService.updateRequestStatus(id, newStatus);
+      await requestsService.updateRequestStatus(id, newStatus);
       
       const statusLabels = {
         'in_progress': 'Marcada en Proceso',
@@ -103,7 +130,7 @@ const AdminSolicitudesPage: React.FC = () => {
     } catch (error) {
       toast({
         title: "Error",
-        description: "No se pudo actualizar el estado de la solicitud",
+        description: error instanceof Error ? error.message : "No se pudo actualizar el estado de la solicitud",
         variant: "destructive"
       });
     }
@@ -118,7 +145,7 @@ const AdminSolicitudesPage: React.FC = () => {
     goToPage,
     setItemsPerPage
   } = usePagination({
-    data: solicitudes,
+    data: filteredSolicitudes,
     initialItemsPerPage: 10
   });
 
@@ -135,8 +162,8 @@ const AdminSolicitudesPage: React.FC = () => {
   const getStatusLabel = (status: string) => {
     switch (status) {
       case 'pending': return 'Pendiente';
-      case 'in_progress': return 'En Proceso';
-      case 'resolved': return 'Resuelto';
+      case 'in_progress': return 'En Revisión';
+      case 'resolved': return 'Completado';
       case 'rejected': return 'Rechazado';
       default: return status;
     }
@@ -295,13 +322,13 @@ const AdminSolicitudesPage: React.FC = () => {
                       <SelectTrigger className="h-10">
                         <SelectValue placeholder="Todos los estados" />
                       </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">Todos los estados</SelectItem>
-                        <SelectItem value="pending">Pendiente</SelectItem>
-                        <SelectItem value="in_progress">En Proceso</SelectItem>
-                        <SelectItem value="resolved">Resuelto</SelectItem>
-                        <SelectItem value="rejected">Rechazado</SelectItem>
-                      </SelectContent>
+                        <SelectContent>
+                          <SelectItem value="all">Todos los estados</SelectItem>
+                          <SelectItem value="pending">Pendiente</SelectItem>
+                          <SelectItem value="in_progress">En Revisión</SelectItem>
+                          <SelectItem value="resolved">Completado</SelectItem>
+                          <SelectItem value="rejected">Rechazado</SelectItem>
+                        </SelectContent>
                     </Select>
                   </div>
                   <div>
