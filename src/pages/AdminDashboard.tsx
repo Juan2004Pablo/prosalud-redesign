@@ -11,7 +11,7 @@ import { Label } from '@/components/ui/label';
 import AdminLayout from '@/components/admin/AdminLayout';
 import MetricsCards from '@/components/admin/MetricsCards';
 import UserFormModal from '@/components/admin/usuarios/UserFormModal';
-import ConvenioFormModal from '@/components/admin/convenios/ConvenioFormModal';
+
 import { configApi } from '@/services/adminApi';
 
 const AdminDashboard: React.FC = () => {
@@ -50,7 +50,7 @@ const AdminDashboard: React.FC = () => {
   const [editValue, setEditValue] = useState("");
   const [editChange, setEditChange] = useState("");
   const [showUserModal, setShowUserModal] = useState(false);
-  const [showConvenioModal, setShowConvenioModal] = useState(false);
+  
 
   const { data: metrics, isLoading: loadingMetrics } = useQuery({
     queryKey: ['site-metrics'],
@@ -164,15 +164,6 @@ const AdminDashboard: React.FC = () => {
                     <span className="font-medium text-text-dark">Nuevo Evento</span>
                   </motion.a>
                   
-                  <motion.button
-                    onClick={() => setShowConvenioModal(true)}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="flex items-center space-x-3 p-4 rounded-lg bg-slate-50 hover:bg-slate-100 transition-colors duration-300 border border-slate-200"
-                  >
-                    <Handshake className="h-8 w-8 text-primary-prosalud flex-shrink-0" />
-                    <span className="font-medium text-text-dark">Agregar Convenio</span>
-                  </motion.button>
                 </div>
               </CardContent>
             </Card>
@@ -203,10 +194,6 @@ const AdminDashboard: React.FC = () => {
         onOpenChange={setShowUserModal}
       />
 
-      <ConvenioFormModal
-        open={showConvenioModal}
-        onOpenChange={setShowConvenioModal}
-      />
     </AdminLayout>
   );
 };

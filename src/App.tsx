@@ -21,8 +21,6 @@ import AdminDashboard from '@/pages/AdminDashboard';
 import AdminUsuariosPage from '@/pages/AdminUsuariosPage';
 import AdminSolicitudesPage from '@/pages/AdminSolicitudesPage';
 import AdminInventarioPage from '@/pages/AdminInventarioPage';
-import AdminConveniosPage from '@/pages/AdminConveniosPage';
-import AdminConfiguracionPage from '@/pages/AdminConfiguracionPage';
 import AdminBienestarPage from '@/pages/AdminBienestarPage';
 import AdminComfenalcoPage from '@/pages/AdminComfenalcoPage';
 
@@ -99,8 +97,6 @@ function App() {
             <Route path="/admin/usuarios" element={<AdminUsuariosPage />} />
             <Route path="/admin/solicitudes" element={<AdminSolicitudesPage />} />
             <Route path="/admin/inventario" element={<AdminInventarioPage />} />
-            <Route path="/admin/convenios" element={<AdminConveniosPage />} />
-            <Route path="/admin/configuracion" element={<AdminConfiguracionPage />} />
             <Route path="/admin/bienestar" element={<AdminBienestarPage />} />
             <Route path="/admin/comfenalco" element={<AdminComfenalcoPage />} />
 
@@ -109,8 +105,6 @@ function App() {
             <Route path="/admin/usuarios" element={<ProtectedRoute><AdminUsuariosPage /></ProtectedRoute>} />
             <Route path="/admin/solicitudes" element={<ProtectedRoute><AdminSolicitudesPage /></ProtectedRoute>} />
             <Route path="/admin/inventario" element={<ProtectedRoute><AdminInventarioPage /></ProtectedRoute>} />
-            <Route path="/admin/convenios" element={<ProtectedRoute><AdminConveniosPage /></ProtectedRoute>} />
-            <Route path="/admin/configuracion" element={<ProtectedRoute><AdminConfiguracionPage /></ProtectedRoute>} />
             <Route path="/admin/bienestar" element={<ProtectedRoute><AdminBienestarPage /></ProtectedRoute>} />
             <Route path="/admin/comfenalco" element={<ProtectedRoute><AdminComfenalcoPage /></ProtectedRoute>} />
             */}

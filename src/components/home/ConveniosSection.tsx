@@ -1,18 +1,11 @@
 import React, { useRef } from 'react';
-import { useQuery } from '@tanstack/react-query';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 import { Skeleton } from '@/components/ui/skeleton';
-import { conveniosService } from '@/services/conveniosService';
 
 const ConveniosSection: React.FC = () => {
   const sectionRef = useRef<HTMLDivElement | null>(null);
   const isVisible = useIntersectionObserver(sectionRef, { threshold: 0.1, freezeOnceVisible: true });
 
-  const { data: convenios, isLoading } = useQuery({
-    queryKey: ['convenios-public'],
-    queryFn: conveniosService.getConvenios,
-    enabled: isVisible
-  });
 
   const visibleConvenios = [
     { 
@@ -63,7 +56,7 @@ const ConveniosSection: React.FC = () => {
               </h2>
             </div>
 
-            {isLoading ? (
+            {false ? (
               <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                 {[...Array(6)].map((_, index) => (
                   <li key={index} className="bg-card p-6 rounded-lg shadow-md border border-prosalud-border flex items-center">
