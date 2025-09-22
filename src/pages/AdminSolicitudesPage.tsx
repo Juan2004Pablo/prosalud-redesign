@@ -547,29 +547,57 @@ const AdminSolicitudesPage: React.FC = () => {
                   </div>
 
                   <div className="p-6 space-y-6">
-                    {/* Información Básica */}
+                     {/* Información del Solicitante */}
                     <Card className="border border-gray-200 shadow-sm">
                       <CardHeader className="bg-gray-50 border-b border-gray-200">
-                        <CardTitle className="text-lg font-semibold text-gray-900">Información Básica</CardTitle>
+                        <CardTitle className="text-lg font-semibold text-gray-900">Información del Solicitante</CardTitle>
                       </CardHeader>
                       <CardContent className="p-6 space-y-4">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div className="space-y-2">
-                            <label className="text-sm font-medium text-gray-700">Usuario Solicitante</label>
+                            <label className="text-sm font-medium text-gray-700">Documento</label>
                             <div className="bg-[#EFF0FF] p-3 rounded-md border border-gray-200">
-                              <p className="text-gray-900">{selectedSolicitud.name} {selectedSolicitud.last_name}</p>
+                              <p className="text-gray-900">{selectedSolicitud.id_type}: {selectedSolicitud.id_number}</p>
                             </div>
                           </div>
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium text-gray-700">Nombres</label>
+                            <div className="bg-[#EFF0FF] p-3 rounded-md border border-gray-200">
+                              <p className="text-gray-900">
+                                {selectedSolicitud.name && selectedSolicitud.last_name 
+                                  ? `${selectedSolicitud.name} ${selectedSolicitud.last_name}`.trim()
+                                  : selectedSolicitud.name || selectedSolicitud.last_name || 'No especificado'
+                                }
+                              </p>
+                            </div>
+                          </div>
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium text-gray-700">Correo Electrónico</label>
+                            <div className="bg-[#EFF0FF] p-3 rounded-md border border-gray-200">
+                              <p className="text-gray-900">{selectedSolicitud.email || 'No especificado'}</p>
+                            </div>
+                          </div>
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium text-gray-700">Teléfono</label>
+                            <div className="bg-[#EFF0FF] p-3 rounded-md border border-gray-200">
+                              <p className="text-gray-900">{selectedSolicitud.phone_number || 'No especificado'}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    {/* Información de la Solicitud */}
+                    <Card className="border border-gray-200 shadow-sm">
+                      <CardHeader className="bg-gray-50 border-b border-gray-200">
+                        <CardTitle className="text-lg font-semibold text-gray-900">Información de la Solicitud</CardTitle>
+                      </CardHeader>
+                      <CardContent className="p-6 space-y-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div className="space-y-2">
                             <label className="text-sm font-medium text-gray-700">Tipo de Solicitud</label>
                             <div className="bg-[#EFF0FF] p-3 rounded-md border border-gray-200">
                               <p className="text-gray-900">{getRequestTypeLabel(selectedSolicitud.request_type)}</p>
-                            </div>
-                          </div>
-                          <div className="space-y-2">
-                            <label className="text-sm font-medium text-gray-700">Fecha de Creación</label>
-                            <div className="bg-[#EFF0FF] p-3 rounded-md border border-gray-200">
-                              <p className="text-gray-900">{new Date(selectedSolicitud.created_at).toLocaleDateString()}</p>
                             </div>
                           </div>
                           <div className="space-y-2">
@@ -578,6 +606,27 @@ const AdminSolicitudesPage: React.FC = () => {
                               <Badge className={getStatusColor(selectedSolicitud.status)}>
                                 {getStatusLabel(selectedSolicitud.status)}
                               </Badge>
+                            </div>
+                          </div>
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium text-gray-700">Fecha de Creación</label>
+                            <div className="bg-[#EFF0FF] p-3 rounded-md border border-gray-200">
+                              <p className="text-gray-900">
+                                {new Date(selectedSolicitud.created_at).toLocaleDateString('es-ES', {
+                                  day: '2-digit',
+                                  month: 'long',
+                                  year: 'numeric'
+                                })} a las {new Date(selectedSolicitud.created_at).toLocaleTimeString('es-ES', {
+                                  hour: '2-digit',
+                                  minute: '2-digit'
+                                })}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium text-gray-700">ID de Solicitud</label>
+                            <div className="bg-[#EFF0FF] p-3 rounded-md border border-gray-200">
+                              <p className="text-gray-900">#{selectedSolicitud.id}</p>
                             </div>
                           </div>
                         </div>
@@ -591,15 +640,35 @@ const AdminSolicitudesPage: React.FC = () => {
                       </CardHeader>
                       <CardContent className="p-6">
                         <div className="bg-white border border-gray-200 rounded-lg p-4">
-                          {selectedSolicitud.payload && typeof selectedSolicitud.payload === 'object' ? (
-                            <JsonView
-                              value={selectedSolicitud.payload}
-                              collapsed={1}
-                              style={{ fontSize: '12px', backgroundColor: '#fafafa' }}
-                            />
+                          {selectedSolicitud.payload && typeof selectedSolicitud.payload === 'object' && Object.keys(selectedSolicitud.payload).length > 0 ? (
+                            <div className="space-y-4">
+                              {Object.entries(selectedSolicitud.payload).map(([key, value]) => (
+                                <div key={key} className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center py-2 border-b border-gray-100 last:border-b-0">
+                                  <div className="md:col-span-1">
+                                    <label className="text-sm font-medium text-gray-700 capitalize">
+                                      {key.replace(/[_-]/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                                    </label>
+                                  </div>
+                                  <div className="md:col-span-2">
+                                    <div className="bg-[#EFF0FF] p-3 rounded-md border border-gray-200">
+                                      <p className="text-gray-900 text-sm">
+                                        {value !== null && value !== undefined 
+                                          ? (typeof value === 'object' 
+                                              ? JSON.stringify(value, null, 2)
+                                              : String(value)
+                                            )
+                                          : 'No especificado'
+                                        }
+                                      </p>
+                                    </div>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
                           ) : (
-                            <div className="text-gray-500 text-sm text-center py-4">
-                              No hay detalles adicionales disponibles
+                            <div className="text-gray-500 text-sm text-center py-8">
+                              <FileText className="h-8 w-8 mx-auto mb-2 text-gray-400" />
+                              <p>No hay detalles adicionales disponibles</p>
                             </div>
                           )}
                         </div>
